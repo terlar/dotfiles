@@ -74,6 +74,10 @@
         let g:syntastic_enable_signs = 1
         let g:syntastic_auto_loc_list = 1
     " }
+
+    " Taglist Settings {
+        map <Leader>t :TlistToggle<CR>
+    " }
 " }
 
 " Mappings {
@@ -88,9 +92,6 @@
     map <Leader>e :Exp<CR>
     map <Leader>s :Sex<CR>
 
-    " Taglist
-    map <Leader>c :TlistToggle<CR>
-
     " Toggle numbers
     map <Leader># :set number!<CR>
 
@@ -99,6 +100,10 @@
     map <down> <nop>
     map <left> <nop>
     map <right> <nop>
+    imap <up> <nop>
+    imap <down> <nop>
+    imap <left> <nop>
+    imap <right> <nop>
 " }
 
 " Autocommands {
