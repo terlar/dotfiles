@@ -77,15 +77,22 @@
 " }
 
 " Mappings {
-    " Toggle alternate file
-    map <Leader>t <C-^>
-
-    " Navigation for tags
+    " Tags navigation
     map <M-Right> <C-]>
     map <M-Left> <C-T>
 
     " Folding
     nnoremap <space> za
+
+    " Explorer
+    map <Leader>e :Exp<CR>
+    map <Leader>s :Sex<CR>
+
+    " Taglist
+    map <Leader>c :TlistToggle<CR>
+
+    " Toggle numbers
+    map <Leader># :set number!<CR>
 " }
 
 " Autocommands {
