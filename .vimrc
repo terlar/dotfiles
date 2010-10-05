@@ -5,8 +5,8 @@
     let mapleader=","
     set backspace=indent,eol,start
     set nobackup
+    set noswapfile
     set clipboard+=unnamed
-    set directory=~/.vim/swap
     set tags=tags;
     set hidden
     set iskeyword+=_,$,@,%,#
@@ -93,6 +93,12 @@
 
     " Toggle numbers
     map <Leader># :set number!<CR>
+
+    " Get rid of bad habbits
+    map <up> <nop>
+    map <down> <nop>
+    map <left> <nop>
+    map <right> <nop>
 " }
 
 " Autocommands {
