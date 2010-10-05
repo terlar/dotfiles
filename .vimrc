@@ -7,7 +7,7 @@
     set nobackup
     set clipboard+=unnamed
     set directory=~/.vim/swap
-    set tags=tags;,lib/tags;
+    set tags=tags;
     set hidden
     set iskeyword+=_,$,@,%,#
     set mouse=a
@@ -27,11 +27,9 @@
     set number
     set numberwidth=5
     set ruler
-    set scrolloff=10
     set shortmess=aOstT
     set showcmd
     set showmatch
-    set sidescrolloff=10
     set statusline=%F%m%r%h%w[%L][%{&ff}]%y[%p%%][%04l,%04v]
     set showtabline=2
     set tabpagemax=15
@@ -79,10 +77,8 @@
 " }
 
 " Mappings {
-    " Force tabs
-    cab e tabe
-    tab sball
-    nnoremap gf <C-W>gf
+    " Toggle alternate file
+    map <Leader>t <C-^>
 
     " Navigation for tags
     map <M-Right> <C-]>
