@@ -88,6 +88,9 @@
     " Folding
     nnoremap <space> za
 
+    " Autoclose characters
+    inoremap {<CR> {<CR>}<Esc>O
+
     " Explorer
     map <Leader>e :Exp<CR>
     map <Leader>s :Sex<CR>
