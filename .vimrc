@@ -1,5 +1,6 @@
 " General {
     set nocompatible
+    set modelines=0
     syntax on
     filetype plugin indent on
     let mapleader=","
@@ -22,7 +23,7 @@
     set incsearch
     set lazyredraw
     set list
-    set listchars=tab:>-,trail:-
+    set listchars=tab:▸\ ,trail:•
     set nostartofline
     set number
     set numberwidth=5
@@ -30,7 +31,7 @@
     set shortmess=aOstT
     set showcmd
     set showmatch
-    set statusline=%F%m%r%h%w[%L][%{&ff}]%y[%p%%][%04l,%04v]
+    set laststatus=2
     set showtabline=2
     set tabpagemax=15
 " }
@@ -81,12 +82,27 @@
 " }
 
 " Mappings {
+    " Quickly escape input mode
+    inoremap jj <Esc>
+
+    " Match brackets
+    nnoremap <tab> %
+    vnoremap <tab> %
+
     " Tags navigation
     map <M-Right> <C-]>
     map <M-Left> <C-T>
 
     " Folding
     nnoremap <space> za
+    vnoremap <space> za
+
+    " Buffer navigation
+    nnoremap <C-h> <C-w>h
+    nnoremap <C-j> <C-w>j
+    nnoremap <C-k> <C-w>k
+    nnoremap <C-l> <C-w>l
+    nnoremap <leader>w <C-w>v<C-w>l
 
     " Autoclose characters
     inoremap {<CR> {<CR>}<Esc>O
@@ -94,11 +110,18 @@
     " Explorer
     map <Leader>e :Exp<CR>
     map <Leader>s :Sex<CR>
-
     " Toggle numbers
     map <Leader># :set number!<CR>
+    " Clear search results
+    nnoremap <Leader><space> :noh<cr>
+    " Select pasted text
+    nnoremap <Leader>v V`]
+    " Remove trailing whitespace
+    nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
+    " Sort CSS
+    nnoremap <leader>S ?{<CR>jV/^\s*\}<CR>k:sort<CR>:noh<CR>
 
-    " Get rid of bad habbits
+    " Breaking bad habits
     map <up> <nop>
     map <down> <nop>
     map <left> <nop>
