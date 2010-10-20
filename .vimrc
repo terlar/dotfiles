@@ -74,6 +74,10 @@
     " Taglist Settings {
         map <Leader>t :TlistToggle<CR>
     " }
+
+    " Gundo Settings {
+        nnoremap <Leader>u :GundoToggle<CR>
+    " }
 " }
 
 " Mappings {
@@ -122,14 +126,14 @@
     " }
 
     " Breaking bad habits {
-        map <Up> <Nop>
-        map <Down> <Nop>
-        map <Left> <Nop>
-        map <Right> <Nop>
-        imap <Up> <Nop>
-        imap <Down> <Nop>
-        imap <Left> <Nop>
-        imap <Right> <Nop>
+        inoremap  <Up>     <Nop>
+        inoremap  <Down>   <Nop>
+        inoremap  <Left>   <Nop>
+        inoremap  <Right>  <Nop>
+        noremap   <Up>     <Nop>
+        noremap   <Down>   <Nop>
+        noremap   <Left>   <Nop>
+        noremap   <Right>  <Nop>
     " }
 " }
 
