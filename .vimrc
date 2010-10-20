@@ -3,7 +3,7 @@
     set modelines=0
     syntax on
     filetype plugin indent on
-    let mapleader=","
+    let mapleader=','
     set backspace=indent,eol,start
     set nobackup
     set noswapfile
@@ -66,11 +66,6 @@
     call pathogen#helptags()
     colorscheme molokai
 
-    " SuperTab Settings {
-        let g:SuperTabDefaultCompletionType = 'context'
-        let g:SuperTabContextDefaultCompletionType = "<c-x><c-o>"
-    " }
-
     " Syntastic Settings {
         let g:syntastic_enable_signs = 1
         let g:syntastic_auto_loc_list = 1
@@ -86,50 +81,56 @@
     inoremap jj <Esc>
 
     " Match brackets
-    nnoremap <tab> %
-    vnoremap <tab> %
+    nnoremap <Tab> %
+    vnoremap <Tab> %
 
     " Tags navigation
     map <M-Right> <C-]>
     map <M-Left> <C-T>
 
     " Folding
-    nnoremap <space> za
-    vnoremap <space> za
+    nnoremap <Space> za
+    vnoremap <Space> za
 
-    " Buffer navigation
-    nnoremap <C-h> <C-w>h
-    nnoremap <C-j> <C-w>j
-    nnoremap <C-k> <C-w>k
-    nnoremap <C-l> <C-w>l
-    nnoremap <leader>w <C-w>v<C-w>l
+    " Buffer navigation {
+        nnoremap <C-h> <C-w>h
+        nnoremap <C-j> <C-w>j
+        nnoremap <C-k> <C-w>k
+        nnoremap <C-l> <C-w>l
+        nnoremap <Leader>w <C-w>v<C-w>l
+    " }
 
-    " Autoclose characters
-    inoremap {<CR> {<CR>}<Esc>O
+    " Clear search results
+    nnoremap <Leader><Space> :noh<CR>
+
+    " Select pasted text
+    nnoremap <Leader>v V`]
 
     " Explorer
     map <Leader>e :Exp<CR>
     map <Leader>s :Sex<CR>
+
     " Toggle numbers
     map <Leader># :set number!<CR>
-    " Clear search results
-    nnoremap <Leader><space> :noh<cr>
-    " Select pasted text
-    nnoremap <Leader>v V`]
-    " Remove trailing whitespace
-    nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
-    " Sort CSS
-    nnoremap <leader>S ?{<CR>jV/^\s*\}<CR>k:sort<CR>:noh<CR>
 
-    " Breaking bad habits
-    map <up> <nop>
-    map <down> <nop>
-    map <left> <nop>
-    map <right> <nop>
-    imap <up> <nop>
-    imap <down> <nop>
-    imap <left> <nop>
-    imap <right> <nop>
+    " Tools {
+        " Remove trailing whitespace
+        nnoremap <Leader>W :%s/\s\+$//<CR>:let @/=''<CR>
+
+        " Sort CSS
+        nnoremap <Leader>S ?{<CR>jV/^\s*\}<CR>k:sort<CR>:noh<CR>
+    " }
+
+    " Breaking bad habits {
+        map <Up> <Nop>
+        map <Down> <Nop>
+        map <Left> <Nop>
+        map <Right> <Nop>
+        imap <Up> <Nop>
+        imap <Down> <Nop>
+        imap <Left> <Nop>
+        imap <Right> <Nop>
+    " }
 " }
 
 " Autocommands {
@@ -158,7 +159,7 @@
 " }
 
 " GUI Settings {
-if has("gui_running")
+if has('gui_running')
     " General {
         set guifont=Menlo:h12
         set guioptions=egmrt
