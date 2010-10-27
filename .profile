@@ -34,8 +34,7 @@
 
 # Aliases {
     alias ..="cd .."
-    alias ls="ls -lhG"
-    alias untar="tar xzfv"
+    alias ls="ls -h"
 # }
 
 # Functions {
@@ -51,6 +50,10 @@
     export VISUAL='vim'
     export EDITOR=$VISUAL
     export SVN_EDITOR=$VISUAL
+
+    # Colors
+    export CLICOLOR=1
+    export LSCOLORS=ExGxBxDxCxEgEdxbxgxcxd
 
     # Tab completion ignore pattern
     export FIGNORE=.svn
