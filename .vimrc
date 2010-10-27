@@ -1,21 +1,22 @@
 " General {
     set nocompatible
     set modelines=0
-    syntax on
+    scriptencoding utf-8
     filetype plugin indent on
-    let mapleader=','
-    set backspace=indent,eol,start
+    syntax on
+    set mouse=a
+    set noerrorbells
+    set visualbell
+    set backspace&
+    set autowrite
     set nobackup
     set noswapfile
     set clipboard+=unnamed
     set tags=tags;
     set hidden
     set iskeyword+=_,$,@,%,#
-    set mouse=a
-    set noerrorbells
-    set visualbell
-    set wildmenu
-    set wildmode=list:longest,full
+    set history=1000
+    let mapleader=','
 " }
 
 " Vim UI {
@@ -30,10 +31,14 @@
     set ruler
     set shortmess=aOstT
     set showcmd
+    set showmode
     set showmatch
+    set statusline=%<%f\ %=\:\b%n%y%m%r%w\ %l,%c%V\ %P
     set laststatus=2
     set showtabline=2
     set tabpagemax=15
+    set wildmenu
+    set wildmode=list:longest,full
 " }
 
 " Text Formatting/Layout {
@@ -47,6 +52,7 @@
     set softtabstop=4
     set tabstop=8
     set smarttab
+    set spell
 " }
 
 " Folding {
@@ -61,21 +67,23 @@
     set foldtext=SimpleFoldText()
 " }
 
-" Plugin Settings {
+" Plugins {
     call pathogen#runtime_append_all_bundles()
     call pathogen#helptags()
     colorscheme molokai
 
-    " Syntastic Settings {
+    " Syntastic {
+        set statusline+=\ %#warningsmsg#
+        set statusline+=%{SyntasticStatuslineFlag()}
+        set statusline+=%*
         let g:syntastic_enable_signs = 1
-        let g:syntastic_auto_loc_list = 1
     " }
 
-    " Taglist Settings {
+    " Taglist {
         map <Leader>t :TlistToggle<CR>
     " }
 
-    " Gundo Settings {
+    " Gundo {
         nnoremap <Leader>u :GundoToggle<CR>
     " }
 " }
@@ -83,18 +91,6 @@
 " Mappings {
     " Quickly escape input mode
     inoremap jj <Esc>
-
-    " Match brackets
-    nnoremap <Tab> %
-    vnoremap <Tab> %
-
-    " Tags navigation
-    map <M-Right> <C-]>
-    map <M-Left> <C-T>
-
-    " Folding
-    nnoremap <Space> za
-    vnoremap <Space> za
 
     " Buffer navigation {
         nnoremap <C-h> <C-w>h
@@ -104,18 +100,35 @@
         nnoremap <Leader>w <C-w>v<C-w>l
     " }
 
-    " Clear search results
-    nnoremap <Leader><Space> :noh<CR>
+    " Shortcuts {
+        " Tag navigation
+        map <M-Right> <C-]>
+        map <M-Left> <C-T>
 
-    " Select pasted text
-    nnoremap <Leader>v V`]
+        " Match brackets
+        nnoremap <Tab> %
+        vnoremap <Tab> %
 
-    " Explorer
-    map <Leader>e :Exp<CR>
-    map <Leader>s :Sex<CR>
+        " Folding
+        nnoremap <Space> za
+        vnoremap <Space> za
 
-    " Toggle numbers
-    map <Leader># :set number!<CR>
+        " Explorer
+        map <Leader>e :Exp<CR>
+        map <Leader>s :Sex<CR>
+
+        " Change working directory to file directory
+        cmap cwd lcd %:p:h
+
+        " Clear search results
+        nnoremap <Leader><Space> :noh<CR>
+
+        " Select pasted text
+        nnoremap <Leader>v V`]
+
+        " Toggle numbers
+        map <Leader># :set number!<CR>
+    " }
 
     " Tools {
         " Remove trailing whitespace
@@ -138,8 +151,6 @@
 " }
 
 " Autocommands {
-    autocmd BufNewFile,BufRead *.txt setfiletype text
-
     " Completion {
         autocmd FileType python set omnifunc=pythoncomplete#Complete
         autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
@@ -168,7 +179,7 @@ if has('gui_running')
         set guifont=Menlo:h12
         set guioptions=egmrt
         set t_Co=256
-        set transparency=10
+        set transparency=5
         set mousehide
         let macvim_skip_cmd_opt_movement = 1
     " }

@@ -18,7 +18,7 @@
 
 # Aliases {
     alias ..="cd .."
-    alias ls="ls -lah"
+    alias ls="ls -lhG"
     alias untar="tar xzfv"
 # }
 
