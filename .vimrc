@@ -126,6 +126,9 @@
         " Select pasted text
         nnoremap <Leader>v V`]
 
+        " Toggle paste
+        map <Leader>P :set paste!<CR>
+
         " Toggle numbers
         map <Leader># :set number!<CR>
     " }
