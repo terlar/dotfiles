@@ -20,7 +20,9 @@ ${D}\n$(prompt_char) '
 # }
 
 # Input {
-    set completion-ignore-case on
+    bind "set completion-ignore-case on"
+    bind "set bell-style none"
+    bind "set show-all-if-ambiguous on"
 # }
 
 # History {
