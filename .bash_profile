@@ -9,6 +9,17 @@
     fi
 # }
 
+# Title {
+    case $TERM in
+        xterm*)
+            PS1="\[\033]0;\u@\h: \w\007\]bash\\$ "
+            ;;
+        *)
+            PS1="bash\\$ "
+            ;;
+    esac
+# }
+
 # Prompt {
     D=$'\e[37;40m'
     PINK=$'\e[35;40m'

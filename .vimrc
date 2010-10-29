@@ -52,7 +52,6 @@
     set softtabstop=4
     set tabstop=8
     set smarttab
-    set spell
 " }
 
 " Folding {

@@ -5,6 +5,14 @@
     fi
 # }
 
+# Title {
+    case $TERM in
+        xterm*)
+            precmd () {print -Pn "\e]0;%n@%m: %~\a"}
+            ;;
+    esac
+# }
+
 # Prompt {
     setopt prompt_subst
     autoload colors zsh/terminfo
@@ -15,7 +23,7 @@
 
     PROMPT='
 %{$fg[magenta]%}%n%{$reset_color%} @ %{$fg[yellow]%}%m%{$reset_color%} in %{$fg_bold[green]%}%~%{$reset_color%}
-$(prompt_char) '
+%{$(prompt_char)%} '
 # }
 
 # Input {
