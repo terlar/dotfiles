@@ -1,50 +1,44 @@
-# Bootstrap {
-    # Load profile
-    if [ -f ~/.profile ]; then
-        . ~/.profile
-    fi
-# }
+# Load profile
+[[ -f ~/.profile ]] && .  ~/.profile
 
-# Title {
-    case $TERM in
-        xterm*)
-            precmd () {print -Pn "\e]0;%n@%m: %~\a"}
-            ;;
-    esac
-# }
+# Title
+case $TERM in
+    xterm*)
+        precmd () {print -Pn "\e]0;%n@%m: %~\a"}
+        ;;
+esac
 
-# Prompt {
-    setopt prompt_subst
-    autoload colors zsh/terminfo
+# Prompt
+setopt prompt_subst
+autoload colors zsh/terminfo
+colors
 
-    if [[ "$terminfo[colors]" -gt 7 ]]; then
-        colors
-    fi
-
-    PROMPT='
+PROMPT='
 %{$fg[magenta]%}%n%{$reset_color%} @ %{$fg[yellow]%}%m%{$reset_color%} in %{$fg_bold[green]%}%~%{$reset_color%}
-%{$(prompt_char)%} '
-# }
+$(prompt_char) '
 
-# Input {
-    autoload -U compinit promptinit
-    compinit
-    promptinit
+# Completion
+autoload -U compinit
+compinit
 
-    zstyle ':completion::complete:*' use-cache 1
-    zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
-    zstyle ':completion:*' list-colors "=(#b) #([0-9]#)*=36=31"
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+zstyle ':completion:*' list-colors "=(#b) #([0-9]#)*=36=31"
 
-    zstyle -e ':completion::*:hosts' hosts 'reply=($(sed -e "/^#/d" -e "s/ .*\$//" -e "s/,/ /g" /etc/ssh_known_hosts(N) ~/.ssh/known_hosts(N) 2>/dev/null | xargs) $(grep \^Host ~/.ssh/config(N) | cut -f2 -d\  2>/dev/null | xargs))'
-# }
+zstyle -e ':completion::*:hosts' hosts 'reply=($(sed -e "/^#/d" -e "s/ .*\$//" -e "s/,/ /g" /etc/ssh_known_hosts(N) ~/.ssh/known_hosts(N) 2>/dev/null | xargs) $(grep \^Host ~/.ssh/config(N) | cut -f2 -d\  2>/dev/null | xargs))'
 
-# History {
-    export HISTCONTROL=erasedups
+# History
+HISTSIZE=1000
+SAVEHIST=1000
+HISTFILE=~/.zsh/history
+setopt append_history
+setopt inc_append_history
+setopt extended_history
+setopt hist_find_no_dups
+setopt hist_ignore_all_dups
+setopt hist_reduce_blanks
+setopt hist_ignore_space
+setopt hist_no_store
+setopt hist_no_functions
+setopt no_hist_beep
+setopt hist_save_no_dups
 
-    setopt incappendhistory \
-    extendedhistory \
-    histfindnodups \
-    histreduceblanks \
-    histignorealldups \
-    histsavenodups
-# }
