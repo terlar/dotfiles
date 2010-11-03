@@ -71,6 +71,11 @@
     call pathogen#helptags()
     colorscheme molokai
 
+    " Netrw {
+        let g:netrw_special_syntax = 1
+        let g:netrw_list_hide='^\.[^\.]'
+    " }
+
     " Syntastic {
         set statusline+=\ %#warningsmsg#
         set statusline+=%{SyntasticStatuslineFlag()}
@@ -130,6 +135,10 @@
 
         " Toggle numbers
         map <Leader># :set number!<CR>
+
+        " Insert lines
+        nmap <Leader>o o<Esc>
+        nmap <Leader>O O<Esc>
     " }
 
     " Tools {
