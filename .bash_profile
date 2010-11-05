@@ -21,6 +21,7 @@ export PS1='\n${PINK}\u${D} @ ${ORANGE}\h ${D}in ${GREEN}\w\
 ${D}\n$(prompt_char) '
 
 # Input
+set -o vi
 bind "set completion-ignore-case on"
 bind "set bell-style none"
 bind "set show-all-if-ambiguous on"

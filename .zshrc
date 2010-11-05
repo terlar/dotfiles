@@ -14,8 +14,12 @@ autoload colors zsh/terminfo
 colors
 
 PROMPT='
-%{$fg[magenta]%}%n%{$reset_color%} @ %{$fg[yellow]%}%m%{$reset_color%} in %{$fg_bold[green]%}%~%{$reset_color%}
+%{$fg[magenta]%}%n%{$reset_color%} @ %{$fg[yellow]%}%m%{$reset_color%} : %{$fg_bold[green]%}%~%{$reset_color%}
 $(prompt_char) '
+
+# Input
+bindkey -v
+bindkey '^?' backward-delete-char
 
 # Completion
 autoload -U compinit
