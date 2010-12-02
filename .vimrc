@@ -96,6 +96,9 @@
     " Quickly escape input mode
     inoremap jj <Esc>
 
+    " make Y yank to the end of the line
+    nmap Y y$
+
     " Buffer navigation {
         nnoremap <C-h> <C-w>h
         nnoremap <C-j> <C-w>j

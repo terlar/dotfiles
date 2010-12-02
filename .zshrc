@@ -27,8 +27,20 @@ compinit
 
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 zstyle ':completion:*' list-colors "=(#b) #([0-9]#)*=36=31"
+zstyle ':completion:*' special-dirs true
 
 zstyle -e ':completion::*:hosts' hosts 'reply=($(sed -e "/^#/d" -e "s/ .*\$//" -e "s/,/ /g" /etc/ssh_known_hosts(N) ~/.ssh/known_hosts(N) 2>/dev/null | xargs) $(grep \^Host ~/.ssh/config(N) | cut -f2 -d\  2>/dev/null | xargs))'
+
+rationalise-dot() {
+    if [[ $LBUFFER = *.. ]]; then
+        LBUFFER+=/..
+    else
+        LBUFFER+=.
+    fi
+}
+zle -N rationalise-dot
+bindkey . rationalise-dot
+
 
 # History
 HISTSIZE=1000
