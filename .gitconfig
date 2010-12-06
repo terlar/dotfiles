@@ -1,13 +1,13 @@
 [user]
-	name = Terje Larsen
-	email = terlar@gmail.com
+name = Terje Larsen
+email = terlar@gmail.com
 [alias]
-	ci = commit -s
-	co = checkout
-	st = status
-	d = diff
-	cim = commit -s -m
+ci = commit -s
+co = checkout
+st = status
+d = diff
+cim = commit -s -m
 [color]
-	branch = auto
-	status = auto
-	diff = auto
+branch = auto
+status = auto
+diff = auto
