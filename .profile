@@ -1,40 +1,40 @@
 # Config {
-    # Editor
-    export VISUAL='vim'
-    export EDITOR=$VISUAL
-    export SVN_EDITOR=$VISUAL
+	# Editor
+	export VISUAL='vim'
+	export EDITOR=$VISUAL
+	export SVN_EDITOR=$VISUAL
 
-    # Colors
-    export CLICOLOR=1
-    export LSCOLORS=ExGxBxDxCxEgEdxbxgxcxd
+	# Colors
+	export CLICOLOR=1
+	export LSCOLORS=ExGxBxDxCxEgEdxbxgxcxd
 
-    # Tab completion ignore pattern
-    export FIGNORE=.svn
+	# Tab completion ignore pattern
+	export FIGNORE=.svn
 
-    # Set path for MacPorts
-    export PATH=/opt/local/bin:/opt/local/sbin:$PATH
+	# Set path for MacPorts
+	export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 # }
 
 # Aliases {
-    alias ls="ls -h"
+	alias ls="ls -h"
 # }
 
 # Functions {
-    # mkdir, cd into it
-    function mkcd () {
-        mkdir -p "$*"
-        cd "$*"
-    }
-    # svn diff into vim
-    function svndiff () {
-        svn diff "$@" | vim -R -
-    }
-    # get prompt char
-    function prompt_char {
-        git branch >/dev/null 2>/dev/null && echo '±' && return
-        svn info >/dev/null 2>/dev/null && echo '✔' && return
-        echo '○'
-    }
+	# mkdir, cd into it
+	function mkcd () {
+		mkdir -p "$*"
+		cd "$*"
+	}
+	# svn diff into vim
+	function svndiff () {
+		svn diff "$@" | vim -R -
+	}
+	# get prompt char
+	function prompt_char {
+		git branch >/dev/null 2>/dev/null && echo '±' && return
+		svn info >/dev/null 2>/dev/null && echo '✔' && return
+		echo '○'
+	}
 # }
 
 # Init Fink on OSX
