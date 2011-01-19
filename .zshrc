@@ -3,9 +3,9 @@
 
 # Title
 case $TERM in
-    xterm*)
-        precmd () {print -Pn "\e]0;%n@%m: %~\a"}
-        ;;
+	xterm*)
+		precmd () {print -Pn "\e]0;%n@%m: %~\a"}
+		;;
 esac
 
 # Prompt
@@ -32,11 +32,11 @@ zstyle ':completion:*' special-dirs true
 zstyle -e ':completion::*:hosts' hosts 'reply=($(sed -e "/^#/d" -e "s/ .*\$//" -e "s/,/ /g" /etc/ssh_known_hosts(N) ~/.ssh/known_hosts(N) 2>/dev/null | xargs) $(grep \^Host ~/.ssh/config(N) | cut -f2 -d\  2>/dev/null | xargs))'
 
 rationalise-dot() {
-    if [[ $LBUFFER = *.. ]]; then
-        LBUFFER+=/..
-    else
-        LBUFFER+=.
-    fi
+	if [[ $LBUFFER = *.. ]]; then
+		LBUFFER+=/..
+	else
+		LBUFFER+=.
+	fi
 }
 zle -N rationalise-dot
 bindkey . rationalise-dot
@@ -57,4 +57,3 @@ setopt hist_no_store
 setopt hist_no_functions
 setopt no_hist_beep
 setopt hist_save_no_dups
-
