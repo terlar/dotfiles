@@ -11,8 +11,7 @@
     # Tab completion ignore pattern
     export FIGNORE=.svn
 
-    # Set path for MacPorts
-    export PATH=/opt/local/bin:/opt/local/sbin:$PATH
+    export PATH=/usr/local/bin:$PATH
 # }
 
 # Aliases {
@@ -37,7 +36,5 @@
     }
 # }
 
-# Init Fink on OSX
-[[ -d /sw/fink ]] && . /sw/bin/init.sh
 # Use .localrc for settings specific to one system
 [[ -f ~/.localrc ]] && .  ~/.localrc
