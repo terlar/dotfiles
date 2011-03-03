@@ -15,6 +15,7 @@
 
 # Aliases {
 	alias ls="ls -h"
+	alias mkdir="mkdir -p"
 # }
 
 # Functions {
@@ -26,6 +27,16 @@
 	# svn diff into vim
 	function svndiff () {
 		svn diff "$@" | vim -R -
+	}
+	# dir diff into vim
+	function dirdiff () {
+		cd $1
+		ls -R > /tmp/$1
+		cd -
+		cd $2
+		ls -R > /tmp/$2
+		cd -
+		vimdiff -O /tmp/$1 /tmp/$2
 	}
 	# get prompt char
 	function prompt_char {
