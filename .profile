@@ -18,7 +18,7 @@
 # }
 
 # Aliases {
-	alias ls="ls -h"
+	alias ls="ls -hF"
 	alias mkdir="mkdir -p"
 # }
 
@@ -34,13 +34,7 @@
 	}
 	# dir diff into vim
 	function dirdiff () {
-		cd $1
-		ls -R > /tmp/$1
-		cd -
-		cd $2
-		ls -R > /tmp/$2
-		cd -
-		vimdiff -O /tmp/$1 /tmp/$2
+		vimdiff <(cd $1;ls -R) <(cd $2;ls -R)
 	}
 	# get prompt char
 	function prompt_char {
