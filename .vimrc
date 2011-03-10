@@ -1,7 +1,7 @@
 " General {
 	set nocompatible
 	set modelines=0
-	scriptencoding utf-8
+	set encoding=utf8
 	filetype plugin indent on
 	syntax on
 	set mouse=a
@@ -122,8 +122,8 @@
 		map <Leader>e :Exp<CR>
 		map <Leader>s :Sex<CR>
 
-		" Change working directory to file directory
-		cmap cwd lcd %:p:h
+		" Change to directory of current buffer
+		map <Leader>cd :cd %:p:h<CR>
 
 		" Clear search results
 		nnoremap <Leader><Space> :noh<CR>
@@ -173,16 +173,15 @@
 		autocmd FileType c set omnifunc=ccomplete#Complete
 	" }
 
-	" Autoreload vimrc {
-	augroup vimrcEx
-		au!
+	" Go to last position {
 		autocmd BufReadPost *
 		\ if line("'\"") > 0 && line("'\"") <= line("$") |
 		\    exe "normal g`\"" |
 		\ endif
-		autocmd BufWritePost .vimrc source $MYVIMRC
-	augroup END
 	" }
+
+	" Autoreload vimrc
+	autocmd BufWritePost .vimrc source $MYVIMRC
 " }
 
 " GUI Settings {
