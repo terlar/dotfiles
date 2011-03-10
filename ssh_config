@@ -1,4 +1,5 @@
 Host *
 	ForwardAgent yes
 	KeepAlive yes
-	ServerAliveInterval 60
+	ServerAliveInterval 20
+	ServerAliveCountMax 10
