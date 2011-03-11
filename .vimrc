@@ -1,55 +1,87 @@
 " General {
 	set nocompatible
-	set modelines=0
-	set encoding=utf8
-	filetype plugin indent on
-	syntax on
-	set mouse=a
-	set noerrorbells
-	set visualbell
-	set backspace&
-	set autowrite
-	set nobackup
-	set noswapfile
-	set clipboard+=unnamed
-	set tags=tags;
-	set hidden
-	set iskeyword+=_,$,@,%,#
+	set nomodeline
+	set nolazyredraw
+
 	set history=1000
+
+	set encoding=utf-8
+	filetype plugin on
+	filetype indent on
+	syntax on
+
 	let mapleader=','
 " }
 
-" Vim UI {
-	set hlsearch
-	set incsearch
-	set lazyredraw
-	set listchars=tab:▸\ ,trail:•
-	set nostartofline
-	set number
-	set numberwidth=5
-	set ruler
+" User Interface {
 	set shortmess=aOstT
-	set showcmd
-	set showmode
-	set showmatch
-	set statusline=%<%f\ %=\:\b%n%y%m%r%w\ %l,%c%V\ %P
-	set laststatus=2
-	set showtabline=2
-	set tabpagemax=15
 	set wildmenu
 	set wildmode=list:longest,full
-" }
 
-" Text Formatting/Layout {
-	set formatoptions=rq
+	set listchars=tab:▸\ ,trail:•
+
+	" Search
 	set ignorecase
 	set smartcase
-	set nowrap
+	set hlsearch
+	set incsearch
+
+	" Matching bracets
+	set showmatch
+	set mat=2
+
+	" Statusline
+	set statusline=%<%f\ %=\:\b%n%y%m%r%w\ %l,%c%V\ %P
+	set laststatus=2
+	set showcmd
+	set showmode
+	set ruler
+
+	set showtabline=1
+	set tabpagemax=15
+
+	set number
+	set numberwidth=5
+
+	set mouse=a
+
+	" No sounds
+	set noeb
+	set vb
+	set t_vb=
+" }
+
+" Filesystem {
+	set autoread
+	set hidden
+
+	" No backup
+	set nobackup
+	set nowb
+	set noswapfile
+
+	set tags=tags;
+" }
+
+" Edit {
+	set nostartofline
+	set backspace&
+	set iskeyword+=_,$,@,%,#
+
+	" Tabs
 	set shiftround
 	set shiftwidth=4
 	set softtabstop=4
 	set tabstop=4
 	set smarttab
+
+	" Indent
+	set ai
+	set si
+
+	" Wrap
+	set wrap
+	set lbr
 " }
 
 " Folding {
@@ -59,7 +91,7 @@
 	set foldlevel=100
 	set foldopen=block,hor,mark,percent,quickfix,tag
 	function! SimpleFoldText() " {
-		return getline(v:foldstart).' '
+		return substitute(getline(v:foldstart), '{.*', '{...}', '')
 	endfunction " }
 	set foldtext=SimpleFoldText()
 " }
@@ -94,8 +126,20 @@
 	" Quickly escape input mode
 	inoremap jj <Esc>
 
-	" make Y yank to the end of the line
+	" Make Y yank to the end of the line
 	nmap Y y$
+
+	" Move lines {
+		nmap <M-j> mz:m+<CR>
+		nmap <M-k> mz:m-2<CR>
+		vmap <M-j> :m'>+<CR>
+		vmap <M-k> :m'<-2<CR>
+
+		nmap <D-j> <M-j>
+		nmap <D-k> <M-k>
+		vmap <D-j> <M-j>
+		vmap <D-k> <M-k>
+	" }
 
 	" Buffer navigation {
 		nnoremap <C-h> <C-w>h
@@ -107,12 +151,8 @@
 
 	" Shortcuts {
 		" Tag navigation
-		map <M-Right> <C-]>
-		map <M-Left> <C-T>
-
-		" Match brackets
-		nnoremap <Tab> %
-		vnoremap <Tab> %
+		map <Tab> <C-]>
+		map <S-Tab> <C-T>
 
 		" Folding
 		nnoremap <Space> za
@@ -132,14 +172,10 @@
 		nnoremap <Leader>v V`]
 
 		" Toggle paste
-		map <Leader>P :set paste!<CR>
+		map <Leader>P :setlocal paste!<CR>
 
 		" Toggle numbers
 		map <Leader># :set number!<CR>
-
-		" Insert lines
-		nmap <Leader>o o<Esc>
-		nmap <Leader>O O<Esc>
 	" }
 
 	" Tools {
@@ -189,6 +225,7 @@ if has('gui_running')
 	" General {
 		set guifont=Menlo:h12
 		set guioptions=egmrt
+		set guitablabel=%t
 		set t_Co=256
 		set mousehide
 		let macvim_skip_cmd_opt_movement = 1
