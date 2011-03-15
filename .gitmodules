@@ -22,3 +22,6 @@ url = git://github.com/sjl/gundo.vim.git
 [submodule ".vim/bundle/sparkup"]
 path = .vim/bundle/sparkup
 url = git://github.com/kogakure/vim-sparkup.git
+[submodule ".vim/bundle/repeat"]
+	path = .vim/bundle/repeat
+	url = git://github.com/tpope/vim-repeat.git
