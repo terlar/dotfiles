@@ -115,6 +115,8 @@
 
 	" Taglist {
 		map <Leader>t :TlistToggle<CR>
+		let Tlist_GainFocus_On_ToggleOpen = 1
+		let Tlist_Show_One_File = 1
 	" }
 
 	" Gundo {
@@ -155,8 +157,8 @@
 		map <S-Tab> <C-T>
 
 		" Folding
-		nnoremap <Space> za
-		vnoremap <Space> za
+		nmap <Space> za
+		vmap <Space> za
 
 		" Explorer
 		map <Leader>e :Exp<CR>

@@ -13,7 +13,6 @@
 
 	# Tab completion ignore pattern
 	export FIGNORE=.svn
-	export PATH=/usr/local/bin:$PATH
 # }
 
 # Aliases {
@@ -43,5 +42,5 @@
 	}
 # }
 
-# Use .localrc for settings specific to one system
+# Use .localrc for settings specific to system
 [[ -f ~/.localrc ]] && .  ~/.localrc
