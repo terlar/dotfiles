@@ -37,9 +37,6 @@
 	set showmode
 	set ruler
 
-	set showtabline=1
-	set tabpagemax=15
-
 	set number
 	set numberwidth=5
 
