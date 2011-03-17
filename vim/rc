@@ -8,20 +8,21 @@
 	set encoding=utf-8
 
 	filetype off
-	call pathogen#runtime_append_all_bundles()
-	call pathogen#helptags()
+	silent! call pathogen#runtime_append_all_bundles()
+	silent! call pathogen#helptags()
+
 	filetype plugin indent on
 	syntax on
-
-	let mapleader=','
 " }
 
 " User Interface {
 	set shortmess=aOstT
 	set wildmenu
 	set wildmode=list:longest,full
+	set completeopt-=menu
 
 	set listchars=tab:▸\ ,trail:•
+	set fillchars=
 
 	" Search
 	set ignorecase
@@ -32,6 +33,7 @@
 
 	" Matching bracets
 	set showmatch
+	set matchpairs+=<:>
 	set mat=2
 
 	" Statusline
@@ -53,12 +55,14 @@
 " }
 
 " File {
+	set autowrite
 	set autoread
 	set hidden
 
-	" Persistent Undo
-	set undofile
-	set undodir=~/.vimundo
+	if has('persistent_undo')
+		set undofile
+		set undodir=~/.vimundo
+	endif
 
 	" No backup
 	set nobackup
@@ -101,70 +105,58 @@
 	set foldtext=SimpleFoldText()
 " }
 
-" Plugins {
-	colorscheme molokai
+" Auto Commands {
+if has('autocmd')
+	augroup Completion " {
+		au!
+		au FileType python set omnifunc=pythoncomplete#Complete
+		au FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+		au FileType html set omnifunc=htmlcomplete#CompleteTags
+		au FileType css set omnifunc=csscomplete#CompleteCSS
+		au FileType xml set omnifunc=xmlcomplete#CompleteTags
+		au FileType php set omnifunc=phpcomplete#CompletePHP
+		au FileType c set omnifunc=ccomplete#Complete
+	augroup end " }
 
-	" Netrw {
-		let g:netrw_special_syntax = 1
-		let g:netrw_list_hide='^\.[^\.]'
-	" }
+	augroup RestoreCursorPos " {
+		au!
+		au BufReadPost *
+		\ if line("'\"") > 0 && line("'\"") <= line("$") |
+		\    exe "normal g`\"" |
+		\ endif
+	augroup end " }
 
-	" Syntastic {
-		set statusline+=\ %#warningsmsg#
-		set statusline+=%{SyntasticStatuslineFlag()}
-		set statusline+=%*
-		let g:syntastic_enable_signs = 1
-	" }
-
-	" Taglist {
-		nnoremap <Leader>t :TlistToggle<CR>
-		let Tlist_GainFocus_On_ToggleOpen = 1
-		let Tlist_Show_One_File = 1
-	" }
-
-	" Gundo {
-		nnoremap <Leader>u :GundoToggle<CR>
-	" }
-
-	" Ack {
-		nnoremap <Leader>a :Ack 
-		nnoremap <Leader>af :AckFile 
-	" }
-
-	" SuperTab {
-		let g:SuperTabDefaultCompletionType = "context"
-		let g:SuperTabLongestEnhanced = 1
-	" }
-
-	" LustyExplorer {
-		let g:LustyExplorerSuppressRubyWarning = 1
-		nnoremap <Leader>f :LustyFilesystemExplorer<CR>
-		nnoremap <Leader>r :LustyFilesystemExplorerFromHere<CR>
-		nnoremap <Leader>b :LustyBufferExplorer<CR>
-		nnoremap <Leader>g :LustyBufferGrep<CR>
-	" }
+	augroup Files
+		au!
+		au FocusLost * :wa
+		au BufWritePost .vimrc source $MYVIMRC
+	augroup end
+endif
 " }
 
 " Mappings {
+	let mapleader=','
+
 	" Quickly escape input mode
 	inoremap jj <Esc>
+	cnoremap jj <Esc>
 
 	" Make Y yank to the end of the line
-	nmap Y y$
+	nnoremap Y y$
 
 	" Move lines {
-		nmap <M-j> mz:m+<CR>
-		nmap <M-k> mz:m-2<CR>
-		vmap <M-j> :m'>+<CR>
-		vmap <M-k> :m'<-2<CR>
+		nnoremap <M-j> mz:m+<CR>
+		nnoremap <M-k> mz:m-2<CR>
+		vnoremap <M-j> :m'>+<CR>
+		vnoremap <M-k> :m'<-2<CR>
 
-		nmap <D-j> <M-j>
-		nmap <D-k> <M-k>
-		vmap <D-j> <M-j>
-		vmap <D-k> <M-k>
+		nnoremap <D-j> <M-j>
+		nnoremap <D-k> <M-k>
+		vnoremap <D-j> <M-j>
+		vnoremap <D-k> <M-k>
 	" }
 
-	" Buffer navigation {
+	" Window {
 		nnoremap <C-h> <C-w>h
 		nnoremap <C-j> <C-w>j
 		nnoremap <C-k> <C-w>k
@@ -175,19 +167,19 @@
 
 	" Shortcuts {
 		" Tag navigation
-		map <Tab> <C-]>
-		map <S-Tab> <C-T>
+		nnoremap <Tab> <C-]>
+		nnoremap <S-Tab> <C-T>
 
 		" Folding
-		nmap <Space> za
-		vmap <Space> za
+		nnoremap <Space> za
+		vnoremap <Space> za
 
 		" Explorer
-		map <Leader>e :Exp<CR>
-		map <Leader>s :Sex<CR>
+		noremap <Leader>e :Exp<CR>
+		noremap <Leader>s :Sex<CR>
 
 		" Change to directory of current buffer
-		map <Leader>cd :cd %:p:h<CR>
+		nnoremap <Leader>cd :cd %:p:h<CR>
 
 		" Clear search results
 		nnoremap <Leader><Space> :noh<CR>
@@ -196,10 +188,10 @@
 		nnoremap <Leader>v V`]
 
 		" Toggle paste
-		map <Leader>P :setlocal paste!<CR>
+		nnoremap <Leader>P :setlocal paste!<CR>
 
 		" Toggle numbers
-		map <Leader># :set number!<CR>
+		nnoremap <Leader># :set number!<CR>
 	" }
 
 	" Tools {
@@ -222,40 +214,56 @@
 	" }
 " }
 
-" Autocommands {
-	" Completion {
-		autocmd FileType python set omnifunc=pythoncomplete#Complete
-		autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-		autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
-		autocmd FileType css set omnifunc=csscomplete#CompleteCSS
-		autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
-		autocmd FileType php set omnifunc=phpcomplete#CompletePHP
-		autocmd FileType c set omnifunc=ccomplete#Complete
+" Bundles {
+	colorscheme molokai
+
+	" Netrw {
+		let g:netrw_special_syntax = 1
+		let g:netrw_list_hide='^\.[^\.]'
 	" }
 
-	" Jump to last known cursor position {
-		autocmd BufReadPost *
-		\ if line("'\"") > 0 && line("'\"") <= line("$") |
-		\    exe "normal g`\"" |
-		\ endif
+	" Taglist {
+		nnoremap <Leader>t :TlistToggle<CR>
+		let Tlist_GainFocus_On_ToggleOpen = 1
+		let Tlist_Show_One_File = 1
 	" }
 
-	" Autoreload vimrc
-	autocmd BufWritePost .vimrc source $MYVIMRC
+	" Gundo {
+		let g:gundo_preview_bottom = 1
+		let g:gundo_preview_height = 10
+		let g:gundo_width = 30
+		nnoremap <Leader>u :GundoToggle<CR>
+	" }
 
-	" Autosave
-	au FocusLost * :wa
+	" Ack {
+		nnoremap <Leader>a :Ack 
+		nnoremap <Leader>af :AckFile 
+	" }
+
+	" SuperTab {
+		let g:SuperTabDefaultCompletionType = "context"
+		let g:SuperTabLongestEnhanced = 1
+	" }
+
+	" LustyExplorer {
+		let g:LustyExplorerSuppressRubyWarning = 1
+		nnoremap <Leader>f :LustyFilesystemExplorer<CR>
+		nnoremap <Leader>r :LustyFilesystemExplorerFromHere<CR>
+		nnoremap <Leader>b :LustyBufferExplorer<CR>
+		nnoremap <Leader>g :LustyBufferGrep<CR>
+	" }
 " }
 
 " GUI Settings {
-if has('gui_running')
-	" General {
+	if $TERM =~ "256color" || has('gui_running')
+		set t_Co=256
+	endif
+
+	if has('gui')
 		set guifont=Menlo:h12
 		set guioptions=aemg
 		set guitablabel=%t
-		set t_Co=256
 		set mousehide
 		let macvim_skip_cmd_opt_movement = 1
-	" }
-endif
+	endif
 " }
