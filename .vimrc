@@ -111,13 +111,30 @@
 	" }
 
 	" Taglist {
-		map <Leader>t :TlistToggle<CR>
+		nnoremap <Leader>t :TlistToggle<CR>
 		let Tlist_GainFocus_On_ToggleOpen = 1
 		let Tlist_Show_One_File = 1
 	" }
 
 	" Gundo {
 		nnoremap <Leader>u :GundoToggle<CR>
+	" }
+
+	" Ack {
+		nnoremap <Leader>a :Ack 
+		nnoremap <Leader>af :AckFile 
+	" }
+
+	" SuperTab {
+		let g:SuperTabDefaultCompletionType = "context"
+		let g:SuperTabLongestEnhanced = 1
+	" }
+
+	" LustyExplorer {
+		nnoremap <Leader>f :LustyFilesystemExplorer<CR>
+		nnoremap <Leader>r :LustyFilesystemExplorerFromHere<CR>
+		nnoremap <Leader>b :LustyBufferExplorer<CR>
+		nnoremap <Leader>g :LustyBufferGrep<CR>
 	" }
 " }
 
@@ -145,7 +162,8 @@
 		nnoremap <C-j> <C-w>j
 		nnoremap <C-k> <C-w>k
 		nnoremap <C-l> <C-w>l
-		nnoremap <Leader>w <C-w>v<C-w>l
+		nnoremap <Leader>wv <C-w>v<C-w>l
+		nnoremap <Leader>ws <C-w>s<C-w>j
 	" }
 
 	" Shortcuts {
@@ -208,7 +226,7 @@
 		autocmd FileType c set omnifunc=ccomplete#Complete
 	" }
 
-	" Go to last position {
+	" Jump to last known cursor position {
 		autocmd BufReadPost *
 		\ if line("'\"") > 0 && line("'\"") <= line("$") |
 		\    exe "normal g`\"" |
