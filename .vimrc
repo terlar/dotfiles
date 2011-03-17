@@ -2,12 +2,15 @@
 	set nocompatible
 	set nomodeline
 	set nolazyredraw
+	set ttyfast
 
 	set history=1000
-
 	set encoding=utf-8
-	filetype plugin on
-	filetype indent on
+
+	filetype off
+	call pathogen#runtime_append_all_bundles()
+	call pathogen#helptags()
+	filetype plugin indent on
 	syntax on
 
 	let mapleader=','
@@ -25,6 +28,7 @@
 	set smartcase
 	set hlsearch
 	set incsearch
+	set gdefault
 
 	" Matching bracets
 	set showmatch
@@ -51,6 +55,10 @@
 " File {
 	set autoread
 	set hidden
+
+	" Persistent Undo
+	set undofile
+	set undodir=~/.vimundo
 
 	" No backup
 	set nobackup
@@ -94,8 +102,6 @@
 " }
 
 " Plugins {
-	call pathogen#runtime_append_all_bundles()
-	call pathogen#helptags()
 	colorscheme molokai
 
 	" Netrw {
@@ -236,6 +242,9 @@
 
 	" Autoreload vimrc
 	autocmd BufWritePost .vimrc source $MYVIMRC
+
+	" Autosave
+	au FocusLost * :wa
 " }
 
 " GUI Settings {

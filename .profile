@@ -13,7 +13,6 @@
 
 	# Tab completion ignore pattern
 	export FIGNORE=.svn
-	export PATH=/usr/local/bin:$PATH
 # }
 
 # Aliases {
