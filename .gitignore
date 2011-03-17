@@ -1,3 +1,2 @@
-# Ignore history and swap files
-.vim/.netrwhist
-.vim/swap/*
+# Ignore history
+vim/.netrwhist
