@@ -48,7 +48,7 @@
 	set t_vb=
 " }
 
-" Filesystem {
+" File {
 	set autoread
 	set hidden
 
@@ -131,6 +131,7 @@
 	" }
 
 	" LustyExplorer {
+		let g:LustyExplorerSuppressRubyWarning = 1
 		nnoremap <Leader>f :LustyFilesystemExplorer<CR>
 		nnoremap <Leader>r :LustyFilesystemExplorerFromHere<CR>
 		nnoremap <Leader>b :LustyBufferExplorer<CR>
@@ -241,7 +242,7 @@
 if has('gui_running')
 	" General {
 		set guifont=Menlo:h12
-		set guioptions=egmrt
+		set guioptions=aemg
 		set guitablabel=%t
 		set t_Co=256
 		set mousehide
