@@ -10,7 +10,8 @@ esac
 
 # Prompt
 setopt prompt_subst
-autoload colors zsh/terminfo
+autoload -U promptinit colors
+promptinit
 colors
 
 PROMPT='

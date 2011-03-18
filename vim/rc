@@ -1,8 +1,8 @@
 " General {
 	set nocompatible
 	set nomodeline
-	set nolazyredraw
 	set ttyfast
+	set lazyredraw
 
 	set history=1000
 	set encoding=utf-8
