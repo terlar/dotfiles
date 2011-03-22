@@ -128,7 +128,7 @@ if has('autocmd')
 
 	augroup Files
 		au!
-		au FocusLost * :wa
+		au FocusLost silent! :wa
 		au BufWritePost .vimrc source $MYVIMRC
 	augroup end
 endif
