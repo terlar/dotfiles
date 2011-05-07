@@ -46,7 +46,7 @@ bindkey . rationalise-dot
 # History
 HISTSIZE=1000
 SAVEHIST=1000
-HISTFILE=~/.zsh/history
+HISTFILE=~/.zhistory
 setopt append_history
 setopt inc_append_history
 setopt extended_history
