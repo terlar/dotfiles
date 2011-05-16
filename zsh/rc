@@ -16,7 +16,7 @@ colors
 
 PROMPT='
 %{$fg[magenta]%}%n%{$reset_color%} @ %{$fg[yellow]%}%m%{$reset_color%} : %{$fg_bold[green]%}%~%{$reset_color%}
-$(prompt_char) '
+$ '
 
 # Input
 bindkey -v

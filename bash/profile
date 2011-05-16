@@ -18,7 +18,7 @@ GREEN=$'\e[32;40m'
 ORANGE=$'\e[33;40m'
 
 export PS1='\n${PINK}\u${D} @ ${ORANGE}\h ${D}in ${GREEN}\w\
-${D}\n$(prompt_char) '
+${D}\n$ '
 
 # Input
 set -o vi
