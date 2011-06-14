@@ -193,11 +193,17 @@ endif
 
 		" Toggle numbers
 		nnoremap <Leader># :set number!<CR>
+
+		" Toggle list
+		nnoremap <Leader>L :set list!<CR>
 	" }
 
 	" Tools {
 		" Remove trailing whitespace
 		nnoremap <Leader>W :%s/\s\+$//<CR>:let @/=''<CR>
+
+		" Retab
+		nnoremap <Leader>R :ret!<CR>
 
 		" Sort CSS
 		nnoremap <Leader>S ?{<CR>jV/^\s*\}<CR>k:sort<CR>:noh<CR>
