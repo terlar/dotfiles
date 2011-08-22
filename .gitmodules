@@ -19,9 +19,6 @@
 [submodule "vim/bundle/gundo"]
 	path = vim/bundle/gundo
 	url = git://github.com/sjl/gundo.vim.git
-[submodule "vim/bundle/sparkup"]
-	path = vim/bundle/sparkup
-	url = git://github.com/bingaman/vim-sparkup.git
 [submodule "vim/bundle/supertab"]
 	path = vim/bundle/supertab
 	url = git://github.com/ervandew/supertab.git
@@ -31,3 +28,6 @@
 [submodule "vim/bundle/peepopen"]
 	path = vim/bundle/peepopen
 	url = git://github.com/shemerey/vim-peepopen.git
+[submodule "vim/bundle/sparkup"]
+	path = vim/bundle/sparkup
+	url = git://github.com/bingaman/vim-sparkup.git
