@@ -1,0 +1,3 @@
+set ssl:verify-certificate no
+set ftp:ssl-protect-list no
+set ftp:list-options -a
