@@ -131,16 +131,15 @@ if has('autocmd')
 		au!
 		au FocusLost silent! :wa
 		au BufWritePost .vimrc source $MYVIMRC
+
+		" Sort CSS Properties
+		au BufNewFile,BufRead *.css  nnoremap <buffer> <Leader>S ?{<CR>jV/\v^\s*\}?$<CR>k:sort<CR>:noh<CR>
 	augroup end
 endif
 " }
 
 " Mappings {
 	let mapleader=','
-
-	" Quickly escape input mode
-	inoremap jj <Esc>
-	cnoremap jj <Esc>
 
 	" Make Y yank to the end of the line
 	nnoremap Y y$
@@ -205,8 +204,8 @@ endif
 		" Retab
 		nnoremap <Leader>R :ret!<CR>
 
-		" Sort CSS
-		nnoremap <Leader>S ?{<CR>jV/^\s*\}<CR>k:sort<CR>:noh<CR>
+		" Write as sudo
+		cmap w!! w !sudo tee % >/dev/null
 	" }
 
 	" Breaking bad habits {

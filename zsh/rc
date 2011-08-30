@@ -25,6 +25,7 @@ bindkey '^?' backward-delete-char
 # Completion
 autoload -U compinit
 compinit
+setopt COMPLETE_IN_WORD
 
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 zstyle ':completion:*' list-colors "=(#b) #([0-9]#)*=36=31"
@@ -46,9 +47,10 @@ bindkey . rationalise-dot
 # History
 HISTSIZE=1000
 SAVEHIST=1000
-HISTFILE=~/.zhistory
+HISTFILE=~/.history
 setopt append_history
 setopt inc_append_history
+setopt shared_history
 setopt extended_history
 setopt hist_find_no_dups
 setopt hist_ignore_all_dups
@@ -58,3 +60,4 @@ setopt hist_no_store
 setopt hist_no_functions
 setopt no_hist_beep
 setopt hist_save_no_dups
+setopt hist_verify
