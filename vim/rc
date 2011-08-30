@@ -262,9 +262,7 @@ endif
 " }
 
 " GUI Settings {
-	if $TERM =~ "256color" || has('gui_running')
-		set t_Co=256
-	endif
+	set t_Co=256
 
 	if has('gui')
 		set guifont=Menlo:h12
