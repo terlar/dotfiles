@@ -50,7 +50,6 @@ SAVEHIST=1000
 HISTFILE=~/.history
 setopt append_history
 setopt inc_append_history
-setopt shared_history
 setopt extended_history
 setopt hist_find_no_dups
 setopt hist_ignore_all_dups
