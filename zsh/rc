@@ -1,62 +1,126 @@
 # Load profile
 [[ -f ~/.profile ]] && .  ~/.profile
 
-# Title
-case $TERM in
-	xterm*)
-		precmd () {print -Pn "\e]0;%n@%m: %~\a"}
-		;;
-esac
+# Title {
+	case $TERM in
+		xterm*)
+			precmd () {print -Pn "\e]0;%n@%m: %~\a"}
+			;;
+	esac
+# }
 
-# Prompt
-setopt prompt_subst
-autoload -U promptinit colors
-promptinit
-colors
+# Prompt {
+	setopt prompt_subst
+	autoload -U promptinit colors
+	promptinit
+	colors
 
-PROMPT='
+	PROMPT='
 %{$fg[magenta]%}%n%{$reset_color%} @ %{$fg[yellow]%}%m%{$reset_color%} : %{$fg_bold[green]%}%~%{$reset_color%}
 $ '
+# }
 
-# Input
-bindkey -v
-bindkey '^?' backward-delete-char
+# Input {
+	autoload -U zsh-mime-setup
+	zsh-mime-setup
 
-# Completion
-autoload -U compinit
-compinit
-setopt COMPLETE_IN_WORD
+	bindkey -v
+	bindkey '^?' backward-delete-char
+	bindkey -M vicmd "/" history-incremental-search-backward
+	bindkey -M vicmd "?" history-incremental-search-forward
+	bindkey -M vicmd "//" history-beginning-search-backward
+	bindkey -M vicmd "??" history-beginning-search-forward
+	bindkey -M vicmd "q" push-line
+	bindkey -M viins ' ' magic-space
 
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
-zstyle ':completion:*' list-colors "=(#b) #([0-9]#)*=36=31"
-zstyle ':completion:*' special-dirs true
+	bindkey -s '^[[1;5A' '^Ucd ..; ls^M'
 
-zstyle -e ':completion::*:hosts' hosts 'reply=($(sed -e "/^#/d" -e "s/ .*\$//" -e "s/,/ /g" /etc/ssh_known_hosts(N) ~/.ssh/known_hosts(N) 2>/dev/null | xargs) $(grep \^Host ~/.ssh/config(N) | cut -f2 -d\  2>/dev/null | xargs))'
+	zle -N rationalise-dot
+	bindkey . rationalise-dot
 
-rationalise-dot() {
-	if [[ $LBUFFER = *.. ]]; then
-		LBUFFER+=/..
-	else
-		LBUFFER+=.
-	fi
-}
-zle -N rationalise-dot
-bindkey . rationalise-dot
+	setopt auto_cd
+	setopt multios
+	setopt auto_pushd
+	setopt auto_name_dirs
+	setopt glob_complete
+	setopt pushd_minus
+	#setopt pushd_silent
+	setopt pushd_to_home
+	setopt pushd_ignore_dups
 
+	setopt rm_star_wait
 
-# History
-HISTSIZE=1000
-SAVEHIST=1000
-HISTFILE=~/.history
-setopt append_history
-setopt inc_append_history
-setopt extended_history
-setopt hist_find_no_dups
-setopt hist_ignore_all_dups
-setopt hist_reduce_blanks
-setopt hist_ignore_space
-setopt hist_no_store
-setopt hist_no_functions
-setopt no_hist_beep
-setopt hist_save_no_dups
-setopt hist_verify
+	setopt no_flow_control
+	setopt no_beep
+
+	setopt no_case_glob
+	setopt numeric_glob_sort
+	setopt extended_glob
+# }
+
+# Completion {
+	autoload -U compinit
+	compinit
+
+	zstyle ':completion::complete:*' use-cache 1
+
+	zstyle ':completion:*' matcher-list 'm:{a-zåäö}={A-ZÅÄÖ}'
+	zstyle ':completion:*' special-dirs true
+
+	zstyle ':completion:*' verbose yes
+	zstyle ':completion:*:descriptions' format '%B%d%b'
+	zstyle ':completion:*:messages' format '%d'
+	zstyle ':completion:*:warnings' format 'No matches for: %d'
+	zstyle ':completion:*' group-name ''
+	zstyle ':completion:*' completer _expand _force_rehash _complete _approximate _ignored
+
+	zstyle ':completion:*' auto-description 'specify: %d'
+	zstyle ':completion:*:default' list-prompt '%S%M matches%s'
+	zstyle ':completion:*:default' menu 'select=0'
+	zstyle ':completion:*' file-sort modification reverse
+	zstyle ':completion:*' list-colors "=(#b) #([0-9]#)*=36=31"
+
+	zstyle ':completion:*:corrections' format '%B%d (errors %e)%b'
+	zstyle ':completion:*:approximate:*' max-errors 'reply=(  $((  ($#PREFIX+$#SUFFIX)/3  ))  )'
+	zstyle ':completion:*' ignore-parents parent pwd
+	zstyle ':completion::approximate*:*' prefix-needed false
+
+	zstyle -e ':completion::*:hosts' hosts 'reply=($(sed -e "/^#/d" -e "s/ .*\$//" -e "s/,/ /g" /etc/ssh_known_hosts(N) ~/.ssh/known_hosts(N) 2>/dev/null | xargs) $(grep \^Host ~/.ssh/config(N) | cut -f2 -d\  2>/dev/null | xargs))'
+
+	unsetopt list_ambiguous
+	setopt complete_in_word
+# }
+
+# History {
+	HISTSIZE=1000
+	SAVEHIST=1000
+	HISTFILE=~/.history
+	setopt append_history
+	setopt inc_append_history
+	setopt share_history
+	setopt extended_history
+	setopt hist_find_no_dups
+	setopt hist_ignore_all_dups
+	setopt hist_reduce_blanks
+	setopt hist_ignore_space
+	setopt hist_no_store
+	setopt hist_no_functions
+	setopt no_hist_beep
+	setopt hist_save_no_dups
+	setopt hist_verify
+# }
+
+# Functions {
+	rationalise-dot() {
+		if [[ $LBUFFER = *.. ]]; then
+			LBUFFER+=/..
+		else
+			LBUFFER+=.
+		fi
+	}
+
+	_force_rehash() {
+		(( CURRENT == 1 )) && rehash
+		return 1  # Because we didn't really complete anything
+	}
+# }

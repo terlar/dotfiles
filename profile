@@ -15,9 +15,18 @@
 	export FIGNORE=.svn
 # }
 
+# Input {
+set meta-flag on
+set input-meta on
+set output-meta on
+set convert-meta off
+# }
+
 # Aliases {
 	alias ls="ls -hF"
 	alias mkdir="mkdir -p"
+	# copy with a progress bar
+	alias cpv="rsync -poghb --backup-dir=/tmp/rsync -e /dev/null --progress --"
 # }
 
 # Functions {
