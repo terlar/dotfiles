@@ -16,10 +16,10 @@
 # }
 
 # Input {
-set meta-flag on
-set input-meta on
-set output-meta on
-set convert-meta off
+	set meta-flag on
+	set input-meta on
+	set output-meta on
+	set convert-meta off
 # }
 
 # Aliases {

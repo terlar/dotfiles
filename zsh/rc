@@ -15,9 +15,9 @@
 	promptinit
 	colors
 
-	PROMPT='
-%{$fg[magenta]%}%n%{$reset_color%} @ %{$fg[yellow]%}%m%{$reset_color%} : %{$fg_bold[green]%}%~%{$reset_color%}
-$ '
+	PROMPT=$'\n%{$fg[magenta]%}%n%{$reset_color%} @ %{$fg[yellow]%}%m%{$reset_color%} : %{$fg_bold[green]%}%~%{$reset_color%}\n$ '
+
+	unsetopt promptcr
 # }
 
 # Input {
@@ -56,6 +56,8 @@ $ '
 	setopt no_case_glob
 	setopt numeric_glob_sort
 	setopt extended_glob
+
+	setopt print_eight_bit
 # }
 
 # Completion {
