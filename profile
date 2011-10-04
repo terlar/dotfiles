@@ -1,4 +1,6 @@
 # Config {
+	export TERM="xterm-256color"
+
 	# Locale
 	export LANG="en_US.UTF-8"
 	export LC_ALL="en_US.UTF-8"

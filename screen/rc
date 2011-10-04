@@ -1,5 +1,3 @@
-term 'screen-256color'
-
 startup_message off
 autodetach on
 altscreen on
