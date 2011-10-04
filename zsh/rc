@@ -24,7 +24,8 @@
 	autoload -U zsh-mime-setup
 	zsh-mime-setup
 
-	setopt combiningchars
+	setopt multibyte
+	setopt combining_chars
 
 	bindkey -v
 	bindkey '^?' backward-delete-char
@@ -46,7 +47,7 @@
 	setopt auto_name_dirs
 	setopt glob_complete
 	setopt pushd_minus
-	#setopt pushd_silent
+	setopt pushd_silent
 	setopt pushd_to_home
 	setopt pushd_ignore_dups
 

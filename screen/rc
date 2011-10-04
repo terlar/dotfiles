@@ -1,0 +1,14 @@
+term 'screen-256color'
+
+startup_message off
+autodetach on
+altscreen on
+defscrollback 10000
+defc1 off
+defutf8 on
+nonblock on
+
+hardstatus alwayslastline
+hardstatus string '%{= kw}[ %{= kb}%H%{= kw} ][%= %{= kw}%?%-Lw%?%{= kW}%n*%f %t%?%?%{= kw}%?%+Lw%?%?%= ][ %{r}%l%{w} ]%{w}[%{r} %d/%m/%y %C %A %{w}]%{w}'
+
+bind 'q' quit
