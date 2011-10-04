@@ -24,6 +24,8 @@
 	autoload -U zsh-mime-setup
 	zsh-mime-setup
 
+	setopt combiningchars
+
 	bindkey -v
 	bindkey '^?' backward-delete-char
 	bindkey -M vicmd "/" history-incremental-search-backward
@@ -56,8 +58,6 @@
 	setopt no_case_glob
 	setopt numeric_glob_sort
 	setopt extended_glob
-
-	setopt print_eight_bit
 # }
 
 # Completion {
