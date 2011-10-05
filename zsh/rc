@@ -15,7 +15,7 @@
 	promptinit
 	colors
 
-	PROMPT=$'\n%{$fg[magenta]%}%n%{$reset_color%} @ %{$fg[yellow]%}%m%{$reset_color%} : %{$fg_bold[green]%}%~%{$reset_color%}\n$ '
+	PROMPT=$'\n%{$fg[magenta]%}%n%{$reset_color%} @ %{$fg[yellow]%}%m%{$reset_color%} : %{$fg_bold[green]%}%~%{$reset_color%}\n$(prompt_char) '
 
 	unsetopt promptcr
 # }
