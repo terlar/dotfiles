@@ -90,7 +90,7 @@
 	set si
 
 	" Wrap
-	set wrap
+	set nowrap
 	set lbr
 " }
 
