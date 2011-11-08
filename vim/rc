@@ -1,273 +1,274 @@
 " General {
-	set nocompatible
-	set nomodeline
-	set ttyfast
-	set lazyredraw
-	set clipboard=unnamed
+  set nocompatible
+  set nomodeline
+  set ttyfast
+  set lazyredraw
+  set clipboard=unnamed
 
-	set history=1000
-	set encoding=utf-8
+  set history=1000
+  set encoding=utf-8
 
-	filetype off
-	silent! call pathogen#runtime_append_all_bundles()
-	silent! call pathogen#helptags()
+  filetype off
+  silent! call pathogen#runtime_append_all_bundles()
+  silent! call pathogen#helptags()
 
-	filetype plugin indent on
-	syntax on
+  filetype plugin indent on
+  syntax on
 " }
 
 " User Interface {
-	set shortmess=aOstT
-	set wildmenu
-	set wildmode=list:longest,full
-	set completeopt-=menu
+  set shortmess=aOstT
+  set wildmenu
+  set wildmode=list:longest,full
+  set completeopt-=menu
 
-	set listchars=tab:▸\ ,trail:•
-	set fillchars=
+  set listchars=tab:▸\ ,trail:•
+  set fillchars=
 
-	" Search
-	set ignorecase
-	set smartcase
-	set hlsearch
-	set incsearch
-	set gdefault
+  " Search
+  set ignorecase
+  set smartcase
+  set hlsearch
+  set incsearch
+  set gdefault
 
-	" Matching bracets
-	set showmatch
-	set matchpairs+=<:>
-	set mat=2
+  " Matching bracets
+  set showmatch
+  set matchpairs+=<:>
+  set mat=2
 
-	" Statusline
-	set statusline=%<%f\ %=\:\b%n%y%m%r%w\ %l,%c%V\ %P
-	set laststatus=2
-	set showcmd
-	set showmode
-	set ruler
+  " Statusline
+  set statusline=%<%f\ %=\:\b%n%y%m%r%w\ %l,%c%V\ %P
+  set laststatus=2
+  set showcmd
+  set showmode
+  set ruler
 
-	set number
-	set numberwidth=5
+  set number
+  set numberwidth=5
 
-	set mouse=a
+  set mouse=a
 
-	" No sounds
-	set noeb
-	set vb
-	set t_vb=
+  " No sounds
+  set noeb
+  set vb
+  set t_vb=
 " }
 
 " File {
-	set autowrite
-	set autoread
-	set hidden
+  set autowrite
+  set autoread
+  set hidden
 
-	if has('persistent_undo')
-		set undofile
-		set undodir=~/.vimundo
-	endif
+  if has('persistent_undo')
+    set undofile
+    set undodir=~/.vimundo
+  endif
 
-	" No backup
-	set nobackup
-	set nowb
-	set noswapfile
+  " No backup
+  set nobackup
+  set nowb
+  set noswapfile
 
-	set tags=tags;
+  set tags=tags;
 " }
 
 " Edit {
-	set nostartofline
-	set backspace&
-	set iskeyword+=_,$,@,%,#
+  set nostartofline
+  set backspace&
+  set iskeyword+=_,$,@,%,#
 
-	" Tabs
-	set shiftround
-	set shiftwidth=4
-	set softtabstop=4
-	set tabstop=4
-	set smarttab
+  " Tabs
+  set shiftround
+  set shiftwidth=2
+  set softtabstop=2
+  set tabstop=2
+  set expandtab
+  set smarttab
 
-	" Indent
-	set ai
-	set si
+  " Indent
+  set ai
+  set si
 
-	" Wrap
-	set nowrap
-	set lbr
+  " Wrap
+  set nowrap
+  set lbr
 " }
 
 " Folding {
-	set foldenable
-	set foldmarker={,}
-	set foldmethod=marker
-	set foldlevel=100
-	set foldopen=block,hor,mark,percent,quickfix,tag
-	function! SimpleFoldText() " {
-		return substitute(getline(v:foldstart), '{.*', '{...}', '')
-	endfunction " }
-	set foldtext=SimpleFoldText()
+  set foldenable
+  set foldmarker={,}
+  set foldmethod=marker
+  set foldlevel=100
+  set foldopen=block,hor,mark,percent,quickfix,tag
+  function! SimpleFoldText() " {
+    return substitute(getline(v:foldstart), '{.*', '{...}', '')
+  endfunction " }
+  set foldtext=SimpleFoldText()
 " }
 
 " Auto Commands {
 if has('autocmd')
-	augroup Completion " {
-		au!
-		au FileType python set omnifunc=pythoncomplete#Complete
-		au FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-		au FileType html set omnifunc=htmlcomplete#CompleteTags
-		au FileType css set omnifunc=csscomplete#CompleteCSS
-		au FileType xml set omnifunc=xmlcomplete#CompleteTags
-		au FileType php set omnifunc=phpcomplete#CompletePHP
-		au FileType c set omnifunc=ccomplete#Complete
-	augroup end " }
+  augroup Completion " {
+    au!
+    au FileType python set omnifunc=pythoncomplete#Complete
+    au FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+    au FileType html set omnifunc=htmlcomplete#CompleteTags
+    au FileType css set omnifunc=csscomplete#CompleteCSS
+    au FileType xml set omnifunc=xmlcomplete#CompleteTags
+    au FileType php set omnifunc=phpcomplete#CompletePHP
+    au FileType c set omnifunc=ccomplete#Complete
+  augroup end " }
 
-	augroup RestoreCursorPos " {
-		au!
-		au BufReadPost *
-		\ if line("'\"") > 0 && line("'\"") <= line("$") |
-		\    exe "normal g`\"" |
-		\ endif
-	augroup end " }
+  augroup RestoreCursorPos " {
+    au!
+    au BufReadPost *
+    \ if line("'\"") > 0 && line("'\"") <= line("$") |
+    \    exe "normal g`\"" |
+    \ endif
+  augroup end " }
 
-	augroup Files
-		au!
-		au FocusLost silent! :wa
-		au BufWritePost .vimrc source $MYVIMRC
+  augroup Files
+    au!
+    au FocusLost silent! :wa
+    au BufWritePost .vimrc source $MYVIMRC
 
-		" Sort CSS Properties
-		au BufNewFile,BufRead *.css  nnoremap <buffer> <Leader>S ?{<CR>jV/\v^\s*\}?$<CR>k:sort<CR>:noh<CR>
-	augroup end
+    " Sort CSS Properties
+    au BufNewFile,BufRead *.css  nnoremap <buffer> <Leader>S ?{<CR>jV/\v^\s*\}?$<CR>k:sort<CR>:noh<CR>
+  augroup end
 endif
 " }
 
 " Mappings {
-	let mapleader=','
+  let mapleader=','
 
-	" Make Y yank to the end of the line
-	nnoremap Y y$
+  " Make Y yank to the end of the line
+  nnoremap Y y$
 
-	" Move lines {
-		nnoremap <M-j> mz:m+<CR>
-		nnoremap <M-k> mz:m-2<CR>
-		vnoremap <M-j> :m'>+<CR>
-		vnoremap <M-k> :m'<-2<CR>
+  " Move lines {
+    nnoremap <M-j> mz:m+<CR>
+    nnoremap <M-k> mz:m-2<CR>
+    vnoremap <M-j> :m'>+<CR>
+    vnoremap <M-k> :m'<-2<CR>
 
-		nnoremap <D-j> <M-j>
-		nnoremap <D-k> <M-k>
-		vnoremap <D-j> <M-j>
-		vnoremap <D-k> <M-k>
-	" }
+    nnoremap <D-j> <M-j>
+    nnoremap <D-k> <M-k>
+    vnoremap <D-j> <M-j>
+    vnoremap <D-k> <M-k>
+  " }
 
-	" Window {
-		nnoremap <C-h> <C-w>h
-		nnoremap <C-j> <C-w>j
-		nnoremap <C-k> <C-w>k
-		nnoremap <C-l> <C-w>l
-		nnoremap <Leader>wv <C-w>v<C-w>l
-		nnoremap <Leader>ws <C-w>s<C-w>j
-	" }
+  " Window {
+    nnoremap <C-h> <C-w>h
+    nnoremap <C-j> <C-w>j
+    nnoremap <C-k> <C-w>k
+    nnoremap <C-l> <C-w>l
+    nnoremap <Leader>wv <C-w>v<C-w>l
+    nnoremap <Leader>ws <C-w>s<C-w>j
+  " }
 
-	" Shortcuts {
-		" Tag navigation
-		nnoremap <Tab> <C-]>
-		nnoremap <S-Tab> <C-T>
+  " Shortcuts {
+    " Tag navigation
+    nnoremap <Tab> <C-]>
+    nnoremap <S-Tab> <C-T>
 
-		" Folding
-		nnoremap <Space> za
-		vnoremap <Space> za
+    " Folding
+    nnoremap <Space> za
+    vnoremap <Space> za
 
-		" Explorer
-		noremap <Leader>e :Exp<CR>
-		noremap <Leader>s :Sex<CR>
+    " Explorer
+    noremap <Leader>e :Exp<CR>
+    noremap <Leader>s :Sex<CR>
 
-		" Change to directory of current buffer
-		nnoremap <Leader>cd :cd %:p:h<CR>
+    " Change to directory of current buffer
+    nnoremap <Leader>cd :cd %:p:h<CR>
 
-		" Clear search results
-		nnoremap <Leader><Space> :noh<CR>
+    " Clear search results
+    nnoremap <Leader><Space> :noh<CR>
 
-		" Select pasted text
-		nnoremap <Leader>v V`]
+    " Select pasted text
+    nnoremap <Leader>v V`]
 
-		" Toggle paste
-		nnoremap <Leader>P :setlocal paste!<CR>
+    " Toggle paste
+    nnoremap <Leader>P :setlocal paste!<CR>
 
-		" Toggle numbers
-		nnoremap <Leader># :set number!<CR>
+    " Toggle numbers
+    nnoremap <Leader># :set number!<CR>
 
-		" Toggle list
-		nnoremap <Leader>L :set list!<CR>
-	" }
+    " Toggle list
+    nnoremap <Leader>L :set list!<CR>
+  " }
 
-	" Tools {
-		" Remove trailing whitespace
-		nnoremap <Leader>W :%s/\s\+$//<CR>:let @/=''<CR>
+  " Tools {
+    " Remove trailing whitespace
+    nnoremap <Leader>W :%s/\s\+$//<CR>:let @/=''<CR>
 
-		" Retab
-		nnoremap <Leader>R :ret!<CR>
+    " Retab
+    nnoremap <Leader>R :ret!<CR>
 
-		" Write as sudo
-		cmap w!! w !sudo tee % >/dev/null
-	" }
+    " Write as sudo
+    cmap w!! w !sudo tee % >/dev/null
+  " }
 
-	" Breaking bad habits {
-		inoremap  <Up>     <Nop>
-		inoremap  <Down>   <Nop>
-		inoremap  <Left>   <Nop>
-		inoremap  <Right>  <Nop>
-		noremap   <Up>     <Nop>
-		noremap   <Down>   <Nop>
-		noremap   <Left>   <Nop>
-		noremap   <Right>  <Nop>
-	" }
+  " Breaking bad habits {
+    inoremap  <Up>     <Nop>
+    inoremap  <Down>   <Nop>
+    inoremap  <Left>   <Nop>
+    inoremap  <Right>  <Nop>
+    noremap   <Up>     <Nop>
+    noremap   <Down>   <Nop>
+    noremap   <Left>   <Nop>
+    noremap   <Right>  <Nop>
+  " }
 " }
 
 " Bundles {
-	colorscheme molokai
+  colorscheme molokai
 
-	" Netrw {
-		let g:netrw_special_syntax = 1
-		let g:netrw_list_hide='^\.[^\.]'
-	" }
+  " Netrw {
+    let g:netrw_special_syntax = 1
+    let g:netrw_list_hide='^\.[^\.]'
+  " }
 
-	" Taglist {
-		nnoremap <Leader>t :TlistToggle<CR>
-		let Tlist_GainFocus_On_ToggleOpen = 1
-		let Tlist_Show_One_File = 1
-	" }
+  " Taglist {
+    nnoremap <Leader>t :TlistToggle<CR>
+    let Tlist_GainFocus_On_ToggleOpen = 1
+    let Tlist_Show_One_File = 1
+  " }
 
-	" Gundo {
-		let g:gundo_preview_bottom = 1
-		let g:gundo_preview_height = 10
-		let g:gundo_width = 30
-		nnoremap <Leader>u :GundoToggle<CR>
-	" }
+  " Gundo {
+    let g:gundo_preview_bottom = 1
+    let g:gundo_preview_height = 10
+    let g:gundo_width = 30
+    nnoremap <Leader>u :GundoToggle<CR>
+  " }
 
-	" Ack {
-		nnoremap <Leader>a :Ack 
-		nnoremap <Leader>af :AckFile 
-	" }
+  " Ack {
+    nnoremap <Leader>a :Ack 
+    nnoremap <Leader>af :AckFile 
+  " }
 
-	" SuperTab {
-		let g:SuperTabDefaultCompletionType = "context"
-		let g:SuperTabLongestEnhanced = 1
-	" }
+  " SuperTab {
+    let g:SuperTabDefaultCompletionType = "context"
+    let g:SuperTabLongestEnhanced = 1
+  " }
 
-	" LustyExplorer {
-		let g:LustyExplorerSuppressRubyWarning = 1
-		nnoremap <Leader>f :LustyFilesystemExplorer<CR>
-		nnoremap <Leader>r :LustyFilesystemExplorerFromHere<CR>
-		nnoremap <Leader>b :LustyBufferExplorer<CR>
-		nnoremap <Leader>g :LustyBufferGrep<CR>
-	" }
+  " LustyExplorer {
+    let g:LustyExplorerSuppressRubyWarning = 1
+    nnoremap <Leader>f :LustyFilesystemExplorer<CR>
+    nnoremap <Leader>r :LustyFilesystemExplorerFromHere<CR>
+    nnoremap <Leader>b :LustyBufferExplorer<CR>
+    nnoremap <Leader>g :LustyBufferGrep<CR>
+  " }
 " }
 
 " GUI Settings {
-	set t_Co=256
+  set t_Co=256
 
-	if has('gui')
-		set guifont=Menlo:h12
-		set guioptions=aemg
-		set guitablabel=%t
-		set mousehide
-		let macvim_skip_cmd_opt_movement = 1
-	endif
+  if has('gui')
+    set guifont=Menlo:h12
+    set guioptions=aemg
+    set guitablabel=%t
+    set mousehide
+    let macvim_skip_cmd_opt_movement = 1
+  endif
 " }

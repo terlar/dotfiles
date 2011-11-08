@@ -1,5 +1,5 @@
 Host *
-	ForwardAgent yes
-	KeepAlive yes
-	ServerAliveInterval 20
-	ServerAliveCountMax 10
+  ForwardAgent yes
+  KeepAlive yes
+  ServerAliveInterval 20
+  ServerAliveCountMax 10
