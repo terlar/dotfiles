@@ -97,14 +97,9 @@
 
 " Folding {
   set foldenable
-  set foldmarker={,}
-  set foldmethod=marker
   set foldlevel=100
   set foldopen=block,hor,mark,percent,quickfix,tag
-  function! SimpleFoldText() " {
-    return substitute(getline(v:foldstart), '{.*', '{...}', '')
-  endfunction " }
-  set foldtext=SimpleFoldText()
+  let ruby_fold=1
 " }
 
 " Auto Commands {
