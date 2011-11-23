@@ -1,120 +1,78 @@
-" General {
-  set nocompatible
-  set nomodeline
-  set ttyfast
-  set lazyredraw
-  set clipboard=unnamed
+set nocompatible
+set nomodeline
+set lazyredraw
+set shortmess+=I " No intro message
+set vb t_vb= " No beep or flash
+set t_Co=256 " 256 colors
 
-  set history=1000
-  set encoding=utf-8
+set encoding=utf-8
 
-  filetype off
-  silent! call pathogen#runtime_append_all_bundles()
-  silent! call pathogen#helptags()
+" GUI
+"set clipboard=unnamed
 
-  filetype plugin indent on
-  syntax on
-" }
+" Line numbers
+set number
 
-" User Interface {
-  set shortmess=aOstT
-  set wildmenu
-  set wildmode=list:longest,full
-  set completeopt-=menu
+" Command line
+set history=1000
+set wildmenu
+set wildmode=list:longest,list:full
+set wildignore+=*.o,*.obj,.git,*.rbc,*.class,.svn,vendor/gems/*
 
-  set listchars=tab:▸\ ,trail:•
-  set fillchars=
+" Status line
+set statusline=%<%f\ %=\:\b%n%y%m%r%w\ %l,%c%V\ %P
+set laststatus=2
 
-  " Search
-  set ignorecase
-  set smartcase
-  set hlsearch
-  set incsearch
-  set gdefault
+" Buffer
+set list listchars=tab:▸\ ,trail:•
+set matchpairs+=<:>
+set nowrap
+set noequalalways
+set backspace=indent,eol,start
 
-  " Matching bracets
-  set showmatch
-  set matchpairs+=<:>
-  set mat=2
+" Tabs
+set tabstop=2
+set shiftwidth=2
+set softtabstop=2
+set expandtab
 
-  " Statusline
-  set statusline=%<%f\ %=\:\b%n%y%m%r%w\ %l,%c%V\ %P
-  set laststatus=2
-  set showcmd
-  set showmode
-  set ruler
+" Searching
+set hlsearch
+set incsearch
+set ignorecase
+set smartcase
+set gdefault
 
-  set number
-  set numberwidth=5
+" File
+set hidden
+set autowriteall
+set autoread
 
-  set mouse=a
+" Persistent Undo
+if has('persistent_undo')
+  set undofile
+  set undodir=~/.vimundo
+endif
 
-  " No sounds
-  set noeb
-  set vb
-  set t_vb=
-" }
+" No backup
+set nobackup
+set nowritebackup
+set noswapfile
 
-" File {
-  set autowrite
-  set autoread
-  set hidden
+" Tags
+set tags=tags;
 
-  if has('persistent_undo')
-    set undofile
-    set undodir=~/.vimundo
-  endif
+" Pathogen
+filetype off
+silent! call pathogen#runtime_append_all_bundles()
+silent! call pathogen#helptags()
 
-  " No backup
-  set nobackup
-  set nowb
-  set noswapfile
+filetype plugin indent on
+syntax on
 
-  set tags=tags;
-" }
-
-" Edit {
-  set nostartofline
-  set backspace&
-  set iskeyword+=_,$,@,%,#
-
-  " Tabs
-  set shiftround
-  set shiftwidth=2
-  set softtabstop=2
-  set tabstop=2
-  set expandtab
-  set smarttab
-
-  " Indent
-  set ai
-  set si
-
-  " Wrap
-  set nowrap
-  set lbr
-" }
-
-" Folding {
-  set foldenable
-  set foldlevel=100
-  set foldopen=block,hor,mark,percent,quickfix,tag
-  let ruby_fold=1
-" }
 
 " Auto Commands {
 if has('autocmd')
-  augroup Completion " {
-    au!
-    au FileType python set omnifunc=pythoncomplete#Complete
-    au FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-    au FileType html set omnifunc=htmlcomplete#CompleteTags
-    au FileType css set omnifunc=csscomplete#CompleteCSS
-    au FileType xml set omnifunc=xmlcomplete#CompleteTags
-    au FileType php set omnifunc=phpcomplete#CompletePHP
-    au FileType c set omnifunc=ccomplete#Complete
-  augroup end " }
-
   augroup RestoreCursorPos " {
     au!
     au BufReadPost *
@@ -170,10 +128,6 @@ endif
     nnoremap <Space> za
     vnoremap <Space> za
 
-    " Explorer
-    noremap <Leader>e :Exp<CR>
-    noremap <Leader>s :Sex<CR>
-
     " Change to directory of current buffer
     nnoremap <Leader>cd :cd %:p:h<CR>
 
@@ -217,11 +171,11 @@ endif
 " }
 
 " Bundles {
-  colorscheme molokai
+  color molokai
 
   " Netrw {
     let g:netrw_special_syntax = 1
-    let g:netrw_list_hide='^\.[^\.]'
+    let g:netrw_list_hide = '^\.[^\.]'
   " }
 
   " Taglist {
@@ -238,32 +192,106 @@ endif
   " }
 
   " Ack {
-    nnoremap <Leader>a :Ack 
-    nnoremap <Leader>af :AckFile 
+    nnoremap <Leader>a :Ack
+    nnoremap <Leader>af :AckFile
   " }
 
   " SuperTab {
-    let g:SuperTabDefaultCompletionType = "context"
+    let g:SuperTabDefaultCompletionType = 'context'
     let g:SuperTabLongestEnhanced = 1
   " }
 
   " LustyExplorer {
     let g:LustyExplorerSuppressRubyWarning = 1
-    nnoremap <Leader>f :LustyFilesystemExplorer<CR>
     nnoremap <Leader>r :LustyFilesystemExplorerFromHere<CR>
     nnoremap <Leader>b :LustyBufferExplorer<CR>
     nnoremap <Leader>g :LustyBufferGrep<CR>
   " }
+
+  " NERDTree {
+    let NERDTreeIgnore = ['\.pyc$', '\.rbc$', '\~$']
+    let NERDTreeMinimalUI = 1
+    let NERDTreeDirArrows = 1
+    map <Leader>n :NERDTreeToggle<CR>
+  " }
 " }
 
-" GUI Settings {
-  set t_Co=256
-
-  if has('gui')
-    set guifont=Menlo:h12
-    set guioptions=aemg
-    set guitablabel=%t
-    set mousehide
-    let macvim_skip_cmd_opt_movement = 1
+" http://vim.wikia.com/wiki/Deleting_a_buffer_without_closing_the_window
+" delete the buffer; keep windows; create a scratch buffer if no buffers left
+function! s:Kwbd(kwbdStage)
+  if exists("t:NERDTreeBufName")
+    if bufwinnr(t:NERDTreeBufName) == winnr()
+      return
+    endif
   endif
-" }
+  if(a:kwbdStage == 1)
+    if(!buflisted(winbufnr(0)))
+      bd!
+      return
+    endif
+    let s:kwbdBufNum = bufnr("%")
+    let s:kwbdWinNum = winnr()
+    windo call s:Kwbd(2)
+    execute s:kwbdWinNum . 'wincmd w'
+    let s:buflistedLeft = 0
+    let s:bufFinalJump = 0
+    let l:nBufs = bufnr("$")
+    let l:i = 1
+    while(l:i <= l:nBufs)
+      if(l:i != s:kwbdBufNum)
+        if(buflisted(l:i))
+          let s:buflistedLeft = s:buflistedLeft + 1
+        else
+          if(bufexists(l:i) && !strlen(bufname(l:i)) && !s:bufFinalJump)
+            let s:bufFinalJump = l:i
+          endif
+        endif
+      endif
+      let l:i = l:i + 1
+    endwhile
+    if(!s:buflistedLeft)
+      if(s:bufFinalJump)
+        windo if(buflisted(winbufnr(0))) | execute "b! " . s:bufFinalJump | endif
+      else
+        enew
+        let l:newBuf = bufnr("%")
+        windo if(buflisted(winbufnr(0))) | execute "b! " . l:newBuf | endif
+      endif
+      execute s:kwbdWinNum . 'wincmd w'
+    endif
+    if(buflisted(s:kwbdBufNum) || s:kwbdBufNum == bufnr("%"))
+      execute "bd! " . s:kwbdBufNum
+    endif
+    if(!s:buflistedLeft)
+      set buflisted
+      set bufhidden=delete
+      set buftype=nofile
+      setlocal noswapfile
+    endif
+    else
+    if(bufnr("%") == s:kwbdBufNum)
+      let prevbufvar = bufnr("#")
+      if(prevbufvar > 0 && buflisted(prevbufvar) && prevbufvar != s:kwbdBufNum)
+        b #
+      else
+        bn
+      endif
+    endif
+  endif
+endfunction
+
+command! Kwbd call <SID>Kwbd(1)
+nnoremap <silent> <Plug>Kwbd :<C-u>Kwbd<CR>
+nmap <C-B> <Plug>Kwbd
+
+if has('gui_running')
+  set guifont=Menlo:h12
+  set guioptions=aemg
+  set guitablabel=%t
+  set mousehide
+
+  if has('mac')
+    let macvim_skip_cmd_opt_movement = 1
+    let macvim_hig_shift_movement = 1
+  endif
+endif
