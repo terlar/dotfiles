@@ -178,10 +178,8 @@ endif
     let g:netrw_list_hide = '^\.[^\.]'
   " }
 
-  " Taglist {
-    nnoremap <Leader>t :TlistToggle<CR>
-    let Tlist_GainFocus_On_ToggleOpen = 1
-    let Tlist_Show_One_File = 1
+  " Tagbar {
+    nnoremap <silent> <Leader>t :TagbarToggle<CR>
   " }
 
   " Gundo {
@@ -204,8 +202,8 @@ endif
   " LustyExplorer {
     let g:LustyExplorerSuppressRubyWarning = 1
     nnoremap <Leader>r :LustyFilesystemExplorerFromHere<CR>
-    nnoremap <Leader>b :LustyBufferExplorer<CR>
     nnoremap <Leader>g :LustyBufferGrep<CR>
+    nnoremap <Leader>b :LustyBufferExplorer<CR>
   " }
 
   " NERDTree {
