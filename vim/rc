@@ -1,17 +1,34 @@
 set nocompatible
 set nomodeline
 set lazyredraw
+set noequalalways
+
 set shortmess+=I " No intro message
 set vb t_vb= " No beep or flash
 set t_Co=256 " 256 colors
+set clipboard=unnamed " Use system clipboard
 
-set encoding=utf-8
-
-" GUI
-"set clipboard=unnamed
-
-" Line numbers
+" Window
+syntax on
 set number
+set nowrap
+set list listchars=tab:▸\ ,trail:•
+set matchpairs+=<:>
+
+" Editing
+set encoding=utf-8
+set tabstop=2
+set shiftwidth=2
+set softtabstop=2
+set expandtab
+set backspace=indent,eol,start
+
+" Searching
+set hlsearch
+set incsearch
+set ignorecase
+set smartcase
+set gdefault
 
 " Command line
 set history=1000
@@ -23,39 +40,12 @@ set wildignore+=*.o,*.obj,.git,*.rbc,*.class,.svn,vendor/gems/*
 set statusline=%<%f\ %=\:\b%n%y%m%r%w\ %l,%c%V\ %P
 set laststatus=2
 
-" Buffer
-set list listchars=tab:▸\ ,trail:•
-set matchpairs+=<:>
-set nowrap
-set noequalalways
-set backspace=indent,eol,start
-
-" Tabs
-set tabstop=2
-set shiftwidth=2
-set softtabstop=2
-set expandtab
-
-" Searching
-set hlsearch
-set incsearch
-set ignorecase
-set smartcase
-set gdefault
-
 " File
 set hidden
 set autowriteall
 set autoread
-
-" Persistent Undo
-if has('persistent_undo')
-  set undofile
-  set undodir=~/.vimundo
-endif
-
-" No backup
-set nobackup
+set undofile
+set undodir=~/.vimundo
 set nowritebackup
 set noswapfile
 
@@ -67,155 +57,136 @@ filetype off
 silent! call pathogen#runtime_append_all_bundles()
 silent! call pathogen#helptags()
 
-filetype plugin indent on
-syntax on
+color molokai
 
+" Remember last location in file
+augroup RestoreCursorPos
+  au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
+    \| exe "normal g`\"" | endif
+augroup end
 
-" Auto Commands {
-if has('autocmd')
-  augroup RestoreCursorPos " {
-    au!
-    au BufReadPost *
-    \ if line("'\"") > 0 && line("'\"") <= line("$") |
-    \    exe "normal g`\"" |
-    \ endif
-  augroup end " }
+" Reload vimrc on write
+au BufWritePost .vimrc source $MYVIMRC
 
-  augroup Files
-    au!
-    au FocusLost silent! :wa
-    au BufWritePost .vimrc source $MYVIMRC
+" Filetypes {
+  function! s:setupWrapping()
+    set wrap
+    set wrapmargin=2
+    set textwidth=72
+  endfunction
 
-    " Sort CSS Properties
-    au BufNewFile,BufRead *.css  nnoremap <buffer> <Leader>S ?{<CR>jV/\v^\s*\}?$<CR>k:sort<CR>:noh<CR>
-  augroup end
-endif
+  " Thorfile, Rakefile, Vagrantfile and Gemfile are Ruby
+  au BufRead,BufNewFile {Gemfile,Rakefile,Vagrantfile,Thorfile,config.ru} set ft=ruby
+  " Add json syntax highlighting
+  au BufRead,BufNewFile *.json set ft=javascript
+
+  au BufRead,BufNewFile *.{txt,md,markdown,mdown,mkd,mkdn} call s:setupWrapping()
+
+  " Load plugin and indent settings for the detected filetype
+  filetype plugin indent on
 " }
 
+let mapleader=','
 " Mappings {
-  let mapleader=','
-
-  " Make Y yank to the end of the line
+  " Yank to the end of the line
   nnoremap Y y$
 
-  " Move lines {
-    nnoremap <M-j> mz:m+<CR>
-    nnoremap <M-k> mz:m-2<CR>
-    vnoremap <M-j> :m'>+<CR>
-    vnoremap <M-k> :m'<-2<CR>
+  " Tagbar
+  map <Leader>rt :!ctags --extra=+f -R *<CR><CR>
+  map <C-\> :tnext<CR>
 
-    nnoremap <D-j> <M-j>
-    nnoremap <D-k> <M-k>
-    vnoremap <D-j> <M-j>
-    vnoremap <D-k> <M-k>
-  " }
+  " Move lines
+  nnoremap <M-j> mz:m+<CR>
+  nnoremap <M-k> mz:m-2<CR>
+  vnoremap <M-j> :m'>+<CR>
+  vnoremap <M-k> :m'<-2<CR>
+  nnoremap <D-j> <M-j>
+  nnoremap <D-k> <M-k>
+  vnoremap <D-j> <M-j>
+  vnoremap <D-k> <M-k>
 
-  " Window {
-    nnoremap <C-h> <C-w>h
-    nnoremap <C-j> <C-w>j
-    nnoremap <C-k> <C-w>k
-    nnoremap <C-l> <C-w>l
-    nnoremap <Leader>wv <C-w>v<C-w>l
-    nnoremap <Leader>ws <C-w>s<C-w>j
-  " }
+  " Window
+  nnoremap <C-h> <C-w>h
+  nnoremap <C-j> <C-w>j
+  nnoremap <C-k> <C-w>k
+  nnoremap <C-l> <C-w>l
+  nnoremap <Leader>wv <C-w>v<C-w>l
+  nnoremap <Leader>ws <C-w>s<C-w>j
 
-  " Shortcuts {
-    " Tag navigation
-    nnoremap <Tab> <C-]>
-    nnoremap <S-Tab> <C-T>
+  " Tag navigation
+  nnoremap <Tab> <C-]>
+  nnoremap <S-Tab> <C-T>
 
-    " Folding
-    nnoremap <Space> za
-    vnoremap <Space> za
+  " Folding
+  nnoremap <Space> za
+  vnoremap <Space> za
 
-    " Change to directory of current buffer
-    nnoremap <Leader>cd :cd %:p:h<CR>
+  " Change to directory of current buffer
+  nnoremap <Leader>cd :cd %:p:h<CR>
+  " Clear search results
+  nnoremap <Leader><Space> :noh<CR>
+  " Select pasted text
+  nnoremap <Leader>v V`]
 
-    " Clear search results
-    nnoremap <Leader><Space> :noh<CR>
+  " Toggle paste
+  nnoremap <Leader>P :setlocal paste!<CR>
+  " Toggle numbers
+  nnoremap <Leader># :set number!<CR>
 
-    " Select pasted text
-    nnoremap <Leader>v V`]
+  " Remove trailing whitespace
+  nnoremap <Leader>W :%s/\s\+$//<CR>:let @/=''<CR>
+  " Retab
+  nnoremap <Leader>R :ret!<CR>
+  " Write as sudo
+  cmap w!! w !sudo tee % >/dev/null
+  " Delete buffer
+  map <C-B> <Plug>Kwbd
 
-    " Toggle paste
-    nnoremap <Leader>P :setlocal paste!<CR>
+  " Sort CSS properties
+  au BufRead,BufNewFile *.{css,scss} nnoremap <buffer> <Leader>S ?{<CR>jV/\v^\s*\}?$<CR>k:sort<CR>:noh<CR>
 
-    " Toggle numbers
-    nnoremap <Leader># :set number!<CR>
-
-    " Toggle list
-    nnoremap <Leader>L :set list!<CR>
-  " }
-
-  " Tools {
-    " Remove trailing whitespace
-    nnoremap <Leader>W :%s/\s\+$//<CR>:let @/=''<CR>
-
-    " Retab
-    nnoremap <Leader>R :ret!<CR>
-
-    " Write as sudo
-    cmap w!! w !sudo tee % >/dev/null
-  " }
-
-  " Breaking bad habits {
-    inoremap  <Up>     <Nop>
-    inoremap  <Down>   <Nop>
-    inoremap  <Left>   <Nop>
-    inoremap  <Right>  <Nop>
-    noremap   <Up>     <Nop>
-    noremap   <Down>   <Nop>
-    noremap   <Left>   <Nop>
-    noremap   <Right>  <Nop>
-  " }
+  " Breaking bad habits
+  nnoremap   <Up>     <Nop>
+  nnoremap   <Down>   <Nop>
+  nnoremap   <Left>   <Nop>
+  nnoremap   <Right>  <Nop>
 " }
 
 " Bundles {
-  color molokai
+  " Netrw
+  let g:netrw_special_syntax = 1
+  let g:netrw_list_hide = '^\.[^\.]'
 
-  " Netrw {
-    let g:netrw_special_syntax = 1
-    let g:netrw_list_hide = '^\.[^\.]'
-  " }
+  " Tagbar
+  nnoremap <silent> <Leader>t :TagbarToggle<CR>
 
-  " Tagbar {
-    nnoremap <silent> <Leader>t :TagbarToggle<CR>
-  " }
+  " Gundo
+  let g:gundo_preview_bottom = 1
+  let g:gundo_preview_height = 10
+  let g:gundo_width = 30
+  nnoremap <Leader>u :GundoToggle<CR>
 
-  " Gundo {
-    let g:gundo_preview_bottom = 1
-    let g:gundo_preview_height = 10
-    let g:gundo_width = 30
-    nnoremap <Leader>u :GundoToggle<CR>
-  " }
+  " Ack
+  nnoremap <Leader>a :Ack
+  nnoremap <Leader>af :AckFile
 
-  " Ack {
-    nnoremap <Leader>a :Ack
-    nnoremap <Leader>af :AckFile
-  " }
+  " SuperTab
+  let g:SuperTabDefaultCompletionType = 'context'
+  let g:SuperTabLongestEnhanced = 1
 
-  " SuperTab {
-    let g:SuperTabDefaultCompletionType = 'context'
-    let g:SuperTabLongestEnhanced = 1
-  " }
+  " LustyExplorer
+  let g:LustyExplorerSuppressRubyWarning = 1
+  nnoremap <Leader>r :LustyFilesystemExplorerFromHere<CR>
+  nnoremap <Leader>g :LustyBufferGrep<CR>
+  nnoremap <Leader>b :LustyBufferExplorer<CR>
 
-  " LustyExplorer {
-    let g:LustyExplorerSuppressRubyWarning = 1
-    nnoremap <Leader>r :LustyFilesystemExplorerFromHere<CR>
-    nnoremap <Leader>g :LustyBufferGrep<CR>
-    nnoremap <Leader>b :LustyBufferExplorer<CR>
-  " }
-
-  " NERDTree {
-    let NERDTreeIgnore = ['\.pyc$', '\.rbc$', '\~$']
-    let NERDTreeMinimalUI = 1
-    let NERDTreeDirArrows = 1
-    map <Leader>n :NERDTreeToggle<CR>
-  " }
+  " NERDTree
+  let NERDTreeIgnore = ['\.pyc$', '\.rbc$', '\~$']
+  let NERDTreeMinimalUI = 1
+  let NERDTreeDirArrows = 1
+  map <Leader>n :NERDTreeToggle<CR>
 " }
 
-" http://vim.wikia.com/wiki/Deleting_a_buffer_without_closing_the_window
-" delete the buffer; keep windows; create a scratch buffer if no buffers left
 function! s:Kwbd(kwbdStage)
   if exists("t:NERDTreeBufName")
     if bufwinnr(t:NERDTreeBufName) == winnr()
@@ -261,10 +232,7 @@ function! s:Kwbd(kwbdStage)
       execute "bd! " . s:kwbdBufNum
     endif
     if(!s:buflistedLeft)
-      set buflisted
-      set bufhidden=delete
-      set buftype=nofile
-      setlocal noswapfile
+      set nobuflisted
     endif
     else
     if(bufnr("%") == s:kwbdBufNum)
@@ -277,10 +245,8 @@ function! s:Kwbd(kwbdStage)
     endif
   endif
 endfunction
-
 command! Kwbd call <SID>Kwbd(1)
 nnoremap <silent> <Plug>Kwbd :<C-u>Kwbd<CR>
-nmap <C-B> <Plug>Kwbd
 
 if has('gui_running')
   set guifont=Menlo:h12
