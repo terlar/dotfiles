@@ -146,24 +146,24 @@ let mapleader=','
   au BufRead,BufNewFile *.{css,scss} nnoremap <buffer> <Leader>S ?{<CR>jV/\v^\s*\}?$<CR>k:sort<CR>:noh<CR>
 
   " Breaking bad habits
-  nnoremap   <Up>     <Nop>
-  nnoremap   <Down>   <Nop>
-  nnoremap   <Left>   <Nop>
-  nnoremap   <Right>  <Nop>
+  nnoremap <Up>    <Nop>
+  nnoremap <Down>  <Nop>
+  nnoremap <Left>  <Nop>
+  nnoremap <Right> <Nop>
 " }
 
 " Bundles {
   " Netrw
-  let g:netrw_special_syntax = 1
-  let g:netrw_list_hide = '^\.[^\.]'
+  let g:netrw_special_syntax=1
+  let g:netrw_list_hide='^\.[^\.]'
 
   " Tagbar
   nnoremap <silent> <Leader>t :TagbarToggle<CR>
 
   " Gundo
-  let g:gundo_preview_bottom = 1
-  let g:gundo_preview_height = 10
-  let g:gundo_width = 30
+  let g:gundo_preview_bottom=1
+  let g:gundo_preview_height=10
+  let g:gundo_width=30
   nnoremap <Leader>u :GundoToggle<CR>
 
   " Ack
@@ -171,20 +171,27 @@ let mapleader=','
   nnoremap <Leader>af :AckFile
 
   " SuperTab
-  let g:SuperTabDefaultCompletionType = 'context'
-  let g:SuperTabLongestEnhanced = 1
+  let g:SuperTabDefaultCompletionType='context'
+  let g:SuperTabLongestEnhanced=1
 
   " LustyExplorer
-  let g:LustyExplorerSuppressRubyWarning = 1
+  let g:LustyExplorerSuppressRubyWarning=1
   nnoremap <Leader>r :LustyFilesystemExplorerFromHere<CR>
   nnoremap <Leader>g :LustyBufferGrep<CR>
   nnoremap <Leader>b :LustyBufferExplorer<CR>
 
   " NERDTree
-  let NERDTreeIgnore = ['\.pyc$', '\.rbc$', '\~$']
-  let NERDTreeMinimalUI = 1
-  let NERDTreeDirArrows = 1
+  let NERDTreeIgnore=['\.pyc$', '\.rbc$', '\~$']
+  let NERDTreeMinimalUI=1
+  let NERDTreeDirArrows=1
   map <Leader>n :NERDTreeToggle<CR>
+
+  " Syntastic
+  let g:syntastic_enable_signs=1
+  let g:syntastic_quiet_warnings=1
+
+  " ZoomWin
+  map <Leader><Leader> :ZoomWin<CR>
 " }
 
 function! s:Kwbd(kwbdStage)
@@ -249,6 +256,8 @@ command! Kwbd call <SID>Kwbd(1)
 nnoremap <silent> <Plug>Kwbd :<C-u>Kwbd<CR>
 
 if has('gui_running')
+  autocmd VimResized * wincmd =
+
   set guifont=Menlo:h12
   set guioptions=aemg
   set guitablabel=%t
