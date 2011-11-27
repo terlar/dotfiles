@@ -96,14 +96,12 @@ let mapleader=','
   map <C-\> :tnext<CR>
 
   " Move lines
-  nnoremap <M-j> mz:m+<CR>
-  nnoremap <M-k> mz:m-2<CR>
-  vnoremap <M-j> :m'>+<CR>
-  vnoremap <M-k> :m'<-2<CR>
-  nnoremap <D-j> <M-j>
-  nnoremap <D-k> <M-k>
-  vnoremap <D-j> <M-j>
-  vnoremap <D-k> <M-k>
+  nnoremap <A-j> :m+<CR>==
+  nnoremap <A-k> :m-2<CR>==
+  inoremap <A-j> <Esc>:m+<CR>==gi
+  inoremap <A-k> <Esc>:m-2<CR>==gi
+  vnoremap <A-j> :m'>+<CR>gv=gv
+  vnoremap <A-k> :m-2<CR>gv=gv
 
   " Window
   nnoremap <C-h> <C-w>h
@@ -192,6 +190,15 @@ let mapleader=','
 
   " ZoomWin
   map <Leader><Leader> :ZoomWin<CR>
+
+  " ConqueTerm
+  let g:ConqueTerm_ReadUnfocused=1
+  let g:ConqueTerm_InsertOnEnter=1
+  let g:ConqueTerm_CWInsert=1
+  let g:ConqueTerm_Color=1
+  map <Leader>s  :match<CR>:set nolist<CR>:ConqueTerm zsh<CR>
+  map <Leader>sh :match<CR>:set nolist<CR>:ConqueTermSplit zsh<CR>
+  map <Leader>sv :match<CR>:set nolist<CR>:ConqueTermVSplit zsh<CR>
 " }
 
 function! s:Kwbd(kwbdStage)
