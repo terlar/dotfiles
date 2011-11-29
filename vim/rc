@@ -189,13 +189,29 @@ let mapleader=','
   let g:ConqueTerm_InsertOnEnter=1
   let g:ConqueTerm_CWInsert=1
   let g:ConqueTerm_Color=1
-  map <Leader>s  :match<CR>:set nolist<CR>:ConqueTerm zsh<CR>
-  map <Leader>sh :match<CR>:set nolist<CR>:ConqueTermSplit zsh<CR>
-  map <Leader>sv :match<CR>:set nolist<CR>:ConqueTermVSplit zsh<CR>
+  map <Leader>s  :call StartTerm()<CR>
+  map <Leader>sh :call StartTerm('split')<CR>
+  map <Leader>sv :call StartTerm('vsplit')<CR>
 " }
 
 " Project Tree
 autocmd VimEnter * :call InitProjectTree()
+
+function! StartTerm(...)
+  let command = 'ConqueTerm'
+  if exists('a:1')
+    if a:1 == 'split'
+      let command .= 'Split'
+    elseif a:1 == 'vsplit'
+      let command .= 'VSplit'
+    endif
+  endif
+
+  execute 'match'
+  execute command . ' ' . $SHELL . ' --login'
+  set nolist
+  "set nobuflisted
+endfunction
 
 function! InitProjectTree()
   if exists(":NERDTree")
