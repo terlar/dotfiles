@@ -1,6 +1,7 @@
 set nocompatible
 set nomodeline
 set lazyredraw
+set ttyfast
 set noequalalways
 
 set shortmess+=I " No intro message
@@ -33,7 +34,7 @@ set gdefault
 " Command line
 set history=1000
 set wildmenu
-set wildmode=list:longest,list:full
+set wildmode=list:longest
 set wildignore+=*.o,*.obj,.git,*.rbc,*.class,.svn,vendor/gems/*
 
 " Status line
@@ -88,6 +89,20 @@ let mapleader=','
   " Yank to the end of the line
   nnoremap Y y$
 
+  " Center screen when scrolling search results
+  nmap n nzz
+  nmap N Nzz
+
+  imap <C-h> <Esc>I
+  imap <C-l> <Esc>A
+
+  " Auto format
+  map === mmgg=G`m^zz
+  " Remove trailing whitespace
+  nnoremap <Leader>W :%s/\s\+$//<CR>:let @/=''<CR>
+  " Retab
+  nnoremap <Leader>R :ret!<CR>
+
   " Move lines
   nnoremap <D-j> :m+<CR>==
   nnoremap <D-k> :m-2<CR>==
@@ -105,20 +120,24 @@ let mapleader=','
   nnoremap <Leader>ws <C-w>s<C-w>j
 
   " Buffers
-  map <C-B><C-B> :b#<CR>
-  map <C-B>d <Plug>Kwbd
-  map <C-B>n :bn<CR>
-  map <C-B>p :bp<CR>
+  noremap <Tab> :bn<CR>
+  noremap <S-Tab> :bp<CR>
+  " Close buffer
+  nmap <Leader>d <Plug>Kwbd
+  " Close all buffers
+  nmap <Leader>D :bufdo <Plug>Kwbd<CR>
+  " Switch between last two buffers
+  nnoremap <Leader><Leader> <C-^>
+
+  " Marks
+  "nnoremap ' `
+  "nnoremap ` '
 
   " Tags
   map <Leader>rt :!ctags --extra=+f -R *<CR><CR>
   map <C-\> :tnext<CR>
-  nnoremap <Tab> <C-]>
-  nnoremap <S-Tab> <C-T>
-
-  " Folding
-  nnoremap <Space> za
-  vnoremap <Space> za
+  nnoremap <Space> <C-]>
+  nnoremap <S-Space> <C-T>
 
   " Change to directory of current buffer
   nnoremap <Leader>cd :cd %:p:h<CR>
@@ -132,10 +151,6 @@ let mapleader=','
   " Toggle numbers
   nnoremap <Leader># :set number!<CR>
 
-  " Remove trailing whitespace
-  nnoremap <Leader>W :%s/\s\+$//<CR>:let @/=''<CR>
-  " Retab
-  nnoremap <Leader>R :ret!<CR>
   " Write as sudo
   cmap w!! w !sudo tee % >/dev/null
 
@@ -182,37 +197,27 @@ let mapleader=','
   let g:syntastic_quiet_warnings=1
 
   " ZoomWin
-  map <Leader><Leader> :ZoomWin<CR>
+  map <Leader><CR> :ZoomWin<CR>
 
   " ConqueTerm
-  let g:ConqueTerm_ReadUnfocused=1
+  let g:ConqueTerm_FastMode=1
+  let g:ConqueTerm_Syntax=''
   let g:ConqueTerm_InsertOnEnter=1
+  let g:ConqueTerm_ReadUnfocused=1
   let g:ConqueTerm_CWInsert=1
-  let g:ConqueTerm_Color=1
-  map <Leader>s  :call StartTerm()<CR>
-  map <Leader>sh :call StartTerm('split')<CR>
-  map <Leader>sv :call StartTerm('vsplit')<CR>
+  let g:ConqueTerm_CloseOnEnd=1
+  au FileType conque_term
+    \ setlocal nolist
+
+  "map <Leader>e :<C-u>call conque_term#send_selected(visualmode())<CR><CR>
+  command Shell :ConqueTermSplit zsh
+  command RailsShell :ConqueTermSplit rails console
+  map <Leader>s  :Shell<CR>
+  map <Leader>rs :RailsShell<CR>
 " }
 
 " Project Tree
-autocmd VimEnter * :call InitProjectTree()
-
-function! StartTerm(...)
-  let command = 'ConqueTerm'
-  if exists('a:1')
-    if a:1 == 'split'
-      let command .= 'Split'
-    elseif a:1 == 'vsplit'
-      let command .= 'VSplit'
-    endif
-  endif
-
-  execute 'match'
-  execute command . ' ' . $SHELL . ' --login'
-  set nolist
-  "set nobuflisted
-endfunction
-
+au VimEnter * :call InitProjectTree()
 function! InitProjectTree()
   if exists(":NERDTree")
     autocmd VimEnter * call s:CdIfDirectory(expand("<amatch>"))
