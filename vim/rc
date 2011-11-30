@@ -123,7 +123,7 @@ let mapleader=','
   noremap <Tab> :bn<CR>
   noremap <S-Tab> :bp<CR>
   " Close buffer
-  nmap <Leader>d <Plug>Kwbd
+  nmap <Leader>d <Plug>Kwbd<CR>
   " Close all buffers
   nmap <Leader>D :bufdo <Plug>Kwbd<CR>
   " Switch between last two buffers
@@ -207,7 +207,7 @@ let mapleader=','
   let g:ConqueTerm_CWInsert=1
   let g:ConqueTerm_CloseOnEnd=1
   au FileType conque_term
-    \ setlocal nolist
+    \ setlocal nolist nobuflisted
 
   "map <Leader>e :<C-u>call conque_term#send_selected(visualmode())<CR><CR>
   command Shell :ConqueTermSplit zsh
