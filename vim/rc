@@ -93,6 +93,7 @@ let mapleader=','
   nmap n nzz
   nmap N Nzz
 
+  " Go to beginning / end of line
   imap <C-h> <Esc>I
   imap <C-l> <Esc>A
 
@@ -116,8 +117,9 @@ let mapleader=','
   nnoremap <C-j> <C-w>j
   nnoremap <C-k> <C-w>k
   nnoremap <C-l> <C-w>l
-  nnoremap <Leader>wv <C-w>v<C-w>l
+  nnoremap <Leader>w <C-w>v<C-w>l
   nnoremap <Leader>ws <C-w>s<C-w>j
+  map <Leader>= <C-w>=
 
   " Buffers
   noremap <Tab> :bn<CR>
@@ -129,18 +131,15 @@ let mapleader=','
   " Switch between last two buffers
   nnoremap <Leader><Leader> <C-^>
 
-  " Marks
-  "nnoremap ' `
-  "nnoremap ` '
-
   " Tags
   map <Leader>rt :!ctags --extra=+f -R *<CR><CR>
   map <C-\> :tnext<CR>
   nnoremap <Space> <C-]>
   nnoremap <S-Space> <C-T>
 
-  " Change to directory of current buffer
-  nnoremap <Leader>cd :cd %:p:h<CR>
+  " Inserts the path of the currently edited file into a command
+  cmap <C-P> <C-R>=expand("%:p:h") . "/" <CR>
+
   " Clear search results
   nnoremap <Leader><Space> :noh<CR>
   " Select pasted text
@@ -209,7 +208,7 @@ let mapleader=','
   au FileType conque_term
     \ setlocal nolist nobuflisted
 
-  "map <Leader>e :<C-u>call conque_term#send_selected(visualmode())<CR><CR>
+  map <Leader>e :<C-u>call conque_term#send_selected(visualmode())<CR><CR>
   command Shell :ConqueTermSplit zsh
   command RailsShell :ConqueTermSplit rails console
   map <Leader>s  :Shell<CR>
@@ -229,6 +228,7 @@ function! InitProjectTree()
     call DefineCommand("rm", "Remove")
     call DefineCommand("e", "Edit")
     call DefineCommand("mkdir", "Mkdir")
+    call DefineCommand("mv", "Move")
     cabbrev Edit! e!
   endif
 endfunction
@@ -331,6 +331,11 @@ endfunction
 
 function! Mkdir(file)
   execute "!mkdir " . shellescape(a:file, 1)
+  call s:UpdateNERDTree()
+endfunction
+
+function! Move(file, newfile)
+  execute "!mv " . fnameescape(a:file) . " " . fnameescape(a:newfile)
   call s:UpdateNERDTree()
 endfunction
 
