@@ -12,10 +12,6 @@
 
   # Colors
   export CLICOLOR=1
-  export LSCOLORS=ExGxBxDxCxEgEdxbxgxcxd
-
-  # Tab completion ignore pattern
-  export FIGNORE=.svn
 # }
 
 # Input {
@@ -48,13 +44,7 @@
   function dirdiff () {
     vimdiff <(cd $1;ls -R) <(cd $2;ls -R)
   }
-  # get prompt char
-  function prompt_char {
-    git branch >/dev/null 2>/dev/null && echo '±' && return
-    svn info >/dev/null 2>/dev/null && echo '✔' && return
-    echo '○'
-  }
 # }
 
-# Use .localrc for settings specific to system
-[[ -f ~/.localrc ]] && .  ~/.localrc
+# Load profile
+[[ -f $HOME/.localrc ]] && . $HOME/.localrc
