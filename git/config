@@ -1,17 +1,30 @@
 [user]
-	 name = Terje Larsen
-	email = terlar@gmail.com
+  name = Terje Larsen
+  email = terlar@gmail.com
 [alias]
-	ci = commit -s
-	co = checkout
-	st = status
-	d = difftool
-	cim = commit -s -m
+  unstage = reset HEAD
+  hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
+  ci = commit -s
+  co = checkout
+  st = status
+  d = difftool
+  ds = diff --stat
+  cim = commit -s -m
+[pager]
+  color = true
 [color]
-	branch = auto
-	status = auto
-	diff = auto
+  diff = auto
+  status = auto
+  branch = auto
+  interactive = auto
 [diff]
-	tool = vimdiff
+  tool = vimdiff
 [difftool]
-	prompt = false
+  prompt = false
+[merge]
+  tool = vimdiff
+[mergetool]
+  keepBackup = false
+  prompt = false
+[push]
+  default = upstream
