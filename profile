@@ -44,6 +44,10 @@
   function dirdiff () {
     vimdiff <(cd $1;ls -R) <(cd $2;ls -R)
   }
+  # tail -f with sections
+  function tf () {
+    tail -f "$*" | sed -n "/--begin/,/--end/p"
+  }
 # }
 
 # Load profile
