@@ -1,6 +1,8 @@
 [user]
   name = Terje Larsen
   email = terlar@gmail.com
+[core]
+  excludesfile = ~/.gitignore_global
 [alias]
   unstage = reset HEAD
   hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
