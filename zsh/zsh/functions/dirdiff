@@ -1,0 +1,2 @@
+# dir diff into vim
+vimdiff <(cd $1;ls -R) <(cd $2;ls -R)

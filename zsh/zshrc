@@ -1,76 +1,13 @@
 # oh-my-zsh
 ZSH=$HOME/.oh-my-zsh
-ZSH_THEME="smt"
 DISABLE_AUTO_UPDATE="true"
 COMPLETION_WAITING_DOTS="true"
 plugins=(git github osx brew rvm ruby gem bundler rails3 rake pow powder redis-cli knife node vi-mode ssh-agent extract)
 source $ZSH/oh-my-zsh.sh
 
-# Prompt
-ZSH_THEME_GIT_PROMPT_PREFIX="|%{$fg[green]%}"
-ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%} "
-ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg_bold[red]%}⚡%{$reset_color%}"
-ZSH_THEME_GIT_PROMPT_AHEAD="%{$fg_bold[red]%}!%{$reset_color%}"
-ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg_bold[green]%}✓%{$reset_color%}"
+PROJECTS=~/Code
 
-ZSH_THEME_GIT_PROMPT_ADDED="%{$fg[green]%} ✚"
-ZSH_THEME_GIT_PROMPT_MODIFIED="%{$fg[blue]%} ✹"
-ZSH_THEME_GIT_PROMPT_DELETED="%{$fg[red]%} ✖"
-ZSH_THEME_GIT_PROMPT_RENAMED="%{$fg[magenta]%} ➜"
-ZSH_THEME_GIT_PROMPT_UNMERGED="%{$fg[yellow]%} ═"
-ZSH_THEME_GIT_PROMPT_UNTRACKED="%{$fg[cyan]%} ✭"
-
-PROMPT='%{$fg[magenta]%}%n%{$reset_color%}@%{$fg[yellow]%}%m%{$reset_color%}:%{$fg[cyan]%}%0~%{$reset_color%}$(git_prompt_info)
-➤ '
-
-# Input
-setopt multibyte
-setopt combining_chars
-
-zle -N rationalise-dot
-bindkey . rationalise-dot
-
-
-# Completion
-setopt glob_complete
-setopt no_case_glob
-setopt numeric_glob_sort
-unsetopt list_ambiguous
-
-zstyle ':completion:*' matcher-list 'm:{a-zåäö}={A-ZÅÄÖ}'
-zstyle ':completion:*' special-dirs true
-
-zstyle ':completion:*' verbose yes
-zstyle ':completion:*:descriptions' format '%B%d%b'
-zstyle ':completion:*:messages' format '%d'
-zstyle ':completion:*:warnings' format 'No matches for: %d'
-zstyle ':completion:*' group-name ''
-zstyle ':completion:*' completer _expand _force_rehash _complete _approximate _ignored
-
-zstyle ':completion:*' auto-description 'specify: %d'
-zstyle ':completion:*:default' list-prompt '%S%M matches%s'
-zstyle ':completion:*:default' menu 'select=0'
-zstyle ':completion:*' file-sort modification reverse
-zstyle ':completion:*' list-colors "=(#b) #([0-9]#)*=36=31"
-
-zstyle ':completion:*:corrections' format '%B%d (errors %e)%b'
-zstyle ':completion:*:approximate:*' max-errors 'reply=(  $((  ($#PREFIX+$#SUFFIX)/3  ))  )'
-zstyle ':completion:*' ignore-parents parent pwd
-zstyle ':completion::approximate*:*' prefix-needed false
-
-# Functions
-rationalise-dot() {
-  if [[ $LBUFFER = *.. ]]; then
-    LBUFFER+=/..
-  else
-    LBUFFER+=.
-  fi
-}
-
-_force_rehash() {
-  (( CURRENT == 1 )) && rehash
-  return 1  # Because we didn't really complete anything
-}
+for config_file ($HOME/.zsh/*.zsh) source $config_file
 
 # Z
 if [[ -f $HOME/z.sh ]]; then
@@ -80,5 +17,5 @@ if [[ -f $HOME/z.sh ]]; then
   }
 fi
 
-# Load profile
-[[ -f $HOME/.profile ]] && . $HOME/.profile
+# Load localrc
+[[ -f $HOME/.localrc ]] && . $HOME/.localrc

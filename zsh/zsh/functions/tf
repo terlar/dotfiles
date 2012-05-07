@@ -1,0 +1,2 @@
+# tail -f with sections
+tail -f "$*" | sed -n "/--begin/,/--end/p"
