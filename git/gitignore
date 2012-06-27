@@ -1,3 +1,4 @@
 tags
-.rvmrc
+vendor/bundle
+.rbenv-version
 .powder

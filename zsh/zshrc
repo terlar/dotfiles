@@ -2,7 +2,7 @@
 ZSH=$HOME/.oh-my-zsh
 DISABLE_AUTO_UPDATE="true"
 COMPLETION_WAITING_DOTS="true"
-plugins=(git github osx brew rvm ruby gem bundler rails3 rake pow powder redis-cli knife node vi-mode ssh-agent extract)
+plugins=(git github osx brew rbenv ruby gem bundler rails3 rake pow powder redis-cli knife node vi-mode ssh-agent extract)
 source $ZSH/oh-my-zsh.sh
 
 PROJECTS=$HOME/Code
