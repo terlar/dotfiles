@@ -15,10 +15,12 @@ def file_target(linkable)
   "#{ENV["HOME"]}/#{file}"
 end
 
+def linkables
+  Dir['*/**']
+end
+
 desc "Link dotfiles into home dir."
 task :install do
-  linkables = Dir['*/**']
-
   skip_all = false
   overwrite_all = false
   backup_all = false
@@ -26,7 +28,6 @@ task :install do
   linkables.each do |linkable|
     overwrite = false
     backup = false
-
     target = file_target(linkable)
 
     if File.exists?(target) || File.symlink?(target)
@@ -41,17 +42,18 @@ task :install do
         when 's' then next
         end
       end
+
+      next if skip_all
       FileUtils.rm_rf(target) if overwrite || overwrite_all
       `mv "#{target}" "#{target}.backup"` if backup || backup_all
     end
 
+    puts "Linking #{target}"
     `ln -s "$PWD/#{linkable}" "#{target}"`
   end
 end
 
 task :uninstall do
-  linkables = Dir['*/**']
-
   linkables.each do |linkable|
     target = file_target(linkable)
 
@@ -62,7 +64,7 @@ task :uninstall do
 
     # Replace any backups made during installation
     if File.exists?("#{target}.backup")
-      `mv "#{target}.backup" "#{target}"` 
+      `mv "#{target}.backup" "#{target}"`
     end
   end
 end
