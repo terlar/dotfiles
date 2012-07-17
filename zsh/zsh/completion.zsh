@@ -26,3 +26,5 @@ zstyle ':completion::approximate*:*' prefix-needed false
 
 zle -N _rationalise_dot
 bindkey . _rationalise_dot
+
+compdef _rake rake
