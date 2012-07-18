@@ -5,7 +5,7 @@ COMPLETION_WAITING_DOTS="true"
 plugins=(git brew rbenv gem bundler rake powder redis-cli vi-mode extract)
 source $ZSH/oh-my-zsh.sh
 
-for config_file ($HOME/.zsh/*.zsh) source $config_file
+for zsh_source ($HOME/.zsh/*.zsh) source $zsh_source
 
 # Z
 if [[ -f $HOME/z.sh ]]; then
