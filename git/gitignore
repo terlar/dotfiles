@@ -1,5 +1,8 @@
 tags
+
 vendor/bundle
+Gemfile.local*
+
 .rbenv-version
 .rake_tasks
 .powder
