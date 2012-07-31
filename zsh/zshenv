@@ -20,6 +20,6 @@ typeset -U path
 export NODE_PATH=/usr/local/lib/node_modules
 export PROJECTS=$HOME/Code
 
-path=($HOME/bin /usr/local/bin $path)
+path=($HOME/bin $HOME/.rbenv/bin /usr/local/bin $PATH)
 
 if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
