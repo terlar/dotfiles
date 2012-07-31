@@ -1,7 +1,5 @@
-_rationalise-dot() {
-  if [[ $LBUFFER = *.. ]]; then
-    LBUFFER+=/..
-  else
-    LBUFFER+=.
-  fi
-}
+if [[ $LBUFFER = *.. ]]; then
+  LBUFFER+=/..
+else
+  LBUFFER+=.
+fi

@@ -1,11 +1,4 @@
-_rake() {
-  if [[ -f Rakefile ]]; then
-    if _rake_does_task_list_need_generating; then
-      rake --silent --tasks | cut -d " " -f 2 | cut -d "[" -f 1 > .rake_tasks
-    fi
-    compadd $(cat .rake_tasks)
-  fi
-}
+#compdef rake
 
 _rake_does_task_list_need_generating() {
   if [[ ! -f .rake_tasks ]]; then return 0;
@@ -15,3 +8,10 @@ _rake_does_task_list_need_generating() {
     return $(expr $accurate '>=' $changed)
   fi
 }
+
+if [[ -f Rakefile ]]; then
+  if _rake_does_task_list_need_generating; then
+    rake --silent --tasks | cut -d " " -f 2 | cut -d "[" -f 1 > .rake_tasks
+  fi
+  compadd $(cat .rake_tasks)
+fi
