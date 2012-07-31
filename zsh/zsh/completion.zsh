@@ -54,3 +54,8 @@ zle -N _expand-or-complete-with-dots
 bindkey "^I" _expand-or-complete-with-dots
 
 compdef _rake rake
+compdef _brew brew
+compdef _gem gem
+compdef _bundle bundle
+compdef _powder powder
+compdef _redis-cli redis-cli
