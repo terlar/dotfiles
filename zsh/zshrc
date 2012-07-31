@@ -1,9 +1,9 @@
-# oh-my-zsh
-ZSH=$HOME/.oh-my-zsh
-DISABLE_AUTO_UPDATE="true"
-COMPLETION_WAITING_DOTS="true"
-plugins=(git brew rbenv gem bundler rake powder redis-cli vi-mode extract)
-source $ZSH/oh-my-zsh.sh
+ZSH=$HOME/.zsh
+autoload -U compinit; compinit -i;
+autoload colors; colors;
+
+fpath=($ZSH/functions $ZSH/completions $fpath)
+autoload -U $ZSH/functions/*(:t)
 
 for zsh_source ($HOME/.zsh/*.zsh) source $zsh_source
 

@@ -1,30 +1,56 @@
+zmodload -i zsh/complist
+
 setopt glob_complete
 setopt no_case_glob
 setopt numeric_glob_sort
-unsetopt list_ambiguous
+setopt no_list_ambiguous
+setopt complete_in_word
+setopt always_to_end
 
-zstyle ':completion:*' matcher-list 'm:{a-zåäö}={A-ZÅÄÖ}'
-zstyle ':completion:*' special-dirs true
+# Cache
+zstyle ':completion::complete:*' use-cache on
+zstyle ':completion::complete:*' cache-path $ZSH/cache/$HOST
 
-zstyle ':completion:*' verbose yes
-zstyle ':completion:*:descriptions' format '%B%d%b'
-zstyle ':completion:*:messages' format '%d'
-zstyle ':completion:*:warnings' format 'No matches for: %d'
+# Enhance completion
+zstyle ':completion:*' completer _expand _force-rehash _complete _approximate _ignored
+zstyle ':completion:*:approximate:*' max-errors 'reply=( $(( ($#PREFIX+$#SUFFIX)/3 )) )'
+# Case-insensitive
+zstyle ':completion:*' matcher-list 'm:{[:lower:]}={[:upper:]}'
+
+# Instant completion for single matches
+zstyle '*' single-ignored complete
+# Use menu selection
+zstyle ':completion:*:default' menu select
+# Colors
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+
+# Group matches
 zstyle ':completion:*' group-name ''
-zstyle ':completion:*' completer _expand _force_rehash _complete _approximate _ignored
-
-zstyle ':completion:*' auto-description 'specify: %d'
+zstyle ':completion:*:descriptions' format '%B%d%b'
+# Show all matches
 zstyle ':completion:*:default' list-prompt '%S%M matches%s'
-zstyle ':completion:*:default' menu 'select=0'
-zstyle ':completion:*' file-sort modification reverse
-zstyle ':completion:*' list-colors "=(#b) #([0-9]#)*=36=31"
 
-zstyle ':completion:*:corrections' format '%B%d (errors %e)%b'
-zstyle ':completion:*:approximate:*' max-errors 'reply=(  $((  ($#PREFIX+$#SUFFIX)/3  ))  )'
+# Directories
+zstyle ':completion:*:cd:*' tag-order local-directories directory-stack path-directories
+zstyle ':completion:*' special-dirs true
 zstyle ':completion:*' ignore-parents parent pwd
-zstyle ':completion::approximate*:*' prefix-needed false
 
-zle -N _rationalise_dot
-bindkey . _rationalise_dot
+# Processes
+zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=0=01'
+zstyle ':completion:*:*:*:*:processes' command "ps -u `whoami` -o pid,user,comm -w -w"
+
+# Functions
+zstyle ':completion:*:functions' ignored-patterns '_*'
+
+# Users
+zstyle ':completion:*:*:*:users' ignored-patterns '_*'
+
+# Rationalise dots
+zle -N _rationalise-dot
+bindkey . _rationalise-dot
+
+# Completion waiting dots
+zle -N _expand-or-complete-with-dots
+bindkey "^I" _expand-or-complete-with-dots
 
 compdef _rake rake

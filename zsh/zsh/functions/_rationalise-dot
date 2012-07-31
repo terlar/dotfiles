@@ -1,4 +1,4 @@
-_rationalise_dot() {
+_rationalise-dot() {
   if [[ $LBUFFER = *.. ]]; then
     LBUFFER+=/..
   else
