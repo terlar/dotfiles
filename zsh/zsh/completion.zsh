@@ -59,3 +59,4 @@ compdef _gem gem
 compdef _bundle bundle
 compdef _powder powder
 compdef _redis-cli redis-cli
+compdef _ry ry

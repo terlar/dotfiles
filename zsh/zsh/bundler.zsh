@@ -1,0 +1,33 @@
+_bundler-installed() {
+  which bundle > /dev/null 2>&1
+}
+
+_within-bundled-project() {
+  local check_dir=$PWD
+  while [ $check_dir != "/" ]; do
+    [ -f "$check_dir/Gemfile" ] && return
+    check_dir="$(dirname $check_dir)"
+  done
+  false
+}
+
+_run-with-bundler() {
+  if _bundler-installed && _within-bundled-project; then
+    bundle exec $@
+  else
+    $@
+  fi
+}
+
+bundled_commands=(cucumber guard rails rake rspec ruby spec spork)
+for cmd in $bundled_commands; do
+  eval "function bundled_$cmd () { _run-with-bundler $cmd \$@}"
+  alias $cmd=bundled_$cmd
+
+  if which _$cmd > /dev/null 2>&1; then
+    compdef _$cmd bundled_$cmd=$cmd
+  fi
+done
+
+alias localgem_on='export BUNDLE_GEMFILE=Gemfile.local'
+alias localgem_off='unset BUNDLE_GEMFILE'

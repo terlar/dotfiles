@@ -16,10 +16,9 @@ export VISUAL="vim"
 export EDITOR=$VISUAL
 
 # Paths
-typeset -U path
 export NODE_PATH=/usr/local/lib/node_modules
 export PROJECTS=$HOME/Code
 
-path=($HOME/bin $HOME/.rbenv/bin /usr/local/bin $PATH)
-
-if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
+path=($HOME/.local/bin /usr/local/bin $PATH)
+if which ry > /dev/null; then eval "$(ry setup)"; fi
+typeset -U path

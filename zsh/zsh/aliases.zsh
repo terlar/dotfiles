@@ -29,5 +29,3 @@ compdef _git ga=git-add
 
 # Ruby/Rails
 alias rc="rails c"
-alias localgem_on='export BUNDLE_GEMFILE=Gemfile.local'
-alias localgem_off='unset BUNDLE_GEMFILE'
