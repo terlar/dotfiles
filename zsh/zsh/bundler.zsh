@@ -34,7 +34,7 @@ LOCAL_GEMFILE="Gemfile.local"
 local_gemfile() {
   if [ $# -eq 0 ]; then
     if [ "$BUNDLE_GEMFILE" = "$LOCAL_GEMFILE" ]; then
-      echo "Local Gemfile in ON ($LOCAL_GEMFILE)"
+      echo "Local Gemfile is ON ($LOCAL_GEMFILE)"
     else
       echo "Local Gemfile is OFF"
     fi
