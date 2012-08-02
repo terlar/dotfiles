@@ -29,5 +29,29 @@ for cmd in $bundled_commands; do
   fi
 done
 
-alias localgem_on='export BUNDLE_GEMFILE=Gemfile.local'
-alias localgem_off='unset BUNDLE_GEMFILE'
+# Use local Gemfile
+LOCAL_GEMFILE="Gemfile.local"
+local_gemfile() {
+  if [ $# -eq 0 ]; then
+    if [ "$BUNDLE_GEMFILE" = "$LOCAL_GEMFILE" ]; then
+      echo "Local Gemfile in ON ($LOCAL_GEMFILE)"
+    else
+      echo "Local Gemfile is OFF"
+    fi
+  else
+    case $1 in
+      "on" )
+        export BUNDLE_GEMFILE=$LOCAL_GEMFILE;;
+      "off" )
+        unset BUNDLE_GEMFILE;;
+    esac
+  fi
+}
+
+chpwd() {
+  if [ -f "$LOCAL_GEMFILE" ]; then
+    local_gemfile on
+  else
+    local_gemfile off
+  fi
+}
