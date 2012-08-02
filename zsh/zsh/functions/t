@@ -1,2 +1,6 @@
 # Attatch or open new tmux session
-tmux attach-session -t $1 || tmux new-session -s $1
+if [ $# -eq 0 ]; then
+  tmux attach
+else
+  tmux attach-session -t $1 || tmux new-session -s $1
+fi
