@@ -14,3 +14,5 @@ if [ -f $HOME/.local/z.sh ]; then
     _z --add "$(pwd -P)"
   }
 fi
+
+source $HOME/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
