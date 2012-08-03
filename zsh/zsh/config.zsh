@@ -8,7 +8,7 @@ zle -N edit-command-line
 bindkey -M vicmd v edit-command-line
 
 # Reset prompt on input change
-function zle-line-init zle-keymap-select {
+zle-line-init zle-keymap-select() {
   zle reset-prompt
 }
 zle -N zle-line-init
