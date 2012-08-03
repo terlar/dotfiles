@@ -31,3 +31,10 @@
   prompt = false
 [push]
   default = upstream
+
+[url "git://github.com/"]
+  # Read-only
+  insteadOf = gh:
+[url "git@github.com:"]
+  # With write access
+  insteadOf = wgh:
