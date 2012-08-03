@@ -60,3 +60,4 @@ compdef _bundle bundle
 compdef _powder powder
 compdef _redis-cli redis-cli
 compdef _ry ry
+compdef _rspec rspec
