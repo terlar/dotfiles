@@ -3,7 +3,7 @@ _bundler-installed() {
 }
 
 _within-bundled-project() {
-  _file-within-project("Gemfile")
+  [ "$(_file-within-project Gemfile)" != "" ]
 }
 
 _run-with-bundler() {
