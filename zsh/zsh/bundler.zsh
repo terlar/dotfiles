@@ -33,8 +33,12 @@ bundle_gemfile() {
     fi
   else
     case $1 in
-      "off") unset BUNDLE_GEMFILE;;
-      *) export BUNDLE_GEMFILE=$1;;
+      "off")
+        unset BUNDLE_GEMFILE;;
+      /*)
+        [ -f "$1" ] && export BUNDLE_GEMFILE=$1;;
+      *)
+        [ -f "$1" ] && export BUNDLE_GEMFILE="$PWD/$1";;
     esac
   fi
 }
@@ -45,6 +49,7 @@ chpwd() {
   local gemfile_path=$(_file-within-project $gemfile)
 
   if [ "$gemfile_path" != "" ]; then
+    [ $BUNDLE_GEMFILE ] && return
     bundle_gemfile $gemfile_path
   else
     bundle_gemfile off
