@@ -46,7 +46,6 @@ chpwd() {
 
   if [ "$gemfile_path" != "" ]; then
     bundle_gemfile $gemfile_path
-    bundle_gemfile
   else
     bundle_gemfile off
   fi
