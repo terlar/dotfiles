@@ -3,12 +3,7 @@ _bundler-installed() {
 }
 
 _within-bundled-project() {
-  local check_dir=$PWD
-  while [ $check_dir != "/" ]; do
-    [ -f "$check_dir/Gemfile" ] && return
-    check_dir="$(dirname $check_dir)"
-  done
-  false
+  _file-within-project("Gemfile")
 }
 
 _run-with-bundler() {
@@ -29,29 +24,30 @@ for cmd in $bundled_commands; do
   fi
 done
 
-# Use local Gemfile
-LOCAL_GEMFILE="Gemfile.local"
-local_gemfile() {
+bundle_gemfile() {
   if [ $# -eq 0 ]; then
-    if [ "$BUNDLE_GEMFILE" = "$LOCAL_GEMFILE" ]; then
-      echo "Local Gemfile is ON ($LOCAL_GEMFILE)"
+    if [ $BUNDLE_GEMFILE ]; then
+      echo "Using Bundle Gemfile ($BUNDLE_GEMFILE)"
     else
-      echo "Local Gemfile is OFF"
+      echo "Bundle Gemfile not set"
     fi
   else
     case $1 in
-      "on" )
-        export BUNDLE_GEMFILE=$LOCAL_GEMFILE;;
-      "off" )
-        unset BUNDLE_GEMFILE;;
+      "off") unset BUNDLE_GEMFILE;;
+      *) export BUNDLE_GEMFILE=$1;;
     esac
   fi
 }
 
+# Use local Gemfile
 chpwd() {
-  if [ -f "$LOCAL_GEMFILE" ]; then
-    local_gemfile on
+  local gemfile="Gemfile.local"
+  local gemfile_path=$(_file-within-project $gemfile)
+
+  if [ "$gemfile_path" != "" ]; then
+    bundle_gemfile $gemfile_path
+    bundle_gemfile
   else
-    local_gemfile off
+    bundle_gemfile off
   fi
 }
