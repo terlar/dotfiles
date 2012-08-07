@@ -1,10 +1,10 @@
 # Get current branch name
-function _git_prompt_info() {
+_git_prompt_info() {
   ref=$(git symbolic-ref HEAD 2> /dev/null) || return
   echo "$GIT_PROMPT_PREFIX${ref#refs/heads/}$(_parse_git_dirty)$GIT_PROMPT_SUFFIX"
 }
 # Checks if working tree is dirty
-function _parse_git_dirty() {
+_parse_git_dirty() {
   if [[ -n $(git status -s 2> /dev/null) ]]; then
     echo "$GIT_PROMPT_DIRTY"
   else
@@ -12,7 +12,7 @@ function _parse_git_dirty() {
   fi
 }
 # Get the status of the working tree
-function _git_prompt_status() {
+_git_prompt_status() {
   INDEX=$(git status --porcelain 2> /dev/null)
   STATUS=""
   if $(echo "$INDEX" | grep '^?? ' &> /dev/null); then
@@ -44,17 +44,22 @@ function _git_prompt_status() {
   echo $STATUS
 }
 
-function _vimode_prompt_info() {
+_vimode_prompt_info() {
   echo "${${KEYMAP/vicmd/$VIMODE_PROMPT_NORMAL}/(main|viins)/$VIMODE_PROMPT_INSERT}"
 }
-function _status_result() {
+_status_result() {
   echo "%(?,$STATUS_RESULT_PROMPT_SUCCESS,$STATUS_RESULT_PROMPT_FAIL)"
 }
-function _prompt_char() {
+_prompt_char() {
   if [[ $KEYMAP == '' ]]; then
     _status_result
   else
     _vimode_prompt_info
+  fi
+}
+_bundle_gemfile_prompt() {
+  if [ $BUNDLE_GEMFILE ]; then
+    echo "|$(basename "$BUNDLE_GEMFILE")"
   fi
 }
 
@@ -79,5 +84,5 @@ VIMODE_PROMPT_INSERT="➤"
 STATUS_RESULT_PROMPT_SUCCESS="%{$fg_bold[green]%}➤%{$reset_color%}"
 STATUS_RESULT_PROMPT_FAIL="%{$fg_bold[red]%}➤%{$reset_color%}"
 
-PROMPT='%{$fg[magenta]%}%n%{$reset_color%}@%{$fg[yellow]%}%m%{$reset_color%}:%{$fg[cyan]%}%0~%{$reset_color%}$(_git_prompt_info)$(_git_prompt_status)
+PROMPT='%{$fg[magenta]%}%n%{$reset_color%}@%{$fg[yellow]%}%m%{$reset_color%}:%{$fg[cyan]%}%0~%{$reset_color%}$(_git_prompt_info)$(_git_prompt_status)$(_bundle_gemfile_prompt)
 $(_prompt_char) '
