@@ -7,13 +7,5 @@ autoload -U $ZSH/functions/*(:t)
 
 for config ($ZSH/*.zsh) source $config
 
-# Z
-if [ -f $HOME/.local/z.sh ]; then
-  source $HOME/.local/z.sh
-  function precmd () {
-    _z --add "$(pwd -P)"
-  }
-fi
-
 # ZSH Syntax Highlighting
 source $HOME/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh

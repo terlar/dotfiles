@@ -43,8 +43,8 @@ bundle_gemfile() {
   fi
 }
 
-# Use local Gemfile
-chpwd() {
+# Toggle local Gemfile
+_toggle-local-gemfile() {
   local gemfile="Gemfile.local"
   local gemfile_path=$(_file-within-project $gemfile)
 
@@ -55,3 +55,4 @@ chpwd() {
     bundle_gemfile off
   fi
 }
+chpwd_functions+=(_toggle-local-gemfile)
