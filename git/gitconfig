@@ -6,8 +6,8 @@
 [alias]
   unstage = reset HEAD
   hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
-  ci = commit -s -v
-  cim = commit -s -v -m
+  ci = commit -v
+  cim = commit -v -m
   co = checkout
   st = status
   d = difftool
