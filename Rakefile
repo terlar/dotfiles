@@ -3,20 +3,24 @@ require 'rake'
 def file_target(linkable)
   file = linkable.split('/').last
 
-  if file[0] == '_'
-    file_parts = linkable.split('/')
-    file_parts[-1] = file_parts[-1][1..-1]
-    file_parts[-2] = ".#{file_parts[-2]}"
-    file = file_parts.join('/')
-  else
-    file = ".#{file}"
+  if linkable == linkable.gsub!(/\/_/, '/')
+    file = linkable
   end
 
+  file = ".#{file}"
   "#{ENV["HOME"]}/#{file}"
 end
 
 def linkables
   Dir['*/**']
+end
+
+def link_file(source, target)
+  source = File.expand_path(source)
+  dirname = File.dirname(target)
+
+  FileUtils.mkpath(dirname) unless File.directory? dirname
+  File.symlink(source, target)
 end
 
 desc "Link dotfiles into home dir."
@@ -49,7 +53,7 @@ task :install do
     end
 
     puts "Linking #{target}"
-    `ln -s "$PWD/#{linkable}" "#{target}"`
+    link_file(linkable, target)
   end
 end
 
