@@ -36,7 +36,10 @@ task :install do
 
     if File.exists?(target) || File.symlink?(target)
       unless skip_all || overwrite_all || backup_all
-        puts "File already exists: #{target}, what do you want to do? [s]kip, [S]kip all, [o]verwrite, [O]verwrite all, [b]ackup, [B]ackup all"
+        puts "File already exists: #{target}, what do you want to do?"
+        puts "- [s]kip, [S]kip all"
+        puts "- [o]verwrite, [O]verwrite all"
+        puts "- [b]ackup, [B]ackup all"
         case STDIN.gets.chomp
         when 'o' then overwrite = true
         when 'b' then backup = true
@@ -49,7 +52,7 @@ task :install do
 
       next if skip_all
       FileUtils.rm_rf(target) if overwrite || overwrite_all
-      `mv "#{target}" "#{target}.backup"` if backup || backup_all
+      FileUtils.mv(target, "#{target}.backup") if backup || backup_all
     end
 
     puts "Linking #{target}"
@@ -62,13 +65,9 @@ task :uninstall do
     target = file_target(linkable)
 
     # Remove all symlinks created during installation
-    if File.symlink?(target)
-      FileUtils.rm(target)
-    end
+    FileUtils.rm(target) if File.symlink?(target)
 
     # Replace any backups made during installation
-    if File.exists?("#{target}.backup")
-      `mv "#{target}.backup" "#{target}"`
-    end
+    FileUtils.mv("#{target}.backup", target) if File.exists?("#{target}.backup")
   end
 end
