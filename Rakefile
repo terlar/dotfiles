@@ -3,12 +3,12 @@ require 'rake'
 def file_target(linkable)
   file = linkable.split('/').last
 
-  if linkable == linkable.gsub!(/\/_/, '/')
-    file = linkable
+  if file[0] == '_'
+    file = linkable.gsub(/\/_/, '/')
   end
 
   file = ".#{file}"
-  "#{ENV["HOME"]}/#{file}"
+  "#{ENV['HOME']}/#{file}"
 end
 
 def linkables
