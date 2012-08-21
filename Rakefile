@@ -23,7 +23,7 @@ def link_file(source, target)
   File.symlink(source, target)
 end
 
-desc "Link dotfiles into home dir."
+desc "Link dotfiles into home dir"
 task :install do
   skip_all = false
   overwrite_all = false
@@ -60,14 +60,21 @@ task :install do
   end
 end
 
+desc "Remove linked dotfiles from home dir and restore backups"
 task :uninstall do
   linkables.each do |linkable|
     target = file_target(linkable)
 
     # Remove all symlinks created during installation
-    FileUtils.rm(target) if File.symlink?(target)
+    if File.symlink?(target)
+      puts "Unlink #{target}"
+      FileUtils.rm(target)
+    end
 
     # Replace any backups made during installation
-    FileUtils.mv("#{target}.backup", target) if File.exists?("#{target}.backup")
+    if File.exists?("#{target}.backup")
+      puts "Restore #{target}"
+      FileUtils.mv("#{target}.backup", target)
+    end
   end
 end
