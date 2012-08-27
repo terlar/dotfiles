@@ -34,7 +34,7 @@ bundle_gemfile() {
   else
     case $1 in
       "unlock")
-        bundle_gemfile_unlock;;
+        [ $BUNDLE_GEMFILE ] && cp "Gemfile.lock" "$BUNDLE_GEMFILE.lock";;
       "off")
         unset BUNDLE_GEMFILE;;
       /*)
@@ -44,18 +44,18 @@ bundle_gemfile() {
     esac
   fi
 }
-
-bundle_gemfile_unlock() {
-  if [ $BUNDLE_GEMFILE ]; then
-    cp "Gemfile.lock" "$BUNDLE_GEMFILE.lock"
-  fi
-  bundle
-}
-
-alias bug='bundle_gemfile'
-alias bunlock='bundle_gemfile_unlock'
-
+alias bgem='bundle_gemfile'
 zstyle ':completion:*:bundle_gemfile:*' ignored-patterns '(*/)#Gemfile' '(*/)#*.lock'
+
+unlocked_bundle() {
+  bundle_gemfile unlock
+  if [ $# -eq 0 ]; then
+    bundle
+  else
+    bundle "$*"
+  fi
+}
+alias b='unlocked_bundle'
 
 # Toggle local Gemfile
 _toggle-local-gemfile() {
