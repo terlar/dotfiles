@@ -1,5 +1,3 @@
-#compdef brew
-
 _brew_all_formulae() {
   formulae=(`brew search`)
 }

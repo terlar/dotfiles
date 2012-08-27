@@ -52,12 +52,3 @@ bindkey . _rationalise-dot
 # Completion waiting dots
 zle -N _expand-or-complete-with-dots
 bindkey "^I" _expand-or-complete-with-dots
-
-compdef _brew brew
-compdef _bundle bundle
-compdef _gem gem
-compdef _powder powder
-compdef _rake rake
-compdef _redis-cli redis-cli
-compdef _rspec rspec
-compdef _ry ry

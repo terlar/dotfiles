@@ -1,5 +1,3 @@
-#compdef redis-cli rec
-
 local -a _1st_arguments
 _1st_arguments=(
   'append:append a value to a key'
