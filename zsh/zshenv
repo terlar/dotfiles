@@ -26,8 +26,10 @@ export VISUAL="vim"
 export EDITOR=$VISUAL
 
 # Paths
-export NODE_PATH=/usr/local/lib/node_modules
 export PROJECTS=$HOME/Code
+cdpath=($PROJECTS)
+
+export NODE_PATH=/usr/local/lib/node_modules
 
 path=($HOME/.local/bin /usr/local/bin $PATH)
 if which ry > /dev/null; then eval "$(ry setup)"; fi
