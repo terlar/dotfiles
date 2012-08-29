@@ -1,3 +1,9 @@
+_bundle_gemfile_prompt() {
+  if [ $BUNDLE_GEMFILE ]; then
+    echo "$BUNDLE_GEMFILE_PROMPT_PREFIX${BUNDLE_GEMFILE##*/}$BUNDLE_GEMFILE_PROMPT_SUFFIX"
+  fi
+}
+
 _bundler-installed() {
   which bundle > /dev/null 2>&1
 }
