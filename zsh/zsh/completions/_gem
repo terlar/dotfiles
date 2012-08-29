@@ -1,3 +1,5 @@
+#compdef gem
+
 if (( CURRENT == 2 )); then
   compadd $(gem help commands | grep '^    ' | awk '{print $1}')
 elif (( CURRENT == 3 )); then

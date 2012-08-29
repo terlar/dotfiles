@@ -1,6 +1,4 @@
-# ry ZSH completion function
-# Symlink (or copy) this file in your $fpath (like /usr/share/zsh/site-functions)
-# and name it _ry: ln -s path/to/this/file _ry
+#compdef ry
 
 local -a rubies
 if (( CURRENT > 2 )); then

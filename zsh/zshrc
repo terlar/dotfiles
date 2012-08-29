@@ -1,8 +1,9 @@
 ZSH=$HOME/.zsh
 
 fpath=($ZSH/functions $ZSH/completions $fpath)
-
 autoload -U $ZSH/functions/*(:t)
+autoload -U $ZSH/completions/*(:t)
+
 autoload -U compinit; compinit -i;
 autoload colors; colors;
 
