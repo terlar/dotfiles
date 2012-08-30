@@ -62,19 +62,12 @@ _git_prompt_status() {
   echo $STATUS
 }
 
+# Aliases
 alias g='git'
-compdef g=git
 alias gst='git status'
-compdef _git gst=git-status
 alias gd='git diff'
-compdef _git gd=git-diff
 gdv() { git diff -w "$@" | view - }
-compdef _git gdv=git-diff
 alias gc='git commit -v'
-compdef _git gc=git-commit
 alias gca='git commit -v -a'
-compdef _git gca=git-commit
 alias gco='git checkout'
-compdef _git gco=git-checkout
 alias ga='git add'
-compdef _git ga=git-add
