@@ -21,6 +21,8 @@ bindkey "^[[3~" delete-char
 # Shift+Tab for reverse menu completion
 bindkey '^[[Z' reverse-menu-complete
 
+setopt correct
+
 setopt combining_chars
 setopt no_flow_control
 
