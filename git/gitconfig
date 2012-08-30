@@ -5,6 +5,8 @@
   excludesfile = ~/.gitignore
 [alias]
   unstage = reset HEAD
+  uncommit = reset --soft HEAD^
+  recommit = commit --amend
   hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
   ci = commit -v
   cim = commit -v -m
