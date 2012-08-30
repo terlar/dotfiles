@@ -1,12 +1,10 @@
 # Title
-case $TERM in
-  xterm*)
-    _xterm-title() {
-      print -Pn "\e]0;%n@%m: %~\a"
-    }
-    precmd_functions+=(_xterm-title)
-    ;;
-esac
+if [[ $TERM = xterm* ]]; then
+  _xterm-title() {
+    print -Pn "\e]0;%n@%m: %~\a"
+  }
+  precmd_functions+=(_xterm-title)
+fi
 
 # Color
 export TERM="xterm-256color"
@@ -29,8 +27,10 @@ export EDITOR=$VISUAL
 export PROJECTS=$HOME/Code
 cdpath=($PROJECTS)
 
-export NODE_PATH=/usr/local/lib/node_modules
-
 path=($HOME/.local/bin /usr/local/bin $PATH)
-if which ry > /dev/null; then eval "$(ry setup)"; fi
+if (( $+commands[ry] )); then
+  eval "$(ry setup)"
+fi
 typeset -U path
+
+export NODE_PATH=/usr/local/lib/node_modules
