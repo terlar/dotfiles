@@ -1,4 +1,5 @@
 zmodload -i zsh/complist
+autoload -U compinit; compinit -i;
 
 setopt glob_complete
 setopt no_case_glob

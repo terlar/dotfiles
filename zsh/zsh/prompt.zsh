@@ -6,9 +6,11 @@ _keymap_prompt() {
       echo $KEYMAP_PROMPT_VIINS;;
   esac
 }
+
 _exit_code_prompt() {
   echo "%(?,$EXIT_CODE_PROMPT_SUCCESS,$EXIT_CODE_PROMPT_FAIL)"
 }
+
 _prompt_char() {
   if [ $KEYMAP ]; then
     _keymap_prompt
