@@ -1,4 +1,4 @@
-#compdef bundle b
+#compdef bundle
 
 local curcontext="$curcontext" state line _gems _opts ret=1
 

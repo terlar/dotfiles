@@ -53,6 +53,7 @@ bundle_gemfile() {
 alias bgem='bundle_gemfile'
 zstyle ':completion:*:bundle_gemfile:*' ignored-patterns '(*/)#Gemfile' '(*/)#*.lock'
 
+# Unlock Gemfile and run bundle
 unlocked_bundle() {
   bundle_gemfile unlock
   if [ $# -eq 0 ]; then
@@ -62,6 +63,7 @@ unlocked_bundle() {
   fi
 }
 alias b='unlocked_bundle'
+compdef _bundle unlocked_bundle=bundle
 
 # Toggle local Gemfile
 _toggle-local-gemfile() {
