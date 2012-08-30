@@ -59,7 +59,7 @@ unlocked_bundle() {
   if [ $# -eq 0 ]; then
     bundle
   else
-    bundle "$*"
+    bundle $*
   fi
 }
 alias b='unlocked_bundle'
