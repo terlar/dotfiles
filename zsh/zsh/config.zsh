@@ -1,22 +1,19 @@
 # ZLE
 bindkey -v
 setopt combining_chars
-
-# Input
-setopt correct
-setopt no_flow_control
-
-# Automatic URL quotation
-autoload -U url-quote-magic
-zle -N self-insert url-quote-magic
-
 # Edit command line
 autoload -U edit-command-line
 zle -N edit-command-line
 bindkey -M vicmd v edit-command-line
 
+# Input
+setopt correct
+setopt no_flow_control
 # Fn+Backspace for delete char
 bindkey "^[[3~" delete-char
+# Automatic URL quotation
+autoload -U url-quote-magic
+zle -N self-insert url-quote-magic
 
 # CD
 setopt auto_cd
