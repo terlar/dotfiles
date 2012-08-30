@@ -1,3 +1,17 @@
+t() {
+  # Wrapper command for OSX clipboard
+  if (( $+commands[reattach-to-user-namespace] )); then
+    local wrapper="reattach-to-user-namespace -l $SHELL"
+  fi
+
+  # Attatch or open new tmux session
+  if (( $# == 0 )); then
+    tmux attach || tmux new "$wrapper"
+  else
+    tmux attach -t $1 || tmux new -s $1 "$wrapper"
+  fi
+}
+
 # Set tmux window name
 _tmux-set-window-name() {
   [ ! -n "$TMUX" ] && return
