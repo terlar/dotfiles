@@ -1,4 +1,4 @@
-zparseopts -D b=block -block=block
+zparseopts -D -E b=block -block=block
 
 if [[ -n $block ]]; then
   tail -f $1 | sed -n '/--begin/,/--end/p'
