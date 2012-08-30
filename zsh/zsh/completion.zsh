@@ -1,6 +1,9 @@
 zmodload -i zsh/complist
 autoload -U compinit; compinit -i;
 
+# Shift+Tab for reverse menu completion
+bindkey '^[[Z' reverse-menu-complete
+
 setopt glob_complete
 setopt no_case_glob
 setopt numeric_glob_sort

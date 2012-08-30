@@ -19,6 +19,13 @@ _prompt_char() {
   fi
 }
 
+# Reset prompt on input change
+zle-line-init zle-keymap-select() {
+  zle reset-prompt
+}
+zle -N zle-line-init
+zle -N zle-keymap-select
+
 setopt prompt_subst
 
 GIT_PROMPT_PREFIX="|%{$fg[green]%}"
