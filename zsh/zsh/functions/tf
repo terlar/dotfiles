@@ -1,2 +1,7 @@
-# tail -f with sections
-tail -f "$*" | sed -n "/--begin/,/--end/p"
+zparseopts -D b=block -block=block
+
+if [[ -n $block ]]; then
+  tail -f $1 | sed -n '/--begin/,/--end/p'
+else
+  tail -f $1
+fi
