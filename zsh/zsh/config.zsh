@@ -11,9 +11,6 @@ setopt correct
 setopt no_flow_control
 # Fn+Backspace for delete char
 bindkey "^[[3~" delete-char
-# Automatic URL quotation
-autoload -U url-quote-magic
-zle -N self-insert url-quote-magic
 
 # CD
 setopt auto_cd

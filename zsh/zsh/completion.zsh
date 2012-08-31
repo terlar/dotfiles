@@ -1,9 +1,6 @@
 zmodload -i zsh/complist
 autoload -U compinit; compinit -i;
 
-# Shift+Tab for reverse menu completion
-bindkey '^[[Z' reverse-menu-complete
-
 setopt glob_complete
 setopt no_case_glob
 setopt numeric_glob_sort
@@ -11,15 +8,18 @@ setopt no_list_ambiguous
 setopt complete_in_word
 setopt always_to_end
 
-# Cache
-zstyle ':completion::complete:*' use-cache on
-zstyle ':completion::complete:*' cache-path $ZSH/cache/$HOST
+# Shift+Tab for reverse menu completion
+bindkey '^[[Z' reverse-menu-complete
 
-# Enhance completion
-zstyle ':completion:*' completer _expand _force-rehash _complete _approximate _ignored
-zstyle ':completion:*:approximate:*' max-errors 'reply=( $(( ($#PREFIX+$#SUFFIX)/3 )) )'
-# Case-insensitive
-zstyle ':completion:*' matcher-list 'm:{[:lower:]}={[:upper:]}'
+# Automatic URL quotation
+autoload -U url-quote-magic
+zle -N self-insert url-quote-magic
+# Rationalise dots
+zle -N _rationalise-dot
+bindkey . _rationalise-dot
+# Completion waiting dots
+zle -N _expand-or-complete-with-dots
+bindkey "^I" _expand-or-complete-with-dots
 
 # Instant completion for single matches
 zstyle '*' single-ignored complete
@@ -27,6 +27,15 @@ zstyle '*' single-ignored complete
 zstyle ':completion:*:default' menu select
 # Colors
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+
+# Cache
+zstyle ':completion::complete:*' use-cache on
+
+# Enhanced completion with approximate
+zstyle ':completion:*' completer _expand _force-rehash _complete _approximate _ignored
+zstyle ':completion:*:approximate:*' max-errors 'reply=( $(( ($#PREFIX+$#SUFFIX)/3 )) )'
+# Case-insensitive
+zstyle ':completion:*' matcher-list 'm:{[:lower:]}={[:upper:]}'
 
 # Group matches
 zstyle ':completion:*' group-name ''
@@ -45,14 +54,5 @@ zstyle ':completion:*:*:*:*:processes' command "ps -u `whoami` -o pid,user,comm 
 
 # Functions
 zstyle ':completion:*:functions' ignored-patterns '_*'
-
 # Users
 zstyle ':completion:*:*:*:users' ignored-patterns '_*'
-
-# Rationalise dots
-zle -N _rationalise-dot
-bindkey . _rationalise-dot
-
-# Completion waiting dots
-zle -N _expand-or-complete-with-dots
-bindkey "^I" _expand-or-complete-with-dots
