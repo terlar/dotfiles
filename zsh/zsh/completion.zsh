@@ -27,9 +27,8 @@ zstyle '*' single-ignored complete
 zstyle ':completion:*:default' menu select
 # Colors
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
-
 # Cache
-zstyle ':completion::complete:*' use-cache on
+zstyle ':completion:*' use-cache on
 
 # Enhanced completion with approximate
 zstyle ':completion:*' completer _expand _force-rehash _complete _approximate _ignored
