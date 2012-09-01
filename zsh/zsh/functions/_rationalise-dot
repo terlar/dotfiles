@@ -1,5 +1,7 @@
-if [[ $LBUFFER = *.. ]]; then
-  LBUFFER+=/..
+if [[ $LBUFFER =~ '(^|/| |  |'$'\n''|\||;|&)\.\.$' ]]; then
+    LBUFFER+=/
+    zle self-insert
+    zle self-insert
 else
-  LBUFFER+=.
+    zle self-insert
 fi
