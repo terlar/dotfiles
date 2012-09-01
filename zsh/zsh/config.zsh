@@ -9,6 +9,7 @@ bindkey -M vicmd v edit-command-line
 # Input
 setopt correct
 setopt no_flow_control
+setopt no_beep
 # Fn+Backspace for delete char
 bindkey "^[[3~" delete-char
 
