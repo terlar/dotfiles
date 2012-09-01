@@ -64,10 +64,16 @@ _git_prompt_status() {
 
 # Aliases
 alias g='git'
-alias gst='git status'
+
+alias ga='git add'
+alias gb='git branch'
+alias gco='git checkout'
+alias gf='git fetch'
+alias gm='git merge'
+alias gr='git rebase'
+alias gs='git status'
 alias gd='git diff'
 gdv() { git diff -w "$@" | view - }
+
 alias gc='git commit -v'
 alias gca='git commit -v -a'
-alias gco='git checkout'
-alias ga='git add'
