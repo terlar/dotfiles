@@ -23,12 +23,30 @@ def link_file(source, target)
   File.symlink(source, target)
 end
 
-desc "Link dotfiles into home dir"
+def update_submodules
+  `git submodule init`
+  `git submodule update`
+end
+
+desc "Pull latest dotfiles and update submodules"
+task :update do
+  puts "Update dotfiles..."
+  `git pull`
+
+  puts "Update submodules..."
+  update_submodules
+end
+
+desc "Initialize submodules and link dotfiles into home dir"
 task :install do
+  puts "Get submodules..."
+  update_submodules
+
   skip_all = false
   overwrite_all = false
   backup_all = false
 
+  puts "Link dotfiles..."
   linkables.each do |linkable|
     overwrite = false
     backup = false
