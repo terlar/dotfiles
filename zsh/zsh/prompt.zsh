@@ -28,19 +28,6 @@ zle -N zle-keymap-select
 
 setopt prompt_subst
 
-GIT_PROMPT_PREFIX="|%F{green}"
-GIT_PROMPT_SUFFIX="%f"
-GIT_PROMPT_DIRTY="%F{red}⚡%f"
-GIT_PROMPT_AHEAD="%F{red}!%f"
-GIT_PROMPT_CLEAN="%F{green}✓%f"
-
-GIT_PROMPT_ADDED="%F{green}✚%f"
-GIT_PROMPT_MODIFIED="%F{blue}✹%f"
-GIT_PROMPT_DELETED="%F{red}✖%f"
-GIT_PROMPT_RENAMED="%F{magenta}➜%f"
-GIT_PROMPT_UNMERGED="%F{yellow}═%f"
-GIT_PROMPT_UNTRACKED="%F{cyan}✭%f"
-
 KEYMAP_PROMPT_VICMD="%F{cyan}➤%f"
 KEYMAP_PROMPT_VIINS="➤"
 
@@ -50,5 +37,5 @@ EXIT_CODE_PROMPT_FAIL="%F{red}➤%f"
 BUNDLE_GEMFILE_PROMPT_PREFIX="|"
 BUNDLE_GEMFILE_PROMPT_SUFFIX=""
 
-PROMPT='%F{magenta}%n%f@%F{yellow}%m%f:%F{cyan}%0~%f$(_git_prompt_info)$(_git_prompt_status)$(_bundle_gemfile_prompt)
+PROMPT='%F{magenta}%n%f@%F{yellow}%m%f:%F{cyan}%0~%f${vcs_info_msg_0_}$(_bundle_gemfile_prompt)
 $(_prompt_char) '

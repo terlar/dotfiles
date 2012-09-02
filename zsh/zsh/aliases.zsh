@@ -24,5 +24,21 @@ alias -g N='| /dev/null'
 alias -g S='| sort'
 alias -g X='| xargs'
 
+# Git
+alias g='git'
+
+alias ga='git add'
+alias gb='git branch'
+alias gco='git checkout'
+alias gf='git fetch'
+alias gm='git merge'
+alias gr='git rebase'
+alias gs='git status'
+alias gd='git diff'
+gdv() { git diff -w "$@" | view - }
+
+alias gc='git commit -v'
+alias gca='git commit -v -a'
+
 # Ruby/Rails
 alias rc='rails c'
