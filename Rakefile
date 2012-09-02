@@ -3,7 +3,7 @@ require 'rake'
 def file_target(linkable)
   file = linkable.split('/').last
 
-  if file.chars.first == '_'
+  if file[0..0] == '_'
     file = linkable.gsub(/\/_/, '/')
   end
 
@@ -12,7 +12,7 @@ def file_target(linkable)
 end
 
 def linkables
-  Dir['*/**']
+  Dir['*/**'].delete_if { |n| n =~ /\/README/ }
 end
 
 def link_file(source, target)
