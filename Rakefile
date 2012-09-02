@@ -3,7 +3,7 @@ require 'rake'
 def file_target(linkable)
   file = linkable.split('/').last
 
-  if file[0] == '_'
+  if file.chars.first == '_'
     file = linkable.gsub(/\/_/, '/')
   end
 
