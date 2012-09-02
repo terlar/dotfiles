@@ -30,23 +30,23 @@ end
 
 desc "Pull latest dotfiles and update submodules"
 task :update do
-  puts "Update dotfiles..."
+  puts "==> Updating dotfiles"
   `git pull`
 
-  puts "Update submodules..."
+  puts "==> Updating submodules"
   update_submodules
 end
 
 desc "Initialize submodules and link dotfiles into home dir"
 task :install do
-  puts "Get submodules..."
+  puts "==> Get submodules"
   update_submodules
 
   skip_all = false
   overwrite_all = false
   backup_all = false
 
-  puts "Link dotfiles..."
+  puts "==> Linking dotfiles"
   linkables.each do |linkable|
     overwrite = false
     backup = false
@@ -80,6 +80,8 @@ end
 
 desc "Remove linked dotfiles from home dir and restore backups"
 task :uninstall do
+  puts "==> Uninstalling dotfiles"
+
   linkables.each do |linkable|
     target = file_target(linkable)
 
