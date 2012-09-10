@@ -23,6 +23,7 @@ alias -g L='| less'
 alias -g N='| /dev/null'
 alias -g S='| sort'
 alias -g X='| xargs'
+alias -g V='| vim -R -'
 
 # Git
 alias g='git'
