@@ -29,6 +29,7 @@ for cmd in $bundled_commands; do
     compdef _$cmd bundled_$cmd=$cmd
   fi
 done
+alias bundled_rake="noglob bundled_rake"
 
 bundle_gemfile() {
   if [ $# -eq 0 ]; then
