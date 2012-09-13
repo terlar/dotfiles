@@ -18,10 +18,12 @@ alias cpv='rsync -poghb --backup-dir=/tmp/rsync -e /dev/null --progress --'
 # Pipes
 alias -g A='| ack'
 alias -g C='| wc -l'
+alias -g G='| grep'
 alias -g H='| head'
 alias -g L='| less'
 alias -g N='| /dev/null'
 alias -g S='| sort'
+alias -g T='| tail'
 alias -g X='| xargs'
 alias -g V='| vim -R -'
 
