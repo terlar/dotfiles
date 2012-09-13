@@ -4,6 +4,7 @@
 [core]
   excludesfile = ~/.gitignore
 [alias]
+  subpull = submodule foreach git pull
   unstage = reset HEAD
   uncommit = reset --soft HEAD^
   recommit = commit --amend
