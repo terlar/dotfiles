@@ -1,0 +1,21 @@
+current_window=$(tmux list-window | sed -n -e '/(active)/s/^[^:]*: *\([^ ]*\) .*/\1/gp')
+current_pane=$(tmux list-panes | sed -n -e '/(active)/s/^\([^:]*\):.*/\1/gp')
+pane_count=$(tmux list-panes | wc -l | sed -e 's/ *//g')
+
+if [ $pane_count -eq 1 ]; then
+  zoomed=$(echo $current_window | sed -n -e '/^zoom/p')
+fi
+
+if [[ -n $zoomed ]]; then
+  last_pane=$(echo $current_window | sed -n -e 's/.*@\(.*\)@.*$/\1/gp')
+  last_window=$(echo $current_window | sed -n -e 's/.*@\(.*\)$/\1/gp')
+  tmux select-window -t $last_window
+  tmux select-pane -t $last_pane
+  tmux swap-pane -s $current_window
+  tmux kill-window -t $current_window
+else
+  new_window=zoom@$current_window@$current_pane
+  tmux new-window -d -n $new_window
+  tmux swap-pane -s $new_window
+  tmux select-window -t $new_window
+fi
