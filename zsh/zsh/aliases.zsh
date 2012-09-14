@@ -39,6 +39,30 @@ alias gr='git rebase'
 alias gs='git status'
 alias gd='git diff'
 gdv() { git diff -w "$@" | view - }
+# Branch publish
+gbp() {
+  local remote=$(git remote)
+  if [ $# -eq 0 ]; then
+    local branch=$(git rev-parse --abbrev-ref HEAD)
+  else
+    local branch=$1
+  fi
+
+  git push "$remote" "$branch" &&
+  git branch --set-upstream "$branch" "$remote/$branch"
+}
+# Branch delete
+gbd() {
+  local remote=$(git remote)
+  if [ $# -eq 0 ]; then
+    local branch=$(git rev-parse --abbrev-ref HEAD)
+  else
+    local branch=$1
+  fi
+
+  git branch -r -d "$branch"
+  git push "$remote" ":$branch"
+}
 
 alias gc='git commit -v'
 alias gca='git commit -v -a'
