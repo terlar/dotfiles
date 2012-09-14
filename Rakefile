@@ -24,8 +24,7 @@ def link_file(source, target)
 end
 
 def update_submodules
-  `git submodule init`
-  `git submodule update`
+  `git submodule update --init`
 end
 
 desc "Pull latest dotfiles and update submodules"
