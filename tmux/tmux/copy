@@ -1,0 +1,41 @@
+if [ $# -ne 1 ]; then
+  echo "Takes a single argument"
+  exit 1
+fi
+
+clear-keys() {
+  tmux unbind -n "Enter"
+  tmux unbind -n "C-c"
+  tmux unbind -n "q"
+  tmux unbind -t vi-copy "C-t"
+  tmux unbind -t vi-copy "C-r"
+}
+
+copy-mode() {
+  tmux bind -n "Enter" run "$run_self exit-copy-mode"
+  tmux bind -n "C-c" run "$run_self cancel-copy-mode"
+  tmux bind -n "q" run "$run_self cancel-copy-mode"
+  tmux bind -t vi-copy "C-t" copy-selection
+  tmux bind -t vi-copy "C-r" cancel
+  tmux copy-mode;
+}
+exit-copy-mode() {
+  tmux send-keys "C-t"
+  clear-keys
+  reattach-to-user-namespace -l $SHELL -c "tmux saveb - | pbcopy"
+}
+cancel-copy-mode() {
+  tmux send-keys "C-r"
+  clear-keys
+}
+modes=(copy-mode exit-copy-mode cancel-copy-mode)
+
+run_self="$SHELL $0"
+mode=$1
+
+if [[ -n ${modes[(r)$mode]} ]]; then
+  eval $mode
+else
+  echo "Unrecognized argument"
+  exit 1
+fi
