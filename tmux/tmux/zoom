@@ -1,5 +1,5 @@
 zoom-in() {
-  zoom_window="zoom@"$1"-"$2
+  zoom_window=zoom@$1
   list=$(tmux list-window)
 
   if [[ ! $list =~ $zoom_window ]]; then
@@ -11,9 +11,9 @@ zoom-in() {
 }
 zoom-out() {
   zoom_window=$1
-  target=(${(s/-/)zoom_window:5})
-  target_window=$target[1]
-  target_pane=$target[2]
+  target=${zoom_window:5}
+  target_window=${target%%-*}
+  target_pane=${target##*-}
 
   tmux select-window -t $target_window
   tmux select-pane -t $target_pane
@@ -24,12 +24,11 @@ is-zoom() {
   [[ $1 == zoom@* ]]
 }
 
-info=$(tmux display-message -p 'name:#W window:#I pane:#P')
-typeset -A current
-current=($(echo ${(s,:,)info}))
+current_window=$(tmux display-message -p '#W')
 
-if is-zoom $current[name]; then
-  zoom-out $current[name]
+if is-zoom $current_window; then
+  zoom-out $current_window
 else
-  zoom-in $current[window] $current[pane]
+  target=$(tmux display-message -p '#I-#P')
+  zoom-in $target
 fi
