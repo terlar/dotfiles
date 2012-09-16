@@ -1,37 +1,35 @@
 zoom-in() {
-  local current_pane=$(tmux list-panes | sed -n -e '/(active)/s/^\([^:]*\):.*/\1/gp')
+  zoom_window="zoom@"$1"-"$2
+  list=$(tmux list-window)
 
-  new_window=zoom@$current_window@$current_pane
-  tmux new-window -d -n $new_window
-  tmux swap-pane -s $new_window
-  tmux select-window -t $new_window
+  if [[ ! $list =~ $zoom_window ]]; then
+    tmux new-window -d -n $zoom_window
+    tmux swap-pane -s $zoom_window
+  fi
+
+  tmux select-window -t $zoom_window
 }
 zoom-out() {
-  last_pane=$(echo $current_window | sed -n -e 's/.*@\(.*\)@.*$/\1/gp')
-  last_window=$(echo $current_window | sed -n -e 's/.*@\(.*\)$/\1/gp')
-  tmux select-window -t $last_window
-  tmux select-pane -t $last_pane
-  tmux swap-pane -s $current_window
-  tmux kill-window -t $current_window
+  zoom_window=$1
+  target=(${(s/-/)zoom_window:5})
+  target_window=$target[1]
+  target_pane=$target[2]
+
+  tmux select-window -t $target_window
+  tmux select-pane -t $target_pane
+  tmux swap-pane -s $zoom_window
+  tmux kill-window -t $zoom_window
 }
 is-zoom() {
-  local pane_count=$(tmux list-panes | wc -l | sed -e 's/ *//g')
-
-  if [ $pane_count -ne 1 ]; then
-    return 1
-  fi
-
-  if [[ -n $(echo $current_window | sed -n -e '/^zoom/p') ]]; then
-    return 0
-  else
-    return 1
-  fi
+  [[ $1 == zoom@* ]]
 }
 
-current_window=$(tmux list-window | sed -n -e '/(active)/s/^[^:]*: *\([^ ]*\) .*/\1/gp')
+info=$(tmux display-message -p 'name:#W window:#I pane:#P')
+typeset -A current
+current=($(echo ${(s,:,)info}))
 
-if is-zoom; then
-  zoom-out
+if is-zoom $current[name]; then
+  zoom-out $current[name]
 else
-  zoom-in
+  zoom-in $current[window] $current[pane]
 fi
