@@ -8,7 +8,7 @@ VCS_INFO_AHEAD="%F{red}!%f"
 
 VCS_INFO_UNTRACKED="%F{cyan}✭%f"
 VCS_INFO_ADDED="%F{green}✚%f"
-VCS_INFO_MODIFIED="%F{blue}✹%f"
+VCS_INFO_MODIFIED="%F{blue}*%f"
 VCS_INFO_DELETED="%F{red}✖%f"
 VCS_INFO_RENAMED="%F{magenta}➜%f"
 VCS_INFO_UNMERGED="%F{yellow}═%f"

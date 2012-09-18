@@ -37,5 +37,9 @@ EXIT_CODE_PROMPT_FAIL="%F{red}➤%f"
 BUNDLE_GEMFILE_PROMPT_PREFIX="|"
 BUNDLE_GEMFILE_PROMPT_SUFFIX=""
 
-PROMPT='%F{magenta}%n%f@%F{yellow}%m%f:%F{cyan}%0~%f${vcs_info_msg_0_}$(_bundle_gemfile_prompt)
+PROMPT_USER="%F{magenta}%n%f"
+PROMPT_HOST="%F{yellow}%m%f"
+PROMPT_PATH="%F{cyan}%0~%f"
+
+PROMPT='${PROMPT_USER}@${PROMPT_HOST}:${PROMPT_PATH}${vcs_info_msg_0_}$(_bundle_gemfile_prompt)
 $(_prompt_char) '
