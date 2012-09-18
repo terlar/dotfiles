@@ -1,5 +1,6 @@
 tags
 
+.bundle
 vendor/bundle
 Gemfile.local*
 
