@@ -9,6 +9,7 @@
   uncommit = reset --soft HEAD^
   recommit = commit --amend
   hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
+  wc = whatchanged -p --abbrev-commit --pretty=medium
   ci = commit -v
   cim = commit -v -m
   co = checkout

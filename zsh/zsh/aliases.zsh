@@ -37,6 +37,8 @@ alias gf='git fetch'
 alias gm='git merge'
 alias gr='git rebase'
 alias gs='git status'
+alias gwc='git whatchanged -p --abbrev-commit --pretty=medium'
+
 alias gd='git diff'
 gdv() { git diff -w "$@" | view - }
 # Branch publish
