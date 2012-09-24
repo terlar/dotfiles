@@ -44,6 +44,10 @@ gdv() { git diff -w "$@" | view - }
 # Branch publish
 gbp() {
   local remote=$(git remote)
+  if [ -z $remote ]; then
+    return 0
+  fi
+
   if [ $# -eq 0 ]; then
     local branch=$(git rev-parse --abbrev-ref HEAD)
   else
@@ -56,13 +60,23 @@ gbp() {
 # Branch delete
 gbd() {
   local remote=$(git remote)
+  if [ -z $remote ]; then
+    return 0
+  fi
+
   if [ $# -eq 0 ]; then
     local branch=$(git rev-parse --abbrev-ref HEAD)
+    local same_branch=1
   else
     local branch=$1
   fi
 
-  git branch -r -d "$branch"
+  echo -n "gbd: sure you want to delete local AND remote branch $branch [yn]? "
+  read confirm
+  if [ "$confirm" != "y" ] && return 0
+
+  if [ -n $same_branch ] && git checkout -
+  git branch -d "$branch"
   git push "$remote" ":$branch"
 }
 
