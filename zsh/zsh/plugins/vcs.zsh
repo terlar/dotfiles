@@ -54,3 +54,65 @@ _git_status() {
 
   echo $gitstatus
 }
+
+# Aliases
+alias g='git'
+alias gs='git status'
+
+alias gd='git diff'
+gdv() { git diff -w "$@" | view - }
+compdef _git gdv=git-diff
+alias gwc='git whatchanged -p --abbrev-commit --pretty=medium'
+
+alias ga='git add'
+alias gc='git commit -v'
+alias gca='git commit -v -a'
+
+alias gb='git branch'
+alias gco='git checkout'
+
+alias gf='git fetch'
+alias gm='git merge'
+alias gr='git rebase'
+
+# Branch publish
+gbp() {
+  local remote=$(git remote)
+  if [ -z $remote ]; then
+    return 0
+  fi
+
+  if [ $# -eq 0 ]; then
+    local branch=$(git rev-parse --abbrev-ref HEAD)
+  else
+    local branch=$1
+  fi
+
+  git push "$remote" "$branch" &&
+  git branch --set-upstream "$branch" "$remote/$branch"
+}
+compdef _git gbp=git-branch
+
+# Branch delete
+gbd() {
+  local remote=$(git remote)
+  if [ -z $remote ]; then
+    return 0
+  fi
+
+  if [ $# -eq 0 ]; then
+    local branch=$(git rev-parse --abbrev-ref HEAD)
+    local same_branch=1
+  else
+    local branch=$1
+  fi
+
+  echo -n "gbd: sure you want to delete local AND remote branch $branch [yn]? "
+  read confirm
+  if [ "$confirm" != "y" ] && return 0
+
+  if [ -n $same_branch ] && git checkout -
+  git branch -d "$branch"
+  git push "$remote" ":$branch"
+}
+compdef _git gbd=git-branch
