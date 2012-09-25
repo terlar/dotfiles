@@ -99,10 +99,10 @@ gbd() {
   if [ -z $remote ]; then
     return 0
   fi
+  local current_branch=$(git rev-parse --abbrev-ref HEAD)
 
   if [ $# -eq 0 ]; then
-    local branch=$(git rev-parse --abbrev-ref HEAD)
-    local same_branch=1
+    local branch=$current_branch
   else
     local branch=$1
   fi
@@ -111,7 +111,7 @@ gbd() {
   read confirm
   if [ "$confirm" != "y" ] && return 0
 
-  if [ -n $same_branch ] && git checkout -
+  if [ $branch == $current_branch ] && git checkout -
   git branch -d "$branch"
   git push "$remote" ":$branch"
 }
