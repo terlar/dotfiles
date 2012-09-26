@@ -3,7 +3,7 @@
 if (( CURRENT == 2 )); then
   compadd $(gem help commands | grep '^    ' | awk '{print $1}')
 elif (( CURRENT == 3 )); then
-  if [[ $words[2] == "install" ]]; then
+  if [[ $words[2] == "install" ]] && [[ -n $REMOTE_GEM_CACHE_PATH ]]; then
     if [[ ! -f $REMOTE_GEM_CACHE_PATH ]]; then
       $(gem list -r > $REMOTE_GEM_CACHE_PATH)
     fi
