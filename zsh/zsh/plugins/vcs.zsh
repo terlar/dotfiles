@@ -109,9 +109,13 @@ gbd() {
 
   echo -n "gbd: sure you want to delete local AND remote branch $branch [yn]? "
   read confirm
-  if [ "$confirm" != "y" ] && return 0
+  if [[ "$confirm" != "y" ]]; then
+    return 0
+  fi
 
-  if [ $branch == $current_branch ] && git checkout -
+  if [[ "$branch" == "$current_branch" ]]; then
+    git checkout -
+  fi
   git branch -d "$branch"
   git push "$remote" ":$branch"
 }
