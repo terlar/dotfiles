@@ -32,24 +32,23 @@ done
 alias bundled_rake="noglob bundled_rake"
 
 bundle_gemfile() {
-  if [ $# -eq 0 ]; then
-    if [ $BUNDLE_GEMFILE ]; then
-      echo "Using Bundle Gemfile ($BUNDLE_GEMFILE)"
-    else
-      echo "Bundle Gemfile not set"
-    fi
-  else
-    case $1 in
-      "unlock")
-        [ $BUNDLE_GEMFILE ] && cp "Gemfile.lock" "$BUNDLE_GEMFILE.lock";;
-      "off")
-        unset BUNDLE_GEMFILE;;
-      /*)
-        [ -f "$1" ] && export BUNDLE_GEMFILE=$1;;
-      *)
-        [ -f "$1" ] && export BUNDLE_GEMFILE="$PWD/$1";;
-    esac
-  fi
+  case $1 in
+    "")
+      if [ $BUNDLE_GEMFILE ]; then
+        echo "Using Bundle Gemfile ($BUNDLE_GEMFILE)"
+      else
+        echo "Bundle Gemfile not set"
+      fi
+      ;;
+    "unlock")
+      [ $BUNDLE_GEMFILE ] && cp "Gemfile.lock" "$BUNDLE_GEMFILE.lock";;
+    "off")
+      unset BUNDLE_GEMFILE;;
+    /*)
+      [ -f "$1" ] && export BUNDLE_GEMFILE=$1;;
+    *)
+      [ -f "$1" ] && export BUNDLE_GEMFILE="$PWD/$1";;
+  esac
 }
 alias bgem='bundle_gemfile'
 zstyle ':completion:*:bundle_gemfile:*' ignored-patterns '(*/)#Gemfile' '(*/)#*.lock'
