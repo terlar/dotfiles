@@ -3,7 +3,7 @@
 _rake_task_list_outdated() {
   [ ! -f .rake_tasks ] && return 0
 
-  files=$(find Rakefile lib/tasks -newer .rake_tasks)
+  files=$(find Rakefile lib/tasks -newer .rake_tasks 2>/dev/null)
   [ ! -z $files ] && return 0
 
   return 1
