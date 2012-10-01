@@ -1,5 +1,6 @@
 set fish_greeting
-
+setenv EDITOR vim
+setenv VISUAL $EDITOR
 
 # Paths
 set -U FISH $HOME/.config/fish
