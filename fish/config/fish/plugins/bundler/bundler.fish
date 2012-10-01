@@ -12,7 +12,7 @@ end
 # Automatic bundle exec
 set -U __bundle_commands ruby rails rake rspec spec cucumber spork
 for cmd in $__bundle_commands
-  alias $cmd (__bundle_run $cmd)
+  eval "function $cmd; __bundle_run $cmd \$argv; end"
 end
 
 
