@@ -1,4 +1,4 @@
-function p --description 'Switch project'
+function project_switch --description 'Switch project'
   if count $argv >/dev/null
     cd $PROJECTS/$argv[1]*
   else
