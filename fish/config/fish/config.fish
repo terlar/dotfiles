@@ -1,16 +1,18 @@
 set fish_greeting
+
+setenv TERM xterm-256color
 setenv EDITOR vim
 setenv VISUAL $EDITOR
 
+
 # Paths
+set -x PATH $HOME/.local/bin /usr/local/bin $PATH
+# Ry
+set -x PATH $HOME/.local/lib/ry/current/bin $PATH
+
 set -U FISH $HOME/.config/fish
 set -U PROJECTS $HOME/Code
 set -U CDPATH . $PROJECTS
-
-set -x PATH $HOME/.local/bin /usr/local/bin $PATH
-# Ry
-set -U RY_PREFIX $HOME/.local
-set -x PATH $RY_PREFIX/lib/ry/current/bin $PATH
 
 set -U NODE_PATH /usr/local/lib/node_modules
 set -U REMOTE_GEM_CACHE_PATH $HOME/.remote-gem-cache
@@ -31,9 +33,12 @@ end
 
 
 # Alias
-function l. ; l -d .* ; end
-function ll ; l -l ; end
-function mkdir ; mkdir -p $argv ; end
-function mkcd ; mkdir $argv; and cd $argv ; end
+function l      ; ls -la ; end
+function l.     ; ls -d .* ; end
+function ll     ; ls -l ; end
 
-function rc ; rails c ; end
+function mkdir  ; mkdir -p $argv ; end
+function mkcd   ; mkdir $argv; and cd $argv ; end
+
+function !      ; sudo $argv ; end
+function rc     ; rails console ; end
