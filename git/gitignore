@@ -7,3 +7,4 @@ Gemfile.local*
 .rake_tasks
 .powenv
 .powder
+zeus.json
