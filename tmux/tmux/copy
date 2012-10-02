@@ -30,7 +30,7 @@ cancel-copy-mode() {
 }
 modes=(copy-mode exit-copy-mode cancel-copy-mode)
 
-run_self="$SHELL $0"
+run_self="zsh $0"
 mode=$1
 
 if [[ -n ${modes[(r)$mode]} ]]; then
