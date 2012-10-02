@@ -5,5 +5,10 @@ function __bundle_run --description 'Run file with bundler'
     end
   end
 
+  if not which $argv[1] >/dev/null
+    echo "fish: Unknown command '$argv[1]'"
+    return 1
+  end
+
   eval command $argv
 end
