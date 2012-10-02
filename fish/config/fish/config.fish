@@ -6,11 +6,11 @@ setenv VISUAL $EDITOR
 
 
 # Paths
-set -xg PATH $HOME/.local/bin /usr/local/bin $PATH
+set -U FISH $HOME/.config/fish
+
+set PATH $HOME/.local/bin /usr/local/bin $PATH
 # Ry
 set PATH $HOME/.local/lib/ry/current/bin $PATH
-
-set -U FISH $HOME/.config/fish
 
 set -U NODE_PATH /usr/local/lib/node_modules
 set -U REMOTE_GEM_CACHE_PATH $HOME/.remote-gem-cache
