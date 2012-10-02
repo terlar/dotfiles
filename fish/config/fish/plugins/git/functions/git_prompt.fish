@@ -1,49 +1,48 @@
 function git_prompt --description 'Write out the git prompt'
-  set -l branch (git symbolic-ref HEAD 2> /dev/null | cut -f3 -d '/')
-  if test -z "$branch"
+  __git_cache_clear
+
+  if not __git_branch >/dev/null
     return
   end
-  set -l index (git status --porcelain 2> /dev/null)
 
-  if test -z "$index"
+  if not __git_status >/dev/null
     set_color $fish_color_git_clean
-    printf $branch
+    __git_branch
     printf '✓'
     set_color normal
     return
   end
 
-  set -l staged (git diff --name-only --cached)
-  if test -n "$staged"
+  if __git_staged
     set_color $fish_color_git_staged
   else
     set_color $fish_color_git_dirty
   end
 
-  printf $branch
+  __git_branch
   printf '⚡'
 
-  if test (echo $index | grep '^?? ')
+  if __git_status_grep '^?? '
     set_color $fish_color_git_untracked
     printf '✭'
   end
-  if test (echo $index | grep '^A  \|^M  ')
+  if __git_status_grep '^A  \|^M  '
     set_color $fish_color_git_added
     printf '✚'
   end
-  if test (echo $index | grep '^ M \|^AM \|^ T ')
+  if __git_status_grep '^ M \|^AM \|^ T '
     set_color $fish_color_git_modified
     printf '*'
   end
-  if test (echo $index | grep '^ D \|^AD ')
+  if __git_status_grep '^ D \|^AD '
     set_color $fish_color_git_deleted
     printf '✖'
   end
-  if test (echo $index | grep '^R  ')
+  if __git_status_grep '^R  '
     set_color $fish_color_git_renamed
     printf '➜'
   end
-  if test (echo $index | grep '^UU ')
+  if __git_status_grep '^UU '
     set_color $fish_color_git_unmerged
     printf '═'
   end
