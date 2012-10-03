@@ -1,25 +1,32 @@
+set -U fish_color_user magenta
+set -U fish_color_host yellow
+
 function fish_prompt --description 'Write out the prompt'
   set -l last_status $status
 
-  set_color magenta
+  # User
+  set_color $fish_color_user
   printf (whoami)
   set_color normal
 
   printf '@'
-  set_color yellow
+
+  # Host
+  set_color $fish_color_host
   printf (hostname -s)
   set_color normal
 
   printf ':'
+
+  # PWD
   set_color $fish_color_cwd
   printf (prompt_pwd)
   set_color normal
 
+  # Misc
   misc_prompt
 
-  if test $last_status -eq 0
-    set_color normal
-  else
+  if not test $last_status -eq 0
     set_color $fish_color_error
   end
 
