@@ -2,6 +2,7 @@
 --type-add=html=.html.erb,.html.haml,.mustache,.jst,.ejs
 --type-add=js=.js.erb,.coffee
 --type-add=css=.sass,.less,.scss
+--type-add=shell=.fish
 --type-set=markdown=.markdown,.md
 --ignore-dir=vendor
 --ignore-dir=log
