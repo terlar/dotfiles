@@ -1,7 +1,7 @@
 function project_switch --description 'Switch project'
-  if count $argv >/dev/null
-    cd $PROJECTS/$argv[1]*
-  else
+  if test (count $argv) = 0
     cd $PROJECTS
+  else
+    cd $PROJECTS/$argv[1]*
   end
 end

@@ -1,11 +1,11 @@
 function ls --description 'List files with style'
   set argv -h $argv
 
-  if /bin/ls --color -d . 2>/dev/null
+  if command ls --color -d . >/dev/null 2>&1
     set argv --color=tty $argv
   else
     set argv -G $argv
   end
 
-  /bin/ls $argv
+  command ls $argv
 end
