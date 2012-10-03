@@ -30,7 +30,7 @@ function git_prompt --description 'Write out the git prompt'
     set_color $fish_color_git_added
     printf '✚'
   end
-  if __git_status_grep '^ M \|^AM \|^ T '
+  if __git_status_grep '^ M \|^AM \|^RM \|^ T '
     set_color $fish_color_git_modified
     printf '*'
   end
@@ -38,7 +38,7 @@ function git_prompt --description 'Write out the git prompt'
     set_color $fish_color_git_deleted
     printf '✖'
   end
-  if __git_status_grep '^R  '
+  if __git_status_grep '^R  \|^RM '
     set_color $fish_color_git_renamed
     printf '➜'
   end
