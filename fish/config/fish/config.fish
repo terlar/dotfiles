@@ -2,7 +2,6 @@ set fish_greeting
 
 setenv TERM xterm-256color
 setenv EDITOR vim
-setenv VISUAL $EDITOR
 
 
 # Paths
