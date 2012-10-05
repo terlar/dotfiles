@@ -1,17 +1,3 @@
-# Theme
-set -U fish_color_git_clean green
-set -U fish_color_git_dirty red
-set -U fish_color_git_ahead red
-set -U fish_color_git_staged yellow
-
-set -U fish_color_git_untracked cyan
-set -U fish_color_git_added green
-set -U fish_color_git_modified blue
-set -U fish_color_git_deleted red
-set -U fish_color_git_renamed magenta
-set -U fish_color_git_unmerged yellow
-
-
 # Alias
 function g    ; git $argv ; end
 function gs   ; git status $argv ; end
