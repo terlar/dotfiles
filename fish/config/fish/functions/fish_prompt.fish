@@ -23,13 +23,13 @@ function fish_prompt --description 'Write out the prompt'
   printf (prompt_pwd)
   set_color normal
 
-  fish_git_prompt
-  echo
+  fish_prompt_git
+  fish_prompt_misc
 
   if not test $last_status -eq 0
     set_color $fish_color_error
   end
 
-  printf '➤ '
+  printf ' ➤ '
   set_color normal
 end

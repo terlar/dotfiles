@@ -1,4 +1,4 @@
-function misc_prompt --description 'Write out miscellaneous prompt info'
+function fish_prompt_misc --description 'Write out miscellaneous prompt info'
   set -g misc_prompt
   emit misc_prompt
 
