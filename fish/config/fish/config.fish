@@ -30,12 +30,33 @@ end
 
 
 # Alias
+function !      ; sudo $argv ; end
+function rc     ; rails console ; end
+
+# ls
 function l      ; ls -la ; end
 function l.     ; ls -d .* ; end
 function ll     ; ls -l ; end
 
+# mkdir
 function mkdir  ; mkdir -p $argv ; end
 function mkcd   ; mkdir $argv; and cd $argv ; end
 
-function !      ; sudo $argv ; end
-function rc     ; rails console ; end
+# git
+function g    ; git $argv ; end
+function gs   ; git status $argv ; end
+
+function gd   ; git diff $argv ; end
+function gdv  ; git diff -w $argv | view - ; end
+function gwc  ; git wc $argv ; end
+
+function ga   ; git add $argv ; end
+function gc   ; git commit -v $argv ; end
+function gca  ; git commit -v -a $argv ; end
+
+function gb   ; git branch $argv ; end
+function gco  ; git checkout $argv ; end
+
+function gf   ; git fetch $argv ; end
+function gm   ; git merge $argv ; end
+function gr   ; git rebase $argv ; end
