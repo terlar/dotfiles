@@ -6,10 +6,13 @@ setenv EDITOR vim
 
 # Paths
 set -U FISH $HOME/.config/fish
+set -U CDPATH .
 
-set PATH $HOME/.local/bin /usr/local/bin $PATH
-# Ry
-set PATH $HOME/.local/lib/ry/current/bin $PATH
+for p in /usr/local/bin $HOME/.local/bin $HOME/.local/lib/ry/current/bin
+  if test -d $p
+    set PATH $p $PATH
+  end
+end
 
 set -U NODE_PATH /usr/local/lib/node_modules
 set -U REMOTE_GEM_CACHE_PATH $HOME/.remote-gem-cache

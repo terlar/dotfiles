@@ -1,6 +1,6 @@
 # Paths
-set -xg PROJECTS $HOME/Code
-set -xg CDPATH $CDPATH $PROJECTS
+set -U PROJECTS $HOME/Code
+set CDPATH $CDPATH $PROJECTS
 
 # Alias
 function p ; project_switch $argv ; end
