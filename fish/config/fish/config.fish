@@ -5,24 +5,32 @@ setenv EDITOR vim
 
 
 # Paths
-set -U FISH $HOME/.config/fish
-set -U CDPATH .
+set -g CDPATH .
 
-for p in /usr/local/bin $HOME/.local/bin $HOME/.local/lib/ry/current/bin
+set -l path_list /usr/local/bin $HOME/.local/bin
+# Ry
+set path_list $path_list $HOME/.local/lib/ry/current/bin
+
+for p in $path_list
   if test -d $p
     set PATH $p $PATH
   end
 end
 
-set -U NODE_PATH /usr/local/lib/node_modules
-set -U REMOTE_GEM_CACHE_PATH $HOME/.remote-gem-cache
+set -g NODE_PATH /usr/local/lib/node_modules
+set -g REMOTE_GEM_CACHE_PATH $HOME/.remote-gem-cache
 
 
 # Plugins
-for plugin in $FISH/plugins/*
+for plugin in $HOME/.config/fish/plugins/*
   if test -d $plugin
-    set -xg fish_function_path $plugin/functions $fish_function_path
-    set -xg fish_complete_path $plugin/completions $fish_complete_path
+    if not contains $plugin/functions $fish_function_path
+      set fish_function_path $plugin/functions $fish_function_path
+    end
+    if not contains $plugin/completions $fish_complete_path
+      set fish_complete_path $plugin/completions $fish_complete_path
+    end
+
     set plugin $plugin/(basename $plugin).fish
   end
 
