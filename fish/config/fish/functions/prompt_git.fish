@@ -17,7 +17,7 @@ set -U fish_prompt_git_status_deleted '✖'
 set -U fish_prompt_git_status_unmerged '═'
 set -U fish_prompt_git_status_untracked '.'
 
-function fish_prompt_git --description 'Write out the git prompt'
+function prompt_git --description 'Write out the git prompt'
   set -l branch (git symbolic-ref --quiet --short HEAD 2>/dev/null)
   if test -z $branch
     return

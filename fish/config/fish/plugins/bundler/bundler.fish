@@ -4,8 +4,8 @@ function bgem ; bundle_gemfile $argv; end
 
 
 # Prompt
-function __misc_prompt_bundler --on-event misc_prompt
-  set -g misc_prompt (bundler_prompt) $misc_prompt
+function __prompt_bundler --on-event prompt_misc
+  set -g prompt_misc (prompt_bundler) $prompt_misc
 end
 
 
