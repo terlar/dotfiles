@@ -1,7 +1,7 @@
 set fish_greeting
 
-setenv TERM xterm-256color
-setenv EDITOR vim
+set -x TERM xterm-256color
+set -x EDITOR vim
 
 
 # Paths
