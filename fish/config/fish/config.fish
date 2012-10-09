@@ -50,7 +50,7 @@ function l.     ; ls -d .* ; end
 function ll     ; ls -l ; end
 
 # mkdir
-function mkdir  ; mkdir -p $argv ; end
+function mkdir  ; command mkdir -p $argv ; end
 function mkcd   ; mkdir $argv; and cd $argv ; end
 
 # git
