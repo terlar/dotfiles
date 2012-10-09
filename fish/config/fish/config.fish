@@ -21,25 +21,6 @@ set -g NODE_PATH /usr/local/lib/node_modules
 set -g REMOTE_GEM_CACHE_PATH $HOME/.remote-gem-cache
 
 
-# Plugins
-for plugin in $HOME/.config/fish/plugins/*
-  if test -d $plugin
-    if not contains $plugin/functions $fish_function_path
-      set fish_function_path $plugin/functions $fish_function_path
-    end
-    if not contains $plugin/completions $fish_complete_path
-      set fish_complete_path $plugin/completions $fish_complete_path
-    end
-
-    set plugin $plugin/(basename $plugin).fish
-  end
-
-  if test -f $plugin
-    . $plugin
-  end
-end
-
-
 # Alias
 function !      ; sudo $argv ; end
 function rc     ; rails console ; end
@@ -71,3 +52,22 @@ function gco  ; git checkout $argv ; end
 function gf   ; git fetch $argv ; end
 function gm   ; git merge $argv ; end
 function gr   ; git rebase $argv ; end
+
+
+# Plugins
+for plugin in $HOME/.config/fish/plugins/*
+  if test -d $plugin
+    if not contains $plugin/functions $fish_function_path
+      set fish_function_path $plugin/functions $fish_function_path
+    end
+    if not contains $plugin/completions $fish_complete_path
+      set fish_complete_path $plugin/completions $fish_complete_path
+    end
+
+    set plugin $plugin/(basename $plugin).fish
+  end
+
+  if test -f $plugin
+    . $plugin
+  end
+end
