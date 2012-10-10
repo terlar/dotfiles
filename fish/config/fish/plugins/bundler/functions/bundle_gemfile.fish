@@ -16,9 +16,9 @@ function bundle_gemfile --description 'Manage bundle gemfile'
       set -e BUNDLE_GEMFILE
     case '/*'
       test -f $argv[1]
-      and set -g BUNDLE_GEMFILE $argv[1]
+      and setenv BUNDLE_GEMFILE $argv[1]
     case '*'
       test -f $argv[1]
-      and set -g BUNDLE_GEMFILE $PWD/$argv[1]
+      and setenv BUNDLE_GEMFILE $PWD/$argv[1]
   end
 end
