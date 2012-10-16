@@ -58,10 +58,14 @@ function gr   ; git rebase $argv ; end
 for plugin in $HOME/.config/fish/plugins/*
   if test -d $plugin
     if not contains $plugin/functions $fish_function_path
-      set fish_function_path $plugin/functions $fish_function_path
+      if test -d $plugin/functions
+        set fish_function_path $plugin/functions $fish_function_path
+      end
     end
     if not contains $plugin/completions $fish_complete_path
-      set fish_complete_path $plugin/completions $fish_complete_path
+      if test -d $plugin/completions
+        set fish_complete_path $plugin/completions $fish_complete_path
+      end
     end
 
     set plugin $plugin/(basename $plugin).fish
