@@ -1,5 +1,5 @@
 function __fish_git_branches
-  git branch --no-color -a 2>/dev/null | sed 's/^..//'
+  git branch --no-color -a 2>/dev/null | sed 's/^..//; s/^remotes\///'
 end
 
 complete -f -c gb -a '(__fish_git_branches)' -d 'Branch'
