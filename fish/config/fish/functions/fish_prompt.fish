@@ -1,6 +1,3 @@
-set -U fish_color_user magenta
-set -U fish_color_host yellow
-
 function fish_prompt --description 'Write out the prompt'
   set -l last_status $status
 
@@ -9,27 +6,28 @@ function fish_prompt --description 'Write out the prompt'
   printf (whoami)
   set_color normal
 
-  printf '@'
+  echo -n '@'
 
   # Host
   set_color $fish_color_host
   printf (hostname -s)
   set_color normal
 
-  printf ':'
+  echo -n ':'
 
   # PWD
   set_color $fish_color_cwd
   printf (prompt_pwd)
   set_color normal
 
-  prompt_git
-  prompt_misc
+  __terlar_git_prompt
+  __terlar_misc_prompt
+  echo
 
   if not test $last_status -eq 0
     set_color $fish_color_error
   end
 
-  printf ' ➤ '
+  echo -n '➤ '
   set_color normal
 end
