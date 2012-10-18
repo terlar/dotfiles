@@ -37,12 +37,12 @@ function __terlar_git_prompt --description 'Write out the git prompt'
 
   for i in $index
     switch $i
-      case 'A '; set added
-      case 'M ' ' M'; set modified
-      case 'R '; set renamed
-      case 'C '; set copied
-      case 'D ' ' D'; set deleted
-      case '??'; set untracked
+      case 'A '               ; set added
+      case 'M ' ' M'          ; set modified
+      case 'R '               ; set renamed
+      case 'C '               ; set copied
+      case 'D ' ' D'          ; set deleted
+      case '??'               ; set untracked
       case 'U*' '*U' 'DD' 'AA'; set unmerged
     end
   end
