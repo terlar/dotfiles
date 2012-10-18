@@ -4,7 +4,7 @@ function file_in_path --description 'Find file in path'
 
   while test $check_dir != '/'
     if test -f $check_dir/$file
-      printf $check_dir/$file
+      echo -n $check_dir/$file
       return 0
     end
     set check_dir (dirname $check_dir)
