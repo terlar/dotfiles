@@ -1,6 +1,2 @@
----
-:sources:
-- http://gems.rubyforge.org/
-- http://rubygems.org/
-- http://gems.github.com/
-gem: --no-rdoc
+install: --no-rdoc
+update:  --no-rdoc
