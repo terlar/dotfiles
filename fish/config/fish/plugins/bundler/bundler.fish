@@ -3,12 +3,6 @@ function b    ; bundle_unlocked $argv; end
 function bgem ; bundle_gemfile $argv; end
 
 
-# Prompt
-function __misc_bundler_prompt --on-event misc_prompt
-  set -g misc_prompt (__bundler_prompt) $misc_prompt
-end
-
-
 # Automatic bundle exec
 for cmd in ruby rails rake rspec spec cucumber spork
   eval "function $cmd; __bundle_run $cmd \$argv; end"
@@ -29,6 +23,7 @@ function __bundler_toggle_local_gemfile --on-variable PWD
   else
     if test -z $BUNDLE_GEMFILE
       bundle_gemfile $gemfile_path
+      bundle_gemfile
     end
   end
 end
