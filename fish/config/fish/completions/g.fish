@@ -25,6 +25,12 @@ complete -f -c g
 # Aliases
 complete -c g -n '__fish_git_needs_command' -a '(__fish_git_aliases)' -d 'Alias'
 
+# pull
+complete -c g -n '__fish_git_needs_command' -a pull -d 'Fetch from and merge with another repository or a local branch'
+
+# push
+complete -c g -n '__fish_git_needs_command' -a push -d 'Update remote refs along with associated objects'
+
 # stash
 complete -c g -n '__fish_git_needs_command' -a stash -d 'Stash away changes'
 complete -f -c g -n '__fish_git_using_command stash' -a list -d 'List stashes'
