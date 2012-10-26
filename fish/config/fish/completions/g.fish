@@ -36,6 +36,8 @@ complete -c g -n '__fish_git_needs_command' -a '(__fish_git_aliases)' -d 'Alias'
 
 # pull
 complete -c g -n '__fish_git_needs_command' -a pull -d 'Fetch from and merge with another repository or a local branch'
+complete -f -c g -n '__fish_git_using_command pull' -a '(git remote)' -d 'Remote alias'
+complete -f -c g -n '__fish_git_using_command pull 2' -a '(__fish_git_branches)' -d 'Branch'
 
 # push
 complete -c g -n '__fish_git_needs_command' -a push -d 'Update remote refs along with associated objects'
