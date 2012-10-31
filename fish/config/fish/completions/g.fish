@@ -52,3 +52,7 @@ complete -f -c g -n '__fish_git_using_command stash' -a pop -d 'Apply and remove
 complete -f -c g -n '__fish_git_using_command stash' -a apply -d 'Apply stashed changes'
 complete -f -c g -n '__fish_git_using_command stash' -a drop -d 'Remove stash'
 complete -f -c g -n '__fish_git_using_command stash' -a clear -d 'Remove all stashes'
+
+# cherry-pick
+complete -f -c g -n '__fish_git_needs_command' -a cherry-pick -d 'Apply the change introduced by an existing commit'
+complete -f -c g -n '__fish_git_using_command cherry-pick' -a '(__fish_git_branches)' -d 'Branch'
