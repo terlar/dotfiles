@@ -1,7 +1,7 @@
 function t --description 'Attach or open new tmux session'
   # Wrapper command for OSX clipboard
   set -l wrapper
-  if which reattach-to-user-namespace ^/dev/null
+  if which reattach-to-user-namespace >/dev/null
     set wrapper "reattach-to-user-namespace -l $SHELL"
   end
 
