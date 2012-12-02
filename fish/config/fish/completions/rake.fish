@@ -12,7 +12,8 @@ function __fish_rake
   not test -f Rakefile; and return
 
   if __rake_task_list_outdated
-    rake --silent --tasks | sed 's/^rake.//; s/[[:blank:]]*# /'(printf '\t')'/g' > .rake_tasks
+    rake --silent --tasks | \
+      sed 's/^rake //; s/[[:blank:]].*#/'(printf '\t')'/g' > .rake_tasks
   end
 
   cat .rake_tasks
