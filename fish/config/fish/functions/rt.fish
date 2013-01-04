@@ -1,3 +1,3 @@
 function rt --description 'Generate ctags for bundled project'
-  ctags --language-force=ruby --exclude=.git --exclude=log -R * (bundle show --paths)
+  ctags --extra=+f --language-force=ruby -R (bundle show --paths) app lib
 end
