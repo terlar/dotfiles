@@ -1,5 +1,5 @@
 function fish_user_key_bindings
-  bind \cb __runsudo
+  bind \e! __runsudo
 end
 
 function __runsudo --description 'Run current command line as root'
