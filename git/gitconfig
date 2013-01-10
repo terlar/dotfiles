@@ -44,6 +44,8 @@
 [push]
   default = upstream
 
+[github]
+  user = terlar
 [url "git://github.com/"]
   # Read-only
   insteadOf = gh:
