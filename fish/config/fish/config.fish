@@ -25,6 +25,7 @@ set -g REMOTE_GEM_CACHE_PATH $HOME/.remote-gem-cache
 # Alias
 function !      ; sudo $argv ; end
 function rc     ; rails console ; end
+function kc     ; kviberg-config $argv ; end
 
 # ls
 function l      ; ls -la ; end
