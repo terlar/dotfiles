@@ -26,7 +26,7 @@ function kviberg-config-export
   ok; or return 1
 end
 
-function kviberg-config-update
+function kviberg-config-import
   set -l xip 1
 
   for i in $argv
