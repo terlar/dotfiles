@@ -40,9 +40,14 @@ function mkcd   ; mkdir $argv; and cd $argv ; end
 function g    ; git $argv ; end
 function gs   ; git status $argv ; end
 
-function gd   ; git diff $argv ; end
-function gdv  ; git diff -w $argv | view - ; end
+function gl   ; git l $argv ; end
+function gls  ; git ls $argv ; end
 function gwc  ; git wc $argv ; end
+
+function gd   ; git diff $argv ; end
+function gdw  ; git diff --color-words $argv ; end
+function gds  ; git diff --stat $argv ; end
+function gdv  ; git diff -w $argv | view - ; end
 
 function ga   ; git add $argv ; end
 function gc   ; git commit -v $argv ; end
