@@ -41,6 +41,7 @@ complete -f -c g -n '__fish_git_using_command pull 2' -a '(__fish_git_branches)'
 
 # push
 complete -c g -n '__fish_git_needs_command' -a push -d 'Update remote refs along with associated objects'
+complete -f -c g -n '__fish_git_using_command push' -s u -l set-upstream -d 'Add remote branch tracking'
 complete -f -c g -n '__fish_git_using_command push' -a '(git remote)' -d 'Remote alias'
 complete -f -c g -n '__fish_git_using_command push 2' -a '(__fish_git_branches)' -d 'Branch'
 
