@@ -1,12 +1,12 @@
 set fish_greeting
 
-set -x TERM xterm-256color
-set -x EDITOR vim
-set -x LC_ALL en_US.UTF-8
+set -gx TERM xterm-256color
+set -gx EDITOR vim
+set -gx LC_ALL en_US.UTF-8
 
 
 # Paths
-set -g CDPATH .
+set -gx CDPATH .
 
 set -l path_list /usr/local/bin $HOME/.local/bin
 # Ry
@@ -18,8 +18,8 @@ for p in $path_list
   end
 end
 
-set -g NODE_PATH /usr/local/lib/node_modules
-set -g REMOTE_GEM_CACHE_PATH $HOME/.remote-gem-cache
+set -gx NODE_PATH /usr/local/lib/node_modules
+set -gx REMOTE_GEM_CACHE_PATH $HOME/.remote-gem-cache
 
 
 # Alias
