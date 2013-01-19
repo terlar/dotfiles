@@ -23,7 +23,16 @@ function __fish_lunchy_using_command
 end
 
 function __fish_lunchy_services
-  lunchy ls
+  set -l pattern (commandline -t)
+  set -l services (lunchy ls $pattern)
+
+  if test (count $services) -eq 1
+    commandline -t $services
+  else
+    for i in $services
+      echo $i
+    end
+  end
 end
 
 complete -f -c lunchy -s v -l verbose -d 'Show command executions'
@@ -35,6 +44,9 @@ complete -f -c lunchy -n '__fish_lunchy_needs_command' -a restart -d 'Stop and s
 complete -f -c lunchy -n '__fish_lunchy_needs_command' -a status -d 'Show the PID and label for all agents'
 complete -f -c lunchy -n '__fish_lunchy_needs_command' -a install -d 'Installs [file] to ~/Library/LaunchAgents or /Library/LaunchAgents'
 complete -f -c lunchy -n '__fish_lunchy_needs_command' -a edit -d 'Opens the launchctl daemon file in the default editor'
+
+complete -f -c lunchy -n '__fish_lunchy_using_command ls' -a '(__fish_lunchy_services)' -d 'Service'
+complete -f -c lunchy -n '__fish_lunchy_using_command list' -a '(__fish_lunchy_services)' -d 'Service'
 
 complete -f -c lunchy -n '__fish_lunchy_using_command start' -a '(__fish_lunchy_services)' -d 'Service'
 complete -f -c lunchy -n '__fish_lunchy_using_command start' -s w -l write -d 'Persist command'
