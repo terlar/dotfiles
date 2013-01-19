@@ -1,11 +1,13 @@
+# Mac OS X
 .DS_Store
-tags
 
+# Bundler
 .bundle
 vendor/bundle
+/bin/
 Gemfile.local*
 
+tags
 .rake_tasks
-.powenv
-.powder
+.pow*
 zeus.json
