@@ -41,6 +41,7 @@ complete -f -c g -n '__fish_git_using_command pull 2' -a '(__fish_git_branches)'
 
 # push
 complete -c g -n '__fish_git_needs_command' -a push -d 'Update remote refs along with associated objects'
+complete -f -c g -n '__fish_git_using_command push' -l tags -d 'All refs under refs/tags are pushed'
 complete -f -c g -n '__fish_git_using_command push' -s u -l set-upstream -d 'Add remote branch tracking'
 complete -f -c g -n '__fish_git_using_command push' -a '(git remote)' -d 'Remote alias'
 complete -f -c g -n '__fish_git_using_command push 2' -a '(__fish_git_branches)' -d 'Branch'
@@ -57,3 +58,10 @@ complete -f -c g -n '__fish_git_using_command stash' -a clear -d 'Remove all sta
 # cherry-pick
 complete -f -c g -n '__fish_git_needs_command' -a cherry-pick -d 'Apply the change introduced by an existing commit'
 complete -f -c g -n '__fish_git_using_command cherry-pick' -a '(__fish_git_branches)' -d 'Branch'
+
+# tag
+complete -f -c g -n '__fish_git_needs_command' -a tag -d 'Create, list, delete or verify a tag object signed with GPG'
+complete -f -c g -n '__fish_git_using_command tag' -s a -l annotate -d 'Make an unsigned, annotated tag object'
+complete -f -c g -n '__fish_git_using_command tag' -s f -l force -d 'Replace an existing tag with the given name (instead of failing)'
+complete -f -c g -n '__fish_git_using_command tag' -s d -l delete -d 'Delete existing tags with the given names'
+complete -f -c g -n '__fish_git_using_command tag' -s l -l list -d 'List tags with names that match the given pattern (or all if no pattern is given)'
