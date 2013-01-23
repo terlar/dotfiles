@@ -1,0 +1,13 @@
+download_rate = 0
+upload_rate = 8000
+
+# Look for torrents in specified directory; start when found, stop when removed.
+schedule = watch_directory,5,5,load_start=~/Downloads/torrents/*.torrent
+schedule = tied_directory,5,5,start_tied=
+schedule = untied_directory,5,5,stop_untied=
+
+# Download path (incomplete)
+directory = ~/Downloads/incomplete
+
+# Download path (finished)
+system.method.set_key = event.download.finished,move_complete,"execute=mv,-u,$d.get_base_path=,~/Downloads;d.set_directory=~/Downloads"

@@ -1,4 +1,7 @@
 function fish_user_key_bindings
+  # Accept or go to end of line
+  bind \ce accept-autosuggestion
+
   bind \e! __runsudo
 end
 
