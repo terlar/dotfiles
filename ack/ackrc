@@ -10,6 +10,7 @@
 --ignore-dir=doc
 --ignore-dir=public/assets
 --ignore-dir=public/coffeescripts
+--ignore-dir=coverage
 --sort-files
 --color
 --follow
