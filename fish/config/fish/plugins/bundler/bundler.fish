@@ -4,7 +4,7 @@ function bgem ; bundle_gemfile $argv; end
 
 
 # Automatic bundle exec
-for cmd in ruby rails rake rspec spec cucumber spork
+for cmd in ruby rails rake rspec spec cucumber spork pry-remote
   eval "function $cmd; __bundle_run $cmd \$argv; end"
 end
 
