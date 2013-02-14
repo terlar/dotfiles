@@ -11,3 +11,4 @@ tags
 .rake_tasks
 .pow*
 zeus.json
+.pt
