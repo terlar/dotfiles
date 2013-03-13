@@ -1,13 +1,16 @@
 # Mac OS X
 .DS_Store
 
+# Code
+tags
+Session.vim
+
 # Bundler
 .bundle
 vendor/bundle
 /bin/
 Gemfile.local*
 
-tags
 .rake_tasks
 .pow*
 zeus.json
