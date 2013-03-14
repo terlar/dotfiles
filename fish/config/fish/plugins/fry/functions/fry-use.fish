@@ -1,6 +1,6 @@
-function fry-use --description 'Use the ruby given by <name>'
+function fry-use --description 'Use the ruby given by <ruby>'
   if test (count $argv) -eq 0
-    echo 'fry-use: No <name> given.'
+    echo 'fry-use: No <ruby> given'
     echo
     echo 'Available rubies:'
     fry-rubies
@@ -16,7 +16,7 @@ function fry-use --description 'Use the ruby given by <name>'
   end
 
   if test -z "$ruby"
-    echo "fry-use: Unknown ruby '$name' given."
+    echo "fry-use: Unknown ruby '$name'"
     echo
     echo 'Available rubies:'
     fry-rubies
