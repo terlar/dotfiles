@@ -23,6 +23,10 @@ function fry-use --description 'Use the ruby given by <name>'
     return 1
   end
 
+  if test (fry-current) = "$ruby"
+    return 0
+  end
+
   ln -sfn $fry_rubies/$ruby $fry_rubies/current
   echo "Switched to ruby '$ruby'"
 end
