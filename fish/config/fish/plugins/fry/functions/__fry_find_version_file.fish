@@ -1,5 +1,5 @@
-function file_in_path --description 'Find file in path'
-  set -l file $argv[1]
+function __fry_find_version_file --description 'Find .ruby-version file'
+  set -l file .ruby-version
   set -l dir $PWD
 
   while test $dir != '/'
