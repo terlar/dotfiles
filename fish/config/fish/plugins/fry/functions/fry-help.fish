@@ -1,5 +1,5 @@
 function fry-help --description 'Display help information'
-  echo 'usage: fry <command> [<args>]'
+  echo 'usage: fry [<command>|<ruby>] [<args>]'
   echo
   echo 'Commands:'
   echo '  ls          List the installed rubies'

@@ -27,4 +27,5 @@ function __fish_fry
 end
 
 complete -f -c fry -n '__fish_fry_needs_command' -a '(__fish_fry)'
+complete -f -c fry -n '__fish_fry_needs_command' -a '(__fish_fry_rubies)' -d 'Ruby'
 complete -f -c fry -n '__fish_fry_using_command use' -a '(__fish_fry_rubies)' -d 'Ruby'
