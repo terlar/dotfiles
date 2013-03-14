@@ -1,6 +1,9 @@
 # Path
 set -gx fry_rubies $HOME/.rubies
-set PATH $fry_rubies/current/bin $PATH
+
+if test -f $HOME/.ruby-version
+  fry use (cat $HOME/.ruby-version)
+end
 
 # Auto-switch
 function __fry_auto_switch --on-variable PWD --description 'Auto-switch ruby version from .ruby-version file'

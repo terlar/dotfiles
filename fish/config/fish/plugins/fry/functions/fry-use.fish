@@ -8,6 +8,13 @@ function fry-use --description 'Use the ruby given by <ruby>'
   end
 
   set -l name $argv[1]
+
+  if test $name = 'system'
+    fry-reset
+    echo 'Switched to system ruby'
+    return 0
+  end
+
   set -l ruby (fry-ls | grep -m 1 $name)
 
   if test -z "$ruby"
@@ -27,6 +34,7 @@ function fry-use --description 'Use the ruby given by <ruby>'
     return 0
   end
 
-  ln -sfn $fry_rubies/$ruby $fry_rubies/current
+  fry-reset
+  set PATH $fry_rubies/$ruby/bin $PATH
   echo "Switched to ruby '$ruby'"
 end
