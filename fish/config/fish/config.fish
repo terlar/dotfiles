@@ -8,15 +8,7 @@ set -gx LC_ALL en_US.UTF-8
 # Paths
 set -gx CDPATH .
 
-set -l path_list /usr/local/bin $HOME/.local/bin
-# Ry
-set path_list $path_list $HOME/.local/lib/ry/current/bin
-
-for p in $path_list
-  if test -d $p
-    set PATH $p $PATH
-  end
-end
+set PATH $HOME/.local/bin /usr/local/bin $PATH
 
 set -gx NODE_PATH /usr/local/lib/node_modules
 set -gx REMOTE_GEM_CACHE_PATH $HOME/.remote-gem-cache
