@@ -66,7 +66,7 @@ function gr   ; git rebase $argv ; end
 # Fry
 set -l fry_path /usr/local/share/fry
 
-if test -d $fry_path/fry.fish
+if test -f $fry_path/fry.fish
   . $fry_path/fry.fish
 
   if not contains $fry_path/functions $fish_function_path
