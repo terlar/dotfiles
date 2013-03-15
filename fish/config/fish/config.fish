@@ -65,10 +65,17 @@ function gr   ; git rebase $argv ; end
 
 # Fry
 set -l fry_path /usr/local/share/fry
+
 if test -d $fry_path/fry.fish
   . $fry_path/fry.fish
-  set fish_function_path $fry_path/functions $fish_function_path
-  set fish_complete_path $fry_path/completions $fish_function_path
+
+  if not contains $fry_path/functions $fish_function_path
+    set fish_function_path $fry_path/functions $fish_function_path
+  end
+
+  if not contains $fry_path/completions $fish_complete_path
+    set fish_complete_path $fry_path/completions $fish_complete_path
+  end
 end
 
 
