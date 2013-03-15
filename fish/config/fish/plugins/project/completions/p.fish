@@ -1,7 +1,7 @@
 # fish completion for p
 function __fish_projects
-  set -l pattern (commandline -t)
-  set -l list (ls $PROJECTS | grep $pattern)
+  set -l token (commandline -pt)
+  set -l list (ls $PROJECTS | grep $token)
 
   if test (count $list) -eq 1
     commandline -t $list
