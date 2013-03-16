@@ -64,8 +64,8 @@ function gr   ; git rebase $argv ; end
 
 
 # Fry
-set -gx fry_path /usr/local/share/fry
-test -f $fry_path/fry.fish; and . $fry_path/fry.fish
+. /usr/local/share/fry/fry.fish
+
 
 # Plugins
 for plugin in $HOME/.config/fish/plugins/*
