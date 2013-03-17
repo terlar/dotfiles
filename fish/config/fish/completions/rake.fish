@@ -13,7 +13,7 @@ function __fish_rake
 
   if __rake_task_list_outdated
     rake --silent --tasks | \
-      sed 's/^rake //; s/[[:blank:]].*#/'(printf '\t')'/g' > .rake_tasks
+      sed 's/^rake //; s/[[:blank:]].*#/'\t'/g' > .rake_tasks
   end
 
   cat .rake_tasks

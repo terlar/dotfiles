@@ -4,7 +4,7 @@ function __fish_pt
   test "$PWD" = "$HOME"; and return
 
   pt --help | grep pt \
-    | sed -e 1d -e 's/^pt //; s/[[:blank:]].*#/'(printf '\t')'/g'
+    | sed -e 1d -e 's/^pt //; s/[[:blank:]].*#/'\t'/g'
 end
 
 complete -f -c pt -a '(__fish_pt)'
