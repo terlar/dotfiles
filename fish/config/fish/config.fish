@@ -66,6 +66,8 @@ function gr   ; git rebase $argv ; end
 # Fry
 . /usr/local/share/fry/fry.fish
 
+# Farm
+. /usr/local/share/fish-farm/farm.fish
 
 # Plugins
 for plugin in $HOME/.config/fish/plugins/*
