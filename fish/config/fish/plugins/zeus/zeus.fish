@@ -1,3 +1,11 @@
+# Initialize
+set -l zeus_path (dirname (status -f))
+
+if not contains $zeus_path/functions $fish_function_path
+  set fish_function_path $zeus_path/functions $fish_function_path
+end
+
+
 # Alias
 function zc   ; zeus console $argv; end
 function zr   ; zeus rake $argv; end

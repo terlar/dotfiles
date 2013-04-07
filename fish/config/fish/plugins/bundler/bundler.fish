@@ -1,6 +1,19 @@
+# Initialize
+set -l bundler_path (dirname (status -f))
+
+if not contains $bundler_path/functions $fish_function_path
+  set fish_function_path $bundler_path/functions $fish_function_path
+end
+
+if not contains $bundler_path/completions $fish_complete_path
+  set fish_complete_path $bundler_path/completions $fish_complete_path
+end
+
+
 # Alias
 function b    ; bundle_unlocked $argv; end
 function bgem ; bundle_gemfile $argv; end
+
 
 # Toggle binstub path
 function __bundler_set_binstub_path --on-variable PWD
