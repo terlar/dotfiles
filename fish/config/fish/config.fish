@@ -4,14 +4,9 @@ set -gx TERM xterm-256color
 set -gx EDITOR vim
 set -gx LC_ALL en_US.UTF-8
 
-
 # Paths
-set -gx CDPATH .
-
 set PATH $HOME/.local/bin /usr/local/bin $PATH
-
 set -gx NODE_PATH /usr/local/lib/node_modules
-set -gx REMOTE_GEM_CACHE_PATH $HOME/.remote-gem-cache
 
 
 # Less colors
@@ -65,7 +60,6 @@ function gr   ; git rebase $argv ; end
 
 # Fry
 . /usr/local/share/fry/fry.fish
-
 # Farm
 . /usr/local/share/fish-farm/farm.fish
 
