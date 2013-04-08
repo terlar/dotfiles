@@ -16,9 +16,7 @@ function bgem ; bundle_gemfile $argv; end
 
 
 # Toggle binstub path
-function __bundler_set_binstub_path --on-variable PWD
-  status --is-command-substitution; and return
-
+function __bundler_set_binstub_path --on-event fish_prompt
   set -l gemfile_path (file_in_path Gemfile)
 
   if test -z $gemfile_path
