@@ -14,5 +14,4 @@ Gemfile.local*
 .ruby-version
 .rake_tasks
 .pow*
-zeus.json
 .pt

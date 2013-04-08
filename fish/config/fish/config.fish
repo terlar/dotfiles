@@ -18,10 +18,19 @@ set PATH $HOME/.local/bin /usr/local/bin $PATH
 set -gx NODE_PATH /usr/local/lib/node_modules
 
 
+# Plugins
+set -l plugins_path (dirname (status -f))/plugins
+# Bundler
+. $plugins_path/bundler/bundler.fish
+
+# Farm
+. /usr/local/share/fish-farm/farm.fish
+# Fry
+. /usr/local/share/fry/fry.fish
+
+
 # Alias
 function !      ; sudo $argv ; end
-function rc     ; rails console ; end
-function kc     ; kviberg-config $argv ; end
 
 # ls
 function l      ; ls -la ; end
@@ -56,15 +65,10 @@ function gf   ; git fetch $argv ; end
 function gm   ; git merge $argv ; end
 function gr   ; git rebase $argv ; end
 
+# rails
+function rc ; rails console $argv ; end
+function rg ; rails generate $argv ; end
+function s  ; spring $argv; end
 
-# Plugins
-set -l plugins_path (dirname (status -f))/plugins
-# Bundler
-. $plugins_path/bundler/bundler.fish
-# Zeus
-. $plugins_path/zeus/zeus.fish
-
-# Farm
-. /usr/local/share/fish-farm/farm.fish
-# Fry
-. /usr/local/share/fry/fry.fish
+# Tools
+function kc ; kviberg-config $argv ; end
