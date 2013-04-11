@@ -71,7 +71,21 @@ function gr   ; git rebase $argv ; end
 function rc ; rails console $argv ; end
 function rg ; rails generate $argv ; end
 function s  ; spring $argv; end
-function sb ; for i in rspec rake rails; spring binstub $i; end; end
+function sb
+  which spring >/dev/null; or return
+
+  for i in rspec rake rails
+    spring binstub $i
+  end
+end
+
+function b
+  bundle $argv
+  and begin
+    test (count $argv) = 0; and sb
+    return 0
+  end
+end
 
 # Tools
 function kc ; kviberg-config $argv ; end

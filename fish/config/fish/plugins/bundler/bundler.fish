@@ -11,9 +11,9 @@ end
 
 
 # Alias
-function be   ; bundle exec $argv; end
-function b    ; bundle_unlocked $argv; end
-function bgem ; bundle_gemfile $argv; end
+function bundle ; bundle_unlocked $argv; end
+function be     ; bundle exec $argv; end
+function bgem   ; bundle_gemfile $argv; end
 
 
 # Toggle binstub path
