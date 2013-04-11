@@ -11,6 +11,7 @@ end
 
 
 # Alias
+function be   ; bundle exec $argv; end
 function b    ; bundle_unlocked $argv; end
 function bgem ; bundle_gemfile $argv; end
 
