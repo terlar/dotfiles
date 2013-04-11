@@ -70,6 +70,7 @@ function gr   ; git rebase $argv ; end
 # rails
 function rc ; rails console $argv ; end
 function rg ; rails generate $argv ; end
+function be ; bundle exec $argv; end
 function s  ; spring $argv; end
 function sb
   which spring >/dev/null; or return
