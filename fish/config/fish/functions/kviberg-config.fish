@@ -1,6 +1,6 @@
 function kviberg-config
 
-  p kviberg-config
+  cd $farm/kviberg-config
 
   if test (count $argv) -eq 0
     return 0
