@@ -1,9 +1,9 @@
 if status --is-login
   set fish_greeting
 
-  set -gx TERM xterm-256color
-  set -gx EDITOR vim
-  set -gx LC_ALL en_US.UTF-8
+  set -x TERM xterm-256color
+  set -x EDITOR vim
+  set -x LC_ALL en_US.UTF-8
 
   # Less colors
   set -x LESS_TERMCAP_mb \e'[01;31m'       # begin blinking
@@ -16,7 +16,7 @@ if status --is-login
 
   # Paths
   set PATH $HOME/.local/bin /usr/local/bin $PATH
-  set -gx NODE_PATH /usr/local/lib/node_modules
+  set -x NODE_PATH /usr/local/lib/node_modules
 end
 
 
@@ -37,7 +37,6 @@ function !      ; sudo $argv ; end
 # ls
 function l      ; ls -la ; end
 function l.     ; ls -d .* ; end
-function ll     ; ls -l ; end
 
 # mkdir
 function mkdir  ; command mkdir -p $argv ; end
@@ -67,7 +66,7 @@ function gf   ; git fetch $argv ; end
 function gm   ; git merge $argv ; end
 function gr   ; git rebase $argv ; end
 
-# rails
+# ruby
 function rc ; rails console $argv ; end
 function rg ; rails generate $argv ; end
 function be ; bundle exec $argv; end
