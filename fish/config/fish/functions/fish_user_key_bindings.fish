@@ -16,7 +16,7 @@ function __insert-previous-token
   set -l tokens (commandline -po)
   test $tokens[1]; or return
 
-  set -l previous_token $tokens[(count $tokens)]
+  set -l previous_token $tokens[-1]
 
   if test -n (commandline -pt)
     set previous_token " $previous_token"
