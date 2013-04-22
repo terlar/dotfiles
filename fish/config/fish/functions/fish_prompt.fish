@@ -23,6 +23,12 @@ function fish_prompt --description 'Write out the prompt'
   __terlar_git_prompt
   echo
 
+  if set -q CMD_DURATION
+    set_color 555
+    echo -n "($CMD_DURATION) "
+    set_color normal
+  end
+
   if test $last_status -ne 0
     set_color $fish_color_error
   end
