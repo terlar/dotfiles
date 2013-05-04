@@ -4,6 +4,9 @@ function fish_user_key_bindings
   bind \e, __insert-previous-token
 
   bind \e! __runsudo
+
+  bind \e'<' prevd
+  bind \e'>' nextd
 end
 
 function __runsudo --description 'Run current command line as root'
