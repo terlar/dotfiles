@@ -5,8 +5,8 @@ function fish_user_key_bindings
 
   bind \e! __runsudo
 
-  bind \e'<' prevd
-  bind \e'>' nextd
+  bind \e'<' 'prevd; commandline -f repaint'
+  bind \e'>' 'nextd; commandline -f repaint'
 end
 
 function __runsudo --description 'Run current command line as root'
