@@ -7,6 +7,8 @@ function fish_user_key_bindings
 
   bind \e'<' 'prevd; commandline -f repaint'
   bind \e'>' 'nextd; commandline -f repaint'
+
+  bind \el 'echo; __fish_list_current_token; echo'
 end
 
 function __runsudo --description 'Run current command line as root'
