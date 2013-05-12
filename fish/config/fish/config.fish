@@ -32,6 +32,8 @@ set -l plugins_path (dirname (status -f))/plugins
 # Alias
 function !      ; sudo $argv ; end
 function tf     ; tail -f $argv; end
+function f      ; farm $argv ; end
+function fcd    ; farm cd $argv ; end
 
 # ls
 function l      ; ls -la ; end
