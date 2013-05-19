@@ -9,6 +9,9 @@ function fish_user_key_bindings
   bind \e'>' 'nextd; commandline -f repaint'
 
   bind \el 'echo; __fish_list_current_token; echo'
+
+  bind \ct 'commandline -t (commandline -t | sed -E -e "s/(.)(.)\$/\2\1/")'
+  bind \cx __fish_eval_token
 end
 
 function __runsudo --description 'Run current command line as root'
@@ -28,4 +31,22 @@ function __insert-previous-token
   end
 
   commandline -i $previous_token
+end
+
+function __fish_list
+  for item in $argv
+    echo $item | sed -e 's/ /\\\\ /g'
+  end
+end
+
+function __fish_eval_token
+  set -l token (commandline -t)
+
+  if test -n "$token"
+    set -l value (eval __fish_list $token | tr \n ' ')
+    if test -n "$value" -a "$value" != ' '
+      commandline -t $value
+      commandline -f backward-char
+    end
+  end
 end
