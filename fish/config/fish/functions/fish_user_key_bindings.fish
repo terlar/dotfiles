@@ -12,6 +12,9 @@ function fish_user_key_bindings
 
   bind \ct 'commandline -t (commandline -t | sed -E -e "s/(.)(.)\$/\2\1/")'
   bind \cx __fish_eval_token
+
+  bind \  '__fish_expand_abbreviation; commandline -i " "'
+  bind \n '__fish_expand_abbreviation; commandline -f execute'
 end
 
 function __runsudo --description 'Run current command line as root'
@@ -47,6 +50,16 @@ function __fish_eval_token
     if test -n "$value" -a "$value" != ' '
       commandline -t $value
       commandline -f backward-char
+    end
+  end
+end
+
+function __fish_expand_abbreviation
+  if test (count (commandline -poc)) -eq 0
+    set -l token (commandline -t)
+
+    if abbreviations -q $token
+      commandline -t (abbreviations $token)
     end
   end
 end

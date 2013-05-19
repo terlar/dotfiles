@@ -29,64 +29,45 @@ set -l plugins_path (dirname (status -f))/plugins
 . /usr/local/share/fry/fry.fish
 
 
-# Alias
-function !      ; sudo $argv ; end
-function tf     ; tail -f $argv; end
-function f      ; farm $argv ; end
-function fcd    ; farm cd $argv ; end
+# Abbreviations
+abbreviate !    'sudo'
+abbreviate tf   'tail -f'
+abbreviate f    'farm'
+abbreviate fcd  'farm cd'
 
 # ls
-function l      ; ls -la ; end
-function l.     ; ls -d .* ; end
-
-# mkdir
-function mkdir  ; command mkdir -p $argv ; end
-function mkcd   ; mkdir $argv; and cd $argv ; end
+abbreviate l    'ls -la'
+abbreviate l.   'ls -d .*'
 
 # git
-function g    ; git $argv ; end
-function gs   ; git status $argv ; end
+abbreviate g    'git'
+abbreviate gs   'git status'
 
-function gl   ; git l $argv ; end
-function gls  ; git ls $argv ; end
-function gwc  ; git wc $argv ; end
+abbreviate gl   'git l'
+abbreviate gls  'git ls'
+abbreviate gwc  'git wc'
 
-function gd   ; git diff $argv ; end
-function gdw  ; git diff --color-words $argv ; end
-function gds  ; git diff --stat $argv ; end
-function gdv  ; git diff -w $argv | view - ; end
+abbreviate gd   'git diff'
+abbreviate gdw  'git diff --color-words'
+abbreviate gds  'git diff --stat'
+function gdv   ; git diff -w $argv | view - ; end
 
-function ga   ; git add $argv ; end
-function gc   ; git commit -v $argv ; end
-function gca  ; git commit -v -a $argv ; end
+abbreviate ga   'git add'
+abbreviate gc   'git commit -v'
+abbreviate gca  'git commit -v -a'
 
-function gb   ; git branch $argv ; end
-function gco  ; git checkout $argv ; end
+abbreviate gb   'git branch'
+abbreviate gco  'git checkout'
 
-function gf   ; git fetch $argv ; end
-function gm   ; git merge $argv ; end
-function gr   ; git rebase $argv ; end
+abbreviate gf   'git fetch'
+abbreviate gm   'git merge'
+abbreviate gr   'git rebase'
 
 # ruby
-function rc ; rails console $argv ; end
-function rg ; rails generate $argv ; end
-function be ; bundle exec $argv; end
-function s  ; spring $argv; end
-function sb
-  which spring >/dev/null; or return
+abbreviate rc   'rails console'
+abbreviate rg   'rails generate'
+abbreviate be   'bundle exec'
+abbreviate s    'spring'
 
-  for i in rspec rake rails
-    spring binstub $i
-  end
-end
-
-function b
-  bundle $argv
-  and begin
-    test (count $argv) = 0; and sb
-    return 0
-  end
-end
-
-# Tools
-function kc ; kviberg-config $argv ; end
+# tools
+abbreviate kc 'kviberg-config'
