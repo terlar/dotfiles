@@ -1,4 +1,5 @@
 fish/config/fish/fishd.*
 fish/config/fish/fish_history
+fish/config/fish/fish_read_history
 fish/config/fish/generated_completions
 zsh/zsh/cache
