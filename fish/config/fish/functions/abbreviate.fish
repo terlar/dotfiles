@@ -4,10 +4,7 @@ function abbreviate --description 'Define a new abbreviation'
     return 1
   end
 
-  if abbreviations -q $argv[1]
-    echo "abbreviate: Abbreviation '$argv[1]' already defined."
-    return 1
-  end
+  abbreviations -e $argv[1]
 
   set -U fish_abbreviations $fish_abbreviations "$argv"
   return 0

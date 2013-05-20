@@ -30,4 +30,4 @@ set -l plugins_path (dirname (status -f))/plugins
 
 
 # Abbreviations
-set -q fish_abbreviations; or fish_user_abbreviations
+fish_user_abbreviations
