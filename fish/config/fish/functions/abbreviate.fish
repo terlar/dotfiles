@@ -4,7 +4,10 @@ function abbreviate --description 'Define a new abbreviation'
     return 1
   end
 
-  abbreviations -e $argv[1]
+  echo $argv | read -l abbreviation command
+
+  eval "function $abbreviation; $command \$argv; end"
+  abbreviations -e $abbreviation
 
   set -U fish_abbreviations $fish_abbreviations "$argv"
   return 0
