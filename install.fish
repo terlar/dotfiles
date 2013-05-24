@@ -46,6 +46,23 @@ function dotfiles_read_choice_prompt
   echo '> '
 end
 
+function dotfiles_read_confirm
+  while true
+    read -l -p read_confirm_prompt confirm
+
+    switch $confirm
+      case Y y
+        return 0
+      case '' N n
+        return 1
+    end
+  end
+end
+
+function dotfiles_read_confirm_prompt
+  echo 'Do you want to continue? [Y/n] '
+end
+
 function dotfiles_remove_file
   echo $argv | read -l target_file
 
@@ -54,7 +71,7 @@ function dotfiles_remove_file
   set_color normal
   echo Remove $target_file
 
-  rm -r $target_file
+  rm -rf $target_file
 end
 
 function dotfiles_backup_file
@@ -77,6 +94,21 @@ function dotfiles_link_file
   echo Link $target_file
 
   ln -s $source_file $target_file
+end
+
+function dotfiles_prepare_linking
+  if test -e $argv -o -L $argv
+    dotfiles_read_choice $argv
+    if set -qg choice_overwrite
+      dotfiles_remove_file $argv
+    else if set -qg choice_backup
+      dotfiles_backup_file $argv
+    else
+      return 1
+    end
+  end
+
+  return 0
 end
 
 function dotfiles_install
@@ -103,25 +135,22 @@ function dotfiles_install
       continue
     end
 
-    if test -e $target_file -o -L $target_file
-      dotfiles_read_choice $target_file
-      if set -qg choice_overwrite
-        dotfiles_remove_file $target_file
-      else if set -qg choice_backup
-        dotfiles_backup_file $target_file
-      else
-        continue
-      end
+    if dotfiles_prepare_linking $target_file
+      dotfiles_link_file $target_file $source_file
     end
-
-    dotfiles_link_file $target_file $source_file
   end
 end
 
 function dotfiles_install_vim
-  git clone git://github.com/terlar/vimfiles.git $HOME/.vimfiles
-  ln -s $HOME/.vimfiles/vim $HOME/.vim
-  ln -s $HOME/.vimfiles/vimrc $HOME/.vimrc
+  if dotfiles_prepare_linking $HOME/.vim
+    git clone git://github.com/terlar/vimfiles.git $HOME/.vim
+  else
+    return
+  end
+
+  if dotfiles_prepare_linking $HOME/.vimrc
+    ln -s $HOME/.vim/vimrc $HOME/.vimrc
+  end
 end
 
 set -l current_file (basename (status -f))
@@ -129,18 +158,42 @@ set -l files (ls | cat | grep -v $current_file | grep -v README.md)
 set -eg choice_all
 
 echo 'Installing dotfiles...'
+if read_confirm
+  dotfiles_install $HOME/. $PWD/ $files
 
-dotfiles_install $HOME/. $PWD/ $files
-dotfiles_install_vim
+  set_color blue --bold
+  echo -n '==> '
+  set_color normal
+  echo 'DONE!'
+else
+  set_color red --bold
+  echo -n '==> '
+  set_color normal
+  echo 'SKIPPED!'
+end
 
-set_color blue --bold
-echo -n '==> '
-set_color normal
-echo 'DONE!'
+echo 'Installing vimfiles...'
+if read_confirm
+  dotfiles_install_vim
 
+  set_color blue --bold
+  echo -n '==> '
+  set_color normal
+  echo 'DONE!'
+else
+  set_color red --bold
+  echo -n '==> '
+  set_color normal
+  echo 'SKIPPED!'
+end
+
+functions -e dotfiles_install
+functions -e dotfiles_install_vim
 functions -e dotfiles_read_choice
 functions -e dotfiles_read_choice_prompt
-functions -e dotfiles_install
+functions -e dotfiles_read_confirm
+functions -e dotfiles_read_confirm_prompt
+functions -e dotfiles_prepare_linking
 functions -e dotfiles_remove_file
 functions -e dotfiles_backup_file
 functions -e dotfiles_link_file
