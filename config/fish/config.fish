@@ -13,6 +13,12 @@ set -x LESS_TERMCAP_se \e'[0m'           # end standout-mode
 set -x LESS_TERMCAP_us \e'[04;38;5;146m' # begin underline
 set -x LESS_TERMCAP_ue \e'[0m'           # end underline
 
+# Prompt colors
+set -q fish_color_user; or set -U fish_color_user magenta
+set -q fish_color_host; or set -U fish_color_host yellow
+set -q fish_color_cwd; or set -U fish_color_cwd green
+set -q fish_pager_color_description; or set -U fish_pager_color_description 555 yellow
+
 # Paths
 set PATH $HOME/.local/bin /usr/local/bin $PATH
 set -x NODE_PATH /usr/local/lib/node_modules
