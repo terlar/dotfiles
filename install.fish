@@ -118,6 +118,12 @@ function dotfiles_install
   end
 end
 
+function dotfiles_install_vim
+  git clone git://github.com/terlar/vimfiles.git $HOME/.vimfiles
+  ln -s $HOME/.vimfiles/vim $HOME/.vim
+  ln -s $HOME/.vimfiles/vimrc $HOME/.vimrc
+end
+
 set -l current_file (basename (status -f))
 set -l files (ls | cat | grep -v $current_file | grep -v README.md)
 set -eg choice_all
@@ -125,6 +131,7 @@ set -eg choice_all
 echo 'Installing dotfiles...'
 
 dotfiles_install $HOME/. $PWD/ $files
+dotfiles_install_vim
 
 set_color blue --bold
 echo -n '==> '
