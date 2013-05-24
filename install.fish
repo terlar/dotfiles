@@ -48,7 +48,7 @@ end
 
 function dotfiles_read_confirm
   while true
-    read -l -p read_confirm_prompt confirm
+    read -l -p dotfiles_read_confirm_prompt confirm
 
     switch $confirm
       case Y y
@@ -158,7 +158,7 @@ set -l files (ls | cat | grep -v $current_file | grep -v README.md)
 set -eg choice_all
 
 echo 'Installing dotfiles...'
-if read_confirm
+if dotfiles_read_confirm
   dotfiles_install $HOME/. $PWD/ $files
 
   set_color blue --bold
@@ -173,7 +173,7 @@ else
 end
 
 echo 'Installing vimfiles...'
-if read_confirm
+if dotfiles_read_confirm
   dotfiles_install_vim
 
   set_color blue --bold
