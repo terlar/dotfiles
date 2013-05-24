@@ -4,27 +4,27 @@ During the installation you will get an interactive menu for any
 conflicting file. You can choose to either keep, replace or backup the
 old files.
 
-```
-git clone git://github.com/terlar/dotfiles.git ~/.dotfiles
-cd ~/.dotfiles
-rake install
+```sh
+git clone git://github.com/terlar/dotfiles.git $HOME/.dotfiles
+cd $HOME/.dotfiles
+fish install.fish
 ```
 
 ## Update
 
-Pulls the latest dotfiles and updates the submodules.
+Pull the latest dotfiles.
 
-```
-cd ~/.dotfiles
-rake update
+```sh
+cd $HOME/.dotfiles
+git pull
 ```
 
 ## Uninstall
 
-Unlinks the dotfiles and restores eventual backups.
+PENDING: Unlinks the dotfiles and restores eventual backups.
 
-```
-cd ~/.dotfiles
-rake uninstall
-rm -rf ~/.dotfiles
+```sh
+# cd $HOME/.dotfiles
+# fish uninstall.fish
+# rm -rf ~/.dotfiles
 ```
