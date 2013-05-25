@@ -10,7 +10,6 @@ function fish_user_key_bindings
 
   bind \el 'echo; __fish_list_current_token; echo'
 
-  bind \ct 'commandline -t (commandline -t | sed -E -e "s/(.)(.)\$/\2\1/")'
   bind \cx __fish_eval_token
 
   bind \  '__fish_expand_abbreviation; commandline -i " "'
