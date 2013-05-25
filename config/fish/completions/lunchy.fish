@@ -22,19 +22,6 @@ function __fish_lunchy_using_command
   return 1
 end
 
-function __fish_lunchy_services
-  set -l pattern (commandline -t)
-  set -l services (lunchy ls $pattern)
-
-  if test (count $services) -eq 1
-    commandline -t $services
-  else
-    for i in $services
-      echo $i
-    end
-  end
-end
-
 complete -f -c lunchy -s v -l verbose -d 'Show command executions'
 
 complete -f -c lunchy -n '__fish_lunchy_needs_command' -a 'ls list' -d 'Show the list of installed agents'
@@ -45,16 +32,16 @@ complete -f -c lunchy -n '__fish_lunchy_needs_command' -a status -d 'Show the PI
 complete -f -c lunchy -n '__fish_lunchy_needs_command' -a install -d 'Installs [file] to ~/Library/LaunchAgents or /Library/LaunchAgents'
 complete -f -c lunchy -n '__fish_lunchy_needs_command' -a edit -d 'Opens the launchctl daemon file in the default editor'
 
-complete -f -c lunchy -n '__fish_lunchy_using_command ls' -a '(__fish_lunchy_services)' -d 'Service'
-complete -f -c lunchy -n '__fish_lunchy_using_command list' -a '(__fish_lunchy_services)' -d 'Service'
+complete -f -c lunchy -n '__fish_lunchy_using_command ls' -a '(lunchy ls)' -d 'Service'
+complete -f -c lunchy -n '__fish_lunchy_using_command list' -a '(lunchy ls)' -d 'Service'
 
-complete -f -c lunchy -n '__fish_lunchy_using_command start' -a '(__fish_lunchy_services)' -d 'Service'
+complete -f -c lunchy -n '__fish_lunchy_using_command start' -a '(lunchy ls)' -d 'Service'
 complete -f -c lunchy -n '__fish_lunchy_using_command start' -s w -l write -d 'Persist command'
 complete -f -c lunchy -n '__fish_lunchy_using_command start' -s F -l force -d 'Force start (disabled) agents'
 
-complete -f -c lunchy -n '__fish_lunchy_using_command stop' -a '(__fish_lunchy_services)' -d 'Service'
+complete -f -c lunchy -n '__fish_lunchy_using_command stop' -a '(lunchy ls)' -d 'Service'
 complete -f -c lunchy -n '__fish_lunchy_using_command stop' -s w -l write -d 'Persist command'
 
-complete -f -c lunchy -n '__fish_lunchy_using_command restart' -a '(__fish_lunchy_services)' -d 'Service'
-complete -f -c lunchy -n '__fish_lunchy_using_command status' -a '(__fish_lunchy_services)' -d 'Service'
-complete -f -c lunchy -n '__fish_lunchy_using_command edit' -a '(__fish_lunchy_services)' -d 'Service'
+complete -f -c lunchy -n '__fish_lunchy_using_command restart' -a '(lunchy ls)' -d 'Service'
+complete -f -c lunchy -n '__fish_lunchy_using_command status' -a '(lunchy ls)' -d 'Service'
+complete -f -c lunchy -n '__fish_lunchy_using_command edit' -a '(lunchy ls)' -d 'Service'
