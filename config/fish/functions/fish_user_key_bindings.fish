@@ -1,17 +1,17 @@
 function fish_user_key_bindings
+  bind \cf 'commandline "fg"; commandline -f execute'
+
   # Insert last argument of previous command
   bind \e. history-token-search-backward
   bind \e, __insert-previous-token
 
-  bind \e! __runsudo
-
+  bind \el 'echo; __fish_list_current_token; echo'
   bind \e'<' 'prevd; commandline -f repaint'
   bind \e'>' 'nextd; commandline -f repaint'
 
-  bind \el 'echo; __fish_list_current_token; echo'
+  bind \e! __runsudo
 
   bind \cx __fish_eval_token
-
   bind \  '__fish_expand_abbreviation; commandline -i " "'
   bind \n '__fish_expand_abbreviation; commandline -f execute'
 end
