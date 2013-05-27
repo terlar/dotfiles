@@ -1,5 +1,5 @@
 function fish_user_key_bindings
-  bind \cf 'commandline "fg"; commandline -f execute'
+  bind \ez 'commandline "fg"; commandline -f execute'
 
   # Insert last argument of previous command
   bind \e. history-token-search-backward
