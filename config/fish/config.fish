@@ -20,7 +20,7 @@ set -q fish_color_cwd; or set -U fish_color_cwd green
 set -q fish_pager_color_description; or set -U fish_pager_color_description 555 yellow
 
 # Paths
-set PATH $HOME/.local/bin /usr/local/bin $PATH /usr/local/share/python3 /usr/local/share/python
+set PATH $HOME/.local/bin /usr/local/bin $PATH
 set -x NODE_PATH /usr/local/lib/node_modules
 
 
