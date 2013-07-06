@@ -15,7 +15,6 @@ function fish_user_key_bindings
   bind \cx __fish_eval_token
   bind \  '__fish_expand_abbreviation; commandline -i " "'
   bind \n '__fish_expand_abbreviation; commandline -f execute'
-  bind \x15 execute
 end
 
 function __runsudo --description 'Run current command line as root'
