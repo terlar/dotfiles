@@ -5,21 +5,23 @@ function fish_user_abbreviations
   abbreviate fcd  'farm cd'
 
   # ls
-  abbreviate l    'ls -la'
+  abbreviate l    'ls -a'
   abbreviate l.   'ls -d .*'
 
   # git
   abbreviate g    'git'
-  abbreviate gs   'git status'
+  abbreviate gs   'git status -sb'
 
+  abbreviate gh   'git head'
   abbreviate gl   'git l'
-  abbreviate gls  'git ls'
+  abbreviate gll  'git ll'
   abbreviate gwc  'git wc'
 
   abbreviate gd   'git diff'
+  abbreviate gdt  'git difftool'
+  abbreviate gdc  'git diff --cached'
   abbreviate gdw  'git diff --color-words'
   abbreviate gds  'git diff --stat'
-  function gdv   ; git diff -w $argv | view - ; end
 
   abbreviate ga   'git add'
   abbreviate gc   'git commit -v'
@@ -29,8 +31,10 @@ function fish_user_abbreviations
   abbreviate gco  'git checkout'
 
   abbreviate gf   'git fetch'
+  abbreviate gfa  'git fetch --all'
   abbreviate gm   'git merge'
   abbreviate gr   'git rebase'
+  abbreviate cp   'git cherry-pick'
 
   # ruby
   abbreviate rc   'rails console'
