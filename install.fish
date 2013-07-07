@@ -154,7 +154,7 @@ function dotfiles_install_vim
 end
 
 set -l current_file (basename (status -f))
-set -l files (ls | cat | grep -v $current_file | grep -v README.md)
+set -l files (ls | cat | grep -vE "($current_file|README.md)")
 set -eg choice_all
 
 echo 'Installing dotfiles...'
