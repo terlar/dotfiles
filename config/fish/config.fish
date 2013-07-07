@@ -20,7 +20,9 @@ set -q fish_color_cwd; or set -U fish_color_cwd green
 set -q fish_pager_color_description; or set -U fish_pager_color_description 555 yellow
 
 # Paths
-set PATH $HOME/.local/bin /usr/local/bin $PATH
+# Hack to remove existing paths
+set __fish_added_user_paths /usr/local/bin
+set fish_user_paths $HOME/.local/bin /usr/local/bin
 set -x NODE_PATH /usr/local/lib/node_modules
 
 
