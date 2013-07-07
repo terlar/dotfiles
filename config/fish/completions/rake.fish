@@ -2,7 +2,7 @@
 function __rake_task_list_outdated --description 'Check if rake task cache is outdated'
   not test -f .rake_tasks; and return 0
 
-  set -l files (find Rakefile lib/tasks -newer .rake_tasks 2>/dev/null)
+  set -l files (find Rakefile lib/tasks -newer .rake_tasks ^/dev/null)
   not test -z "$files"; and return 0
 
   return 1
