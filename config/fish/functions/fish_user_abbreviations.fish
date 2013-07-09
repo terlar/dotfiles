@@ -34,7 +34,7 @@ function fish_user_abbreviations
   abbreviate gfa  'git fetch --all'
   abbreviate gm   'git merge'
   abbreviate gr   'git rebase'
-  abbreviate cp   'git cherry-pick'
+  abbreviate gcp  'git cherry-pick'
 
   # ruby
   abbreviate rc   'rails console'
