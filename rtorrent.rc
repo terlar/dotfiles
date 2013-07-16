@@ -1,13 +1,39 @@
-download_rate = 0
-upload_rate = 8000
+session = ~/.rtorrent_session
 
-# Look for torrents in specified directory; start when found, stop when removed.
+port_range = 49164-49164
+
+min_peers = 1000
+max_peers = 1500
+
+min_peers_seed = 200
+max_peers_seed = 300
+
+download_rate = 9500
+upload_rate = 800
+
+check_hash = no
+
+# Encryption
+encryption = allow_incoming,try_outgoing,enable_retry
+
+# DHT
+dht = auto
+dht_port = 49753
+peer_exchange = yes
+
+# Priority
+file.prioritize_toc.set=1
+file.prioritize_toc.first.set = {*.avi,*.mp4,*.mkv,*.gz}
+file.prioritize_toc.last.set = {*.zip}
+
+# Watch for new torrents
 schedule = watch_directory,5,5,load_start=~/Downloads/torrents/*.torrent
 schedule = tied_directory,5,5,start_tied=
 schedule = untied_directory,5,5,stop_untied=
+schedule = ratio,5,600,stop_on_ratio=500,500M,1000
 
 # Download path (incomplete)
 directory = ~/Downloads/incomplete
 
 # Download path (finished)
-system.method.set_key = event.download.finished,move_complete,"execute=mv,-u,$d.get_base_path=,~/Downloads;d.set_directory=~/Downloads"
+system.method.set_key = event.download.finished,move_complete,"set_directory=~/Downloads/;execute=mv,-u,$d.get_base_path=,~/Downloads/"
