@@ -4,6 +4,8 @@ set -x TERM xterm-256color
 set -x EDITOR vim
 set -x LC_ALL en_US.UTF-8
 
+set -x ARCHFLAGS '-arch x86_64'
+
 # Less colors
 set -x LESS_TERMCAP_mb \e'[01;31m'       # begin blinking
 set -x LESS_TERMCAP_md \e'[01;38;5;74m'  # begin bold
