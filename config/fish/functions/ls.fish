@@ -1,7 +1,9 @@
 function ls --description 'List files with style'
   set argv -h $argv
 
-  if test (command ls --color -d . ^/dev/null)
+  set -l with_color (command ls --color -d . ^/dev/null)
+
+  if test -n "$with_color"
     set argv --color=tty $argv
   else
     set argv -G $argv
