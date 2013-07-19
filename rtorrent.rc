@@ -1,5 +1,3 @@
-session = ~/.rtorrent_session
-
 port_range = 49164-49164
 
 min_peers = 1000
@@ -30,7 +28,6 @@ file.prioritize_toc.last.set = {*.zip}
 schedule = watch_directory,5,5,load_start=~/Downloads/torrents/*.torrent
 schedule = tied_directory,5,5,start_tied=
 schedule = untied_directory,5,5,stop_untied=
-schedule = ratio,5,600,stop_on_ratio=500,500M,1000
 
 # Download path (incomplete)
 directory = ~/Downloads/incomplete
