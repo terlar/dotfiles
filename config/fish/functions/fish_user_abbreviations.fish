@@ -1,47 +1,35 @@
 function fish_user_abbreviations
-  abbreviate !    'sudo'
-  abbreviate tf   'tail -f'
-  abbreviate f    'farm'
-  abbreviate fcd  'farm cd'
-
-  # ls
-  abbreviate l    'ls -a'
-  abbreviate l.   'ls -d .*'
-
-  # git
-  abbreviate g    'git'
-  abbreviate gs   'git status -sb'
-
-  abbreviate gh   'git head'
-  abbreviate gl   'git l'
-  abbreviate gll  'git ll'
-  abbreviate gwc  'git wc'
-
-  abbreviate gd   'git diff'
-  abbreviate gdt  'git difftool'
-  abbreviate gdc  'git diff --cached'
-  abbreviate gdw  'git diff --color-words'
-  abbreviate gds  'git diff --stat'
-
-  abbreviate ga   'git add'
-  abbreviate gc   'git commit -v'
-  abbreviate gca  'git commit -v -a'
-
-  abbreviate gb   'git branch'
-  abbreviate gco  'git checkout'
-
-  abbreviate gf   'git fetch'
-  abbreviate gfa  'git fetch --all'
-  abbreviate gm   'git merge'
-  abbreviate gr   'git rebase'
-  abbreviate gcp  'git cherry-pick'
-
-  # ruby
-  abbreviate rc   'rails console'
-  abbreviate rg   'rails generate'
-  abbreviate be   'bundle exec'
-  abbreviate s    'spring'
-
-  # tools
-  abbreviate kc 'kviberg-config'
+  set -U fish_user_abbreviations \
+    '!=sudo' \
+    'tf=tail -f' \
+    'f=farm' \
+    'fcd=farm cd' \
+    'l=ls -a' \
+    'l.=ls -d .*'\
+    'g=git'\
+    'gs=git status -sb'\
+    'gh=git head'\
+    'gl=git l'\
+    'gll=git ll'\
+    'gwc=git wc'\
+    'gd=git diff'\
+    'gdt=git difftool'\
+    'gdc=git diff --cached'\
+    'gdw=git diff --color-words'\
+    'gds=git diff --stat'\
+    'ga=git add'\
+    'gc=git commit -v'\
+    'gca=git commit -v -a'\
+    'gb=git branch'\
+    'gco=git checkout'\
+    'gf=git fetch'\
+    'gfa=git fetch --all'\
+    'gm=git merge'\
+    'gr=git rebase'\
+    'gcp=git cherry-pick'\
+    'rc=rails console'\
+    'rg=rails generate'\
+    'be=bundle exec'\
+    's=spring'\
+    'kc=kviberg-config'
 end
