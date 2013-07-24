@@ -158,6 +158,7 @@ set -l files (ls | cat | grep -vE "($current_file|README.md)")
 set -eg choice_all
 
 echo 'Installing dotfiles...'
+mkdir -p $HOME/.local/bin
 if dotfiles_read_confirm
   dotfiles_install $HOME/. $PWD/ $files
 
