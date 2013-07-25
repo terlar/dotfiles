@@ -1,5 +1,5 @@
 function sb
-  which spring >/dev/null; or return
+  which spring >/dev/null ^/dev/null; or return
 
   for i in rspec rake rails
     spring binstub $i
