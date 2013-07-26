@@ -1,0 +1,39 @@
+[options]
+resize_grip = false
+scroll_on_output = false
+scroll_on_keystroke = true
+audible_bell = false
+visible_bell = false
+mouse_autohide = true
+allow_bold = true
+dynamic_title = true
+urgent_on_bell = true
+clickable_url = true
+font = Consolas 10
+scrollback_lines = 10000
+search_wrap = true
+
+cursor_blink = system
+cursor_shape = block
+
+[colors]
+foreground = #3d4962
+foreground_bold = #3d4962
+background = #f8f8f8
+
+color0 = #3d4962
+color1 = #c82829
+color2 = #718c00
+color3 = #eab700
+color4 = #4271ae
+color5 = #8959a8
+color6 = #3e999f
+color7 = #ededed
+color8 = #8e908c
+color9 = #d54e53
+color10 = #b9ca4a
+color11 = #e78c45
+color12 = #7aa6da
+color13 = #c397d8
+color14 = #70c0b1
+color15 = #f8f8f8
