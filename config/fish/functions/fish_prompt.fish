@@ -24,7 +24,7 @@ function fish_prompt --description 'Write out the prompt'
   echo
 
   if set -q CMD_DURATION
-    set_color 555
+    set_color black --bold
     echo -n "($CMD_DURATION) "
     set_color normal
   end
