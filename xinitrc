@@ -20,6 +20,7 @@ export XMODIFIERS="@im=fcitx"
 eval $(/usr/bin/ssh-agent)
 
 # Desktop settings
+export PATH=$PATH:$HOME/.cabal/bin
 termite &
 
 xmonad
