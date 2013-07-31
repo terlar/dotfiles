@@ -19,7 +19,7 @@ export XMODIFIERS="@im=fcitx"
 eval $(/usr/bin/ssh-agent)
 
 # Desktop settings
-feh --bg-fill ~/Pictures/dark-linnen.png
+feh --bg-tile ~/Pictures/linnen.png
 termite &
 
 export PATH=$PATH:$HOME/.cabal/bin
