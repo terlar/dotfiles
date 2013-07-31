@@ -27,6 +27,11 @@ main = do
     , ("M-<Tab>", cycleRecentWS [xK_Super_L] xK_Tab xK_Tab                       ) -- Cycle recent WS
     , ("M-u", focusUrgent                                                        ) -- Focus urgent WS
     , ("<XF86Eject>"           , spawn "i3lock -i ~/Pictures/saltside-at-sea.png") -- Lock screen
+    -- Media Keys
+    , ("<XF86AudioPlay>"       , spawn "ncmpcpp toggle"                          ) -- Play/Pause track
+    , ("<XF86AudioStop>"       , spawn "ncmpcpp stop"                            ) -- Stop track
+    , ("<XF86AudioNext>"       , spawn "ncmpcpp next"                            ) -- Next track
+    , ("<XF86AudioPrev>"       , spawn "ncmpcpp prev"                            ) -- Previous track
     , ("<XF86AudioLowerVolume>", spawn "amixer -q set Master 5%-"                ) -- Decrease volume
     , ("<XF86AudioRaiseVolume>", spawn "amixer -q set Master 5%+"                ) -- Increase volume
     , ("<XF86AudioMute>"       , spawn "amixer -q set Master toggle"             ) -- Mute volume
