@@ -3,6 +3,9 @@ remove Lock = Caps_Lock
 keysym Caps_Lock = Control_L
 add Control = Control_L
 
+! Reverse Scrolling
+pointer = 1 2 3 5 4 7 6 8 9 10 11 12
+
 ! Swedish
 keycode 108 = Mode_switch
 

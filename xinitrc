@@ -6,7 +6,6 @@ xset +fp /usr/local/share/fonts/local
 xset fp rehash
 xsetroot -cursor_name left_ptr
 compton -fb --backend glx &
-hhp &
 
 # Input settings
 xset r rate 220 45
@@ -20,7 +19,8 @@ export XMODIFIERS="@im=fcitx"
 eval $(/usr/bin/ssh-agent)
 
 # Desktop settings
-export PATH=$PATH:$HOME/.cabal/bin
+feh --bg-fill ~/Pictures/dark-linnen.png
 termite &
 
+export PATH=$PATH:$HOME/.cabal/bin
 xmonad
