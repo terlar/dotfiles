@@ -1,9 +1,11 @@
-function copy --description 'Trim new lines and copy toclipboard'
-  cat $argv ^/dev/null | tr -d '\n' | read -l input
-
-  set -ql input; or set -l input $argv
-
-  if test -n "$input"
-    echo $input | tr -d '\n' | pbcopy
+function copy --description 'Trim new lines and copy to clipboard'
+  cat $argv ^/dev/null | while read -l line
+    set argv $argv $line
   end
+
+  test -z "$argv"; and return
+
+  for i in $argv
+    echo -n $i
+  end | tr -d '\n' | pbcopy
 end
