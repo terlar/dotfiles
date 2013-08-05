@@ -10,10 +10,6 @@ compton -fb --backend glx &
 # Input settings
 xset r rate 220 45
 xmodmap ~/.Xmodmap
-export GTK_IM_MODULE=fcitx
-export QT_IM_MODULE=fcitx
-export XMODIFIERS="@im=fcitx"
-# fcitx &
 
 # SSH Settings
 eval $(/usr/bin/ssh-agent)
