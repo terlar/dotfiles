@@ -1,0 +1,11 @@
+#!/usr/local/bin/fish
+sudo systemctl start mysqld
+sudo systemctl start mongodb
+sudo systemctl start redis
+sudo systemctl start memcached
+sudo systemctl start elasticsearch
+
+ln -s /var/run/mysqld/mysqld.sock /tmp/mysql.sock
+
+cd ~/Code/prax
+./bin/prax start
