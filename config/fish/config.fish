@@ -14,6 +14,8 @@ set -q fish_setup_done; or begin
   set -Ux LESS_TERMCAP_ue \e'[0m'           # end underline
 
   # Prompt colors
+  set -U fish_color_command blue
+  set -U fish_color_param purple
   set -U fish_color_user magenta
   set -U fish_color_host yellow
   set -U fish_color_cwd green
