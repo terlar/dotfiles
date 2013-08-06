@@ -1,4 +1,6 @@
 #!/usr/local/bin/fish
+ssh-add
+
 sudo systemctl start mysqld
 sudo systemctl start mongodb
 sudo systemctl start redis
