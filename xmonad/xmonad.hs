@@ -28,11 +28,13 @@ main = do
     , ("M-u", focusUrgent                                             ) -- Focus urgent WS
     , ("M-<Esc>" , spawn "i3lock -i ~/Pictures/saltside.png -c 000000") -- Lock screen
     -- Media Keys
-    , ("<XF86AudioPlay>"       , spawn "ncmpcpp toggle"               ) -- Play/Pause track
-    , ("<XF86AudioStop>"       , spawn "ncmpcpp stop"                 ) -- Stop track
-    , ("<XF86AudioNext>"       , spawn "ncmpcpp next"                 ) -- Next track
-    , ("<XF86AudioPrev>"       , spawn "ncmpcpp prev"                 ) -- Previous track
-    , ("<XF86AudioLowerVolume>", spawn "amixer -q set Master 5%-"     ) -- Decrease volume
-    , ("<XF86AudioRaiseVolume>", spawn "amixer -q set Master 5%+"     ) -- Increase volume
-    , ("<XF86AudioMute>"       , spawn "amixer -q set Master toggle"  ) -- Mute volume
+    , ("<XF86MonBrightnessUp>"  , spawn "xbacklight -inc 10"          ) -- Brighness up
+    , ("<XF86MonBrightnessDown>", spawn "xbacklight -dec 10"          ) -- Brighness down
+    , ("<XF86AudioPlay>"        , spawn "ncmpcpp toggle"              ) -- Play/Pause track
+    , ("<XF86AudioStop>"        , spawn "ncmpcpp stop"                ) -- Stop track
+    , ("<XF86AudioNext>"        , spawn "ncmpcpp next"                ) -- Next track
+    , ("<XF86AudioPrev>"        , spawn "ncmpcpp prev"                ) -- Previous track
+    , ("<XF86AudioLowerVolume>" , spawn "amixer -q set Master 5%-"    ) -- Decrease volume
+    , ("<XF86AudioRaiseVolume>" , spawn "amixer -q set Master 5%+"    ) -- Increase volume
+    , ("<XF86AudioMute>"        , spawn "amixer -q set Master toggle" ) -- Mute volume
     ]
