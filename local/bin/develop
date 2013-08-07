@@ -1,13 +1,26 @@
 #!/usr/local/bin/fish
+
+# Authenticate
 ssh-add
 
+# Start services
 sudo systemctl start mysqld
 sudo systemctl start mongodb
 sudo systemctl start redis
 sudo systemctl start memcached
 sudo systemctl start elasticsearch
 
+# Setup temporary files
 ln -s /var/run/mysqld/mysqld.sock /tmp/mysql.sock
+mkdir /tmp/log-kviberg
+mkdir /tmp/log-kviberg-config
+mkdir /tmp/log-kviberg-mobile
 
+# Start zeroconf
 cd ~/Code/prax
 ./bin/prax start
+
+# Start development tools
+cd
+mailcatcher
+genghisapp
