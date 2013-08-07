@@ -16,6 +16,7 @@ eval $(/usr/bin/ssh-agent)
 
 # Desktop settings
 feh --bg-tile ~/Pictures/linnen.png
+start-pulseaudio-x11 &
 termite &
 
 export PATH=$PATH:$HOME/.cabal/bin
