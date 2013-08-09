@@ -34,6 +34,10 @@ function fish_setup --description 'Setup fish variables'
   # Paths
   set -U fish_user_paths $HOME/.local/bin /usr/local/bin
 
+  # Settings
+  set -U tank_reporter spec
+  set -U fry_auto_switch 1
+
   set -U fish_setup_done 1
   echo 'Initial fish setup done!'
 end
