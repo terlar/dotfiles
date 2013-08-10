@@ -20,19 +20,28 @@ cursor_shape = block
 foreground = #2a2e6e
 background = #f5f5f5
 
-color0 = #f5f5f5
-color1 = #c35532
-color2 = #7da028
-color3 = #c19a48
-color4 = #008ebd
-color5 = #9474b6
-color6 = #00adbe
-color7 = #2a2e6e
-color8 = #99acb2
-color9 = #e52c4b
-color10 = #6ba95d
-color11 = #e6a313
-color12 = #47a4ea
-color13 = #734c9b
-color14 = #009eb1
-color15 = #000000
+# 16 color space
+color0  = #202020
+color1  = #c35532
+color2  = #7da028
+color3  = #c19a48
+color4  = #008ebd
+color5  = #9474b6
+color6  = #00adbe
+color7  = #99acb2
+color8  = #151515
+color9  = #c35532
+color10 = #7da028
+color11 = #c19a48
+color12 = #008ebd
+color13 = #9474b6
+color14 = #00adbe
+color15 = #f5f5f5
+
+# 256 color space
+color16 = #d28445
+color17 = #d0d0d0
+color18 = #2a2e6e
+color19 = #505050
+color20 = #b0b0b0
+color21 = #8f5536
