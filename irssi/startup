@@ -1,3 +1,4 @@
 script load trackbar
 script load nm
+script load adv_windowlist
 script load dictcomplete
