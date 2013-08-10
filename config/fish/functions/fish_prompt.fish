@@ -1,10 +1,6 @@
 function fish_prompt --description 'Write out the prompt'
   set -l last_status $status
 
-  function -v __prompt_context_current __prompt_context_reload
-    echo $__prompt_context_current
-  end
-
   set -l prompt_context_new (prompt_context)
   if not test "$prompt_context_new" = "$__prompt_context_current"
     set -g __prompt_context_current $prompt_context_new
