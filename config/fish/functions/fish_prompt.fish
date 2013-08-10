@@ -25,11 +25,7 @@ end
 
 function __fish_prompt_line_divider
   for i in (seq 2 $COLUMNS)
-    if test $TERM = 'linux'
-      echo -n -
-    else
-      echo -n —
-    end
+    echo -n ─
   end
   echo
 end
