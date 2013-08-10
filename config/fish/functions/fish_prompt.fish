@@ -15,13 +15,21 @@ function fish_prompt --description 'Write out the prompt'
   end
 
   __fish_prompt_line_divider
-  echo -n '➥ '
+  if test $TERM = 'linux'
+    echo -n '> '
+  else
+    echo -n '➥ '
+  end
   set_color normal
 end
 
 function __fish_prompt_line_divider
   for i in (seq 2 $COLUMNS)
-    echo -n —
+    if test $TERM = 'linux'
+      echo -n -
+    else
+      echo -n —
+    end
   end
   echo
 end
