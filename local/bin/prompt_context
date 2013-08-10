@@ -1,8 +1,18 @@
 #!/usr/local/bin/fish
 
 function __prompt_context_pwd
+  set -l short_pwd
+  set -l git_pwd (git rev-parse --show-toplevel ^/dev/null)
+
+  if test -z "$git_pwd"
+    set short_pwd (echo $PWD | sed -e "s|^$HOME|~|")
+  else
+    set -l git_project (basename $git_pwd)
+    set short_pwd (echo $PWD | sed -e "s|^$git_pwd|$git_project|")
+  end
+
   set_strong_color
-  echo -n (basename $PWD)
+  echo -n $short_pwd
   set_normal_color
 end
 
