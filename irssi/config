@@ -75,7 +75,7 @@ settings = {
 
   "perl/core/scripts" = {
     neat_maxlength = "15";
-    neat_colors = "rRgGbBmMcC";
+    neat_colors = "rgbmc";
     neat_ignorechars = "[_]";
     awl_display_key = "%w$H$N.$C$S";
     awl_display_nokey = "%w$H$N.$C$S";
