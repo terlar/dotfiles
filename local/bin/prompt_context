@@ -1,9 +1,9 @@
 #!/usr/local/bin/fish
 
 function __prompt_context_pwd
-  set_color black --bold
+  set_strong_color
   echo -n (basename $PWD)
-  set_color normal
+  set_normal_color
 end
 
 function __prompt_context_git
@@ -13,9 +13,9 @@ function __prompt_context_git
   echo -n ' on '
 
   if git diff --quiet --ignore-submodules HEAD ^/dev/null
-    set_color white
+    set_subtle_color
   else
-    set_color black --bold
+    set_strong_color
   end
 
   echo -n $branch
@@ -25,10 +25,32 @@ function __prompt_context_git
     echo -n '⟳'
   end
 
-  set_color normal
+  set_normal_color
 end
 
-echo -n ' '
-__prompt_context_pwd
-__prompt_context_git
-echo
+function __prompt_context
+  echo -n ' '
+  __prompt_context_pwd
+  __prompt_context_git
+end
+
+if test -z "$TMUX"
+  function set_strong_color; set_color black --bold; end
+  function set_normal_color; set_color normal; end
+  function set_subtle_color; set_color white; end
+  __prompt_context
+  echo
+else
+  function set_strong_color; echo -n '#[fg=black,bold]'; end
+  function set_normal_color; echo -n '#[default]'; end
+  function set_subtle_color; echo -n '#[fg=white]'; end
+  tmux set -q status-left (__prompt_context)
+end
+
+
+set functions -e set_strong_color
+set functions -e set_normal_color
+set functions -e set_subtle_color
+set functions -e __prompt_context
+set functions -e __prompt_context_pwd
+set functions -e __prompt_context_git
