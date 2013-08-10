@@ -1,0 +1,34 @@
+#!/usr/local/bin/fish
+
+function __prompt_context_pwd
+  set_color black --bold
+  echo -n (basename $PWD)
+  set_color normal
+end
+
+function __prompt_context_git
+  set -l branch (git symbolic-ref --short --quiet HEAD ^/dev/null)
+  test -z $branch; and return
+
+  echo -n ' on '
+
+  if git diff --quiet --ignore-submodules HEAD ^/dev/null
+    set_color white
+  else
+    set_color black --bold
+  end
+
+  echo -n $branch
+
+  set -l unmerged (git cherry -v @\{upstream\} ^/dev/null)
+  if not test -z "$unmerged"
+    echo -n '⟳'
+  end
+
+  set_color normal
+end
+
+echo -n ' '
+__prompt_context_pwd
+__prompt_context_git
+echo

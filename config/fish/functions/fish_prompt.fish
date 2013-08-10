@@ -1,38 +1,32 @@
 function fish_prompt --description 'Write out the prompt'
   set -l last_status $status
 
-  # User
-  set_color $fish_color_user
-  echo -n (whoami)
-  set_color normal
+  function -v PWD __prompt_context_output
+    status --is-command-substitution; and return
+    set -g LPWD $PWD
+    prompt_context
+  end
 
-  echo -n '@'
-
-  # Host
-  set_color $fish_color_host
-  echo -n (hostname -s)
-  set_color normal
-
-  echo -n ':'
-
-  # PWD
-  set_color $fish_color_cwd
-  echo -n (prompt_pwd)
-  set_color normal
-
-  __terlar_git_prompt
-  echo
-
-  if set -q CMD_DURATION
-    set_color black --bold
-    echo -n "($CMD_DURATION) "
-    set_color normal
+  if test -z $LPWD
+    set -g LPWD $PWD
+    prompt_context
   end
 
   if test $last_status -ne 0
     set_color $fish_color_error
+  else
+    set_color normal
+    set_color white
   end
 
-  echo -n '➤ '
+  __fish_prompt_line_divider
+  echo -n '➥ '
   set_color normal
+end
+
+function __fish_prompt_line_divider
+  for i in (seq 2 $COLUMNS)
+    echo -n —
+  end
+  echo
 end
