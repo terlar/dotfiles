@@ -12,7 +12,7 @@ abstracts = {
 
   # Messages
   msgnick = "$0$1-:%n %|";
-  ownnick = "%y$*%n";
+  ownnick = "%Y$*%n";
   pubnick = "%n$*%n";
   pubmsgmenick = "%Y{msgnick $0 $1-}%Y";
   ownprivnick = "%y$*%n";
