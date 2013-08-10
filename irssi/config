@@ -77,8 +77,8 @@ settings = {
     neat_maxlength = "15";
     neat_colors = "rRgGbBmMcC";
     neat_ignorechars = "[_]";
-    awl_display_key = "%W$H$N.$C$S";
-    awl_display_nokey = "%W$H$N.$C$S";
+    awl_display_key = "%w$H$N.$C$S";
+    awl_display_nokey = "%w$H$N.$C$S";
     awl_display_key_active = "%B$H$N.$C$S";
     awl_display_nokey_active = "%B$H$N.$C$S";
     awl_position = "0";
@@ -88,6 +88,7 @@ settings = {
     lt_in_queries = "yes";
     neat_left_actions = "no";
     neat_right_mode = "yes";
+    trackbar_style = "%w";
   };
   "irc/dcc" = { dcc_download_path = "~/Downloads"; dcc_autoget = "yes"; };
 };

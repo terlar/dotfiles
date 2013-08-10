@@ -1,67 +1,71 @@
+# Default foreground color
+default_color = "%N";
+
 # Print timestamp/servertag at the end of the line, not at the beginning
 info_eol = "false";
 
 abstracts = {
   # Generic
-  line_start = "%c::%n ";                 # Prefix for non message lines
-  timestamp = "%K$0-%n";
-  hilight = "%R$*%R";
+  line_start = "%c::%n%R ";
+  timestamp = "%w$0-%n";
+  hilight = "%_$*%_";
 
   # Messages
   msgnick = "$0$1-:%n %|";
   ownnick = "%y$*%n";
   pubnick = "%n$*%n";
-  pubmsgmenick = "%Y{msgnick $0 $1-}%Y";  # Public message in channel meant for me
-  ownprivnick = "%y$*%n";                 # Own private message in query
+  pubmsgmenick = "%Y{msgnick $0 $1-}%Y";
+  ownprivnick = "%y$*%n";
 
   # Action
   action_core = "%M$*";
 
-  action = "{action_core $*} ";           # Generic
-  ownaction_target = "{action_core $*}";  # Own action
-  pvtaction = "{action_core $*}";         # Private action (others)
-  pvtaction_query = "{action $*}";        # Fix neatlength inconsistency
+  action = "{action_core $*} ";
+  ownaction_target = "{action_core $*}";
+  pvtaction = "{action_core $*}";
+  # Fix neatlength inconsistency
+  pvtaction_query = "{action $*}";
 
   # Wallops
-  wallop = "%K$*%n: ";
-  wallop_action = "%K * $*%n ";
+  wallop = "%w$*%n: ";
+  wallop_action = "%w * $*%n ";
 
   # DCC chat
-  dccownquerynick = "%K$*%n";
-  dccaction = "%K (*dcc*) $*%n %|";
+  dccownquerynick = "%w$*%n";
+  dccaction = "%w (*dcc*) $*%n %|";
 
   # Statusbar
-  sb_background = "%n";                   # Default background
-  sbstart = " ";                          # Text at the start
-  sbend = " ";                            # Text at the end
-  prompt = "%n   : ";
-  sb = "%K$*";
+  sb_background = "%n";
+  sbstart = " ";
+  sbend = " ";
+  prompt = "%n    : ";
+  sb = "%w$*";
   sbmode = "";
   sbaway = " (%Gaway%n)";
-  sb_act_msg = "%K$*";                    # Public message
+  sb_act_msg = "%w$*";
 };
 
 formats = {
   "fe-common/core" = {
-    own_msg                = "{ownmsgnick {ownnick $[-15]0$2}}$1";
-    own_msg_channel        = "{ownmsgnick {ownnick $[-15]0$3}{msgchannel $1}}$2";
-    own_msg_private_query  = "{ownprivmsgnick {ownprivnick $[-15]2}}$1";
+    own_msg = "{ownmsgnick {ownnick $[-15]0$2}}$1";
+    own_msg_channel = "{ownmsgnick {ownnick $[-15]0$3}{msgchannel $1}}$2";
+    own_msg_private_query = "{ownprivmsgnick {ownprivnick $[-15]2}}$1";
 
-    pubmsg_me              = "{pubmsgmenick {menick $[-15]0}$2}$1";
-    pubmsg_me_channel      = "{pubmsgmenick {menick $[-15]0$3}{msgchannel $1}}$2";
-    pubmsg_hilight         = "{pubmsghinick $0 $0 $[-15]1$3%n}$2";
+    pubmsg_me = "{pubmsgmenick {menick $[-15]0}$2}$1";
+    pubmsg_me_channel = "{pubmsgmenick {menick $[-15]0$3}{msgchannel $1}}$2";
+    pubmsg_hilight = "{pubmsghinick $0 $0 $[-15]1$3%n}$2";
     pubmsg_hilight_channel = "{pubmsghinick $0 $[-15]1$4{msgchannel $2}}$3";
-    pubmsg                 = "{pubmsgnick {pubnick %B$[-15]0}$2}$1";
-    pubmsg_channel         = "{pubmsgnick {pubnick %B$[-15]0}$2}$1";
+    pubmsg = "{pubmsgnick {pubnick %w$[-15]0}$2}$1";
+    pubmsg_channel = "{pubmsgnick {pubnick %w$[-15]0}$2}$1";
 
-    msg_private_query      = "{privmsgnick $[-15]0}$2";
+    msg_private_query = "{privmsgnick $[-15]0}$2";
   };
 
   "fe-common/irc" = {
-    own_action           = "{ownaction $[-13]0} $1";
+    own_action = "{ownaction $[-13]0} $1";
 
-    action_private       = "{pvtaction $[-13]0}$1";
+    action_private = "{pvtaction $[-13]0}$1";
     action_private_query = "{pvtaction_query $[-13]0} $2";
-    action_public        = "{pubaction $[-13]0}$1";
+    action_public = "{pubaction $[-13]0}$1";
   };
 };
