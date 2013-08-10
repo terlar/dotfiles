@@ -5,7 +5,7 @@ function fish_setup --description 'Setup fish variables'
   set -Ux LC_ALL en_US.UTF-8
 
   set -Ux EDITOR vim
-  set -Ux ARCHFLAGS '-arch x86_64'
+  set -Ux BROWSER open
 
   # Less colors
   set -Ux LESS_TERMCAP_mb \e'[01;31m'       # begin blinking
