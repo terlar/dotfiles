@@ -65,11 +65,12 @@ settings = {
 
   "fe-common/core" = {
     emphasis = "OFF";
-    theme = "terlar";
+    theme = "default";
     beep_msg_level = "NOTICE MSGS HILIGHT";
     bell_beeps = "no";
     hilight_nick_matches = "yes";
     autolog = "no";
+    hide_colors = "yes";
   };
 
   "perl/core/scripts" = {
@@ -88,6 +89,7 @@ settings = {
     neat_left_actions = "no";
     neat_right_mode = "yes";
   };
+  "irc/dcc" = { dcc_download_path = "~/Downloads"; dcc_autoget = "yes"; };
 };
 
 statusbar = {

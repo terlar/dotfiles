@@ -5,7 +5,7 @@ abstracts = {
   # Generic
   line_start = "%c::%n ";                 # Prefix for non message lines
   timestamp = "%K$0-%n";
-  hilight = "%W$*%W";
+  hilight = "%R$*%R";
 
   # Messages
   msgnick = "$0$1-:%n %|";
@@ -22,14 +22,23 @@ abstracts = {
   pvtaction = "{action_core $*}";         # Private action (others)
   pvtaction_query = "{action $*}";        # Fix neatlength inconsistency
 
+  # Wallops
+  wallop = "%K$*%n: ";
+  wallop_action = "%K * $*%n ";
+
+  # DCC chat
+  dccownquerynick = "%K$*%n";
+  dccaction = "%K (*dcc*) $*%n %|";
+
   # Statusbar
   sb_background = "%n";                   # Default background
   sbstart = " ";                          # Text at the start
   sbend = " ";                            # Text at the end
   prompt = "%n   : ";
-  sb = "%W$*";
+  sb = "%K$*";
   sbmode = "";
   sbaway = " (%Gaway%n)";
+  sb_act_msg = "%K$*";                    # Public message
 };
 
 formats = {
