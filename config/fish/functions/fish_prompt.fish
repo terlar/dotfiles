@@ -1,15 +1,10 @@
 function fish_prompt --description 'Write out the prompt'
   set -l last_status $status
 
-  function -v PWD __prompt_context_output
-    status --is-command-substitution; and return
-    set -g LPWD $PWD
-    prompt_context
-  end
-
-  if test -z $LPWD
-    set -g LPWD $PWD
-    prompt_context
+  set -l prompt_context_new (prompt_context)
+  if not test "$prompt_context_new" = "$__prompt_context_cache"
+    echo $prompt_context_new
+    set -g __prompt_context_cache $prompt_context_new
   end
 
   if test $last_status -ne 0
