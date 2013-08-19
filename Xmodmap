@@ -12,3 +12,5 @@ keycode 108 = Mode_switch
 keycode 32 = o O odiaeresis Odiaeresis
 keycode 38 = a A aring Aring
 keycode 48 = apostrophe quotedbl adiaeresis Adiaeresis
+
+keycode 65 = space space Insert Insert
