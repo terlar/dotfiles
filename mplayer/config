@@ -1,0 +1,12 @@
+really-quiet=yes
+
+# Video
+vo=gl
+double=yes
+
+# Subtitles
+ass=yes
+embeddedfonts=yes
+sub-fuzziness=1
+spuaa=4
+slang=en,eng
