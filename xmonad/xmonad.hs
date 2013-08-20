@@ -1,12 +1,20 @@
+-- Base
 import XMonad
+import System.IO
+
+-- Utilities
+import XMonad.Util.EZConfig
+
+-- Hooks
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.UrgencyHook
-import XMonad.Layout.NoBorders
-import XMonad.Util.EZConfig
-import System.IO
 
+-- Actions
 import XMonad.Actions.CycleRecentWS
+
+-- Layouts
+import XMonad.Layout.NoBorders
 
 main = do
   xmonad $ withUrgencyHook NoUrgencyHook $ defaultConfig
