@@ -1,6 +1,3 @@
-# Default foreground color
-default_color = "%N";
-
 # Print timestamp/servertag at the end of the line, not at the beginning
 info_eol = "false";
 
