@@ -51,9 +51,9 @@ function dotfiles_read_confirm
     read -l -p dotfiles_read_confirm_prompt confirm
 
     switch $confirm
-      case Y y
+      case '' Y y
         return 0
-      case '' N n
+      case N n
         return 1
     end
   end
