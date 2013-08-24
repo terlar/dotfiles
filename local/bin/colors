@@ -1,0 +1,21 @@
+#!/bin/sh
+echo System colors:
+for i in {30..37}; do
+  echo -en '\e['$i';7m  \e[0m'
+done
+
+echo
+
+for i in {30..37}; do
+  echo -en '\e['$i';7;1m  \e[0m'
+done
+
+if [ ! "$TERM" = linux ]; then
+  echo; echo
+  echo 256 color space:
+  for i in {16..21}; do
+    echo -en '\e[38;05;'$i';7m  \e[0m'
+  done
+fi
+
+echo
