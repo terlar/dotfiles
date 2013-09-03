@@ -23,9 +23,10 @@ main = do
     , focusedBorderColor = "#3d4962"
     , terminal           = "termite"
     , manageHook = composeAll
-      [ isFullscreen            --> doFullFloat
-      , isDialog                --> doCenterFloat
-      , className =? "feh"      --> doCenterFloat
+      [ isFullscreen                --> doFullFloat
+      , isDialog                    --> doCenterFloat
+      , className =? "feh"          --> doCenterFloat
+      , className =? "Pavucontrol"  --> doCenterFloat
       , manageHook defaultConfig
       ]
     , layoutHook = smartBorders $ layoutHook defaultConfig
