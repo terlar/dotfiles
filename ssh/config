@@ -1,3 +1,7 @@
+ControlMaster auto
+ControlPath .ssh/%r@%h:%p
+ControlPersist yes
+
 Host *
   ForwardAgent yes
   KeepAlive yes
