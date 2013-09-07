@@ -1,0 +1,13 @@
+[Unit]
+Description=Lightweight X11 tiled window manager written in Haskell
+Before=xinitrc.target
+After=xorg.target
+Requires=xorg.target
+
+[Service]
+ExecStart=/usr/bin/xmonad
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=wm.target

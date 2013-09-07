@@ -1,0 +1,10 @@
+[Unit]
+Description=Wallpaper
+After=xinitrc.target
+
+[Service]
+RemainAfterExit=yes
+ExecStart=/usr/bin/nitrogen --restore
+
+[Install]
+WantedBy=xinitrc.target

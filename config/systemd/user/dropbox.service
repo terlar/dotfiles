@@ -1,0 +1,8 @@
+[Unit]
+Description=Dropbox sync daemon
+
+[Service]
+ExecStart=/opt/dropbox/dropboxd
+
+[Install]
+WantedBy=default.target

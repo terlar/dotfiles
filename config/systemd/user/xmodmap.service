@@ -1,0 +1,11 @@
+[Unit]
+Description=xmodmap
+Requires=xorg.target
+After=xorg.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/xmodmap %h/.Xmodmap
+
+[Install]
+WantedBy=xinitrc.target

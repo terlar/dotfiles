@@ -1,0 +1,13 @@
+[Unit]
+Description=i3lock on i3 start
+Documentation=man:i3lock(1)
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/i3lock -c 000000 -i "$CURRENT_WALLPAPER"
+WorkingDirectory=%h/Pictures
+EnvironmentFile=%h/.config/i3lockbg.conf
+
+[Install]
+WantedBy=xinitrc.target

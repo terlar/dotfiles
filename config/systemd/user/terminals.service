@@ -1,0 +1,11 @@
+[Unit]
+Description=X terminals
+After=xinitrc.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/termite
+Restart=on-success
+
+[Install]
+WantedBy=xinitrc.target

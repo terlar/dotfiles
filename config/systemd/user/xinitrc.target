@@ -1,0 +1,6 @@
+[Unit]
+Description=Xinitrc Stuff
+Wants=wm.target
+
+[Install]
+Alias=default.target
