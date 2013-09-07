@@ -1,8 +1,13 @@
 [Unit]
 Description=Mopidy
+After=local-fs.target network.target
 
 [Service]
+Type=simple
+RemainAfterExit=yes
 ExecStart=/usr/bin/mopidy
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=control-group
 Restart=always
 
 [Install]
