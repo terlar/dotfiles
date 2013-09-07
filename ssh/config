@@ -1,5 +1,5 @@
 ControlMaster auto
-ControlPath .ssh/%r@%h:%p
+ControlPath /tmp/%r@%h:%p
 ControlPersist yes
 
 Host *
