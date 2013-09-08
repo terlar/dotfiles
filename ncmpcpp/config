@@ -1,0 +1,19 @@
+# Playlist
+playlist_display_mode = "columns"
+
+# Browser
+browser_display_mode = "columns"
+
+# Bars
+progressbar_look = "━◼"
+
+# Colors
+discard_colors_if_item_is_selected = "yes"
+#state_line_color = "black"
+#progressbar_color = "black"
+#header_window_color = "black"
+
+# Others
+search_engine_display_mode = "columns"
+display_screens_numbers_on_start = "no"
+clock_display_seconds = "yes"
