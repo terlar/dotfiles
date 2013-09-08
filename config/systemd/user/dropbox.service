@@ -1,8 +1,12 @@
 [Unit]
 Description=Dropbox sync daemon
+After=network.target
+Requires=network.target
 
 [Service]
-ExecStart=/opt/dropbox/dropboxd
+RemainAfterExit=yes
+ExecStart=/usr/bin/dropboxd
+ExecReload=/bin/kill -HUP $MAINPID
 
 [Install]
 WantedBy=default.target

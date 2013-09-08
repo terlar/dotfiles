@@ -6,7 +6,6 @@ Requires=dbus.socket
 
 [Service]
 Type=forking
-BusName=org.pulseaudio.Server
 ExecStart=/usr/bin/pulseaudio --start --fail
 ExecStop=/usr/bin/pulseaudio --kill
 Restart=always

@@ -1,6 +1,5 @@
 [Unit]
 Description=Wallpaper
-After=xinitrc.target
 
 [Service]
 RemainAfterExit=yes

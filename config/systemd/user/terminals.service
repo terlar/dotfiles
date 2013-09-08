@@ -1,6 +1,5 @@
 [Unit]
 Description=X terminals
-After=xinitrc.target
 
 [Service]
 Type=oneshot
