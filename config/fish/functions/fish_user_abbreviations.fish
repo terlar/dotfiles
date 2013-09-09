@@ -31,5 +31,6 @@ function fish_user_abbreviations
     'rg=rails generate'\
     'be=bundle exec'\
     's=spring'\
-    'kc=kviberg-config'
+    'kc=kviberg-config'\
+    'pdf=apvlv'
 end
