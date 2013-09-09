@@ -1,7 +1,5 @@
 [Unit]
 Description=xrdb
-Requires=xorg.target
-After=xorg.target
 
 [Service]
 Type=oneshot
