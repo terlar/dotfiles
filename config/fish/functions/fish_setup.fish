@@ -31,9 +31,6 @@ function fish_setup --description 'Setup fish variables'
   # Abbreviations
   fish_user_abbreviations
 
-  # Paths
-  set -U fish_user_paths $HOME/.local/bin /usr/local/bin
-
   # Settings
   set -U tank_reporter spec
   set -U fry_auto_switch 1
