@@ -1,5 +1,7 @@
 [Unit]
 Description=Wallpaper
+After=xorg.target
+Requires=xorg.target
 
 [Service]
 RemainAfterExit=yes

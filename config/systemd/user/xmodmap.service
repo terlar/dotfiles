@@ -1,5 +1,7 @@
 [Unit]
-Description=xmodmap
+Description=Xmodmap
+After=xorg.target
+Requires=xorg.target
 
 [Service]
 Type=oneshot
