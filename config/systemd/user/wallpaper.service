@@ -5,7 +5,9 @@ Requires=xorg.target
 
 [Service]
 RemainAfterExit=yes
-ExecStart=/usr/bin/nitrogen --restore
+ExecStart=/usr/bin/feh $BG_TYPE $CURRENT_WALLPAPER
+WorkingDirectory=%h/Pictures
+EnvironmentFile=%h/.config/fehbg.conf
 
 [Install]
 WantedBy=xinitrc.target
