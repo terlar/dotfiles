@@ -2,7 +2,6 @@
 Description=X terminals
 
 [Service]
-Type=oneshot
 ExecStart=/usr/bin/termite
 Restart=on-success
 

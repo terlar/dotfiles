@@ -5,6 +5,7 @@ Documentation=man:i3lock(1)
 [Service]
 Type=oneshot
 RemainAfterExit=yes
+Restart=on-failure
 ExecStart=/usr/bin/i3lock -c 000000 -i "$CURRENT_WALLPAPER"
 WorkingDirectory=%h/Pictures
 EnvironmentFile=%h/.config/i3lockbg.conf
