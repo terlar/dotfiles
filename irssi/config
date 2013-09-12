@@ -32,6 +32,7 @@ channels = (
   { name = "#ruby"; chatnet = "Freenode"; autojoin = "Yes"; },
   { name = "#fish"; chatnet = "Freenode"; autojoin = "Yes"; },
   { name = "#archlinux"; chatnet = "Freenode"; autojoin = "Yes"; },
+  { name = "#systemd"; chatnet = "Freenode"; autojoin = "Yes"; },
   { name = "#saltside"; chatnet = "Freenode"; autojoin = "Yes"; },
   { name = "#fish"; chatnet = "OFTC"; autojoin = "Yes"; }
 );
