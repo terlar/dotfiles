@@ -2,7 +2,7 @@
 Description=OpenSSH private key agent
 Wants=environment.target
 Before=environment.target
-IngoreOnIsolate=true
+IgnoreOnIsolate=true
 
 [Service]
 Type=forking
