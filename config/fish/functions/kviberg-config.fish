@@ -58,7 +58,7 @@ function kviberg-config-import
   echo '==> Flushing redis'
   redis-cli flushall
   echo '==> Flushing memcached'
-  echo 'flush_all' | nc 127.0.0.1 11211
+  echo 'flush_all' | nc -c 127.0.0.1 11211
 end
 
 function ok
