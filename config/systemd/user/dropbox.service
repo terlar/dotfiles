@@ -4,8 +4,7 @@ After=network.target
 Requires=network.target
 
 [Service]
-RemainAfterExit=yes
-ExecStart=/usr/bin/dropboxd
+ExecStart=/home/terje/.dropbox-dist/dropbox
 ExecReload=/bin/kill -HUP $MAINPID
 
 [Install]
