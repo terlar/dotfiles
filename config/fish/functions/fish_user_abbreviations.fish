@@ -27,6 +27,7 @@ function fish_user_abbreviations
     'gm=git merge'\
     'gr=git rebase'\
     'gcp=git cherry-pick'\
+    'b=bundle'\
     'rc=rails console'\
     'rg=rails generate'\
     'be=bundle exec'\
