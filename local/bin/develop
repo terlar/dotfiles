@@ -1,7 +1,4 @@
-#!/usr/local/bin/fish
-
-# Authenticate
-ssh-add
+#!/usr/bin/bash
 
 # Start services
 sudo systemctl start mysqld
@@ -17,10 +14,11 @@ mkdir /tmp/log-kviberg-config
 mkdir /tmp/log-kviberg-mobile
 
 # Start zeroconf
-cd ~/Code/prax
-./bin/prax start
+systemctl --user start prax
 
 # Start development tools
-cd
 mailcatcher
 genghisapp
+
+# Authenticate
+ssh-add

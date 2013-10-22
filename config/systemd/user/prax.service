@@ -1,0 +1,14 @@
+[Unit]
+Description=Prax
+After=network.target
+Requires=network.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/home/terje/.prax-dist/bin/prax start
+ExecStop=/home/terje/.prax-dist/bin/prax stop
+WorkingDirectory=/home/terje/.prax-dist
+
+[Install]
+WantedBy=default.target
