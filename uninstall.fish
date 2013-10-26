@@ -133,3 +133,6 @@ functions -e dotfiles_uninstall
 functions -e dotfiles_uninstall_vim
 functions -e __dotfiles_read_confirm
 functions -e __dotfiles_read_confirm_prompt
+functions -e __dotfiles_restore_file
+functions -e __dotfiles_unlink_file
+functions -e __dotfiles_remove_dir

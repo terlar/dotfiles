@@ -14,8 +14,7 @@ fish ~/.dotfiles/install.fish
 Pull the latest dotfiles.
 
 ```sh
-cd ~/.dotfiles
-git pull
+fish ~/.dotfiles/update.fish
 ```
 
 ## Uninstall
