@@ -114,7 +114,6 @@ end
 function dotfiles_install
   echo $argv[1..2] | read -l target_prefix source_prefix
   set -e argv[1..2]
-  set -l files $argv
 
   for file in $argv
     set -l source_file $source_prefix$file
