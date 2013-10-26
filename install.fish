@@ -1,4 +1,4 @@
-function dotfiles_read_choice
+function __dotfiles_read_choice
   set -l target $argv[1]
 
   if set -qg choice_all
@@ -11,7 +11,7 @@ function dotfiles_read_choice
 
   while true
     echo "File already exists: '$target', what do you want to do?"
-    read -l -p dotfiles_read_choice_prompt choice
+    read -l -p __dotfiles_read_choice_prompt choice
 
     switch $choice
       case O
@@ -39,16 +39,16 @@ function dotfiles_read_choice
   end
 end
 
-function dotfiles_read_choice_prompt
+function __dotfiles_read_choice_prompt
   echo '- [s]kip, [S]kip all'
   echo '- [o]verwrite, [O]verwrite all'
   echo '- [b]ackup, [B]ackup all'
   echo '> '
 end
 
-function dotfiles_read_confirm
+function __dotfiles_read_confirm
   while true
-    read -l -p dotfiles_read_confirm_prompt confirm
+    read -l -p __dotfiles_read_confirm_prompt confirm
 
     switch $confirm
       case '' Y y
@@ -59,11 +59,11 @@ function dotfiles_read_confirm
   end
 end
 
-function dotfiles_read_confirm_prompt
+function __dotfiles_read_confirm_prompt
   echo 'Do you want to continue? [Y/n] '
 end
 
-function dotfiles_remove_file
+function __dotfiles_remove_file
   echo $argv | read -l target_file
 
   set_color red --bold
@@ -74,7 +74,7 @@ function dotfiles_remove_file
   rm -rf $target_file
 end
 
-function dotfiles_backup_file
+function __dotfiles_backup_file
   echo $argv | read -l target_file
 
   set_color blue --bold
@@ -85,7 +85,7 @@ function dotfiles_backup_file
   mv $target_file $target_file.backup
 end
 
-function dotfiles_link_file
+function __dotfiles_link_file
   echo $argv | read -l target_file source_file
 
   set_color green --bold
@@ -96,13 +96,13 @@ function dotfiles_link_file
   ln -s $source_file $target_file
 end
 
-function dotfiles_prepare_linking
+function __dotfiles_prepare_linking
   if test -e $argv -o -L $argv
-    dotfiles_read_choice $argv
+    __dotfiles_read_choice $argv
     if set -qg choice_overwrite
-      dotfiles_remove_file $argv
+      __dotfiles_remove_file $argv
     else if set -qg choice_backup
-      dotfiles_backup_file $argv
+      __dotfiles_backup_file $argv
     else
       return 1
     end
@@ -127,7 +127,7 @@ function dotfiles_install
 
     if test -d $source_file
       if not test -d $target_file
-        dotfiles_link_file $target_file $source_file
+        __dotfiles_link_file $target_file $source_file
       else
         dotfiles_install $target_file/ $source_file/ (ls $source_file)
       end
@@ -135,32 +135,32 @@ function dotfiles_install
       continue
     end
 
-    if dotfiles_prepare_linking $target_file
-      dotfiles_link_file $target_file $source_file
+    if __dotfiles_prepare_linking $target_file
+      __dotfiles_link_file $target_file $source_file
     end
   end
 end
 
 function dotfiles_install_vim
-  if dotfiles_prepare_linking $HOME/.vim
+  if __dotfiles_prepare_linking $HOME/.vim
     git clone git://github.com/terlar/vimfiles.git $HOME/.vim
   else
     return
   end
 
-  if dotfiles_prepare_linking $HOME/.vimrc
+  if __dotfiles_prepare_linking $HOME/.vimrc
     ln -s $HOME/.vim/vimrc $HOME/.vimrc
   end
 end
 
-set -l current_file (basename (status -f))
-set -l files (ls | cat | grep -vE "($current_file|README.md)")
+set -l dotfiles_dir (dirname (status -f))
+set -l files (ls $dotfiles_dir | cat | grep -vE "(install.fish|update.fish|uninstall.fish|README.md)")
 set -eg choice_all
 
 echo 'Installing dotfiles...'
 mkdir -p $HOME/.local/bin
-if dotfiles_read_confirm
-  dotfiles_install $HOME/. $PWD/ $files
+if __dotfiles_read_confirm
+  dotfiles_install $HOME/. $dotfiles_dir/ $files
 
   set_color blue --bold
   echo -n '==> '
@@ -174,7 +174,7 @@ else
 end
 
 echo 'Installing vimfiles...'
-if dotfiles_read_confirm
+if __dotfiles_read_confirm
   dotfiles_install_vim
 
   set_color blue --bold
@@ -190,11 +190,11 @@ end
 
 functions -e dotfiles_install
 functions -e dotfiles_install_vim
-functions -e dotfiles_read_choice
-functions -e dotfiles_read_choice_prompt
-functions -e dotfiles_read_confirm
-functions -e dotfiles_read_confirm_prompt
-functions -e dotfiles_prepare_linking
-functions -e dotfiles_remove_file
-functions -e dotfiles_backup_file
-functions -e dotfiles_link_file
+functions -e __dotfiles_read_choice
+functions -e __dotfiles_read_choice_prompt
+functions -e __dotfiles_read_confirm
+functions -e __dotfiles_read_confirm_prompt
+functions -e __dotfiles_prepare_linking
+functions -e __dotfiles_remove_file
+functions -e __dotfiles_backup_file
+functions -e __dotfiles_link_file
