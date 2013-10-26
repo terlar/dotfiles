@@ -5,9 +5,8 @@ conflicting file. You can choose to either keep, replace or backup the
 old files.
 
 ```sh
-git clone git://github.com/terlar/dotfiles.git $HOME/.dotfiles
-cd $HOME/.dotfiles
-fish install.fish
+git clone git://github.com/terlar/dotfiles.git ~/.dotfiles
+fish ~/.dotfiles/install.fish
 ```
 
 ## Update
@@ -15,16 +14,15 @@ fish install.fish
 Pull the latest dotfiles.
 
 ```sh
-cd $HOME/.dotfiles
+cd ~/.dotfiles
 git pull
 ```
 
 ## Uninstall
 
-PENDING: Unlinks the dotfiles and restores eventual backups.
+Unlinks the dotfiles and restores eventual backups.
 
 ```sh
-# cd $HOME/.dotfiles
-# fish uninstall.fish
-# rm -rf ~/.dotfiles
+fish ~/.dotfiles/uninstall.fish
+rm -rf ~/.dotfiles
 ```
