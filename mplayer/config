@@ -1,4 +1,5 @@
 really-quiet=yes
+nolirc=yes
 
 # Video
 vo=gl
