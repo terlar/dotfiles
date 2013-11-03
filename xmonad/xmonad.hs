@@ -41,6 +41,7 @@ myKeys =
 
     -- Workspace Keys
     , ("M-w 1"          , createOrGoto "dashboard"      )
+    , ("M-w n"          , createOrGoto "note"           )
     , ("M-w c"          , createOrGoto "code"           )
     , ("M-w w"          , createOrGoto "web"            )
     , ("M-w m"          , createOrGoto "music"          )
@@ -74,7 +75,7 @@ myKeys =
 
 main = do
     xmonad $ defaultConfig
-        { workspaces         = ["dashboard"]
+        { workspaces         = ["dashboard", "note"]
         , modMask            = myModMask
         , terminal           = myTerminal
         , focusFollowsMouse  = myFocusFollowsMouse

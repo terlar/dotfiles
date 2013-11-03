@@ -36,6 +36,7 @@ myTopicConfig :: TopicConfig
 myTopicConfig = defaultTopicConfig
     { topicDirs = M.fromList $
         [ ( "dashboard" , ""                        )
+        , ( "note"      , "Notes"                   )
         , ( "code"      , "Code"                    )
         , ( "web"       , "Downloads"               )
         , ( "music"     , "Music"                   )
@@ -47,7 +48,8 @@ myTopicConfig = defaultTopicConfig
     , defaultTopicAction = const $ spawn ""
     , defaultTopic       = "dashboard"
     , topicActions       = M.fromList $
-        [ ( "code"      , spawnShell                ) -- Shell
+        [ ( "note"      , spawnEditor               ) -- Editor
+        , ( "code"      , spawnShell                ) -- Shell
         , ( "web"       , spawn "chromium"          ) -- Web browser
         , ( "music"     , spawn "termite -e ncmpcpp") -- Music player
         , ( "video"     , videoSelect               ) -- Video selection prompt
