@@ -26,7 +26,8 @@ import Config
 import Utils
 
 myTopics :: [Topic]
-myTopics = [ "dash", "code", "web"
+myTopics = [ "dashboard"
+           , "code", "web"
            , "music", "video", "file"
            , "pdf", "skype"
            ]
@@ -34,25 +35,25 @@ myTopics = [ "dash", "code", "web"
 myTopicConfig :: TopicConfig
 myTopicConfig = defaultTopicConfig
     { topicDirs = M.fromList $
-        [ ( "dash"  , "$HOME"                   )
-        , ( "code"  , "$HOME/Code"              )
-        , ( "web"   , "$HOME/Downloads"         )
-        , ( "music" , "$HOME/Music"             )
-        , ( "video" , "$HOME/Video"             )
-        , ( "pdf"   , "$HOME/Books"             )
-        , ( "file"  , "$HOME"                   )
-        , ( "skype" , "$HOME"                   )
+        [ ( "dashboard" , ""                        )
+        , ( "code"      , "Code"                    )
+        , ( "web"       , "Downloads"               )
+        , ( "music"     , "Music"                   )
+        , ( "video"     , "Video"                   )
+        , ( "pdf"       , "Books"                   )
+        , ( "file"      , ""                        )
+        , ( "skype"     , ""                        )
         ]
     , defaultTopicAction = const $ spawn ""
-    , defaultTopic       = "dash"
+    , defaultTopic       = "dashboard"
     , topicActions       = M.fromList $
-        [ ( "code"  , spawnShell                ) -- Shell
-        , ( "web"   , spawn "chromium"          ) -- Web browser
-        , ( "music" , spawn "termite -e ncmpcpp") -- Music player
-        , ( "video" , videoSelect               ) -- Video selection prompt
-        , ( "pdf"   , pdfSelect                 ) -- PDF selection prompt
-        , ( "file"  , spawn "termite -e ranger" ) -- File manager
-        , ( "skype" , spawn "skype"             ) -- Skype
+        [ ( "code"      , spawnShell                ) -- Shell
+        , ( "web"       , spawn "chromium"          ) -- Web browser
+        , ( "music"     , spawn "termite -e ncmpcpp") -- Music player
+        , ( "video"     , videoSelect               ) -- Video selection prompt
+        , ( "pdf"       , pdfSelect                 ) -- PDF selection prompt
+        , ( "file"      , spawn "termite -e ranger" ) -- File manager
+        , ( "skype"     , spawn "skype"             ) -- Skype
         ]
     }
 

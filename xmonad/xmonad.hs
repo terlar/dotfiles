@@ -40,7 +40,7 @@ myKeys =
     , ("M-S-q"          , io (exitWith ExitSuccess)     ) -- Quit XMonad
 
     -- Workspace Keys
-    , ("M-w 1"          , createOrGoto "dash"           )
+    , ("M-w 1"          , createOrGoto "dashboard"      )
     , ("M-w c"          , createOrGoto "code"           )
     , ("M-w w"          , createOrGoto "web"            )
     , ("M-w m"          , createOrGoto "music"          )
@@ -49,7 +49,7 @@ myKeys =
     , ("M-w f"          , createOrGoto "file"           )
     , ("M-w s"          , createOrGoto "skype"          )
     , ("M-w <Backspace>", killAll >> removeWorkspace >>
-                            createOrGoto "dash"         ) -- Removes current workspace
+                            createOrGoto "dashboard"    ) -- Removes current workspace
 
     -- Launch Keys
     , ("M-p"            , programLauncher               ) -- Launcher
@@ -74,7 +74,7 @@ myKeys =
 
 main = do
     xmonad $ defaultConfig
-        { workspaces         = ["dash"]
+        { workspaces         = ["dashboard"]
         , modMask            = myModMask
         , terminal           = myTerminal
         , focusFollowsMouse  = myFocusFollowsMouse
