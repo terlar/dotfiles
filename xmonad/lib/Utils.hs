@@ -8,6 +8,8 @@ module Utils
 
 import XMonad
 
+import Config
+
 videoSelect :: X ()
 videoSelect = spawn "mplayer \"$(zenity --file-selection --title=\"Select a video\" --filename=$HOME/Video/)\""
 
@@ -21,4 +23,4 @@ restartXMonad :: MonadIO m => m ()
 restartXMonad = spawn $ "xmonad --recompile && xmonad --restart"
 
 programLauncher :: MonadIO m => m ()
-programLauncher = spawn "x=$(yeganesh -x -- $DMENU_OPTIONS) && exec $x"
+programLauncher = spawn $ "x=$(yeganesh -x -- " ++ myDmenuOptions ++ ") && exec $x"
