@@ -50,7 +50,7 @@ myTopicConfig = defaultTopicConfig
     , topicActions       = M.fromList $
         [ ( "note"      , spawnEditor               ) -- Editor
         , ( "code"      , spawnShell                ) -- Shell
-        , ( "web"       , spawn "chromium"          ) -- Web browser
+        , ( "web"       , spawn myBrowser           ) -- Web browser
         , ( "music"     , spawn "termite -e ncmpcpp") -- Music player
         , ( "video"     , videoSelect               ) -- Video selection prompt
         , ( "pdf"       , pdfSelect                 ) -- PDF selection prompt

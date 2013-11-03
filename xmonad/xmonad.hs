@@ -55,7 +55,7 @@ myKeys =
     -- Launch Keys
     , ("M-p"            , programLauncher               ) -- Launcher
     , ("M-x e"          , spawnEditor                   ) -- Launch editor
-    , ("M-x w"          , spawn "chromium"              ) -- Launch browser
+    , ("M-x w"          , spawn myBrowser               ) -- Launch browser
     , ("M-x f"          , spawnFile                     ) -- Browse files
 
     -- Media Keys

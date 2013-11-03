@@ -11,13 +11,13 @@ import XMonad
 import Config
 
 videoSelect :: X ()
-videoSelect = spawn "mplayer \"$(zenity --file-selection --title=\"Select a video\" --filename=$HOME/Video/)\""
+videoSelect = spawn $ myVideoPlayer ++ " \"$(zenity --file-selection --title=\"Select a video\" --filename=$HOME/Video/)\""
 
 pdfSelect :: X ()
-pdfSelect = spawn "zathura \"$(zenity --file-selection --title=\"Select a pdf\" --filename=$HOME/Books/)\""
+pdfSelect = spawn $ myPdfViewer ++ " \"$(zenity --file-selection --title=\"Select a pdf\" --filename=$HOME/Books/)\""
 
 pictureSelect :: X ()
-pictureSelect = spawn "feh \"$(zenity --file-selection --title=\"Select a Picture\" --filename=$HOME/Pictures/)\""
+pictureSelect = spawn $ myImageViewer ++ " \"$(zenity --file-selection --title=\"Select a Picture\" --filename=$HOME/Pictures/)\""
 
 restartXMonad :: MonadIO m => m ()
 restartXMonad = spawn $ "xmonad --recompile && xmonad --restart"

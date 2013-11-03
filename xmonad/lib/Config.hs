@@ -3,6 +3,10 @@ module Config
      , myXPConfig
      , myModMask
      , myTerminal
+     , myBrowser
+     , myPdfViewer
+     , myImageViewer
+     , myVideoPlayer
      , myFocusFollowsMouse
      , myClickJustFocuses
      , myBorderWidth
@@ -16,7 +20,12 @@ import XMonad
 import XMonad.Prompt
 
 myModMask = mod4Mask
-myTerminal = "termite"
+
+myTerminal    = "termite"
+myBrowser     = "chromium"
+myPdfViewer   = "zathura"
+myImageViewer = "feh"
+myVideoPlayer = "mplayer"
 
 myFocusFollowsMouse = True
 myClickJustFocuses = False
@@ -27,9 +36,9 @@ myBorderWidth = 1
 myWindowSpacing :: Int
 myWindowSpacing = 2
 
+-- Theme
 myFont = "Source Code Pro-12"
 
--- Colors
 myNormalBorderColor  = colorWhite
 myFocusedBorderColor = myFGColor
 myFocusedFGColor     = colorGrey
