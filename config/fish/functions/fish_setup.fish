@@ -20,11 +20,6 @@ function fish_setup --description 'Setup fish variables'
   set -U fish_color_command blue
   set -U fish_color_param purple
 
-  # Prompt colors
-  set -U fish_color_user magenta
-  set -U fish_color_host yellow
-  set -U fish_color_cwd green
-
   # Pager colors
   set -U fish_pager_color_description white
 

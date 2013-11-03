@@ -28,10 +28,9 @@ function fish_user_abbreviations
     'gr=git rebase'\
     'gcp=git cherry-pick'\
     'b=bundle'\
-    'rc=rails console'\
-    'rg=rails generate'\
+    'rc=farm console'\
+    'rs=farm server'\
     'be=bundle exec'\
     's=spring'\
-    'kc=kviberg-config'\
-    'pdf=apvlv'
+    'kc=kviberg-config'
 end
