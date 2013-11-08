@@ -39,8 +39,8 @@ myWindowSpacing = 2
 -- Theme
 myFont = "Source Code Pro-12"
 
-myNormalBorderColor  = colorBlack
-myFocusedBorderColor = colorWhite
+myNormalBorderColor  = colorWhite
+myFocusedBorderColor = colorBlack
 myFocusedFGColor     = colorGrey
 myFocusedBGColor     = colorWhite
 
