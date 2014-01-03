@@ -36,6 +36,7 @@ channels = (
   { name = "#systemd"; chatnet = "Freenode"; autojoin = "Yes"; },
   { name = "#saltside"; chatnet = "Freenode"; autojoin = "Yes"; },
   { name = "#fish"; chatnet = "OFTC"; autojoin = "Yes"; }
+  { name = "#luakit"; chatnet = "OFTC"; autojoin = "Yes"; }
 );
 
 aliases = {
