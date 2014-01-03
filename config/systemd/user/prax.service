@@ -1,7 +1,5 @@
 [Unit]
 Description=Prax
-After=network.target
-Requires=network.target
 
 [Service]
 Type=oneshot
