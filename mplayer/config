@@ -1,8 +1,12 @@
 really-quiet=yes
 nolirc=yes
 
+# Streaming
+cache=8192
+cache-min=4
+
 # Video
-vo=gl
+vo=xv
 double=yes
 
 # Subtitles
