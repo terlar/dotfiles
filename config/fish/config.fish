@@ -1,6 +1,6 @@
 set -q fish_setup_done; or fish_setup
 
-function -v __prompt_context_current __prompt_context_reload
+function __prompt_context_reload -v __prompt_context_current
   echo $__prompt_context_current
 end
 
