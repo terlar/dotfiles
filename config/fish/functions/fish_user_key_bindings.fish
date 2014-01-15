@@ -9,7 +9,7 @@ function fish_user_key_bindings
   bind \ew 'set tok (commandline -pt); if test $tok[1]; echo; whatis $tok[1]; commandline -f repaint; end; echo'
   bind \e'<' 'prevd; commandline -f repaint'
   bind \e'>' 'nextd; commandline -f repaint'
-  bind \cl 'set -ge __prompt_context_current; clear; fish_prompt; commandline -f repaint'
+  bind \cl 'set -ge __prompt_context_current; clear; set_color normal; fish_prompt; commandline -f repaint'
 
   bind \e! __runsudo
 
