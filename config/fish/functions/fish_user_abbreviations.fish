@@ -27,6 +27,7 @@ function fish_user_abbreviations
     'gm=git merge'\
     'gr=git rebase'\
     'gcp=git cherry-pick'\
+    'gpr=git pull-request'\
     'b=bundle'\
     'rc=farm console'\
     'rs=farm server'\
