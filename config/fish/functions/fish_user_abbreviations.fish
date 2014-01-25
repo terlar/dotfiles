@@ -1,7 +1,7 @@
 function fish_user_abbreviations
   set -U fish_user_abbreviations \
-    's=sudo systemctl' \
-    'sus=systemctl --user' \
+    'sc=sudo systemctl' \
+    'scu=systemctl --user' \
     '!=sudo' \
     'tf=tail -f' \
     'fcd=farm cd' \
