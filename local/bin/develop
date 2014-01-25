@@ -19,6 +19,3 @@ systemctl --user start prax
 # Start development tools
 mailcatcher
 genghisapp
-
-# Authenticate
-ssh-add
