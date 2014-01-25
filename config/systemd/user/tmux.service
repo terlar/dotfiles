@@ -1,6 +1,8 @@
 [Unit]
 Description=Tmux service
 
+Before=default.target
+
 [Service]
 ExecStart=/usr/bin/tmux new-session -d -s default
 ExecStop=/usr/bin/tmux kill-server
