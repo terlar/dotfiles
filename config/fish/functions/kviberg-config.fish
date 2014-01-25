@@ -40,7 +40,8 @@ function kviberg-config-import
   echo '==> Flushing redis'
   redis-cli flushall
   echo '==> Flushing memcached'
-  echo 'flush_all' | nc -c 127.0.0.1 11211; ok; or return 1
+  echo 'flush_all' | telnet 127.0.0.1 11211 >/dev/null ^/dev/null
+  ok; or return 1
 end
 
 function ok
