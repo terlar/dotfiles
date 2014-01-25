@@ -1,8 +1,7 @@
 [Unit]
-Description=OpenSSH private key agent
-Wants=environment.target
-Before=environment.target
-IgnoreOnIsolate=true
+Description=OpenSSH Agent service
+
+Before=default.target
 
 [Service]
 Type=forking
