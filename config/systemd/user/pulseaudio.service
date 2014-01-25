@@ -1,0 +1,15 @@
+[Unit]
+Description=PulseAudio Sound System service
+Documentation=man:pulseaudio(1)
+
+Before=default.target
+
+[Service]
+Type=forking
+ExecStart=/usr/bin/pulseaudio --start --fail
+ExecStop=/usr/bin/pulseaudio --kill
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=default.target
