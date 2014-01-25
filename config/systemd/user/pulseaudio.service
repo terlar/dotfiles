@@ -3,6 +3,8 @@ Description=PulseAudio Sound System service
 Documentation=man:pulseaudio(1)
 
 Before=default.target
+After=dbus.socket
+Wants=dbus.socket
 
 [Service]
 Type=forking
