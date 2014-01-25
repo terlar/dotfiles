@@ -1,0 +1,13 @@
+[Unit]
+Description=Xset service (display %i)
+
+Before=xbase@%i.target
+After=x@%i.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/xset r rate 220 45
+Environment=DISPLAY=:%i
+
+[Install]
+WantedBy=xbase@%i.target

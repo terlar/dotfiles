@@ -1,0 +1,12 @@
+[Unit]
+Description=Termite service (display %i)
+
+After=xbase@%i.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/termite
+Environment=DISPLAY=:%i
+
+[Install]
+WantedBy=gui@%i.target

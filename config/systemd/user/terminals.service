@@ -1,9 +1,0 @@
-[Unit]
-Description=X terminals
-
-[Service]
-ExecStart=/usr/bin/termite
-Restart=on-success
-
-[Install]
-WantedBy=xinitrc.target

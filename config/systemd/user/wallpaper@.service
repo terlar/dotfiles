@@ -1,0 +1,16 @@
+[Unit]
+Description=Wallpaper service (display %i)
+
+Before=xbase@%i.target
+After=x@%i.service
+
+[Service]
+ExecStart=/usr/bin/feh $BG_TYPE $CURRENT_WALLPAPER
+RemainAfterExit=yes
+
+WorkingDirectory=%h/Pictures
+EnvironmentFile=%h/.config/fehbg.conf
+Environment=DISPLAY=:%i
+
+[Install]
+WantedBy=xbase@%i.target

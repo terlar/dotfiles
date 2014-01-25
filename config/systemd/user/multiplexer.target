@@ -1,6 +1,10 @@
 [Unit]
-Description=Terminal multiplexer
-Documentation=man:tmux(1)
+Description=Terminal Multiplexer
+
+StopWhenUnneeded=true
+
+After=dbus.socket
+Wants=dbus.socket
 
 [Install]
-Alias=default.target
+WantedBy=default.target

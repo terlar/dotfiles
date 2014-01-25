@@ -1,0 +1,7 @@
+[Unit]
+Description=Graphical User Interface (display %i)
+
+Wants=xbase@%i.target
+
+[Install]
+WantedBy=default.target

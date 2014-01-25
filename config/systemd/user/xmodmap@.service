@@ -1,0 +1,13 @@
+[Unit]
+Description=Xmodmap service (display %i)
+
+Before=xbase@%i.target
+After=x@%i.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/xmodmap %h/.Xmodmap
+Environment=DISPLAY=:%i
+
+[Install]
+WantedBy=xbase@%i.target

@@ -1,0 +1,12 @@
+[Unit]
+Description=XMonad service (display %i)
+
+Before=gui@%i.target
+After=xbase@%i.target
+
+[Service]
+ExecStart=/usr/bin/xmonad
+Environment=DISPLAY=:%i
+
+[Install]
+WantedBy=gui@%i.target

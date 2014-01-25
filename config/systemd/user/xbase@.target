@@ -1,0 +1,10 @@
+[Unit]
+Description=X Server with essential environment and settings (display %i)
+
+StopWhenUnneeded=true
+
+After=dbus.socket
+After=x@%i.service
+
+Wants=dbus.socket
+Requires=x@%i.service

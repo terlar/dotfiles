@@ -1,0 +1,8 @@
+[Unit]
+Description=X Server service (display %i)
+
+StopWhenUnneeded=true
+
+[Service]
+Type=forking
+ExecStart=/usr/bin/bash -c "/usr/bin/x-daemon :%i vt$((7+%i)) -nolisten tcp -noreset"

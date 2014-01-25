@@ -1,5 +1,6 @@
 [Unit]
-Description=Dropbox sync daemon
+Description=Dropbox service
+
 After=network.target
 Requires=network.target
 

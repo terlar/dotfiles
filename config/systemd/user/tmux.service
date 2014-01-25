@@ -1,11 +1,11 @@
 [Unit]
-Description=Tmux
+Description=Tmux service
 
 [Service]
-RemainAfterExit=yes
-Restart=on-success
 ExecStart=/usr/bin/tmux new-session -d -s default
 ExecStop=/usr/bin/tmux kill-server
+RemainAfterExit=yes
+Restart=on-success
 
 [Install]
 WantedBy=default.target

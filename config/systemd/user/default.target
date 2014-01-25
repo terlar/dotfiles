@@ -1,1 +1,2 @@
-xinitrc.target
+[Unit]
+Description=Default user target

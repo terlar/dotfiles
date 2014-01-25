@@ -1,5 +1,6 @@
 [Unit]
-Description=Mopidy
+Description=Mopidy service
+
 After=network.target
 Requires=network.target
 
