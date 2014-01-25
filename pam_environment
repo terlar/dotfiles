@@ -1,18 +1,23 @@
 # Paths
-HOME            DEFAULT=/home/@{PAM_USER} OVERRIDE=${HOME}
-PATH            DEFAULT=${HOME}/.local/bin:${HOME}/.cabal/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/bin/core_perl
+HOME              DEFAULT=/home/@{PAM_USER} OVERRIDE=${HOME}
+PATH              DEFAULT=${HOME}/.local/bin:${HOME}/.cabal/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/bin/core_perl
 
 # Display
-REMOTEHOST      DEFAULT=localhost OVERRIDE=@{PAM_RHOST}
-DISPLAY         DEFAULT=:0        OVERRIDE=${DISPLAY}
+REMOTEHOST        DEFAULT=localhost OVERRIDE=@{PAM_RHOST}
+DISPLAY           DEFAULT=:0        OVERRIDE=${DISPLAY}
 
 # XDG
-XDG_CACHE_HOME  DEFAULT=${HOME}/.local/cache
-XDG_CONFIG_HOME DEFAULT=${HOME}/.config
-XDG_DATA_HOME   DEFAULT=${HOME}/.local/share
+XDG_CACHE_HOME    DEFAULT=${HOME}/.local/cache
+XDG_CONFIG_HOME   DEFAULT=${HOME}/.config
+XDG_DATA_HOME     DEFAULT=${HOME}/.local/share
+XDG_DOWNLOAD_DIR  DEFAULT=${HOME}/Downloads
+XDG_DOCUMENTS_DIR DEFAULT=${HOME}/Documents
+XDG_MUSIC_DIR     DEFAULT=${HOME}/Music
+XDG_PICTURES_DIR  DEFAULT=${HOME}/Pictures
+XDG_VIDEOS_DIR    DEFAULT=${HOME}/Videos
 
 # Tools
-VISUAL          DEFAULT=vim
-EDITOR          DEFAULT=vim
-BROWSER         DEFAULT=xdg-open
-XBMC_HOME       DEFAULT=/usr/share/plexhometheater
+VISUAL            DEFAULT=vim
+EDITOR            DEFAULT=vim
+BROWSER           DEFAULT=xdg-open
+XBMC_HOME         DEFAULT=/usr/share/plexhometheater
