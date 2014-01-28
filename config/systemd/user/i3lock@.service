@@ -1,5 +1,5 @@
 [Unit]
-Description=i3lock service (%i)
+Description=i3lock service (display %i)
 Documentation=man:i3lock(1)
 
 Before=xbase@%i.target
