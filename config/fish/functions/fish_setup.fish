@@ -21,6 +21,7 @@ function fish_setup --description 'Setup fish variables'
   set -U fish_color_param purple
 
   # Pager colors
+  set -U fish_pager_color_completion purple
   set -U fish_pager_color_description white
 
   # Abbreviations
