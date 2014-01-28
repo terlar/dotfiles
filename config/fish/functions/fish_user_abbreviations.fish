@@ -36,5 +36,7 @@ function fish_user_abbreviations
     'rc=farm console' \
     'rs=farm server' \
     'be=bundle exec' \
-    'kc=kviberg-config'
+    'kc=kviberg-config' \
+    'x=systemctl --user start gui@0.target' \
+    'm=systemctl --user start mopidy'
 end
