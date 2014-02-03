@@ -48,7 +48,7 @@ myKeys =
     , ("M-w v"          , createOrGoto "video"          )
     , ("M-w p"          , createOrGoto "pdf"            )
     , ("M-w f"          , createOrGoto "file"           )
-    , ("M-w s"          , createOrGoto "skype"          )
+    , ("M-w s"          , createOrGoto "speak"          )
     , ("M-w <Backspace>", killAll >> removeWorkspace >>
                             createOrGoto "dashboard"    ) -- Removes current workspace
 

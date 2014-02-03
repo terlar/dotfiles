@@ -29,7 +29,7 @@ myTopics :: [Topic]
 myTopics = [ "dashboard"
            , "code", "web"
            , "music", "video", "file"
-           , "pdf", "skype"
+           , "pdf", "speak"
            ]
 
 myTopicConfig :: TopicConfig
@@ -43,7 +43,7 @@ myTopicConfig = defaultTopicConfig
         , ( "video"     , "Video"                   )
         , ( "pdf"       , "Books"                   )
         , ( "file"      , ""                        )
-        , ( "skype"     , ""                        )
+        , ( "speak"     , ""                        )
         ]
     , defaultTopicAction = const $ spawn ""
     , defaultTopic       = "dashboard"
@@ -55,7 +55,7 @@ myTopicConfig = defaultTopicConfig
         , ( "video"     , videoSelect               ) -- Video selection prompt
         , ( "pdf"       , pdfSelect                 ) -- PDF selection prompt
         , ( "file"      , spawn "termite -e ranger" ) -- File manager
-        , ( "skype"     , spawn "skype"             ) -- Skype
+        , ( "speak"     , spawn "termite -e chat" >> spawn "termite -e email" ) -- IRC and E-mail
         ]
     }
 
