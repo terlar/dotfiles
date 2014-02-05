@@ -6,9 +6,8 @@ function fish_user_key_bindings
   bind \e, __insert-previous-token
 
   bind \el '__fish_list_current_token; echo'
-  bind \ew 'set tok (commandline -pt); if test $tok[1]; echo; whatis $tok[1]; commandline -f repaint; end; echo'
-  bind \e'<' 'prevd; commandline -f repaint'
-  bind \e'>' 'nextd; commandline -f repaint'
+  bind \e'<' 'prevd; set -ge __prompt_context_current; fish_prompt'
+  bind \e'>' 'nextd; set -ge __prompt_context_current; fish_prompt'
   bind \cl 'set -ge __prompt_context_current; clear; set_color normal; fish_prompt; commandline -f repaint'
 
   bind \e! __runsudo
