@@ -4,7 +4,7 @@ if test -z "$chat_server"
   exit 1
 end
 
-set -l commands "env SHELL=/bin/bash mosh $chat_server -- tmux attach -t chat"
+set -l commands "mosh $chat_server -- tmux attach -t chat"
 
 if test -z "$TMUX"
   tmux new -A -s chat "$commands; $SHELL -l"
