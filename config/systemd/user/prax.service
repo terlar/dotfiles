@@ -4,9 +4,9 @@ Description=Prax
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-ExecStart=/home/terje/.prax-dist/bin/prax start
-ExecStop=/home/terje/.prax-dist/bin/prax stop
-WorkingDirectory=/home/terje/.prax-dist
+ExecStart=/opt/prax/bin/prax start
+ExecStop=/opt/prax/bin/prax stop
+WorkingDirectory=/opt/prax
 
 [Install]
 WantedBy=default.target
