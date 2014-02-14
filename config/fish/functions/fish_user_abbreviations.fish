@@ -4,7 +4,6 @@ function fish_user_abbreviations
     'scu=systemctl --user' \
     '!=sudo' \
     'tf=tail -f' \
-    'fcd=farm cd' \
     'l=ls -a' \
     'l.=ls -d .*' \
     'g=git' \
@@ -30,12 +29,14 @@ function fish_user_abbreviations
     'gcp=git cherry-pick' \
     'gpr=git pull-request' \
     'b=bundle' \
+    'be=bundle exec' \
     'f=farm' \
+    'fcd=farm cd' \
     'fc=farm console' \
     'fs=farm server' \
     'rc=farm console' \
     'rs=farm server' \
-    'be=bundle exec' \
+    'prs=prax restart' \
     'kc=kviberg-config' \
     'x=systemctl --user start gui@0.target' \
     'm=systemctl --user start mopidy'
