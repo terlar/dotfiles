@@ -16,5 +16,5 @@ source /usr/local/share/fry/fry.fish
 
 # Envoy
 if which envoy >/dev/null ^/dev/null
-  eval (envoy -fp)
+  envoy -fp | source
 end
