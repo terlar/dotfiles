@@ -1,12 +1,6 @@
 function fish_setup --description 'Setup fish variables'
   set -U fish_greeting
 
-  set -Ux LANG en_US.UTF-8
-  set -Ux LC_ALL en_US.UTF-8
-
-  set -Ux EDITOR vim
-  set -Ux BROWSER open
-
   # Less colors
   set -Ux LESS_TERMCAP_mb \e'[01;31m'       # begin blinking
   set -Ux LESS_TERMCAP_md \e'[01;38;5;74m'  # begin bold

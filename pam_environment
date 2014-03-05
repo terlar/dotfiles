@@ -1,3 +1,7 @@
+# Locale
+LANG              DEFAULT=en_US.UTF-8
+LC_ALL            DEFAULT=${LANG}
+
 # Paths
 HOME              DEFAULT=/home/@{PAM_USER} OVERRIDE=${HOME}
 PATH              DEFAULT=${HOME}/.local/bin:${HOME}/.cabal/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/bin/core_perl
