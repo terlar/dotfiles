@@ -29,6 +29,8 @@ function fish_setup --description 'Setup fish variables'
   set -U tank_reporter spec
   set -U fry_auto_switch 1
 
+  set -U chat_server robotomi.se
+
   set -U fish_setup_done 1
   echo 'Initial fish setup done!'
 end
