@@ -25,3 +25,4 @@ VISUAL            DEFAULT=vim
 EDITOR            DEFAULT=vim
 BROWSER           DEFAULT=xdg-open
 XBMC_HOME         DEFAULT=/usr/share/plexhometheater
+LD_PRELOAD        DEFAULT=/usr/lib/libstderred.so
