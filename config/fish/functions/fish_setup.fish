@@ -1,6 +1,10 @@
 function fish_setup --description 'Setup fish variables'
   set -U fish_greeting
 
+  # Enable features
+  set -U fish_new_parser 1
+  set -U fish_new_pager 1
+
   # Less colors
   set -Ux LESS_TERMCAP_mb \e'[01;31m'       # begin blinking
   set -Ux LESS_TERMCAP_md \e'[01;38;5;74m'  # begin bold
