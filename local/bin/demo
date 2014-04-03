@@ -3,10 +3,10 @@ subdomain=$1
 username=$2
 password=$3
 
-[ -n $subdomain ] && subdomain="-subdomain=${subdomain}"
+[ -n $subdomain ] || (echo "Subdomain required to demo" && exit)
 
 if [[ -n $username  ]] && [[ -n $password ]]; then
   httpauth="-httpauth=${username}:${password}"
 fi
 
-ngrok $subdomain $httpauth 80
+ngrok -subdomain=$subdomain $httpauth 80
