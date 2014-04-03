@@ -1,0 +1,12 @@
+#!/bin/sh
+subdomain=$1
+username=$2
+password=$3
+
+[ -n $subdomain ] && subdomain="-subdomain=${subdomain}"
+
+if [[ -n $username  ]] && [[ -n $password ]]; then
+  httpauth="-httpauth=${username}:${password}"
+fi
+
+ngrok $subdomain $httpauth 80
