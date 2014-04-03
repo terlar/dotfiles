@@ -6,6 +6,7 @@ sudo systemctl start mongodb
 sudo systemctl start redis
 sudo systemctl start memcached
 sudo systemctl start elasticsearch
+sudo systemctl start nginx
 
 # Setup temporary files
 ln -s /var/run/mysqld/mysqld.sock /tmp/mysql.sock
