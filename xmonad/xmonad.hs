@@ -62,8 +62,10 @@ myKeys =
     , ("M-<Esc>", spawn "i3lock -i ~/Pictures/saltside.png -c 000000" ) -- Lock screen
     , ("M-`"                    , spawn "scrot"                       ) -- Screenshot
     , ("M-S-`"                  , spawn "sleep 0.2; scrot -s"         ) -- Partial screenshot
-    , ("<XF86MonBrightnessUp>"  , spawn "xbacklight -inc 10"          ) -- Brighness up
-    , ("<XF86MonBrightnessDown>", spawn "xbacklight -dec 10"          ) -- Brighness down
+    , ("<XF86MonBrightnessUp>"  , spawn "xbacklight -inc 10"          ) -- Monitor brighness up
+    , ("<XF86MonBrightnessDown>", spawn "xbacklight -dec 10"          ) -- Monitor brighness down
+    , ("<XF86KbdBrightnessUp>"  , spawn "kbdlight up"                 ) -- Keyboard brighness up
+    , ("<XF86KbdBrightnessDown>", spawn "kbdlight down"               ) -- Keyboard brighness down
     , ("<XF86AudioPlay>"        , spawn "ncmpcpp toggle"              ) -- Play/Pause track
     , ("<XF86AudioStop>"        , spawn "ncmpcpp stop"                ) -- Stop track
     , ("<XF86AudioNext>"        , spawn "ncmpcpp next"                ) -- Next track
