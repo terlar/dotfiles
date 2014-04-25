@@ -18,3 +18,6 @@ source /usr/local/share/fry/fry.fish
 if which envoy >/dev/null ^/dev/null
   envoy -fp | source
 end
+
+# Secrets
+source $HOME/.secrets
