@@ -39,5 +39,6 @@ function fish_user_abbreviations
     'prs=prax restart' \
     'kc=kviberg-config' \
     'x=systemctl --user start gui@0.target' \
-    'm=systemctl --user start mopidy'
+    'm=systemctl --user start mopidy' \
+    'ccat=pygmentize'
 end
