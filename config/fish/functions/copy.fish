@@ -7,5 +7,5 @@ function copy --description 'Trim new lines and copy to clipboard'
 
   for i in $argv
     echo -n $i
-  end | tr -d '\n' | pbcopy
+  end | tr -d '\n' | xclip
 end
