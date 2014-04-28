@@ -1,22 +1,16 @@
 #!/usr/bin/bash
 
-# Start services
+# Services
 sudo systemctl start mysqld
+ln -s /var/run/mysqld/mysqld.sock /tmp/mysql.sock
+
 sudo systemctl start mongodb
 sudo systemctl start redis
 sudo systemctl start memcached
 sudo systemctl start elasticsearch
+
 sudo systemctl start nginx
-
-# Setup temporary files
-ln -s /var/run/mysqld/mysqld.sock /tmp/mysql.sock
-mkdir /tmp/log-kviberg
-mkdir /tmp/log-kviberg-config
-mkdir /tmp/log-kviberg-mobile
-
-# Start zeroconf
 systemctl --user start prax
 
-# Start development tools
+# Development tools
 mailcatcher
-genghisapp
