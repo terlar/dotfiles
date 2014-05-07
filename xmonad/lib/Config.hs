@@ -22,7 +22,7 @@ import XMonad.Prompt
 myModMask = mod4Mask
 
 myTerminal    = "termite"
-myBrowser     = "luakit"
+myBrowser     = "firefox"
 myPdfViewer   = "zathura"
 myImageViewer = "feh"
 myVideoPlayer = "mplayer"
