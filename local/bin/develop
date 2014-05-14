@@ -1,5 +1,8 @@
 #!/usr/bin/bash
 
+# Authorize
+monkeysphere subkey-to-ssh-agent
+
 # Services
 sudo systemctl start mysqld
 ln -s /var/run/mysqld/mysqld.sock /tmp/mysql.sock
