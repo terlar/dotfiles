@@ -1,9 +1,6 @@
 [Unit]
 Description=Mopidy service
 
-After=network.target
-Requires=network.target
-
 [Service]
 ExecStart=/usr/bin/mopidy
 ExecReload=/bin/kill -HUP $MAINPID
