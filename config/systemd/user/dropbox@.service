@@ -1,0 +1,17 @@
+[Unit]
+Description=Dropbox service (display %i)
+
+Before=xbase@%i.target
+After=x@%i.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/dropboxd
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=process
+Restart=on-failure
+
+Environment=DISPLAY=:%i
+
+[Install]
+WantedBy=xbase@%i.target
