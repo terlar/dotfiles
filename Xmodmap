@@ -5,12 +5,3 @@ add Control = Control_L
 
 ! Reverse Scrolling
 pointer = 1 2 3 5 4 7 6 8 9 10 11 12
-
-! Swedish
-keycode 108 = Mode_switch
-
-keycode 32 = o O odiaeresis Odiaeresis
-keycode 38 = a A aring Aring
-keycode 48 = apostrophe quotedbl adiaeresis Adiaeresis
-
-keycode 65 = space space Insert Insert
