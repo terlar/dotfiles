@@ -1,18 +1,21 @@
 [general]
-ui = ttyui
 accounts = personal, work
 maxsyncaccounts = 2
-pythonfile = ~/.offlineimap.py
+ui = ttyui
+pythonfile = ~/.local/bin/offlineimap-helpers.py
+fsync = False
 
 [Account personal]
 localrepository = personal-local
 remoterepository = personal-remote
 status_backend = sqlite
+postsynchook = notmuch new
 
 [Account work]
 localrepository = work-local
 remoterepository = work-remote
 status_backend = sqlite
+postsynchook = notmuch new
 
 [Repository personal-local]
 type = Maildir
@@ -31,6 +34,7 @@ remotepasseval = get_credentials('personal')
 realdelete = no
 maxconnections = 3
 nametrans = nt_remote
+ssl = yes
 sslcacertfile = /etc/ssl/certs/ca-certificates.crt
 folderfilter = exclude([])
 
@@ -41,5 +45,6 @@ remotepasseval = get_credentials('work')
 realdelete = no
 maxconnections = 3
 nametrans = nt_remote
+ssl = yes
 sslcacertfile = /etc/ssl/certs/ca-certificates.crt
 folderfilter = exclude([])
