@@ -1,0 +1,45 @@
+[general]
+ui = ttyui
+accounts = personal, work
+maxsyncaccounts = 2
+pythonfile = ~/.offlineimap.py
+
+[Account personal]
+localrepository = personal-local
+remoterepository = personal-remote
+status_backend = sqlite
+
+[Account work]
+localrepository = work-local
+remoterepository = work-remote
+status_backend = sqlite
+
+[Repository personal-local]
+type = Maildir
+localfolders = ~/Mail/personal
+nametrans = nt_local
+
+[Repository work-local]
+type = Maildir
+localfolders = ~/Mail/work
+nametrans = nt_local
+
+[Repository personal-remote]
+type = Gmail
+remoteusereval = get_credentials('personal', 'login')
+remotepasseval = get_credentials('personal')
+realdelete = no
+maxconnections = 3
+nametrans = nt_remote
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+folderfilter = exclude([])
+
+[Repository work-remote]
+type = Gmail
+remoteusereval = get_credentials('work', 'login')
+remotepasseval = get_credentials('work')
+realdelete = no
+maxconnections = 3
+nametrans = nt_remote
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+folderfilter = exclude([])
