@@ -1,0 +1,52 @@
+set askcc
+set beep_new
+unset confirmappend
+set delete
+set edit_headers
+set editor = "vim +:silent+?^$"
+set fast_reply
+set folder = ~/Mail
+set forward_format = "Fwd: %s"
+set forward_quote
+set header_cache = ~/.mutt/cache
+set include
+set index_format = "%3C %Z %[!%m/%d] %-17.17F %s"
+set mail_check = 0
+set mailcap_path = ~/.mutt/mailcap
+unset move
+unset mark_old
+unset markers
+set mbox_type = Maildir
+set menu_scroll
+set pager_context = 5
+set pager_index_lines = 10
+set pager_stop
+set pipe_decode
+set realname = "Terje Larsen"
+unset record
+set reply_to
+set reverse_name
+set signature = ~/.mutt/signature
+set sort = threads
+set sort_aux = last-date-received
+set spoolfile = "+personal/inbox"
+set strict_threads
+set thorough_search
+set tilde
+set timeout = 3
+set tmpdir = ~/.mutt/temp
+
+auto_view text/html
+alternative_order text/plain text/enriched text/html
+
+# Header
+ignore *
+unignore from: to: cc: date: subject:
+hdr_order from: to: cc: date: subject:
+
+source ~/.mutt/colors
+source ~/.mutt/mailboxes
+source ~/.mutt/bindings
+source ~/.mutt/macros
+source ~/.mutt/gpg
+source ~/.mutt/hooks

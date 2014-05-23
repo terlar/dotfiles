@@ -5,6 +5,14 @@ ui = ttyui
 pythonfile = ~/.local/bin/offlineimap-helpers.py
 fsync = False
 
+[mbnames]
+enabled = yes
+filename = ~/.mutt/mailboxes
+header = "mailboxes \\\n "
+peritem = "+%(accountname)s/%(foldername)s"
+sep = " \\\n "
+footer = "\n"
+
 [Account personal]
 localrepository = personal-local
 remoterepository = personal-remote

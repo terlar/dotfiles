@@ -1,0 +1,11 @@
+# vim: ft=muttrc
+set from = "terje@saltside.se"
+set sendmail = "/usr/bin/msmtp -a work"
+set mbox = "+work/archive"
+set postponed = "+work/drafts"
+
+color status cyan default
+
+macro index ,c "<change-folder>+personal/inbox<return>" "change accounts"
+macro index D "<save-message>+work/trash<enter>" "move message to the trash"
+macro index S "<save-message>+work/spam<enter>" "mark message as spam"
