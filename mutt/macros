@@ -18,7 +18,7 @@ macro index ,R \
   "mark all as read (collapsed)"
 
 macro index ,s \
-  "<shell-escape>notmuch-mutt --prompt search<enter><change-folder-readonly>~/.cache/notmuch/mutt/results<enter>" \
+  "<shell-escape>notmuch-mutt --output-dir ~/Mail/temporary/search --prompt search<enter><change-folder-readonly>+temporary/search<enter>" \
   "search mail via notmuch"
 
 macro pager \Cu "|urlview<enter>" "call urlview to open links"

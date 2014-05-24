@@ -1,0 +1,17 @@
+[database]
+path=/home/terje/Mail
+
+[user]
+name=Terje Larsen
+primary_email=terlar@gmail.com
+other_email=terje@saltside.se
+
+[new]
+tags=unread;inbox;
+ignore=
+
+[maildir]
+synchronize_flags=true
+
+[search]
+exclude_tags=
