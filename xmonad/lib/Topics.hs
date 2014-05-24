@@ -55,7 +55,7 @@ myTopicConfig = defaultTopicConfig
         , ( "video"     , videoSelect               ) -- Video selection prompt
         , ( "pdf"       , pdfSelect                 ) -- PDF selection prompt
         , ( "file"      , spawn "termite -e ranger" ) -- File manager
-        , ( "speak"     , spawn "termite -e chat" >> spawn "termite -e email" ) -- IRC and E-mail
+        , ( "speak"     , spawn "termite -e chat" >> spawn "termite -e mutt" ) -- IRC and E-mail
         ]
     }
 
