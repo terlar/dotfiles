@@ -1,8 +1,10 @@
 # vim: ft=muttrc
 set from = "terlar@gmail.com"
 set sendmail = "/usr/bin/msmtp -a personal"
+set sendmail_wait = 0
 set mbox = "+personal/archive"
 set postponed = "+personal/drafts"
+unset record
 
 color status green default
 

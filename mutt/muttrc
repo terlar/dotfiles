@@ -1,48 +1,75 @@
-set askcc
+# Paths
+set folder = ~/Mail
+set header_cache = ~/.mutt/cache
+set mailcap_path = ~/.mutt/mailcap
+set signature = ~/.mutt/signature
+set tmpdir = ~/.mutt/temp
+
+# Options
+set wait_key = no
 set beep_new
 unset confirmappend
 set delete
-set edit_headers
 set editor = "vim +:silent+?^$"
-set fast_reply
-set folder = ~/Mail
-set forward_format = "Fwd: %s"
-set forward_quote
-set header_cache = ~/.mutt/cache
-set include
-set index_format = "%3C %Z %[!%m/%d] %-17.17F %s"
+set query_command = "ppl mutt '%s'"
 set mail_check = 0
-set mailcap_path = ~/.mutt/mailcap
 unset move
 unset mark_old
-unset markers
 set mbox_type = Maildir
-set menu_scroll
-set pager_context = 5
-set pager_index_lines = 10
-set pager_stop
 set pipe_decode
-set realname = "Terje Larsen"
 unset record
-set reply_to
-set reverse_name
-set signature = ~/.mutt/signature
-set sort = threads
-set sort_aux = last-date-received
 set spoolfile = "+personal/inbox"
 set strict_threads
 set thorough_search
-set tilde
 set timeout = 3
-set tmpdir = ~/.mutt/temp
-
-auto_view text/html
-alternative_order text/plain text/enriched text/html
 
 # Header
 ignore *
 unignore from: to: cc: date: subject:
 hdr_order from: to: cc: date: subject:
+
+# Status Bar
+set status_chars  = " *%A"
+set status_format = "───[ Folder: %f ]───[%r%m messages%?n? (%n new)?%?d? (%d to delete)?%?t? (%t tagged)? ]───%>─%?p?( %p postponed )?───"
+
+# Index View
+set date_format = "%m/%d"
+set index_format = "%3C %Z %[!%m/%d] %-17.17F %s"
+set sort = threads
+set sort_aux = reverse-last-date-received
+set uncollapse_jump
+set sort_re
+set reply_regexp = "^(([Rr][Ee]?(\[[0-9]+\])?: *)?(\[[^]]+\] *)?)*"
+
+# Pager View
+set menu_scroll
+set pager_context = 5
+set pager_index_lines = 10
+set pager_stop
+set tilde
+unset markers
+
+set quote_regexp = "^( {0,4}[>|:#%]| {0,4}[a-z0-9]+[>|]+)+"
+auto_view text/html
+alternative_order text/plain text/enriched text/html
+
+# Compose View
+set realname = "Terje Larsen"
+set envelope_from
+set sig_dashes
+set edit_headers
+set fast_reply
+set askcc
+set fcc_attach
+unset mime_forward
+set forward_format = "Fwd: %s"
+set forward_decode
+set forward_quote
+set attribution = "On %d, %n wrote:"
+set reply_to
+set reverse_name
+set include
+
 
 source ~/.mutt/colors
 source ~/.mutt/mailboxes

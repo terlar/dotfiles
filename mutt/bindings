@@ -1,5 +1,7 @@
 # vim: ft=muttrc
 bind index i noop
+bind index <tab> sync-mailbox
+bind index <space> collapse-thread
 bind index gg first-entry
 bind index G last-entry
 bind index N search-opposite
@@ -13,3 +15,10 @@ bind pager G bottom
 bind index,pager \# noop
 bind index,pager \& noop
 bind index,pager R group-reply
+bind attach <return> view-mailcap
+
+bind index p recall-message
+bind compose p postpone-message
+
+bind editor <Tab> complete-query
+bind editor ^T complete

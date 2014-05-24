@@ -1,6 +1,6 @@
 # vim: ft=muttrc
 application/octet-stream ; echo %s "can be anything..." ; copiousoutput
-text/html ; /usr/bin/elinks -dump %s ; nametemplate=%s.html ; copiousoutput
+text/html ; /usr/bin/w3m -dump %s ; nametemplate=%s.html ; copiousoutput
 
 application/pdf; /usr/bin/xdg-open %s ; needsterminal
 image/* ; /usr/bin/xdg-open %s ; needsterminal
