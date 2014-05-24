@@ -8,6 +8,7 @@ bind index N search-opposite
 bind pager i exit
 bind pager q toggle-quoted
 bind pager / search
+bind pager N search-opposite
 bind pager j next-line
 bind pager k previous-line
 bind pager gg top

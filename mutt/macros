@@ -7,6 +7,8 @@ macro index ,z "<shell-escape>offlineimap -q -o<return>" "sync IMAP"
 macro index zc "<collapse-thread>" "collapse thread"
 macro index <space> "<collapse-thread>" "uncollapse thread"
 
+macro index a "<limit>all\n" "show all messages (undo limit)"
+
 macro index ,r \
   "<tag-pattern>~N<return><tag-prefix><clear-flag>N<untag-pattern>~T<return>" \
   "mark all as read"
