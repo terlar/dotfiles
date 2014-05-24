@@ -6,12 +6,13 @@ set signature = ~/.mutt/signature
 set tmpdir = ~/.mutt/temp
 
 # Options
-set wait_key = no
+unset wait_key
 set beep_new
 unset confirmappend
 set delete
 set editor = "vim +:silent+?^$"
 set query_command = "ppl mutt '%s'"
+set ispell = "aspell -e -c"
 set mail_check = 0
 unset move
 unset mark_old
@@ -38,7 +39,7 @@ set index_format = "%3C %Z %[!%m/%d] %-17.17F %s"
 set sort = threads
 set sort_aux = reverse-last-date-received
 set uncollapse_jump
-set sort_re
+unset sort_re
 set reply_regexp = "^(([Rr][Ee]?(\[[0-9]+\])?: *)?(\[[^]]+\] *)?)*"
 
 # Pager View
