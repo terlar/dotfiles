@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+content=/dev/stdin
+
+if [[ -f "$1" ]]; then
+  content="$1"; shift
+fi
+
+ext="$1"
+
+if [[ -z "$ext" ]] && [[ "$content" == *.* ]]; then
+  ext="${content##*.}"
+fi
+
+read -r link < <(curl -# -F 'sprunge=<-' http://sprunge.us < "$content")
+
+link="$link?$ext"
+
+[[ -n "$DISPLAY" ]] && printf "$link" | xclip
+printf "%s\n" "$link"
