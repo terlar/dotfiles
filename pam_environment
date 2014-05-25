@@ -26,3 +26,6 @@ EDITOR            DEFAULT=vim
 BROWSER           DEFAULT=xdg-open
 XBMC_HOME         DEFAULT=/usr/share/plexhometheater
 LD_PRELOAD        DEFAULT=/usr/lib/libstderred.so
+
+# Other
+fish_use_fishd    DEFAULT=0
