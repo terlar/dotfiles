@@ -57,6 +57,7 @@ myKeys =
     , ("M-x e"          , spawnEditor                   ) -- Launch editor
     , ("M-x w"          , spawn myBrowser               ) -- Launch browser
     , ("M-x f"          , spawnFile                     ) -- Browse files
+    , ("M-v"            , spawn "pavucontrol"           ) -- Volume control
 
     -- Media Keys
     , ("M-<Esc>", spawn "i3lock -i ~/Pictures/saltside.png -c 000000" ) -- Lock screen
