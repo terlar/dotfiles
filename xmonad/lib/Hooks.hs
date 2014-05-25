@@ -22,7 +22,13 @@ myManageHook =
     , [ className =? x        --> doCenterFloat | x <- floats ]
     ])
     where
-      floats = ["feh", "Pavucontrol"]
+      floats = [ "feh"
+               , "Gcolor2"
+               , "Pavucontrol"
+               , "Arandr"
+               , "Lxappearance"
+               , "Qtconfig-qt4"
+               ]
 
       doMaster = doF W.shiftMaster
       doCenterFloat' = doCenterFloat <+> doMaster
