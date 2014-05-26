@@ -4,6 +4,7 @@ set sendmail = "/usr/bin/msmtp -a work"
 set sendmail_wait = 0
 set mbox = "+work/archive"
 set postponed = "+work/drafts"
+set signature = ~/.mutt/signature.work
 unset record
 
 color status cyan default
