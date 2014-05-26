@@ -10,6 +10,15 @@ PATH              DEFAULT=${HOME}/.local/bin:${HOME}/.cabal/bin:/usr/local/sbin:
 REMOTEHOST        DEFAULT=localhost OVERRIDE=@{PAM_RHOST}
 DISPLAY           DEFAULT=:0        OVERRIDE=${DISPLAY}
 
+# Tools
+VISUAL            DEFAULT=vim
+EDITOR            DEFAULT=vim
+PAGER             DEFAULT=less
+TERMINAL          DEFAULT=termite
+BROWSER           DEFAULT=xdg-open
+XBMC_HOME         DEFAULT=/usr/share/plexhometheater
+LD_PRELOAD        DEFAULT=/usr/lib/libstderred.so
+
 # XDG
 XDG_CACHE_HOME    DEFAULT=${HOME}/.local/cache
 XDG_CONFIG_HOME   DEFAULT=${HOME}/.config
@@ -20,12 +29,7 @@ XDG_MUSIC_DIR     DEFAULT=${HOME}/Music
 XDG_PICTURES_DIR  DEFAULT=${HOME}/Pictures
 XDG_VIDEOS_DIR    DEFAULT=${HOME}/Videos
 
-# Tools
-VISUAL            DEFAULT=vim
-EDITOR            DEFAULT=vim
-BROWSER           DEFAULT=xdg-open
-XBMC_HOME         DEFAULT=/usr/share/plexhometheater
-LD_PRELOAD        DEFAULT=/usr/lib/libstderred.so
+GREP_OPTIONS      DEFAULT=--color=auto
+LESS              DEFAULT=-R
 
-# Other
 fish_use_fishd    DEFAULT=0
