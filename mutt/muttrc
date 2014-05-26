@@ -34,6 +34,7 @@ set status_chars  = " *%A"
 set status_format = "───[ Folder: %f ]───[%r%m messages%?n? (%n new)?%?d? (%d to delete)?%?t? (%t tagged)? ]───%>─%?p?( %p postponed )?───"
 
 # Index View
+unset arrow_cursor
 set date_format = "%m/%d"
 set index_format = "%3C %Z %[!%m/%d] %-17.17F %s"
 set sort = threads
