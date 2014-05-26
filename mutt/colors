@@ -5,7 +5,7 @@
 
 # main colors
   color status      green         default
-  color indicator   default       blue
+  color indicator   brightwhite   green
   color tree        blue          default
   color error       brightred     default
   color message     brightyellow  default

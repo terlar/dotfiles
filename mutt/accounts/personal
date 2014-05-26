@@ -7,6 +7,7 @@ set postponed = "+personal/drafts"
 unset record
 
 color status green default
+color indicator brightwhite green
 
 macro index ,c "<change-folder>+work/inbox<return>" "change accounts"
 macro index D "<save-message>+personal/trash<enter>" "move message to the trash"
