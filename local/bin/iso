@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+if [ $# -eq 0 ]; then
+  printf "usage: iso <file>, ...\n" >&2
+  exit 1
+fi
+
+tmp=/tmp/iso
+mkdir -p "$tmp"
+
+for file; do
+  ln -s "$(readlink -f "$file")" "$tmp"
+done
+
+mkisofs -o ./files.iso -f -r -J -l -allow-leading-dots "$tmp"
