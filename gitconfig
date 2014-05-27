@@ -53,7 +53,7 @@
 [branch "master"]
   rebase = true
 [push]
-  default = upstream
+  default = tracking
 [github]
   user = terlar
 [url "git://github.com/"]
