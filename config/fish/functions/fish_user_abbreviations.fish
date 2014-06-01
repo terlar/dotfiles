@@ -2,10 +2,12 @@ function fish_user_abbreviations
   set -U fish_user_abbreviations \
     'sc=sudo systemctl' \
     'scu=systemctl --user' \
+    'pac=pacman' \
     '!=sudo' \
     'tf=tail -f' \
     'l=ls -a' \
     'l.=ls -d .*' \
+    'ccat=pygmentize' \
     'g=git' \
     'gs=git status -sb' \
     'gh=git head' \
@@ -34,11 +36,8 @@ function fish_user_abbreviations
     'fcd=farm cd' \
     'fc=farm console' \
     'fs=farm server' \
-    'rc=farm console' \
-    'rs=farm server' \
     'prs=prax restart' \
     'kc=kviberg-config' \
     'x=systemctl --user start gui@0.target' \
-    'm=systemctl --user start mopidy' \
-    'ccat=pygmentize'
+    'm=systemctl --user start mopidy'
 end
