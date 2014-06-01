@@ -3,6 +3,7 @@ function fish_user_abbreviations
     'sc=sudo systemctl' \
     'scu=systemctl --user' \
     'pac=pacman' \
+    'aur=aura' \
     '!=sudo' \
     'tf=tail -f' \
     'l=ls -a' \
