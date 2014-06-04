@@ -17,7 +17,6 @@ PAGER             DEFAULT=less
 TERMINAL          DEFAULT=termite
 BROWSER           DEFAULT=xdg-open
 XBMC_HOME         DEFAULT=/usr/share/plexhometheater
-LD_PRELOAD        DEFAULT=/usr/lib/libstderred.so
 
 # XDG
 XDG_CACHE_HOME    DEFAULT=${HOME}/.local/cache
