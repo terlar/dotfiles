@@ -48,6 +48,8 @@ function __dotfiles_read_choice_prompt
 end
 
 function __dotfiles_read_confirm
+  set -qg unattended; and return 0
+
   while true
     read -l -p __dotfiles_read_confirm_prompt confirm
 
@@ -151,6 +153,13 @@ function dotfiles_install_vim
   if __dotfiles_prepare_linking $HOME/.vimrc
     ln -s $HOME/.vim/vimrc $HOME/.vimrc
   end
+end
+
+switch "$argv[1]"
+  case '--overwrite-all'
+    set -g choice_all 1
+    set -g choice_overwrite 1
+    set -g unattended 1
 end
 
 set -l dotfiles_dir (dirname (status -f))
