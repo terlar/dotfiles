@@ -182,19 +182,21 @@ else
   echo 'SKIPPED!'
 end
 
-echo 'Installing vimfiles...'
-if __dotfiles_read_confirm
-  dotfiles_install_vim
+if not test -d $HOME/.vim
+  echo 'Installing vimfiles...'
+  if __dotfiles_read_confirm
+    dotfiles_install_vim
 
-  set_color blue --bold
-  echo -n '==> '
-  set_color normal
-  echo 'DONE!'
-else
-  set_color red --bold
-  echo -n '==> '
-  set_color normal
-  echo 'SKIPPED!'
+    set_color blue --bold
+    echo -n '==> '
+    set_color normal
+    echo 'DONE!'
+  else
+    set_color red --bold
+    echo -n '==> '
+    set_color normal
+    echo 'SKIPPED!'
+  end
 end
 
 functions -e dotfiles_install
