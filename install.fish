@@ -1,3 +1,4 @@
+#!/usr/bin/env fish
 function __dotfiles_read_choice
   set -l target $argv[1]
 

@@ -1,3 +1,4 @@
+#!/usr/bin/env fish
 set -l dotfiles_dir (dirname (status -f))
 
 cd $dotfiles_dir

@@ -1,3 +1,4 @@
+#!/usr/bin/env fish
 function __dotfiles_read_confirm
   while true
     read -l -p __dotfiles_read_confirm_prompt confirm
