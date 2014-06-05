@@ -9,6 +9,8 @@ echo -n '==> '
 set_color normal
 echo 'DONE!'
 
+source install.fish
+
 if test -d $HOME/.vim
   cd $HOME/.vim
   git pull >/dev/null
