@@ -13,7 +13,7 @@ sudo systemctl start memcached
 sudo systemctl start elasticsearch
 
 sudo systemctl start nginx
-systemctl --user start prax
+prax start
 
 # Development tools
 mailcatcher
