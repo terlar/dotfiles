@@ -60,7 +60,7 @@ function dotfiles_uninstall
 
     if not test "$target_link" = $source_file
       if test -d $source_file
-        dotfiles_uninstall $target_file/ $source_file/ (ls $source_file)
+        dotfiles_uninstall $target_file/ $source_file/ (ls --indicator-style=none $source_file)
       end
 
       continue
@@ -98,7 +98,7 @@ function dotfiles_uninstall_vim
 end
 
 set -l dotfiles_dir (dirname (status -f))
-set -l files (ls $dotfiles_dir | cat | grep -vE "(install.fish|update.fish|uninstall.fish|README.md)")
+set -l files (ls --indicator-style=none $dotfiles_dir | cat | grep -vE "(install.fish|update.fish|uninstall.fish|README.md)")
 
 echo 'Uninstalling dotfiles...'
 if __dotfiles_read_confirm
