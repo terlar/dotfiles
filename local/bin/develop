@@ -15,5 +15,7 @@ sudo systemctl start elasticsearch
 sudo systemctl start nginx
 prax start
 
+systemctl --user start asgard
+
 # Development tools
 mailcatcher
