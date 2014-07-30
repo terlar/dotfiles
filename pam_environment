@@ -19,6 +19,7 @@ BROWSER           DEFAULT=xdg-open
 XBMC_HOME         DEFAULT=/usr/share/plexhometheater
 
 # XDG
+XDG_VTNR          DEFAULT=1
 XDG_CACHE_HOME    DEFAULT=${HOME}/.local/cache
 XDG_CONFIG_HOME   DEFAULT=${HOME}/.config
 XDG_DATA_HOME     DEFAULT=${HOME}/.local/share
