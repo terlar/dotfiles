@@ -155,16 +155,21 @@ function dotfiles_install_vim
   end
 end
 
+set -eg choice_all
+
 switch "$argv[1]"
   case '--overwrite-all'
     set -g choice_all 1
     set -g choice_overwrite 1
     set -g unattended 1
+  case '--skip-all'
+    set -g choice_all 1
+    set -g choice_skip 1
+    set -g unattended 1
 end
 
 set -l dotfiles_dir (dirname (status -f))
 set -l files (ls --indicator-style=none $dotfiles_dir | cat | grep -vE "(install.fish|update.fish|uninstall.fish|README.md)")
-set -eg choice_all
 
 echo 'Installing dotfiles...'
 mkdir -p $HOME/.local/bin
