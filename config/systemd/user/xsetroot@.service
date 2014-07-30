@@ -2,7 +2,7 @@
 Description=Xsetroot service (display %i)
 
 Before=xbase@%i.target
-After=x@%i.service
+After=xorg@%i.service
 
 [Service]
 Type=oneshot

@@ -2,7 +2,7 @@
 Description=Wallpaper service (display %i)
 
 Before=xbase@%i.target
-After=x@%i.service
+After=xorg@%i.service
 
 [Service]
 ExecStart=/usr/bin/feh $BG_TYPE $CURRENT_WALLPAPER

@@ -2,7 +2,7 @@
 Description=Flexible Input Method Framwork (fcitx) service (display %i)
 
 Before=xbase@%i.target
-After=x@%i.service
+After=xorg@%i.service
 
 [Service]
 ExecStart=/usr/bin/fcitx -D

@@ -3,7 +3,7 @@ Description=i3lock service (display %i)
 Documentation=man:i3lock(1)
 
 Before=xbase@%i.target
-After=x@%i.service
+After=xorg@%i.service
 
 [Service]
 Type=oneshot

@@ -3,6 +3,6 @@ Description=X Server with essential environment and settings (display %i)
 
 StopWhenUnneeded=true
 
-After=x@%i.service
+After=xorg@%i.service
 
-Requires=x@%i.service
+Requires=xorg@%i.service
