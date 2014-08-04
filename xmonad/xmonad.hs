@@ -33,6 +33,7 @@ myKeys =
     , ("M-a"            , addWorkspacePrompt myXPConfig ) -- Create a new workspace
     , ("M-S-a"          , renameWorkspace myXPConfig    ) -- Rename workspace
     , ("M-g"            , goToSelected defaultGSConfig  ) -- Grid select
+    , ("<XF86LaunchA>"  , goToSelected defaultGSConfig  )
     , ("M-S-s"          , promptedShift                 ) -- Move window
     , ("M-<Tab>"        , myToggleWS                    ) -- Toggle workspace,
     , ("M-r"            , spawn "xmonad --recompile"    ) -- Recompile XMonad
