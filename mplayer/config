@@ -15,3 +15,7 @@ embeddedfonts=yes
 sub-fuzziness=1
 spuaa=4
 slang=en,eng
+
+ass-font-scale=1.5
+ass-use-margins=yes
+ass-bottom-margin=80
