@@ -6,10 +6,6 @@ LC_ALL            DEFAULT=${LANG}
 HOME              DEFAULT=/home/@{PAM_USER} OVERRIDE=${HOME}
 PATH              DEFAULT=${HOME}/.local/bin:${HOME}/.cabal/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/bin/core_perl
 
-# Display
-REMOTEHOST        DEFAULT=localhost OVERRIDE=@{PAM_RHOST}
-DISPLAY           DEFAULT=:0        OVERRIDE=${DISPLAY}
-
 # Tools
 VISUAL            DEFAULT=vim
 EDITOR            DEFAULT=vim

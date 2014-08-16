@@ -1,0 +1,9 @@
+[Unit]
+Description=Dropbox Sync Daemon
+
+[Service]
+ExecStart=/usr/bin/dropboxd
+Nice=15
+
+[Install]
+WantedBy=default.target
