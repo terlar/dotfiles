@@ -1,12 +1,10 @@
 [Unit]
-Description=GPG Agent service
-Before=default.target
+Description=GnuPG Private Key Agent
+Documentation=man:gpg-agent(1)
 
 [Service]
-Type=oneshot
-ExecStart=/bin/sh -c "/usr/bin/systemctl --user set-environment $(gpg-agent --daemon | cut -d\; -f1)"
-ExecStop=/usr/bin/pkill gpg-agent ; /usr/bin/systemctl --no-block --user unset-environment GPG_AGENT_INFO
-RemainAfterExit=yes
+Type=forking
+ExecStart=/usr/bin/gpg-agent --daemon --use-standard-socket
 
 [Install]
 WantedBy=default.target
