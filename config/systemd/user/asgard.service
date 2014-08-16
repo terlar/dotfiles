@@ -1,5 +1,5 @@
 [Unit]
-Description=Asgard Service
+Description=Asgard
 
 [Service]
 ExecStart=/bin/java -Xmx1024M -XX:MaxPermSize=128m -jar /opt/asgard/asgard-standalone.jar

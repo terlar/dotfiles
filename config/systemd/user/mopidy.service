@@ -1,9 +1,8 @@
 [Unit]
-Description=Mopidy service
+Description=Mopidy Music Server
 
 [Service]
 ExecStart=/usr/bin/mopidy
-ExecReload=/bin/kill -HUP $MAINPID
 
 [Install]
 WantedBy=default.target
