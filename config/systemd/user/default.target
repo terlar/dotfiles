@@ -1,2 +1,5 @@
 [Unit]
-Description=User Defaults
+Description=Defaults
+AllowIsolate=true
+
+Wants=console.target

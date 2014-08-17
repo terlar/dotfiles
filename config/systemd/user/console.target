@@ -1,0 +1,6 @@
+[Unit]
+Description=TTY Console
+StopWhenUnneeded=true
+AllowIsolate=true
+
+Conflicts=graphical.target
