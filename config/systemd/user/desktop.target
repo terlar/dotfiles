@@ -1,0 +1,8 @@
+[Unit]
+Description=Desktop Environment
+AllowIsolate=true
+
+Conflicts=console.target
+
+Requires=graphical.target
+After=graphical.target

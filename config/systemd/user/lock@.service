@@ -1,0 +1,18 @@
+[Unit]
+Description=Screen Locker on display %i
+Documentation=man:i3lock(1)
+
+Requisite=xserver@%i.target
+After=xserver@%i.target
+
+After=xorg@%i.service
+
+[Service]
+Type=forking
+
+Environment=DISPLAY=:%i
+Environment=IMAGE=%h/Pictures/saltside.png
+ExecStart=/usr/bin/i3lock -c 000000 -i "$IMAGE"
+
+[Install]
+WantedBy=graphical.target

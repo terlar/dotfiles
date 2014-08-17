@@ -1,12 +1,21 @@
 [Unit]
-Description=XMonad service (display %i)
+Description=XMonad Window Manager on display %i
+Documentation=man:xmonad(1)
 
-Before=gui@%i.target
-After=xbase@%i.target
+Requisite=xserver@%i.target
+After=xserver@%i.target
+
+After=xorg@%i.service
+
+Before=wm.target
 
 [Service]
-ExecStart=/usr/bin/xmonad
+Slice=wm.slice
+
 Environment=DISPLAY=:%i
+ExecStart=/usr/bin/xmonad
+Restart=always
+RestartSec=10
 
 [Install]
-WantedBy=gui@%i.target
+WantedBy=wm.target

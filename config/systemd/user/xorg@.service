@@ -1,10 +1,18 @@
 [Unit]
-Description=Xorg server (display %i)
+Description=Xorg Server on display %i
+Documentation=man:Xorg(1)
 
 Requires=xorg@%i.socket
 After=xorg@%i.socket
 
+Requires=xserver@%i.target
+Before=xserver@%i.target
+
+PartOf=graphical.target
+Before=graphical.target
+
 [Service]
-Type=simple
-SuccessExitStatus=0 1
+Slice=wm.slice
+
 ExecStart=/usr/bin/Xorg :%i -nolisten tcp -noreset -verbose 2 "vt${XDG_VTNR}"
+SuccessExitStatus=0 1

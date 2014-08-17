@@ -1,0 +1,18 @@
+[Unit]
+Description=Set X Server Resources on display %i
+Documentation=man:xrdb(1)
+
+Requisite=xserver@%i.target
+After=xserver@%i.target
+
+After=xorg@%i.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+
+Environment=DISPLAY=:%i
+ExecStart=/usr/bin/xrdb -merge %h/.Xresources
+
+[Install]
+WantedBy=graphical.target

@@ -1,16 +1,20 @@
 [Unit]
-Description=Wallpaper service (display %i)
+Description=Wallpaper on display %i
+Documentation=man:feh(1)
 
-Before=xbase@%i.target
+Requisite=xserver@%i.target
+After=xserver@%i.target
+
 After=xorg@%i.service
 
 [Service]
+Type=oneshot
+
+Environment=DISPLAY=:%i
+EnvironmentFile=%h/.config/fehbg.conf
+WorkingDirectory=%h/Pictures
 ExecStart=/usr/bin/feh $BG_TYPE $CURRENT_WALLPAPER
 RemainAfterExit=yes
 
-WorkingDirectory=%h/Pictures
-EnvironmentFile=%h/.config/fehbg.conf
-Environment=DISPLAY=:%i
-
 [Install]
-WantedBy=xbase@%i.target
+WantedBy=graphical.target

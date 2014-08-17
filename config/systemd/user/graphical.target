@@ -1,0 +1,11 @@
+[Unit]
+Description=Graphical Interface
+StopWhenUnneeded=true
+
+Conflicts=console.target
+
+BindsTo=xorg@0.socket
+After=xorg@0.socket
+
+BindsTo=xorg@0.service
+After=xorg@0.service

@@ -1,0 +1,23 @@
+[Unit]
+Description=Disable Screen Blanking on display %i
+Documentation=man:xset(1)
+
+Requisite=xserver@%i.target
+After=xserver@%i.target
+
+After=xorg@%i.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+
+Environment=DISPLAY=:%i
+ExecStart=/usr/bin/xset s 0 0
+ExecStart=/usr/bin/xset s noblank
+ExecStart=/usr/bin/xset -dpms
+ExecStop=/usr/bin/xset s 600 600
+ExecStop=/usr/bin/xset s blank
+ExecStop=/usr/bin/xset +dpms
+
+[Install]
+WantedBy=graphical.target

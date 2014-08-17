@@ -39,6 +39,6 @@ function fish_user_abbreviations
     'fs=farm server' \
     'prs=prax restart' \
     'kc=kviberg-config' \
-    'x=systemctl --user start gui@0.target' \
+    'x=systemctl --user start desktop.target' \
     'm=systemctl --user start mopidy'
 end

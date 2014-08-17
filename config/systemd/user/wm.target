@@ -1,0 +1,10 @@
+[Unit]
+Description=Window Manager
+StopWhenUnneeded=true
+
+Conflicts=console.target
+
+After=xmonad@0.service
+
+[Install]
+WantedBy=desktop.target
