@@ -1,11 +1,13 @@
 [Unit]
-Description=PulseAudio Sound System service
+Description=PulseAudio Sound System
 Documentation=man:pulseaudio(1)
 
-Before=default.target
+Requires=sound.target
+After=sound.target
 
 [Service]
-RemainAfterExit=yes
+Type=forking
+
 ExecStart=/usr/bin/pulseaudio --start
 ExecStop=/usr/bin/pulseaudio --kill
 
