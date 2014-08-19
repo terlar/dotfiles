@@ -79,7 +79,7 @@ myKeys =
 
 main = do
     xmonad $ defaultConfig
-        { workspaces         = ["dashboard", "note", "web"]
+        { workspaces         = map show [1..9]
         , modMask            = myModMask
         , terminal           = myTerminal
         , focusFollowsMouse  = myFocusFollowsMouse
