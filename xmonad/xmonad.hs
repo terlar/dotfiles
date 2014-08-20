@@ -1,6 +1,7 @@
 import XMonad
 import XMonad.Prompt
 import System.Exit
+import qualified XMonad.StackSet as W
 
 -- Util
 import XMonad.Util.EZConfig
@@ -75,7 +76,11 @@ myKeys =
     , ("<XF86AudioLowerVolume>" , spawn "amixer -q set Master 5%-"    ) -- Decrease volume
     , ("<XF86AudioRaiseVolume>" , spawn "amixer -q set Master 5%+"    ) -- Increase volume
     , ("<XF86AudioMute>"        , spawn "amixer -q set Master toggle" ) -- Mute volume
-    ]
+    ] ++ workspaceKeys
+
+workspaceKeys =
+    [ (mask ++ "M-" ++ [key], screenWorkspace scr >>= flip whenJust (windows . action))
+    | (key, scr) <- zip "123" [0,1,2] , (action, mask) <- [ (W.view, "") , (W.shift, "S-")]]
 
 main = do
     xmonad $ defaultConfig
