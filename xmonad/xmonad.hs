@@ -41,16 +41,16 @@ myKeys =
     , ("M-S-q"          , io (exitWith ExitSuccess)     ) -- Quit XMonad
 
     -- Workspace Keys
-    , ("M-w 1"          , createOrGoto "dashboard"      )
-    , ("M-w n"          , createOrGoto "note"           )
-    , ("M-w c"          , createOrGoto "code"           )
-    , ("M-w w"          , createOrGoto "web"            )
-    , ("M-w m"          , createOrGoto "music"          )
-    , ("M-w v"          , createOrGoto "video"          )
-    , ("M-w p"          , createOrGoto "pdf"            )
-    , ("M-w f"          , createOrGoto "file"           )
-    , ("M-w s"          , createOrGoto "speak"          )
-    , ("M-w <Backspace>", killAll >> removeWorkspace >>
+    , ("M-s 1"          , createOrGoto "dashboard"      )
+    , ("M-s n"          , createOrGoto "note"           )
+    , ("M-s c"          , createOrGoto "code"           )
+    , ("M-s w"          , createOrGoto "web"            )
+    , ("M-s m"          , createOrGoto "music"          )
+    , ("M-s v"          , createOrGoto "video"          )
+    , ("M-s p"          , createOrGoto "pdf"            )
+    , ("M-s f"          , createOrGoto "file"           )
+    , ("M-s s"          , createOrGoto "speak"          )
+    , ("M-s <Backspace>", killAll >> removeWorkspace >>
                             createOrGoto "dashboard"    ) -- Removes current workspace
 
     -- Launch Keys
@@ -75,11 +75,7 @@ myKeys =
     , ("<XF86AudioLowerVolume>" , spawn "amixer -q set Master 5%-"    ) -- Decrease volume
     , ("<XF86AudioRaiseVolume>" , spawn "amixer -q set Master 5%+"    ) -- Increase volume
     , ("<XF86AudioMute>"        , spawn "amixer -q set Master toggle" ) -- Mute volume
-    ] ++ workspaceKeys
-
-workspaceKeys =
-    [ (mask ++ "M-" ++ [key], screenWorkspace scr >>= flip whenJust (windows . action))
-    | (key, scr) <- zip "123" [0,1,2] , (action, mask) <- [ (W.view, "") , (W.shift, "S-")]]
+    ]
 
 main = do
     xmonad $ defaultConfig
