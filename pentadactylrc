@@ -4,4 +4,7 @@ loadplugins '\.(js|penta)$'
 group user
 set guioptions=bCrsB
 
+set! ui.key.menuAccessKey=0
+set! ui.key.menuAccessKeyFocuses=false
+
 " vim: set ft=pentadactyl:
