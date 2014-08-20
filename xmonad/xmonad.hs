@@ -1,7 +1,6 @@
 import XMonad
 import XMonad.Prompt
 import System.Exit
-import qualified XMonad.StackSet as W
 
 -- Util
 import XMonad.Util.EZConfig
