@@ -37,7 +37,6 @@ myKeys =
     , ("<XF86LaunchA>"  , goToSelected defaultGSConfig  )
     , ("M-S-s"          , promptedShift                 ) -- Move window
     , ("M-<Tab>"        , myToggleWS                    ) -- Toggle workspace,
-    , ("M-r"            , spawn "xmonad --recompile"    ) -- Recompile XMonad
     , ("M-q"            , restartXMonad                 ) -- Restart XMonad
     , ("M-S-q"          , io (exitWith ExitSuccess)     ) -- Quit XMonad
 
