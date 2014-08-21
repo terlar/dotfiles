@@ -1,46 +1,85 @@
 function fish_user_abbreviations
-  set -U fish_user_abbreviations \
-    'sc=sudo systemctl' \
-    'scu=systemctl --user' \
-    'jf=journalctl -f' \
-    'pac=pacman' \
-    'aur=aura' \
-    '!=sudo' \
-    'tf=tail -f' \
-    'l=ls -a' \
-    'l.=ls -d .*' \
-    'ccat=pygmentize' \
-    'g=git' \
-    'gs=git status -sb' \
-    'gh=git head' \
-    'gl=git l' \
-    'gll=git ll' \
-    'gwc=git wc' \
-    'gd=git diff' \
-    'gdt=git difftool' \
-    'gdc=git diff --cached' \
-    'gdw=git diff --color-words' \
-    'gds=git diff --stat' \
-    'ga=git add' \
-    'gc=git commit -v' \
-    'gca=git commit -v -a' \
-    'gb=git branch' \
-    'gco=git checkout' \
-    'gf=git fetch' \
-    'gfa=git fetch --all' \
-    'gm=git merge' \
-    'gr=git rebase' \
-    'gcp=git cherry-pick' \
-    'gpr=git pull-request' \
-    'b=bundle' \
-    'be=bundle exec' \
-    'f=farm' \
-    'fcd=farm cd' \
-    'fc=farm console' \
-    'fs=farm server' \
-    'prs=prax restart' \
-    'kc=kviberg-config' \
-    'v=vagrant' \
-    'x=systemctl --user start desktop.target' \
-    'm=systemctl --user start mopidy'
+  set -U fish_user_abbreviations
+
+  abbr ! sudo
+  abbr tf 'tail -f'
+  abbr l 'ls -a'
+  abbr l. 'ls -d .*'
+
+  if type systemctl >/dev/null
+    abbr j 'journalctl --since=yesterday'
+    abbr je 'journalctl --since=yesterday --priority=0..3'
+    abbr jf 'journalctl -f'
+
+    abbr sc 'sudo systemctl'
+    abbr scu 'systemctl --user'
+
+    abbr reboot 'sudo systemctl reboot'
+    abbr poweroff 'sudo systemctl poweroff'
+    abbr suspend 'sudo systemctl suspend'
+
+    abbr stx 'systemctl --user start desktop.target'
+    abbr klx 'systemctl --user start console.target'
+    abbr m 'systemctl --user start mopidy'
+  end
+
+  if type git >/dev/null
+    abbr g 'git'
+    abbr gs 'git status -sb'
+    abbr gh 'git head'
+
+    abbr gl 'git l'
+    abbr gll 'git ll'
+    abbr gwc 'git wc'
+
+    abbr gd 'git diff'
+    abbr gdt 'git difftool'
+    abbr gdc 'git diff --cached'
+    abbr gdw 'git diff --color-words'
+    abbr gds 'git diff --stat'
+
+    abbr ga 'git add'
+    abbr gc 'git commit -v'
+    abbr gca 'git commit -v -a'
+    abbr gb 'git branch'
+    abbr gco 'git checkout'
+    abbr gf 'git fetch'
+    abbr gfa 'git fetch --all'
+    abbr gm 'git merge'
+    abbr gr 'git rebase'
+    abbr gcp 'git cherry-pick'
+    abbr gpr 'git pull-request'
+  end
+
+  if type pacman >/dev/null
+    abbr pac 'sudo pacman'
+  end
+
+  if type aura >/dev/null
+    abbr aur 'sudo aura'
+  end
+
+  if type pygmentize >/dev/null
+    abbr ccat pygmentize
+  end
+
+  if type bundle >/dev/null
+    abbr b bundle
+    abbr be 'bundle exec'
+  end
+
+  if type prax >/dev/null
+    abbr prs 'prax restart'
+  end
+
+  if type vagrant >/dev/null
+    abbr v vagrant
+  end
+
+  if type farm >/dev/null
+    abbr f farm
+    abbr fcd 'farm cd'
+    abbr fc 'farm console'
+    abbr fs 'farm server'
+  end
 end
