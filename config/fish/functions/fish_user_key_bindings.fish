@@ -10,7 +10,9 @@ function fish_user_key_bindings
   bind \e'>' 'nextd; set -ge __prompt_context_current; fish_prompt'
   bind \cl 'set -ge __prompt_context_current; clear; set_color normal; fish_prompt; commandline -f repaint'
 
+  # Run
   bind \e! __runsudo
+  bind \em 'commandline -f execute accept-autosuggestion'
 
   # Stash/pop
   bind \es __commandline_stash
@@ -25,6 +27,15 @@ function __runsudo --description 'Run current command line as root'
   commandline -C 0
   commandline -i 'sudo '
   commandline -f execute
+end
+
+function __execute_and_keep_line
+  set -l pos (commandline -C)
+  set -l cmd (commandline -b)
+
+  commandline -f execute
+  commandline -r "$cmd"
+  commandline -C $pos
 end
 
 function __insert-previous-token
