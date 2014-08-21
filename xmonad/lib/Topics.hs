@@ -36,12 +36,12 @@ myTopicConfig :: TopicConfig
 myTopicConfig = defaultTopicConfig
     { topicDirs = M.fromList $
         [ ( "dashboard" , ""                        )
-        , ( "note"      , "Notes"                   )
-        , ( "code"      , "Code"                    )
-        , ( "web"       , "Downloads"               )
-        , ( "music"     , "Music"                   )
-        , ( "video"     , "Video"                   )
-        , ( "pdf"       , "Books"                   )
+        , ( "note"      , "notes"                   )
+        , ( "code"      , "code"                    )
+        , ( "web"       , "downloads"               )
+        , ( "music"     , "music"                   )
+        , ( "video"     , "video"                   )
+        , ( "pdf"       , "books"                   )
         , ( "file"      , ""                        )
         , ( "speak"     , ""                        )
         ]
