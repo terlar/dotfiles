@@ -2,6 +2,7 @@ function fish_user_abbreviations
   set -U fish_user_abbreviations \
     'sc=sudo systemctl' \
     'scu=systemctl --user' \
+    'jf=journalctl -f' \
     'pac=pacman' \
     'aur=aura' \
     '!=sudo' \
