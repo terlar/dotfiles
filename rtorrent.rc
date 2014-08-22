@@ -25,12 +25,12 @@ file.prioritize_toc.first.set = {*.avi,*.mp4,*.mkv,*.gz}
 file.prioritize_toc.last.set = {*.zip}
 
 # Watch for new torrents
-schedule = watch_directory,5,5,load_start=~/Downloads/torrents/*.torrent
+schedule = watch_directory,5,5,load_start=~/downloads/torrents/*.torrent
 schedule = tied_directory,5,5,start_tied=
 schedule = untied_directory,5,5,stop_untied=
 
 # Download path (incomplete)
-directory = ~/Downloads/incomplete
+directory = ~/downloads/incomplete
 
 # Download path (finished)
-system.method.set_key = event.download.finished,move_complete,"set_directory=~/Downloads/;execute=mv,-u,$d.get_base_path=,~/Downloads/"
+system.method.set_key = event.download.finished,move_complete,"set_directory=~/downloads/;execute=mv,-u,$d.get_base_path=,~/downloads/"

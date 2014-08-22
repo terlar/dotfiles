@@ -93,7 +93,7 @@ settings = {
     neat_right_mode = "yes";
     trackbar_style = "%w";
   };
-  "irc/dcc" = { dcc_download_path = "~/Downloads"; dcc_autoget = "yes"; };
+  "irc/dcc" = { dcc_download_path = "~/downloads"; dcc_autoget = "yes"; };
 };
 
 statusbar = {

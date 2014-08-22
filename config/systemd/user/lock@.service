@@ -11,7 +11,7 @@ After=xorg@%i.service
 Type=forking
 
 Environment=DISPLAY=:%i
-Environment=IMAGE=%h/Pictures/saltside.png
+Environment=IMAGE="$XDG_PICUTRES_DIR/saltside.png"
 ExecStart=/usr/bin/i3lock -c 000000 -i "$IMAGE"
 
 [Install]

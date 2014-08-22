@@ -1,5 +1,5 @@
 # Paths
-set folder = ~/Mail
+set folder = ~/mail
 set header_cache = ~/.mutt/cache
 set mailcap_path = ~/.mutt/mailcap
 set signature = ~/.mutt/signature

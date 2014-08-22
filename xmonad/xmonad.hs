@@ -60,7 +60,7 @@ myKeys =
     , ("M-v"            , spawn "pavucontrol"           ) -- Volume control
 
     -- Media Keys
-    , ("M-<Esc>", spawn "i3lock -i ~/Pictures/saltside.png -c 000000" ) -- Lock screen
+    , ("M-<Esc>", spawn "i3lock -i ~/pictures/saltside.png -c 000000" ) -- Lock screen
     , ("M-`"                    , spawn "scrot"                       ) -- Screenshot
     , ("M-S-`"                  , spawn "sleep 0.2; scrot -s"         ) -- Partial screenshot
     , ("<XF86MonBrightnessUp>"  , spawn "xbacklight -inc 40"          ) -- Monitor brighness up

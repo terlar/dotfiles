@@ -27,12 +27,12 @@ postsynchook = notmuch new
 
 [Repository personal-local]
 type = Maildir
-localfolders = ~/Mail/personal
+localfolders = ~/mail/personal
 nametrans = nt_local
 
 [Repository work-local]
 type = Maildir
-localfolders = ~/Mail/work
+localfolders = ~/mail/work
 nametrans = nt_local
 
 [Repository personal-remote]
