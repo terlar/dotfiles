@@ -11,9 +11,7 @@ After=xorg@%i.service
 Type=oneshot
 
 Environment=DISPLAY=:%i
-EnvironmentFile=%h/.config/fehbg.conf
-WorkingDirectory=%h/pictures
-ExecStart=/usr/bin/feh $BG_TYPE $CURRENT_WALLPAPER
+ExecStart=/usr/bin/bash %h/.fehbg
 RemainAfterExit=yes
 
 [Install]
