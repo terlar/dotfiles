@@ -12,11 +12,11 @@ echo 'DONE!'
 source install.fish
 
 if test -d $HOME/.vim
-  cd $HOME/.vim
-  git pull >/dev/null
-  echo 'Updating vimfiles...'
-  set_color blue --bold
-  echo -n '==> '
-  set_color normal
-  echo 'DONE!'
+	cd $HOME/.vim
+	git pull >/dev/null
+	echo 'Updating vimfiles...'
+	set_color blue --bold
+	echo -n '==> '
+	set_color normal
+	echo 'DONE!'
 end

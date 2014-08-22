@@ -1,8 +1,8 @@
 function vim
-  if which reattach-to-user-namespace >/dev/null ^/dev/null
-    reattach-to-user-namespace command vim $argv
-    return
-  end
+	if which reattach-to-user-namespace >/dev/null ^/dev/null
+		reattach-to-user-namespace command vim $argv
+		return
+	end
 
-  command vim $argv
+	command vim $argv
 end

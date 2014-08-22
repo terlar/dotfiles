@@ -1,36 +1,36 @@
 # fish completion for pactl
 function __pactl_needs_command
-  set cmd (commandline -opc)
-  if [ (count $cmd) -eq 1 -a $cmd[1] = 'pactl' ]
-    return 0
-  end
-  return 1
+	set cmd (commandline -opc)
+	if [ (count $cmd) -eq 1 -a $cmd[1] = 'pactl' ]
+		return 0
+	end
+	return 1
 end
 
 function __pactl_using_command
-  set cmd (commandline -opc)
-  if [ (count $cmd) -gt 1 ]
-    if [ $argv[1] = $cmd[2] ]
-      return 0
-    end
-  end
-  return 1
+	set cmd (commandline -opc)
+	if [ (count $cmd) -gt 1 ]
+		if [ $argv[1] = $cmd[2] ]
+			return 0
+		end
+	end
+	return 1
 end
 
 function __pactl_sinks
-  pactl list short sinks | cut -f1-2 | sed 's|'\t'|'\t'Sink: |'
+	pactl list short sinks | cut -f1-2 | sed 's|'\t'|'\t'Sink: |'
 end
 
 function __pactl_sources
-  pactl list short sources | cut -f1-2 | sed 's|'\t'|'\t'Source: |'
+	pactl list short sources | cut -f1-2 | sed 's|'\t'|'\t'Source: |'
 end
 
 function __pactl_sink-inputs
-  pactl list short sink-inputs | cut -f1
+	pactl list short sink-inputs | cut -f1
 end
 
 function __pactl_source-outputs
-  pactl list short source-outputs | cut -f1
+	pactl list short source-outputs | cut -f1
 end
 
 # List
