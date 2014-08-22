@@ -77,7 +77,7 @@ function fish_user_abbreviations
 	end
 
 	if type farm >/dev/null
-		abbr f farm
+		abbr f 'farm visit'
 		abbr fcd 'farm cd'
 		abbr fc 'farm console'
 		abbr fs 'farm server'
