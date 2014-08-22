@@ -12,7 +12,7 @@ Type=oneshot
 
 Environment=DISPLAY=:%i
 EnvironmentFile=%h/.config/fehbg.conf
-WorkingDirectory=$XDG_PICTURES_DIR
+WorkingDirectory=%h/pictures
 ExecStart=/usr/bin/feh $BG_TYPE $CURRENT_WALLPAPER
 RemainAfterExit=yes
 
