@@ -1,44 +1,27 @@
 function fish_user_key_bindings
-	bind \ez 'commandline "fg"; commandline -f execute'
-
-	# Insert last argument of previous command
-	bind \e. history-token-search-backward
-	bind \e, __insert-previous-token
-
 	bind \el '__fish_list_current_token; echo'
 	bind \e'<' 'prevd; set -ge __prompt_context_current; fish_prompt'
 	bind \e'>' 'nextd; set -ge __prompt_context_current; fish_prompt'
 	bind \cl 'set -ge __prompt_context_current; clear; set_color normal; fish_prompt; commandline -f repaint'
 
-	# Run
-	bind \e! __runsudo
-	bind \em 'commandline -f execute accept-autosuggestion'
+	# Insert last argument of previous command
+	bind \e. history-token-search-backward
+	bind \e, __commandline_insert_previous_token
+
+	bind \cx __commandline_eval_token
+	bind \ee __commandline_edit
 
 	# Stash/pop
 	bind \es __commandline_stash
 	bind \eS __commandline_pop
 
-	bind \cx __fish_eval_token
-
-	bind \ee __edit_cmd
+	# Execute
+	bind \e! __commandline_sudo_execute
+	bind \em 'commandline -f execute accept-autosuggestion'
+	bind \ez 'commandline "fg"; commandline -f execute'
 end
 
-function __runsudo --description 'Run current command line as root'
-	commandline -C 0
-	commandline -i 'sudo '
-	commandline -f execute
-end
-
-function __execute_and_keep_line
-	set -l pos (commandline -C)
-	set -l cmd (commandline -b)
-
-	commandline -f execute
-	commandline -r "$cmd"
-	commandline -C $pos
-end
-
-function __insert-previous-token
+function __commandline_insert_previous_token
 	set -l tokens (commandline -po)
 	test $tokens[1]; or return
 
@@ -51,13 +34,22 @@ function __insert-previous-token
 	commandline -i $previous_token
 end
 
-function __fish_list
-	for item in $argv
-		echo $item | sed -e 's/ /\\\\ /g'
-	end
+function __commandline_sudo_execute
+	commandline -C 0
+	commandline -i 'sudo '
+	commandline -f execute
 end
 
-function __fish_eval_token
+function __commandline_execute_and_keep_line
+	set -l pos (commandline -C)
+	set -l cmd (commandline -b)
+
+	commandline -f execute
+	commandline -r "$cmd"
+	commandline -C $pos
+end
+
+function __commandline_eval_token
 	set -l token (commandline -t)
 
 	if test -n "$token"
@@ -66,6 +58,18 @@ function __fish_eval_token
 			commandline -t $value
 			commandline -f backward-char
 		end
+	end
+end
+
+function __commandline_edit --description 'Input command in external editor'
+	set -l f (mktemp /tmp/fish.cmd.XXXXXXXX)
+	if test -n "$f"
+		set -l p (commandline -C)
+		commandline -b > $f
+		vim -c 'set ft=fish' $f
+		commandline -r (more $f)
+		commandline -C $p
+		command rm $f
 	end
 end
 
@@ -100,14 +104,8 @@ function __commandline_toggle -d 'Stash current commandline if not empty, otherw
 	end
 end
 
-function __edit_cmd --description 'Input command in external editor'
-	set -l f (mktemp /tmp/fish.cmd.XXXXXXXX)
-	if test -n "$f"
-		set -l p (commandline -C)
-		commandline -b > $f
-		vim -c 'set ft=fish' $f
-		commandline -r (more $f)
-		commandline -C $p
-		command rm $f
+function __fish_list
+	for item in $argv
+		echo $item | sed -e 's/ /\\\\ /g'
 	end
 end
