@@ -10,6 +10,7 @@ function fish_user_key_bindings
 
 	bind \cx __commandline_eval_token
 	bind \ee __commandline_edit
+	bind \er __commandline_sudo_toggle
 
 	# Stash/pop
 	bind \es __commandline_stash
@@ -34,21 +35,6 @@ function __commandline_insert_previous_token
 	commandline -i $previous_token
 end
 
-function __commandline_sudo_execute
-	commandline -C 0
-	commandline -i 'sudo '
-	commandline -f execute
-end
-
-function __commandline_execute_and_keep_line
-	set -l pos (commandline -C)
-	set -l cmd (commandline -b)
-
-	commandline -f execute
-	commandline -r "$cmd"
-	commandline -C $pos
-end
-
 function __commandline_eval_token
 	set -l token (commandline -t)
 
@@ -71,6 +57,22 @@ function __commandline_edit --description 'Input command in external editor'
 		commandline -C $p
 		command rm $f
 	end
+end
+
+function __commandline_sudo_toggle
+	set -l pos (commandline -C)
+	set -l cmd (commandline -b)
+
+	if echo $cmd | grep '^sudo ' >/dev/null
+		set pos (math $pos - 5)
+		commandline (echo $cmd | cut -c6- )
+	else
+		commandline -C 0
+		commandline -i 'sudo '
+		set pos (math $pos + 5)
+	end
+
+	commandline -C $pos
 end
 
 function __commandline_stash -d 'Stash current command line'
@@ -102,6 +104,21 @@ function __commandline_toggle -d 'Stash current commandline if not empty, otherw
 	else
 		__commandline_pop
 	end
+end
+
+function __commandline_sudo_execute
+	commandline -C 0
+	commandline -i 'sudo '
+	commandline -f execute
+end
+
+function __commandline_execute_and_keep_line
+	set -l pos (commandline -C)
+	set -l cmd (commandline -b)
+
+	commandline -f execute
+	commandline -r "$cmd"
+	commandline -C $pos
 end
 
 function __fish_list
