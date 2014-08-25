@@ -1,18 +1,11 @@
 #!/bin/fish
-if test -z "$chat_server"
-  echo 'error: $chat_server not set'
-  exit 1
-end
-
-set -l commands "mosh $chat_server -- tmux attach -t chat"
-
 if test -z "$TMUX"
-  tmux new -A -s chat "$commands; $SHELL -l"
+  tmux new -A -s chat weechat
 else
   set -l sessions (tmux list-sessions | cut -d ':' -f 1 ^/dev/null)
 
   if not contains -- chat $sessions
-    tmux if true "new -d -s chat '$commands; $SHELL -l'"
+    tmux if true 'new -d -s chat weechat'
   end
 
   tmux switch -t chat
