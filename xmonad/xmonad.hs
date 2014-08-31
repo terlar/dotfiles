@@ -1,91 +1,19 @@
 import XMonad
-import XMonad.Prompt
-import System.Exit
+import XMonad.Util.EZConfig (checkKeymap, additionalKeysP)
 
--- Util
-import XMonad.Util.EZConfig
-import XMonad.Util.Run
-
--- Hooks
-import XMonad.Hooks.DynamicHooks
-import XMonad.Hooks.ManageHelpers
-
--- Actions
-import XMonad.Actions.DynamicWorkspaces
-import XMonad.Actions.GridSelect
-import XMonad.Actions.TopicSpace
-import XMonad.Actions.WithAll
-
--- Layout
-import XMonad.Layout.NoBorders
-
--- Custom
 import Config
-import Utils
-import Hooks
-import Topics
+import Hooks (myManageHook, myLogHook)
+import Topics (myTopics)
+import Keys (myKeys)
 
--- Keys
-myKeys :: [(String, X())]
-myKeys =
-    -- Window Manager Keys
-    [ ("M-n"            , refresh                       ) -- Re-draw window
-    , ("M-a"            , addWorkspacePrompt myXPConfig ) -- Create a new workspace
-    , ("M-S-a"          , renameWorkspace myXPConfig    ) -- Rename workspace
-    , ("M-g"            , goToSelected defaultGSConfig  ) -- Grid select
-    , ("<XF86LaunchA>"  , goToSelected defaultGSConfig  )
-    , ("M-S-s"          , promptedShift                 ) -- Move window
-    , ("M-<Tab>"        , myToggleWS                    ) -- Toggle workspace,
-    , ("M-q"            , restartXMonad                 ) -- Restart XMonad
-    , ("M-S-q"          , io (exitWith ExitSuccess)     ) -- Quit XMonad
+myConfig = defaultConfig
+    { modMask = myModMask
+    , terminal = myTerminal
+    , borderWidth = myBorderWidth
+    , workspaces = myTopics
+    , manageHook = myManageHook
+    , logHook = myLogHook
+    , startupHook = return () >> checkKeymap myConfig myKeys
+    } `additionalKeysP` myKeys
 
-    -- Workspace Keys
-    , ("M-s 1"          , createOrGoto "dashboard"      )
-    , ("M-s n"          , createOrGoto "note"           )
-    , ("M-s c"          , createOrGoto "code"           )
-    , ("M-s w"          , createOrGoto "web"            )
-    , ("M-s m"          , createOrGoto "music"          )
-    , ("M-s v"          , createOrGoto "video"          )
-    , ("M-s p"          , createOrGoto "pdf"            )
-    , ("M-s f"          , createOrGoto "file"           )
-    , ("M-s s"          , createOrGoto "speak"          )
-    , ("M-s <Backspace>", killAll >> removeWorkspace >>
-                            createOrGoto "dashboard"    ) -- Removes current workspace
-
-    -- Launch Keys
-    , ("M-p"            , programLauncher               ) -- Launcher
-    , ("M-x e"          , spawnEditor                   ) -- Launch editor
-    , ("M-x w"          , spawn myBrowser               ) -- Launch browser
-    , ("M-x f"          , spawnFile                     ) -- Browse files
-    , ("M-v"            , spawn "pavucontrol"           ) -- Volume control
-
-    -- Media Keys
-    , ("M-<Esc>", spawn "i3lock -i ~/pictures/saltside.png -c 000000" ) -- Lock screen
-    , ("M-`"                    , spawn "scrot"                       ) -- Screenshot
-    , ("M-S-`"                  , spawn "sleep 0.2; scrot -s"         ) -- Partial screenshot
-    , ("<XF86MonBrightnessUp>"  , spawn "xbacklight -inc 40"          ) -- Monitor brighness up
-    , ("<XF86MonBrightnessDown>", spawn "xbacklight -dec 40"          ) -- Monitor brighness down
-    , ("<XF86KbdBrightnessUp>"  , spawn "kbdlight up"                 ) -- Keyboard brighness up
-    , ("<XF86KbdBrightnessDown>", spawn "kbdlight down"               ) -- Keyboard brighness down
-    , ("<XF86AudioPlay>"        , spawn "ncmpcpp toggle"              ) -- Play/Pause track
-    , ("<XF86AudioStop>"        , spawn "ncmpcpp stop"                ) -- Stop track
-    , ("<XF86AudioNext>"        , spawn "ncmpcpp next"                ) -- Next track
-    , ("<XF86AudioPrev>"        , spawn "ncmpcpp prev"                ) -- Previous track
-    , ("<XF86AudioLowerVolume>" , spawn "amixer -q set Master 5%-"    ) -- Decrease volume
-    , ("<XF86AudioRaiseVolume>" , spawn "amixer -q set Master 5%+"    ) -- Increase volume
-    , ("<XF86AudioMute>"        , spawn "amixer -q set Master toggle" ) -- Mute volume
-    ]
-
-main = do
-    xmonad $ defaultConfig
-        { workspaces         = map show [1..9]
-        , modMask            = myModMask
-        , terminal           = myTerminal
-        , focusFollowsMouse  = myFocusFollowsMouse
-        , clickJustFocuses   = myClickJustFocuses
-        , borderWidth        = myBorderWidth
-        , normalBorderColor  = myNormalBorderColor
-        , focusedBorderColor = myFocusedBorderColor
-        , layoutHook         = smartBorders $ layoutHook defaultConfig
-        , manageHook         = myManageHook
-        } `additionalKeysP` myKeys
+main = xmonad myConfig
