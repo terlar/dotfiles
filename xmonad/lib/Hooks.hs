@@ -4,7 +4,6 @@ import XMonad
 import XMonad.ManageHook
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.FadeInactive
-import XMonad.Util.Scratchpad
 import XMonad.Actions.CopyWindow
 import qualified XMonad.StackSet as W
 

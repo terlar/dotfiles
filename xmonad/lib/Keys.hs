@@ -2,10 +2,12 @@ module Keys where
 
 import XMonad
 import XMonad.Prompt.Shell
+import XMonad.Actions.CycleWS
 import XMonad.Actions.DynamicWorkspaces
 import XMonad.Actions.GridSelect
 import XMonad.Actions.WithAll
 import XMonad.Actions.Search
+import XMonad.Util.Scratchpad
 
 import Config
 import Utils
@@ -20,6 +22,11 @@ myKeys =
     , ("M-g", goToSelected defaultGSConfig)
     , ("<XF86LaunchA>", goToSelected defaultGSConfig)
     -- Workspace navigation
+    , ("M-<Tab>", myToggleWS)
+    , ("M-<Right>", nextWS)
+    , ("M-<Left>", prevWS)
+    , ("M-S-<Right>", shiftToNext)
+    , ("M-S-<Left>", shiftToPrev)
     , ("M-z", promptedGoto)
     , ("M-S-z", promptedShift)
     , ("M-a 1", createOrGoto "dashboard")
@@ -35,8 +42,7 @@ myKeys =
     , ("M-n", addWorkspacePrompt myXPConfig)
     , ("M-<Backspace>", killAll >> removeWorkspace >> createOrGoto "dashboard")
     , ("M-c", renameWorkspace myXPConfig)
-    -- Toggle workspace
-    , ("M-<Tab>", myToggleWS)
+    , ("M-`", scratchpadSpawnAction defaultConfig { terminal = myTerminal })
     -- Global window
     , ("M-S-g", toggleGlobal)
     -- Launcher
@@ -54,9 +60,9 @@ myKeys =
     -- Lock screen
     , ("M-<Esc>", spawn "i3lock -i ~/pictures/saltside.png -c 000000" )
     -- Screenshot
-    , ("M-`", spawn "scrot")
+    , ("M-<F12>", spawn "scrot")
     -- Partial screenshot
-    , ("M-S-`", spawn "sleep 0.2; scrot -s")
+    , ("M-S-<F12>", spawn "sleep 0.2; scrot -s")
     -- Web searches
     , ("M-s g", promptSearch myXPConfig google)
     , ("M-s w", promptSearch myXPConfig wikipedia)
