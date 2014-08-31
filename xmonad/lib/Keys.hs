@@ -48,17 +48,19 @@ myKeys =
     , ("M-x f", spawnFile)
     -- Volume control
     , ("M-v", spawn "pavucontrol")
-
-    -- Media Keys
-
     -- Lock screen
     , ("M-<Esc>", spawn "i3lock -i ~/pictures/saltside.png -c 000000" )
     -- Screenshot
     , ("M-`", spawn "scrot")
     -- Partial screenshot
     , ("M-S-`", spawn "sleep 0.2; scrot -s")
+    ]
+    ++ mediaKeys
+
+mediaKeys :: [(String, X ())]
+mediaKeys =
     -- Monitor brighness up
-    , ("<XF86MonBrightnessUp>", spawn "xbacklight -inc 40")
+    [ ("<XF86MonBrightnessUp>", spawn "xbacklight -inc 40")
     -- Monitor brighness down
     , ("<XF86MonBrightnessDown>", spawn "xbacklight -dec 40")
     -- Keyboard brighness up
@@ -66,17 +68,20 @@ myKeys =
     -- Keyboard brighness down
     , ("<XF86KbdBrightnessDown>", spawn "kbdlight down")
     -- Play/Pause track
-    , ("<XF86AudioPlay>", spawn "ncmpcpp toggle")
+    , ("<XF86AudioPlay>", mpcAction "toggle")
     -- Stop track
-    , ("<XF86AudioStop>", spawn "ncmpcpp stop")
+    , ("<XF86AudioStop>", mpcAction "stop")
     -- Next track
-    , ("<XF86AudioNext>", spawn "ncmpcpp next")
+    , ("<XF86AudioNext>", mpcAction "next")
     -- Previous track
-    , ("<XF86AudioPrev>", spawn "ncmpcpp prev")
+    , ("<XF86AudioPrev>", mpcAction "prev")
     -- Decrease volume
-    , ("<XF86AudioLowerVolume>", spawn "amixer -q set Master 5%-")
+    , ("<XF86AudioLowerVolume>", amixerAction "5%-")
     -- Increase volume
-    , ("<XF86AudioRaiseVolume>", spawn "amixer -q set Master 5%+")
+    , ("<XF86AudioRaiseVolume>", amixerAction "5%+")
     -- Mute volume
-    , ("<XF86AudioMute>", spawn "amixer -q set Master toggle")
+    , ("<XF86AudioMute>", amixerAction "toggle")
     ]
+  where
+    mpcAction opt = spawn $ unwords ["ncmpcpp", opt]
+    amixerAction opt = spawn $ unwords ["amixer", "-q", "set", "Master", opt]
