@@ -1,9 +1,11 @@
 module Keys where
 
 import XMonad
+import XMonad.Prompt.Shell
 import XMonad.Actions.DynamicWorkspaces
 import XMonad.Actions.GridSelect
 import XMonad.Actions.WithAll
+import XMonad.Actions.Search
 
 import Config
 import Utils
@@ -20,6 +22,15 @@ myKeys =
     -- Workspace navigation
     , ("M-z", promptedGoto)
     , ("M-S-z", promptedShift)
+    , ("M-a 1", createOrGoto "dashboard")
+    , ("M-a n", createOrGoto "note")
+    , ("M-a c", createOrGoto "code")
+    , ("M-a w", createOrGoto "web")
+    , ("M-a m", createOrGoto "music")
+    , ("M-a v", createOrGoto "video")
+    , ("M-a p", createOrGoto "pdf")
+    , ("M-a f", createOrGoto "file")
+    , ("M-a s", createOrGoto "speak")
     -- Dynamic workspaces
     , ("M-n", addWorkspacePrompt myXPConfig)
     , ("M-<Backspace>", killAll >> removeWorkspace >> createOrGoto "dashboard")
@@ -28,18 +39,10 @@ myKeys =
     , ("M-<Tab>", myToggleWS)
     -- Global window
     , ("M-S-g", toggleGlobal)
-    -- Workspace Keys
-    , ("M-s 1", createOrGoto "dashboard")
-    , ("M-s n", createOrGoto "note")
-    , ("M-s c", createOrGoto "code")
-    , ("M-s w", createOrGoto "web")
-    , ("M-s m", createOrGoto "music")
-    , ("M-s v", createOrGoto "video")
-    , ("M-s p", createOrGoto "pdf")
-    , ("M-s f", createOrGoto "file")
-    , ("M-s s", createOrGoto "speak")
     -- Launcher
     , ("M-p", programLauncher)
+    -- Run
+    , ("M-S-x", shellPrompt myXPConfig)
     -- Launch editor
     , ("M-x e", spawnEditor)
     -- Launch browser
@@ -54,6 +57,12 @@ myKeys =
     , ("M-`", spawn "scrot")
     -- Partial screenshot
     , ("M-S-`", spawn "sleep 0.2; scrot -s")
+    -- Web searches
+    , ("M-s g", promptSearch myXPConfig google)
+    , ("M-s w", promptSearch myXPConfig wikipedia)
+    , ("M-s d", promptSearch myXPConfig dictionary)
+    , ("M-s t", promptSearch myXPConfig thesaurus)
+    , ("M-s y", promptSearch myXPConfig youtube)
     ]
     ++ mediaKeys
 
