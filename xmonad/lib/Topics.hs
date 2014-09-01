@@ -1,93 +1,93 @@
-module Topics
-     ( myTopics
-     , myTopicConfig
-     , spawnEditorIn
-     , spawnEditor
-     , spawnFileIn
-     , spawnFile
-     , spawnShellIn
-     , spawnShell
-     , createOrGoto
-     , createGoto
-     , promptedGoto
-     , promptedShift
-     ) where
+module Topics where
 
 import XMonad
 import XMonad.Prompt
 import XMonad.Prompt.Workspace
+import XMonad.Util.Run
 import XMonad.Actions.TopicSpace
 import XMonad.Actions.DynamicWorkspaces
+import XMonad.Actions.CopyWindow
+    (copyToAll, killAllOtherCopies, wsContainingCopies)
 
 import qualified XMonad.StackSet as W
 import qualified Data.Map as M
+import Control.Monad
 
 import Config
 import Utils
 
 myTopics :: [Topic]
-myTopics = [ "dashboard"
-           , "code", "web"
-           , "music", "video", "file"
-           , "pdf", "speak"
-           ]
+myTopics =
+    [ "dashboard"
+    , "code", "web"
+    , "music", "video", "file"
+    , "pdf", "speak"
+    ]
 
 myTopicConfig :: TopicConfig
 myTopicConfig = defaultTopicConfig
-    { topicDirs = M.fromList $
-        [ ( "dashboard" , ""                        )
-        , ( "note"      , "notes"                   )
-        , ( "code"      , "code"                    )
-        , ( "web"       , "downloads"               )
-        , ( "music"     , "music"                   )
-        , ( "video"     , "video"                   )
-        , ( "pdf"       , "books"                   )
-        , ( "file"      , ""                        )
-        , ( "speak"     , ""                        )
+    { topicDirs = M.fromList
+        [ ( "dashboard", "")
+        , ( "note", "notes")
+        , ( "code", "code")
+        , ( "web", "downloads")
+        , ( "music", "music")
+        , ( "video", "video")
+        , ( "pdf", "books")
+        , ( "file", "")
+        , ( "speak", "")
         ]
-    , defaultTopicAction = const $ spawn ""
-    , defaultTopic       = "dashboard"
-    , topicActions       = M.fromList $
-        [ ( "note"      , spawnEditor               ) -- Editor
-        , ( "code"      , spawnShell                ) -- Shell
-        , ( "web"       , spawn myBrowser           ) -- Web browser
-        , ( "music"     , spawn "termite -e ncmpcpp") -- Music player
-        , ( "video"     , videoSelect               ) -- Video selection prompt
-        , ( "pdf"       , pdfSelect                 ) -- PDF selection prompt
-        , ( "file"      , spawn "termite -e ranger" ) -- File manager
-        , ( "speak"     , spawn "termite -e chat" >> spawn "termite -e mutt" ) -- IRC and E-mail
+    , defaultTopicAction = const spawnTerm
+    , defaultTopic = "dashboard"
+    , topicActions = M.fromList
+        -- Editor
+        [ ( "note", spawnEditor)
+        -- Terminal
+        , ( "code", spawnTerm)
+        -- Web browser
+        , ( "web", spawn myBrowser)
+        -- Music player
+        , ( "music", runInTerm "-t music" "ncmpcpp")
+        -- Video selection prompt
+        , ( "video", videoSelect)
+        -- PDF selection prompt
+        , ( "pdf", pdfSelect)
+        -- File manager
+        , ( "file", spawnFile)
+        -- IRC and E-mail
+        , ( "speak", runInTerm "-t chat" "chat" >> runInTerm "-t mail" "mutt")
         ]
     }
 
-goto :: WorkspaceId -> X ()
-goto = switchTopic myTopicConfig
-
-shift :: WorkspaceId -> X ()
-shift = windows . W.shift
-
 spawnEditorIn :: Dir -> X ()
-spawnEditorIn dir = spawn $ "termite -e vim " ++ dir
+spawnEditorIn dir = runInTerm "-t editor" ("vim " ++ dir)
 
 spawnEditor :: X ()
 spawnEditor = currentTopicDir myTopicConfig >>= spawnEditorIn
 
 spawnFileIn :: Dir -> X ()
-spawnFileIn dir = spawn $ "termite -e ranger " ++ dir
+spawnFileIn dir = runInTerm "-t file" ("ranger " ++ dir)
 
 spawnFile :: X ()
 spawnFile = currentTopicDir myTopicConfig >>= spawnFileIn
 
-spawnShellIn :: Dir -> X ()
-spawnShellIn dir = spawn $ "termite -d " ++ dir
+spawnTermIn :: Dir -> X ()
+spawnTermIn dir = spawn $ myTerminal ++ " -d " ++ dir
 
-spawnShell :: X ()
-spawnShell = currentTopicDir myTopicConfig >>= spawnShellIn
+spawnTerm :: X ()
+spawnTerm = currentTopicDir myTopicConfig >>= spawnTermIn
+
+goto :: WorkspaceId -> X ()
+goto = switchTopic myTopicConfig
 
 promptedGoto :: X ()
 promptedGoto = workspacePrompt myXPConfig goto
 
+shift :: WorkspaceId -> X ()
+shift = windows . W.shift
+
 promptedShift :: X ()
-promptedShift = workspacePrompt myXPConfig $ shift
+promptedShift = workspacePrompt myXPConfig shift
 
 createGoto :: WorkspaceId -> X ()
 createGoto w = newWorkspace w >> switchTopic myTopicConfig w
@@ -95,20 +95,26 @@ createGoto w = newWorkspace w >> switchTopic myTopicConfig w
 createOrGoto :: WorkspaceId -> X ()
 createOrGoto w = do
     exists <- workspaceExist w
-    if (not exists)
+    if not exists
     then createGoto w
     else goto w
 
 newWorkspace :: WorkspaceId -> X ()
 newWorkspace w = do
     exists <- workspaceExist w
-    if (not exists)
-    then addHiddenWorkspace w
-    else return ()
+    unless exists $ addHiddenWorkspace w
 
 workspaceExist :: WorkspaceId -> X Bool
-workspaceExist w = do xs <- get
-                      return $ workspaceExists w ( windowset xs )
+workspaceExist w = do
+    xs <- get
+    return $ workspaceExists w ( windowset xs )
 
 workspaceExists :: WorkspaceId -> W.StackSet WorkspaceId l a s sd -> Bool
 workspaceExists w ws = w `elem` map W.tag (W.workspaces ws)
+
+toggleGlobal :: X ()
+toggleGlobal = do
+    ws <- wsContainingCopies
+    if null ws
+    then windows copyToAll
+    else killAllOtherCopies
