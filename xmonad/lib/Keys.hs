@@ -7,7 +7,7 @@ import XMonad.Actions.DynamicWorkspaces
 import XMonad.Actions.GridSelect
 import XMonad.Actions.WithAll
 import XMonad.Actions.Search
-import XMonad.Util.Scratchpad
+import XMonad.Util.NamedScratchpad
 
 import Config
 import Utils
@@ -42,7 +42,9 @@ myKeys =
     , ("M-n", addWorkspacePrompt myXPConfig)
     , ("M-<Backspace>", killAll >> removeWorkspace >> createOrGoto "dashboard")
     , ("M-c", renameWorkspace myXPConfig)
-    , ("M-`", scratchpadSpawnAction defaultConfig { terminal = myTerminal })
+    -- Scratchpads
+    , ("M-`", namedScratchpadAction scratchpads "scratchpad")
+    , ("M-v", namedScratchpadAction scratchpads "volume")
     -- Global window
     , ("M-S-g", toggleGlobal)
     -- Launcher
@@ -55,8 +57,6 @@ myKeys =
     , ("M-x w", spawn myBrowser)
     -- Browse files
     , ("M-x f", spawnFile)
-    -- Volume control
-    , ("M-v", spawn "pavucontrol")
     -- Lock screen
     , ("M-<Esc>", spawn "i3lock -i ~/pictures/saltside.png -c 000000" )
     -- Screenshot

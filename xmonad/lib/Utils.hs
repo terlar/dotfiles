@@ -4,6 +4,9 @@ import XMonad
 
 import Config
 
+role :: Query String
+role = stringProperty "WM_WINDOW_ROLE"
+
 videoSelect :: X ()
 videoSelect = spawnSelect myVideoPlayer "Select a video" "$XDG_VIDEOS_DIR"
 
