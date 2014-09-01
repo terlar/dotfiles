@@ -96,8 +96,8 @@ createOrGoto :: WorkspaceId -> X ()
 createOrGoto w = do
     exists <- workspaceExist w
     if not exists
-    then createGoto w
-    else goto w
+        then createGoto w
+        else goto w
 
 newWorkspace :: WorkspaceId -> X ()
 newWorkspace w = do
@@ -116,5 +116,5 @@ toggleGlobal :: X ()
 toggleGlobal = do
     ws <- wsContainingCopies
     if null ws
-    then windows copyToAll
-    else killAllOtherCopies
+        then windows copyToAll
+        else killAllOtherCopies
