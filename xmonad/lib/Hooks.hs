@@ -1,24 +1,27 @@
 module Hooks where
 
 import XMonad
+import qualified XMonad.StackSet as W
 import XMonad.ManageHook
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.FadeInactive
 import XMonad.Actions.CopyWindow
-import qualified XMonad.StackSet as W
+import XMonad.Util.NamedScratchpad
 
+import Utils
 import Topics
 
 myManageHook :: ManageHook
 myManageHook = composeAll . concat $
-    [ [ isFullscreen --> doFullFloat ]
+    [ [ className =? x --> doCenterFloat | x <- floats ]
+    , [ role =? "scratchpad" --> doCenterFloat ]
     , [ isDialog --> doCenterFloat ]
-    , [ className =? "Zenity" --> ask >>= doF . W.sink ]
-    , [ className =? x --> doCenterFloat | x <- floats ]
+    , [ isFullscreen --> doFullFloat ]
     ]
   where
     floats =
         [ "feh"
+        , "Zenity"
         , "Gcolor2"
         , "Pavucontrol"
         , "Arandr"
@@ -26,15 +29,13 @@ myManageHook = composeAll . concat $
         , "Qtconfig-qt4"
         ]
 
-    doMaster = doF W.shiftMaster
-    doCenterFloat' = doCenterFloat <+> doMaster
-    doFloatAt' x y = doFloatAt x y <+> doMaster
-    doSideFloat' p = doSideFloat p <+> doMaster
-    doRectFloat' r = doRectFloat r <+> doMaster
-    doFullFloat' = doFullFloat <+> doMaster
-    doShiftAndGo ws = doF (W.greedyView ws) <+> doShift ws
-    doCopyToAll = ask >>= doF . \ w ws -> (foldr (copyWindow w) ws myTopics)
-    doCenterFloatToAll = doCopyToAll <+> doCenterFloat'
+scratchpads :: NamedScratchpads
+scratchpads =
+    [ NS "scratchpad" scratchpad (role =? "scratchpad") nonFloating
+    , NS "volume" "pavucontrol" (className =? "Pavucontrol") nonFloating
+    ]
+  where
+    scratchpad = "termite -r scratchpad"
 
 myLogHook :: X ()
 myLogHook = fadeInactiveLogHook fadeAmount
