@@ -43,8 +43,8 @@ myKeys =
     , ("M-<Backspace>", killAll >> removeWorkspace >> createOrGoto "dashboard")
     , ("M-c", renameWorkspace myXPConfig)
     -- Scratchpads
-    , ("M-`", namedScratchpadAction scratchpads "scratchpad")
-    , ("M-v", namedScratchpadAction scratchpads "volume")
+    , ("M-`", namedScratchpadAction myScratchpads "scratchpad")
+    , ("M-v", namedScratchpadAction myScratchpads "volume")
     -- Global window
     , ("M-S-g", toggleGlobal)
     -- Launcher

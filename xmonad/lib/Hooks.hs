@@ -8,34 +8,39 @@ import XMonad.Hooks.FadeInactive
 import XMonad.Actions.CopyWindow
 import XMonad.Util.NamedScratchpad
 
+import Config
 import Utils
-import Topics
 
 myManageHook :: ManageHook
-myManageHook = composeAll . concat $
+myManageHook = (composeAll . concat $
     [ [ className =? x --> doCenterFloat | x <- floats ]
-    , [ role =? "scratchpad" --> doCenterFloat ]
     , [ isDialog --> doCenterFloat ]
     , [ isFullscreen --> doFullFloat ]
-    ]
+    ]) <+> namedScratchpadManageHook myScratchpads
   where
     floats =
         [ "feh"
         , "Zenity"
         , "Gcolor2"
-        , "Pavucontrol"
         , "Arandr"
         , "Lxappearance"
         , "Qtconfig-qt4"
         ]
 
-scratchpads :: NamedScratchpads
-scratchpads =
-    [ NS "scratchpad" scratchpad (role =? "scratchpad") nonFloating
-    , NS "volume" "pavucontrol" (className =? "Pavucontrol") nonFloating
+myScratchpads :: NamedScratchpads
+myScratchpads =
+    [ NS "scratchpad" spawnSP findSP manageSP
+    , NS "volume" "pavucontrol" (className =? "Pavucontrol") doCenterFloat
     ]
   where
-    scratchpad = "termite -r scratchpad"
+    spawnSP = myTerminal ++ " -r scratchpad"
+    findSP = role =? "scratchpad"
+    manageSP = customFloating $ W.RationalRect l t w h
+      where
+        h = 0.75
+        w = 0.75
+        t = (1 - h) / 2
+        l = (1 - w) / 2
 
 myLogHook :: X ()
 myLogHook = fadeInactiveLogHook fadeAmount
