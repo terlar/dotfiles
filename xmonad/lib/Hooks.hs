@@ -29,16 +29,20 @@ myManageHook = (composeAll . concat $
 
 myScratchpads :: NamedScratchpads
 myScratchpads =
-    [ NS "scratchpad" spawnSP findSP manageSP
-    , NS "volume" "pavucontrol" (className =? "Pavucontrol") doCenterFloat
+    [ NS "scratchpad" spawnTerm findTerm manageSP
+    , NS "volume" spawnVol findVol manageSP
     ]
   where
-    spawnSP = myTerminal ++ " -r scratchpad"
-    findSP = role =? "scratchpad"
+    spawnTerm = myTerminal ++ " -r scratchpad"
+    findTerm = role =? "scratchpad"
+
+    spawnVol = "pavucontrol"
+    findVol = className =? "Pavucontrol"
+
     manageSP = customFloating $ W.RationalRect l t w h
       where
-        h = 0.75
-        w = 0.75
+        h = 0.7
+        w = 0.7
         t = (1 - h) / 2
         l = (1 - w) / 2
 
