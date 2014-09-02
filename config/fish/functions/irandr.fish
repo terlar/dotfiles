@@ -1,5 +1,6 @@
 function irandr --description 'Interactive xrander configuration'
 	set -l screens (xrandr -q | grep ' connected' | sed 's/^\([A-Za-z0-9\-]*\).*/\1/')
+	set -l previous
 
 	for screen in $screens
 		if not read_confirm -p "Activate display $screen" -d 0
@@ -7,7 +8,8 @@ function irandr --description 'Interactive xrander configuration'
 		end
 
 		
-		read -l -p "echo 'Rotate? [(N)ormal/(L)eft/(R)ight/(I)nverted]'" rotation
+		read -l -p "echo 'Rotate? [(N)ormal/(L)eft/(R)ight/(I)nverted] '" rotation
+		set -l position
 
 		switch (echo $rotation | tr '[:upper:]' '[:lower:]')
 			case l left
@@ -20,6 +22,12 @@ function irandr --description 'Interactive xrander configuration'
 				set rotation normal
 		end
 
-		echo "xrandr --output $screen --auto --rotate $rotation" | source
+		if test -n "$previous"
+			set position " --right-of $previous"
+		end
+
+		echo "xrandr --output $screen$position --rotate $rotation" | source
+
+		set -l previous $screen
 	end
 end
