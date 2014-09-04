@@ -4,7 +4,8 @@ LC_ALL            DEFAULT=${LANG}
 
 # Paths
 HOME              DEFAULT=/home/@{PAM_USER} OVERRIDE=${HOME}
-PATH              DEFAULT=${HOME}/.local/bin:${HOME}/.cabal/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/bin/core_perl
+GOPATH            DEFAULT=${HOME}/go
+PATH              DEFAULT=${HOME}/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/bin/core_perl:${HOME}/.cabal/bin:${GOPATH}/bin
 
 # Tools
 VISUAL            DEFAULT=vim
