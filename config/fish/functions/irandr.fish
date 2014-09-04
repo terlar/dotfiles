@@ -26,7 +26,7 @@ function irandr --description 'Interactive xrander configuration'
 			set position " --right-of $previous"
 		end
 
-		echo "xrandr --output $screen$position --rotate $rotation" | source
+		echo "xrandr --output $screen --auto --rotate $rotation$position" | source
 
 		set -l previous $screen
 	end
