@@ -12,5 +12,4 @@ discard_colors_if_item_is_selected = "yes"
 
 # Others
 search_engine_display_mode = "columns"
-display_screens_numbers_on_start = "no"
 clock_display_seconds = "yes"
