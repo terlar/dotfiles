@@ -19,8 +19,8 @@ myKeys =
     -- Recompile and restart XMonad
     [ ("M-q", restartXMonad)
     -- Grid select
-    , ("M-g", goToSelected defaultGSConfig)
-    , ("<XF86LaunchA>", goToSelected defaultGSConfig)
+    , ("M-g", openGridSelect)
+    , ("<XF86LaunchA>", openGridSelect)
     -- Workspace navigation
     , ("M-<Tab>", myToggleWS)
     , ("M-<Right>", nextWS)
@@ -71,6 +71,8 @@ myKeys =
     , ("M-s y", promptSearch myXPConfig youtube)
     ]
     ++ mediaKeys
+  where
+    openGridSelect = goToSelected $ myGSConfig myColorizer
 
 mediaKeys :: [(String, X ())]
 mediaKeys =

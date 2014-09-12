@@ -2,6 +2,7 @@ module Config where
 
 import XMonad
 import XMonad.Prompt
+import XMonad.Actions.GridSelect
 
 myModMask = mod4Mask
 
@@ -47,3 +48,20 @@ myXPConfig = defaultXPConfig
     , historySize = 100
     , historyFilter = deleteConsecutive
     }
+
+myGSConfig colorizer = (buildDefaultGSConfig colorizer)
+    { gs_cellheight = 40
+    , gs_cellwidth = 300
+    , gs_cellpadding = 10
+    , gs_font = "xft:" ++ myFont
+    }
+
+myColorizer = colorRangeFromClassName
+    black -- lowest inactive bg
+    white -- highest inactive bg
+    white -- active bg
+    white -- inactive fg
+    black -- active fg
+  where
+    black = minBound
+    white = (0xF5, 0xF5, 0xF5)
