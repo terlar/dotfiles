@@ -45,6 +45,7 @@ myKeys =
     -- Scratchpads
     , ("M-`", namedScratchpadAction myScratchpads "scratchpad")
     , ("M-v", namedScratchpadAction myScratchpads "volume")
+    , ("M-m", namedScratchpadAction myScratchpads "music")
     -- Global window
     , ("M-S-g", toggleGlobal)
     -- Launcher

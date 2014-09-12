@@ -6,6 +6,7 @@ import XMonad.ManageHook
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.FadeInactive
 import XMonad.Actions.CopyWindow
+import XMonad.Util.Run
 import XMonad.Util.NamedScratchpad
 
 import Config
@@ -29,15 +30,19 @@ myManageHook = (composeAll . concat $
 
 myScratchpads :: NamedScratchpads
 myScratchpads =
-    [ NS "scratchpad" spawnTerm findTerm manageSP
+    [ NS "scratchpad" spawnTermSP findTerm manageSP
     , NS "volume" spawnVol findVol manageSP
+    , NS "music" spawnMusic findMusic manageSP
     ]
   where
-    spawnTerm = myTerminal ++ " -r scratchpad"
+    spawnTermSP = myTerminal ++ " -r scratchpad"
     findTerm = role =? "scratchpad"
 
     spawnVol = "pavucontrol"
     findVol = className =? "Pavucontrol"
+
+    spawnMusic = myTerminal ++ " -r music -e ncmpcpp"
+    findMusic = role =? "music"
 
     manageSP = customFloating $ W.RationalRect l t w h
       where
