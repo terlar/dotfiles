@@ -101,5 +101,5 @@ mediaKeys =
     , ("<XF86AudioMute>", amixerAction "toggle")
     ]
   where
-    mpcAction opt = spawn $ unwords ["ncmpcpp", opt]
+    mpcAction opt = spawn $ unwords ["mpc", opt]
     amixerAction opt = spawn $ unwords ["amixer", "-q", "set", "Master", opt]
