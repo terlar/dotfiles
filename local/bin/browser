@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+if [ $# -eq 0 ]; then
+	firefox 2>/dev/null
+	exit 0
+fi
+
+mime=$(curl -sI $* | grep '^Content-Type:' | cut -d' ' -f2)
+
+case "$mime" in
+	image/*)
+		feh $*
+		;;
+	*)
+		xdg-open $* 2>/dev/null
+		;;
+esac

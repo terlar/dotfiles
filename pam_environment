@@ -12,7 +12,7 @@ VISUAL            DEFAULT=vim
 EDITOR            DEFAULT=vim
 PAGER             DEFAULT=less
 TERMINAL          DEFAULT=termite
-BROWSER           DEFAULT=xdg-open
+BROWSER           DEFAULT=browser
 XBMC_HOME         DEFAULT=/usr/share/plexhometheater
 
 # XDG
