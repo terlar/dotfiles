@@ -1,15 +1,19 @@
 # Playlist
-playlist_display_mode = "columns"
+playlist_display_mode = columns
+autocenter_mode = yes
 
 # Browser
-browser_display_mode = "columns"
+browser_display_mode = columns
 
 # Bars
 progressbar_look = "━◼"
 
 # Colors
-discard_colors_if_item_is_selected = "yes"
+discard_colors_if_item_is_selected = yes
+
+song_columns_list_format = (20)[]{a} (6f)[green]{NE} (50)[blue]{t|f:Title} (20)[cyan]{b} (7f)[magenta]{l}
 
 # Others
-search_engine_display_mode = "columns"
-clock_display_seconds = "yes"
+user_interface = alternative
+search_engine_display_mode = columns
+clock_display_seconds = yes
