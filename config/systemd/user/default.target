@@ -2,4 +2,4 @@
 Description=Defaults
 AllowIsolate=true
 
-Wants=console.target
+Wants=desktop.target
