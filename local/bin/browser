@@ -4,13 +4,13 @@ if [ $# -eq 0 ]; then
 	exit 0
 fi
 
-mime=$(curl -sI $* | grep '^Content-Type:' | cut -d' ' -f2)
+mime=$(curl -sI -X HEAD "$*" | grep '^Content-Type:' | cut -d' ' -f2)
 
 case "$mime" in
 	image/*)
 		feh $*
 		;;
 	*)
-		xdg-open $* 2>/dev/null
+		xdg-open "$*" 2>/dev/null
 		;;
 esac
