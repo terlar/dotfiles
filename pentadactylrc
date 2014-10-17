@@ -7,4 +7,10 @@ set guioptions=bCrsB
 set! ui.key.menuAccessKey=0
 set! ui.key.menuAccessKeyFocuses=false
 
+style -name tabbrowser-height-fix chrome://* <<EOM
+[dactyl-australis=true] .tabbrowser-tabs {
+	max-height: unset !important;
+}
+EOM
+
 " vim: set ft=pentadactyl:
