@@ -25,7 +25,7 @@ def exclude(excludes):
     return lambda folder: not folder in excludes
 
 def get_credentials(account, meta=None):
-    out = subprocess.check_output(['pass', 'show', 'Mail/%s' % account], universal_newlines=True)
+    out = subprocess.check_output(['pass', 'show', 'mail/%s' % account], universal_newlines=True)
     lines = str(out).strip().splitlines()
     if meta is None:
         return lines[0]
