@@ -14,7 +14,8 @@ import Utils
 
 myManageHook :: ManageHook
 myManageHook = (composeAll . concat $
-    [ [ className =? x --> doCenterFloat | x <- floats ]
+    [ [ className =? "Xfce4-notifyd" --> doIgnore ]
+    , [ className =? x --> doCenterFloat | x <- floats ]
     , [ isDialog --> doCenterFloat ]
     , [ isFullscreen --> doFullFloat ]
     ]) <+> namedScratchpadManageHook myScratchpads
