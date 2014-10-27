@@ -5,6 +5,7 @@
 .vagrant/
 
 # Code
+/tmp/
 tags
 Session.vim
 TODO
