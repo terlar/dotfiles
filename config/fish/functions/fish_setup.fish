@@ -21,6 +21,9 @@ function fish_setup --description 'Setup fish variables'
 	# Abbreviations
 	fish_user_abbreviations
 
+	# Completions
+	fish_update_completions
+
 	# Settings
 	set -U tank_reporter spec
 	set -U fry_auto_switch 1
