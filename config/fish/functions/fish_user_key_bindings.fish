@@ -1,25 +1,27 @@
 function fish_user_key_bindings
-	bind \el '__fish_list_current_token; echo'
-	bind \e'<' 'prevd; set -ge __prompt_context_current; fish_prompt'
-	bind \e'>' 'nextd; set -ge __prompt_context_current; fish_prompt'
-	bind \cl 'set -ge __prompt_context_current; clear; set_color normal; fish_prompt; commandline -f repaint'
+	set -g fish_key_bindings fish_vi_key_bindings
+
+	bind -M insert \el '__fish_list_current_token; echo'
+	bind -M insert \e'<' 'prevd; set -ge __prompt_context_current; fish_prompt'
+	bind -M insert \e'>' 'nextd; set -ge __prompt_context_current; fish_prompt'
+	bind -M insert \cl 'set -ge __prompt_context_current; clear; set_color normal; fish_prompt; commandline -f repaint'
 
 	# Insert last argument of previous command
-	bind \e. history-token-search-backward
-	bind \e, __commandline_insert_previous_token
+	bind -M insert \e. history-token-search-backward
+	bind -M insert \e, __commandline_insert_previous_token
 
-	bind \cx __commandline_eval_token
-	bind \ee __commandline_edit
-	bind \er __commandline_sudo_toggle
+	bind -M insert \cx __commandline_eval_token
+	bind -M insert \ee __commandline_edit
+	bind -M insert \er __commandline_sudo_toggle
 
 	# Stash/pop
-	bind \es __commandline_stash
-	bind \eS __commandline_pop
+	bind -M insert \es __commandline_stash
+	bind -M insert \eS __commandline_pop
 
 	# Execute
-	bind \e! __commandline_sudo_execute
-	bind \em 'commandline -f execute accept-autosuggestion'
-	bind \ez 'commandline "fg"; commandline -f execute'
+	bind -M insert \e! __commandline_sudo_execute
+	bind -M insert \em 'commandline -f execute accept-autosuggestion'
+	bind -M insert \ez 'commandline "fg"; commandline -f execute'
 end
 
 function __commandline_insert_previous_token
