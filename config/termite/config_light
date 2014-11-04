@@ -18,33 +18,37 @@ cursor_shape = block
 
 ### BEGIN COLORS
 [colors]
-foreground = #2a2e6e
-foreground_bold = #2a2e6e
-background = #f5f5f5
+# Base16 Flat
+# Scheme: Chris Kempson (http://chriskempson.com)
+
+foreground      = #2C3E50
+foreground_bold = #7F8C8D
+cursor          = #7F8C8D
+background      = #ECF0F1
 
 # 16 color space
-color0  = #151515
-color1  = #c35532
-color2  = #7da028
-color3  = #c19a48
-color4  = #008ebd
-color5  = #9474b6
-color6  = #00adbe
-color7  = #b0b0b0
-color8  = #505050
-color9  = #c35532
-color10 = #7da028
-color11 = #c19a48
-color12 = #008ebd
-color13 = #9474b6
-color14 = #00adbe
-color15 = #f5f5f5
+color0  = #2C3E50
+color1  = #E74C3C
+color2  = #2ECC71
+color3  = #F1C40F
+color4  = #3498DB
+color5  = #9B59B6
+color6  = #1ABC9C
+color7  = #BDC3C7
+color8  = #95A5A6
+color9  = #E74C3C
+color10 = #2ECC71
+color11 = #F1C40F
+color12 = #3498DB
+color13 = #9B59B6
+color14 = #1ABC9C
+color15 = #ECF0F1
 
 # 256 color space
-color16 = #d28445
-color17 = #8f5536
-color18 = #202020
-color19 = #2a2e6e
-color20 = #b0b0b0
-color21 = #e9e9e9
+color16 = #E67E22
+color17 = #be643c
+color18 = #34495E
+color19 = #7F8C8D
+color20 = #BDC3C7
+color21 = #f5f5f5
 ### END COLORS
