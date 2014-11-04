@@ -6,9 +6,10 @@ end
 
 # Plugins
 set -l plugins_path (dirname (status -f))/plugins
+for plugin in $plugins_path/*/autoload.fish
+	source $plugin
+end
 
-# Bundler
-source $plugins_path/bundler/bundler.fish
 # Farm
 source /usr/local/share/fish-farm/farm.fish
 # Fry
