@@ -8,7 +8,7 @@ function irandr --description 'Interactive xrander configuration'
 		end
 
 		
-		read -l -p "echo 'Rotate? [(N)ormal/(L)eft/(R)ight/(I)nverted] '" rotation
+		read rotation -l -p "echo 'Rotate? [(N)ormal/(L)eft/(R)ight/(I)nverted] '"
 		set -l position
 
 		switch (echo $rotation | tr '[:upper:]' '[:lower:]')
@@ -23,10 +23,23 @@ function irandr --description 'Interactive xrander configuration'
 		end
 
 		if test -n "$previous"
-			set position " --right-of $previous"
+			read position -p "echo 'Position? [(L)eft of/(R)ight of/(A)bove/(B)ellow/(S)ame as] '"
+
+			switch (echo $position | tr '[:upper:]' '[:lower:]')
+			case a above
+				set position "--above $previous"
+			case s same same-as
+				set position "--same-as $previous"
+			case l left left-of
+				set position "--left-of $previous"
+			case r right right-of ''
+				set position "--right-of $previous"
+			end
+		else 
+			set position '--primary'
 		end
 
-		echo "xrandr --output $screen --auto --rotate $rotation$position" | source
+		echo "xrandr --output $screen --auto --rotate $rotation $position" | source
 
 		set -l previous $screen
 	end
