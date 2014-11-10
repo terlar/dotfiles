@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+if [ -f $PWD/Vagrantfile ]; then
+	echo 'Running make inside vagrant...'
+	cmd="cd /vagrant; make $@"
+	vagrant ssh -c "$cmd"
+else
+	command make $@
+fi
