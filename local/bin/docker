@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 if [ -f $PWD/Vagrantfile ]; then
-	echo 'Running docker inside vagrant...'
 	cmd="cd /vagrant; docker $@"
-	vagrant ssh -c "$cmd"
+	vagrant ssh -c "$cmd" -- -q
 else
-	command docker $@
+	/usr/bin/docker $@
 fi

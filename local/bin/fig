@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 if [ -f $PWD/Vagrantfile ]; then
-	echo 'Running fig inside vagrant...'
 	cmd="cd /vagrant; fig $@"
-	vagrant ssh -c "$cmd"
+	vagrant ssh -c "$cmd" -- -q
 else
-	command fig $@
+	/usr/bin/fig $@
 fi
