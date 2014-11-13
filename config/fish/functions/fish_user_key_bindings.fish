@@ -23,6 +23,7 @@ function fish_user_key_bindings
 	bind -M insert \eS __commandline_pop
 
 	# Execute
+	bind -M insert \e, 'commandline -f execute history-search-backward'
 	bind -M insert \em 'commandline -f execute accept-autosuggestion'
 	bind -M insert \ez 'commandline "fg"; commandline -f execute'
 end
