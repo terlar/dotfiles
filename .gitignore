@@ -1,10 +1,1 @@
-config/fish/fishd.*
-config/fish/fish_history
-config/fish/fish_read_history
-config/fish/generated_completions
-
 config/termite/config
-
-mutt/cache
-mutt/temp
-mutt/mailboxes
