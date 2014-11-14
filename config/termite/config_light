@@ -22,8 +22,8 @@ cursor_shape = block
 # Scheme: Chris Kempson (http://chriskempson.com)
 
 foreground      = #2C3E50
-foreground_bold = #7F8C8D
-cursor          = #7F8C8D
+foreground_bold = #2C3E50
+cursor          = #2C3E50
 background      = #ECF0F1
 
 # 16 color space
