@@ -1,7 +1,7 @@
 #!/usr/bin/env fish
 function __dotfiles_read_confirm
 	while true
-		read -l -p __dotfiles_read_confirm_prompt confirm
+		read -l -n 1 -p __dotfiles_read_confirm_prompt confirm
 
 		switch $confirm
 			case '' Y y

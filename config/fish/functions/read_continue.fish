@@ -1,7 +1,3 @@
 function read_continue
-	read -p read_continue_prompt
-end
-
-function read_continue_prompt
-	echo 'Press enter to continue...'
+	read -n 1 -p "echo 'Press any key to continue...'"
 end

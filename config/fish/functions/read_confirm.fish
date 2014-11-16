@@ -14,7 +14,7 @@ function read_confirm
 	end
 
 	while true
-		read -l -p "echo '$prompt [Y/n] '" confirm
+		read -l -n 1 -p "echo '$prompt [Y/n] '" confirm
 
 		switch $confirm
 			case Y y

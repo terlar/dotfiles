@@ -12,7 +12,7 @@ function __dotfiles_read_choice
 
 	while true
 		echo "File already exists: '$target', what do you want to do?"
-		read -l -p __dotfiles_read_choice_prompt choice
+		read -l -n 1 -p __dotfiles_read_choice_prompt choice
 
 		switch $choice
 			case O
@@ -51,7 +51,7 @@ function __dotfiles_read_confirm
 	set -qg unattended; and return 0
 
 	while true
-		read -l -p __dotfiles_read_confirm_prompt confirm
+		read -l -n 1 -p __dotfiles_read_confirm_prompt confirm
 
 		switch $confirm
 			case '' Y y
