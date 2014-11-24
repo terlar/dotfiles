@@ -8,8 +8,8 @@ GOPATH            DEFAULT=${HOME}/go
 PATH              DEFAULT=${HOME}/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/bin/core_perl:${HOME}/.cabal/bin:${GOPATH}/bin
 
 # Tools
-VISUAL            DEFAULT=vim
-EDITOR            DEFAULT=vim
+VISUAL            DEFAULT=nvim
+EDITOR            DEFAULT=nvim
 PAGER             DEFAULT=less
 TERMINAL          DEFAULT=termite
 BROWSER           DEFAULT=browser
