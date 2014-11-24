@@ -2,13 +2,13 @@
 content=/dev/stdin
 
 if [[ -f "$1" ]]; then
-  content="$1"; shift
+	content="$1"; shift
 fi
 
 ext="$1"
 
 if [[ -z "$ext" ]] && [[ "$content" == *.* ]]; then
-  ext="${content##*.}"
+	ext="${content##*.}"
 fi
 
 read -r link < <(curl -# -F 'sprunge=<-' http://sprunge.us < "$content")

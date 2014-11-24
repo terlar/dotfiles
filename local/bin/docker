@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-if [ -f $PWD/Vagrantfile ]; then
+if [ -f "${PWD}/Vagrantfile" ]; then
 	cmd="cd /vagrant; docker $@"
 	vagrant ssh -c "$cmd" -- -q
 else

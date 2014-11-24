@@ -8,7 +8,7 @@ mime=$(curl -sI -X HEAD "$*" | grep '^Content-Type:' | cut -d' ' -f2)
 
 case "$mime" in
 	image/*)
-		feh -. -F $*
+		feh -. -F "$*"
 		;;
 	*)
 		xdg-open "$*" 2>/dev/null

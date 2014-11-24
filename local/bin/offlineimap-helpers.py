@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 import os, re, subprocess
 
 mapping = { 'INBOX':              'inbox'

@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 if [ $# -eq 0 ]; then
-	variant='light'
+	variant=light
 else
-	variant=$1
+	variant="$1"
 fi
 
-source $HOME/.vconsole_$variant
+source "${HOME}/.vconsole_${variant}"
 echo "Arch Linux \\r (\\l)"
 echo

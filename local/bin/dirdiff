@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+if [ ! $# -eq 2 ]; then
+	echo "Error: You must provide two directories to compare"
+	exit 1
+fi
+
+if [ ! -d "$1" ]; then
+	echo "Error: First argument is not a directory"
+	exit 1
+fi
+
+if [ ! -d "$2" ]; then
+	echo "Error: Second argument is not a directory"
+	exit 1
+fi
+
+vimdiff \
+	<(ls -R "$1" | sed 's/.*\/\(.*\)/\1/') \
+	<(ls -R "$2" | sed 's/.*\/\(.*\)/\1/')

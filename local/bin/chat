@@ -1,12 +1,2 @@
-#!/bin/fish
-if test -z "$TMUX"
-  tmux new -A -s chat weechat
-else
-  set -l sessions (tmux list-sessions | cut -d ':' -f 1 ^/dev/null)
-
-  if not contains -- chat $sessions
-    tmux if true 'new -d -s chat weechat'
-  end
-
-  tmux switch -t chat
-end
+#!/usr/bin/env bash
+mux chat weechat

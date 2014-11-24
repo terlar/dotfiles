@@ -1,12 +1,12 @@
-#!/bin/sh
-subdomain=$1
-username=$2
-password=$3
+#!/usr/bin/env bash
+subdomain="$1"
+username="$2"
+password="$3"
 
-[ -n $subdomain ] || (echo "Subdomain required to demo" && exit)
+[ -n "$subdomain" ] || (echo "Subdomain required to demo" && exit)
 
-if [[ -n $username  ]] && [[ -n $password ]]; then
-  httpauth="-httpauth=${username}:${password}"
+if [ -n "$username"  ] && [ -n "$password" ]; then
+	httpauth="-httpauth=${username}:${password}"
 fi
 
-ngrok -subdomain=$subdomain $httpauth 80
+ngrok -subdomain="$subdomain" "$httpauth" 80
