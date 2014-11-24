@@ -7,14 +7,15 @@ if [ $# -eq 0 ]; then
 	fi
 else
 	session_name="$1"
-	cmd="$2"
+	shift 1
+	_command=$@
 
 	if [ -z "$TMUX" ]; then
 		tmux attach -t "$session_name" ||
-			tmux new -s "$session_name" "$cmd"
+			tmux new -s "$session_name" "$_command"
 	else
 		if ! tmux list-sessions | grep -q "^${session_name}:"; then
-			tmux if true "new -d -s ${session_name} ${cmd}"
+			tmux if true "new -d -s ${session_name} ${_command}"
 		fi
 
 		tmux switch -t "$session_name"
