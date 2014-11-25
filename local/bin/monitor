@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+if [ -z "$TMUX" ]; then
+	mux monitoring monitor
+else
+	tmux new-window -n htop 'htop'
+	tmux new-window -n journalctl 'journalctl -f'
+fi
