@@ -1,0 +1,10 @@
+[Unit]
+Description=OfflineIMAP Synchronization Timer
+
+[Timer]
+OnBootSec=5min
+OnUnitActiveSec=60
+Unit=offlineimap.service
+
+[Install]
+WantedBy=default.target
