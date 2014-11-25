@@ -1,85 +1,82 @@
 function fish_user_abbreviations
 	set -U fish_user_abbreviations
 
-	abbr ! sudo
-	abbr tf 'tail -f'
-	abbr l 'ls -a'
-	abbr l. 'ls -d .*'
+	abbr -a !=sudo
+	abbr -a tf='tail -f'
+	abbr -a l='ls -a'
+	abbr -a l.='ls -d .*'
+	abbr -a m=mux
 
 	if type systemctl >/dev/null
-		abbr j 'journalctl --since=yesterday'
-		abbr je 'journalctl --since=yesterday --priority=0..3'
-		abbr jf 'journalctl -f'
+		abbr -a j='journalctl --since=yesterday'
+		abbr -a je='journalctl --since=yesterday --priority=0..3'
+		abbr -a jf='journalctl -f'
 
-		abbr sc 'sudo systemctl'
-		abbr scu 'systemctl --user'
+		abbr -a sc='sudo systemctl'
+		abbr -a scu='systemctl --user'
 
-		abbr reboot 'sudo systemctl reboot'
-		abbr poweroff 'sudo systemctl poweroff'
-		abbr suspend 'sudo systemctl suspend'
-
-		abbr stx 'systemctl --user start desktop.target'
-		abbr klx 'systemctl --user start console.target'
-		abbr m 'systemctl --user start mopidy'
+		abbr -a reboot='sudo systemctl reboot'
+		abbr -a poweroff='sudo systemctl poweroff'
+		abbr -a suspend='sudo systemctl suspend'
 	end
 
 	if type git >/dev/null
-		abbr g 'git'
-		abbr gs 'git status -sb'
-		abbr gh 'git head'
+		abbr -a g='git'
+		abbr -a gs='git status -sb'
+		abbr -a gh='git head'
 
-		abbr gl 'git l'
-		abbr gll 'git ll'
-		abbr gwc 'git wc'
+		abbr -a gl='git l'
+		abbr -a gll='git ll'
+		abbr -a gwc='git wc'
 
-		abbr gd 'git diff'
-		abbr gdt 'git difftool'
-		abbr gdc 'git diff --cached'
-		abbr gdw 'git diff --color-words'
-		abbr gds 'git diff --stat'
+		abbr -a gd='git diff'
+		abbr -a gdt='git difftool'
+		abbr -a gdc='git diff --cached'
+		abbr -a gdw='git diff --color-words'
+		abbr -a gds='git diff --stat'
 
-		abbr ga 'git add'
-		abbr gc 'git commit -v'
-		abbr gca 'git commit -v -a'
-		abbr gb 'git branch'
-		abbr gco 'git checkout'
-		abbr gf 'git fetch'
-		abbr gfa 'git fetch --all'
-		abbr gm 'git merge'
-		abbr gr 'git rebase'
-		abbr gcp 'git cherry-pick'
-		abbr gpr 'git pull-request'
+		abbr -a ga='git add'
+		abbr -a gc='git commit -v'
+		abbr -a gca='git commit -v -a'
+		abbr -a gb='git branch'
+		abbr -a gco='git checkout'
+		abbr -a gf='git fetch'
+		abbr -a gfa='git fetch --all'
+		abbr -a gm='git merge'
+		abbr -a gr='git rebase'
+		abbr -a gcp='git cherry-pick'
+		abbr -a gpr='git pull-request'
 	end
 
 	if type pacman >/dev/null
-		abbr pac 'sudo pacman'
+		abbr -a pac='sudo pacman'
 	end
 
 	if type aura >/dev/null
-		abbr aur 'sudo aura'
+		abbr -a aur='sudo aura'
 	end
 
 	if type pygmentize >/dev/null
-		abbr ccat pygmentize
+		abbr -a ccat=pygmentize
 	end
 
 	if type bundle >/dev/null
-		abbr b bundle
-		abbr be 'bundle exec'
+		abbr -a b=bundle
+		abbr -a be='bundle exec'
 	end
 
 	if type prax >/dev/null
-		abbr prs 'prax restart'
+		abbr -a prs='prax restart'
 	end
 
 	if type vagrant >/dev/null
-		abbr v vagrant
+		abbr -a v=vagrant
 	end
 
 	if type farm >/dev/null
-		abbr f 'farm visit'
-		abbr fcd 'farm cd'
-		abbr fc 'farm console'
-		abbr fs 'farm server'
+		abbr -a f='farm visit'
+		abbr -a fcd='farm cd'
+		abbr -a fc='farm console'
+		abbr -a fs='farm server'
 	end
 end
