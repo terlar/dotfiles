@@ -1,0 +1,10 @@
+[Unit]
+Description=Encourage break every 30 minutes
+
+[Timer]
+OnBootSec=30min
+OnUnitActiveSec=30min
+Unit=break@0.service
+
+[Install]
+WantedBy=desktop.target
