@@ -15,7 +15,7 @@ else
 			tmux new -s "$session_name" "$_command"
 	else
 		if ! tmux list-sessions | grep -q "^${session_name}:"; then
-			tmux if true "new -d -s ${session_name} ${_command}"
+			tmux if true "new -d -s ${session_name} '${_command}'"
 		fi
 
 		tmux switch -t "$session_name"
