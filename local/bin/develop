@@ -1,21 +1,5 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 
-# Authorize
-monkeysphere subkey-to-ssh-agent
-
-# Services
 sudo systemctl start mysqld
-ln -s /var/run/mysqld/mysqld.sock /tmp/mysql.sock
-
-sudo systemctl start mongodb
-sudo systemctl start redis
-sudo systemctl start memcached
-sudo systemctl start elasticsearch
-
 sudo systemctl start nginx
 prax start
-
-systemctl --user start asgard
-
-# Development tools
-mailcatcher
