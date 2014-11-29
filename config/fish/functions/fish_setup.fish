@@ -10,13 +10,8 @@ function fish_setup --description 'Setup fish variables'
 	set -Ux LESS_TERMCAP_se \e'[0m'           # end standout-mode
 	set -Ux LESS_TERMCAP_ue \e'[0m'           # end underline
 
-	# Syntax highligthing colors
-	set -U fish_color_command blue
-	set -U fish_color_param purple
-
-	# Pager colors
-	set -U fish_pager_color_completion purple
-	set -U fish_pager_color_description white
+	# Colors
+	fish_load_colors
 
 	# Abbreviations
 	fish_user_abbreviations
@@ -27,8 +22,6 @@ function fish_setup --description 'Setup fish variables'
 	# Settings
 	set -U tank_reporter spec
 	set -U fry_auto_switch 1
-
-	set -U chat_server robotomi.se
 
 	set -U fish_setup_done 1
 	echo 'Initial fish setup done!'
