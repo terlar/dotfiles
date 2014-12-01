@@ -1,0 +1,76 @@
+#!/usr/bin/env bash
+
+# This script makes it easier to work with vagrant and docker based 
+# projects. Running multiple VMS with docker inside gives you no
+# straight forward way to easily share images. This script assumes
+# a directory on host system (set by VAGRANT_DOCKER_CACHE) that
+# store docker images as tar files. They can be used to load docker images
+# into the VM without hitting the network. New images loaded via the
+# script will be coped into VAGRANT_DOCKER_CACHE for reuse in other
+# virtual machines.
+
+set -eou pipefail
+
+if [ $# -lt 1 ]; then
+  echo "USAGE: vdocker-load <image> [image]"
+  exit 1
+fi
+
+if [ ! -f Vagrantfile ]; then
+	echo "No Vagrantfile found."
+	exit 1
+fi
+
+if [ -z "$VAGRANT_DOCKER_CACHE" ]; then
+	echo "VAGRANT_DOCKER_CACHE not set"
+	exit 1
+fi
+
+function image2filename {
+  echo $1 | sed 's/[./:]/_/g'
+}
+
+function finish {
+	rm -rf tmp/vagrant_docker_cache
+}
+
+trap finish EXIT
+
+mkdir -p "${VAGRANT_DOCKER_CACHE}"
+
+# Where to write archives to on the host
+project_cache="tmp/vagrant_docker_cache"
+
+# Where archives live inside the guest VM
+vm_cache="/vagrant/${project_cache}"
+
+mkdir -p "$project_cache"
+
+while (( "$#" )); do
+	global_archive="${VAGRANT_DOCKER_CACHE}/$(image2filename $1).tar.gz"
+  project_archive="${project_cache}/$(image2filename $1).tar.gz"
+  vm_archive="${vm_cache}/$(image2filename $1).tar.gz"
+
+  if [ ! -f "$global_archive" ]; then
+    echo "Pulling $1 into ${VAGRANT_DOCKER_CACHE}"
+
+    vagrant ssh -c "docker pull '$1'" -- -q
+    vagrant ssh -c "docker save '$1' | gzip --fast > '$vm_archive'" -- -q
+		cp "$project_archive" "$global_archive"
+		rm "$project_archive"
+  fi
+
+	if ! vagrant ssh -c "docker inspect '$1'" -- -q> /dev/null 2>&1;  then
+		echo "Importing $1 from $global_archive"
+		cp "$global_archive" "$project_archive"
+		vagrant ssh -c "gunzip --stdout '$vm_archive' | docker load" -- -q
+
+		# Now pull it to ensure we have the newest thing in cache
+    vagrant ssh -c "docker pull '$1'" -- -q
+    vagrant ssh -c "docker save '$1' | gzip --fast > '$vm_archive'" -- -q
+		cp "$project_archive" "$global_archive"
+		rm "$project_archive"
+	fi
+
+  shift
+done

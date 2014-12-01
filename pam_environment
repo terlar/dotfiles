@@ -1,19 +1,21 @@
 # Locale
-LANG              DEFAULT=en_US.UTF-8
-LC_ALL            DEFAULT=${LANG}
+LANG   DEFAULT=en_US.UTF-8
+LC_ALL DEFAULT=${LANG}
 
 # Paths
-HOME              DEFAULT=/home/@{PAM_USER} OVERRIDE=${HOME}
-GOPATH            DEFAULT=${HOME}/go
-PATH              DEFAULT=${HOME}/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/bin/core_perl:${HOME}/.cabal/bin:${GOPATH}/bin
+HOME      DEFAULT=/home/@{PAM_USER} OVERRIDE=${HOME}
+GOPATH    DEFAULT=${HOME}/go
+PATH      DEFAULT=${HOME}/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/bin/core_perl:${HOME}/.cabal/bin:${GOPATH}/bin
+XBMC_HOME DEFAULT=/usr/share/plexhometheater
+VAGRANT_DOCKER_CACHE DEFAULT=${HOME}/.docker-cache
 
 # Tools
-VISUAL            DEFAULT=nvim
-EDITOR            DEFAULT=nvim
-PAGER             DEFAULT=less
-TERMINAL          DEFAULT=termite
-BROWSER           DEFAULT=browser
-XBMC_HOME         DEFAULT=/usr/share/plexhometheater
+VISUAL    DEFAULT=nvim
+EDITOR    DEFAULT=nvim
+PAGER     DEFAULT=less
+TERMINAL  DEFAULT=termite
+BROWSER   DEFAULT=browser
+LESS      DEFAULT=-R
 
 # XDG
 XDG_VTNR          DEFAULT=1
@@ -23,7 +25,3 @@ XDG_DOWNLOAD_DIR  DEFAULT=${HOME}/downloads
 XDG_MUSIC_DIR     DEFAULT=${HOME}/music
 XDG_PICTURES_DIR  DEFAULT=${HOME}/pictures
 XDG_VIDEOS_DIR    DEFAULT=${HOME}/videos
-
-LESS              DEFAULT=-R
-
-fish_use_fishd    DEFAULT=0
