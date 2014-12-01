@@ -15,7 +15,7 @@ if [ $? -eq 1 ]; then
 	echo
 	exit_code=255
 else
-	cat $ssh_config_cache | ssh -t -t -q -F/dev/stdin default "$cmd"
+	ssh -t -t -q -F $ssh_config_cache default "$cmd"
 	exit_code=$?
 fi
 
