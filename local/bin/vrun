@@ -23,10 +23,16 @@ if [ $exit_code -eq 255 ]; then
 	echo 'Error: Could not connect to vagrant'
 	rm "$ssh_config_cache"
 
-	read -p "Do you want to start vagrant and retry?" choice
+	read -n 1 -p "Do you want to start vagrant and retry? [Y/n] " choice
 	case $choice in
-		[Yy]* ) vagrant up && vrun "$cmd";;
-		* ) exit $exit_code;;
+		[Yy]* )
+			echo
+			vagrant up && vrun "$cmd"
+			;;
+		* )
+			echo
+			exit $exit_code
+			;;
 	esac
 else
 	exit $exit_code
