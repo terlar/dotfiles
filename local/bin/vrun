@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+if [ ! -f "${PWD}/Vagrantfile" ]; then
+	echo 'Error: No Vagrantfile in current directory'
+	exit 1
+fi
+
+cmd="cd /vagrant; $@"
+vagrant ssh -c "$cmd" -- -q

@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-if [ -f "${PWD}/Vagrantfile" ]; then
-	cmd="cd /vagrant; fig $@"
-	vagrant ssh -c "$cmd" -- -q
-else
-	/usr/bin/fig $@
-fi
