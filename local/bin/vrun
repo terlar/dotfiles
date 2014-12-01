@@ -5,4 +5,29 @@ if [ ! -f "${PWD}/Vagrantfile" ]; then
 fi
 
 cmd="cd /vagrant; $@"
-vagrant ssh -c "$cmd" -- -q
+ssh_config_cache="${PWD}/.vagrant-ssh-config"
+
+if [ ! -f "$ssh_config_cache" ]; then
+	vagrant ssh-config > "$ssh_config_cache"
+fi
+
+if [ $? -eq 1 ]; then
+	echo
+	exit_code=255
+else
+	cat $ssh_config_cache | ssh -t -t -q -F/dev/stdin default "$cmd"
+	exit_code=$?
+fi
+
+if [ $exit_code -eq 255 ]; then
+	echo 'Error: Could not connect to vagrant'
+	rm "$ssh_config_cache"
+
+	read -p "Do you want to start vagrant and retry?" choice
+	case $choice in
+		[Yy]* ) vagrant up && vrun "$cmd";;
+		* ) exit $exit_code;;
+	esac
+else
+	exit $exit_code
+fi
