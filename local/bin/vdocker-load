@@ -12,8 +12,8 @@
 set -eou pipefail
 
 if [ $# -lt 1 ]; then
-  echo "USAGE: vdocker-load <image> [image]"
-  exit 1
+	echo "USAGE: vdocker-load <image> [image]"
+	exit 1
 fi
 
 if [ ! -f Vagrantfile ]; then
@@ -27,7 +27,7 @@ if [ -z "$VAGRANT_DOCKER_CACHE" ]; then
 fi
 
 function image2filename {
-  echo $1 | sed 's/[./:]/_/g'
+	echo $1 | sed 's/[./:]/_/g'
 }
 
 function finish {
@@ -48,29 +48,29 @@ mkdir -p "$project_cache"
 
 while (( "$#" )); do
 	global_archive="${VAGRANT_DOCKER_CACHE}/$(image2filename $1).tar.gz"
-  project_archive="${project_cache}/$(image2filename $1).tar.gz"
-  vm_archive="${vm_cache}/$(image2filename $1).tar.gz"
+	project_archive="${project_cache}/$(image2filename $1).tar.gz"
+	vm_archive="${vm_cache}/$(image2filename $1).tar.gz"
 
-  if [ ! -f "$global_archive" ]; then
-    echo "Pulling $1 into ${VAGRANT_DOCKER_CACHE}"
+	if [ ! -f "$global_archive" ]; then
+		echo "Pulling $1 into ${VAGRANT_DOCKER_CACHE}"
 
-    vagrant ssh -c "docker pull '$1'" -- -q
-    vagrant ssh -c "docker save '$1' | gzip --fast > '$vm_archive'" -- -q
+		vagrant ssh -c "docker pull '$1'" -- -q
+		vagrant ssh -c "docker save '$1' | gzip --fast > '$vm_archive'" -- -q
 		cp "$project_archive" "$global_archive"
 		rm "$project_archive"
-  fi
+	fi
 
-	if ! vagrant ssh -c "docker inspect '$1'" -- -q> /dev/null 2>&1;  then
+	if ! vagrant ssh -c "docker inspect '$1'" -- -q> /dev/null 2>&1; then
 		echo "Importing $1 from $global_archive"
 		cp "$global_archive" "$project_archive"
 		vagrant ssh -c "gunzip --stdout '$vm_archive' | docker load" -- -q
 
 		# Now pull it to ensure we have the newest thing in cache
-    vagrant ssh -c "docker pull '$1'" -- -q
-    vagrant ssh -c "docker save '$1' | gzip --fast > '$vm_archive'" -- -q
+		vagrant ssh -c "docker pull '$1'" -- -q
+		vagrant ssh -c "docker save '$1' | gzip --fast > '$vm_archive'" -- -q
 		cp "$project_archive" "$global_archive"
 		rm "$project_archive"
 	fi
 
-  shift
+	shift
 done
