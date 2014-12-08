@@ -1,6 +1,5 @@
 # Development
 .vagrant/
-.vagrant-ssh-config
 
 # Code
 /tmp/

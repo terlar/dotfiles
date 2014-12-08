@@ -5,21 +5,20 @@ if [ ! -f "${PWD}/Vagrantfile" ]; then
 fi
 
 cmd="cd /vagrant; $@"
-ssh_config_cache="${PWD}/.vagrant-ssh-config"
+ssh_config_cache="/tmp/vagrant-ssh-config-$(echo $PWD | tr / %)"
 
-if [ ! -f "$ssh_config_cache" ]; then
+if [ -f "$ssh_config_cache" ]; then
+	ssh -q -F $ssh_config_cache default true
+else
 	vagrant ssh-config > "$ssh_config_cache"
 fi
 
-if [ $? -eq 1 ]; then
-	echo
-	exit_code=255
-else
-	ssh -t -t -q -F $ssh_config_cache default "$cmd"
-	exit_code=$?
-fi
+exit_code=$?
 
-if [ $exit_code -eq 255 ]; then
+if [ $exit_code -eq 0 ]; then
+	ssh -t -t -q -F $ssh_config_cache default "$cmd"
+else
+	echo
 	echo 'Error: Could not connect to vagrant'
 	rm "$ssh_config_cache"
 
@@ -34,6 +33,4 @@ if [ $exit_code -eq 255 ]; then
 			exit $exit_code
 			;;
 	esac
-else
-	exit $exit_code
 fi
