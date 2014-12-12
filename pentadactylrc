@@ -3,11 +3,18 @@
 loadplugins '\.(js|penta)$'
 group user
 
-set guioptions=bCrsB
+set guioptions=bCrsT
 set editor='termite -r scratchpad -e "vim +<line> +\"sil! call cursor(0, <column>)\" <file>"'
 
 set! ui.key.menuAccessKey=0
 set! ui.key.menuAccessKeyFocuses=false
+
+style -name hide-toolbar chrome://* <<EOM
+#nav-bar {
+	position: absolute !important;
+	margin-top: -9001px !important;
+}
+EOM
 
 style -name tabbrowser-height-fix chrome://* <<EOM
 [dactyl-australis=true] .tabbrowser-tabs {
