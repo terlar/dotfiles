@@ -16,7 +16,7 @@ source /usr/local/share/fish-farm/farm.fish
 source /usr/local/share/fry/fry.fish
 
 # Envoy
-if which envoy >/dev/null ^/dev/null
+if test (type envoy ^/dev/null)
 	envoy -fp | source
 end
 
