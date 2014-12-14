@@ -7,7 +7,7 @@ function fish_user_abbreviations
 	abbr -a l.='ls -d .*'
 	abbr -a m=mux
 
-	if test (type systemctl ^/dev/null)
+	if type -fq systemctl
 		abbr -a j='journalctl --since=yesterday'
 		abbr -a je='journalctl --since=yesterday --priority=0..3'
 		abbr -a jf='journalctl -f'
@@ -20,7 +20,7 @@ function fish_user_abbreviations
 		abbr -a suspend='sudo systemctl suspend'
 	end
 
-	if test (type git ^/dev/null)
+	if type -fq git
 		abbr -a g='git'
 		abbr -a gs='git status -sb'
 		abbr -a gh='git head'
@@ -48,32 +48,32 @@ function fish_user_abbreviations
 		abbr -a gpr='git pull-request'
 	end
 
-	if test (type pacman ^/dev/null)
+	if type -fq pacman
 		abbr -a pac='sudo pacman'
 	end
 
-	if test (type aura ^/dev/null)
+	if type -fq aura
 		abbr -a aur='sudo aura'
 	end
 
-	if test (type pygmentize ^/dev/null)
+	if type -fq pygmentize
 		abbr -a ccat=pygmentize
 	end
 
-	if test (type bundle ^/dev/null)
+	if type -fq bundle
 		abbr -a b=bundle
 		abbr -a be='bundle exec'
 	end
 
-	if test (type prax ^/dev/null)
+	if type -fq prax
 		abbr -a prs='prax restart'
 	end
 
-	if test (type vagrant ^/dev/null)
+	if type -fq vagrant
 		abbr -a v=vagrant
 	end
 
-	if test (type farm ^/dev/null)
+	if type -q farm
 		abbr -a f='farm visit'
 		abbr -a fcd='farm cd'
 		abbr -a fc='farm console'

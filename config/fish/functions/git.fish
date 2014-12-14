@@ -1,5 +1,5 @@
 function git
-	if test (type hub ^/dev/null)
+	if type -fq hub
 		hub $argv
 	else
 		command git $argv
