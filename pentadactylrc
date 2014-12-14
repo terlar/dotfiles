@@ -8,6 +8,7 @@ set editor='termite -r scratchpad -e "vim +<line> +\"sil! call cursor(0, <column
 
 set! ui.key.menuAccessKey=0
 set! ui.key.menuAccessKeyFocuses=false
+set! extensions.readability.first_run_complete=true
 
 style -name hide-toolbar chrome://* <<EOM
 #nav-bar {
