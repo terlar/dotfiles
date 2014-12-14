@@ -1,14 +1,26 @@
 function insist
-	eval $argv ^/dev/null
-	set -l code $status
+	set -l try 1
+	set -l cmd $argv
 
-	if test $code -eq 0
-		return 0
-	else if test $code -eq 127
-		return $code
-	else
-		echo 'insist: Unsuccessful, trying again...'
-		sleep 0.5
-		eval insist $argv
+	while true
+		eval $cmd
+
+		switch $status
+			case 0
+				echo "[Success after $try attempts]"
+				return 0
+			case 127
+				echo "[Failed attempt $try]"
+				echo Command not found >&2
+				return 127
+			case *
+				echo "[Failed attempt $try]"
+		end
+
+		set -l wait (math 1.3 ^ $try)
+		printf "[Waiting %0.2f seconds before next try]\n" $wait
+		sleep $wait
+
+		set try (expr $try + 1)
 	end
 end
