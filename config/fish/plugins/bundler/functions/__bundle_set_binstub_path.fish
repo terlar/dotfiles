@@ -7,6 +7,6 @@ function __bundle_set_binstub_path --description 'Add binstub to path'
 
 	set -xg BUNDLE_BINSTUB_PATH (dirname $gemfile_path)/bin
 	if test -d $BUNDLE_BINSTUB_PATH
-		set PATH $BUNDLE_BINSTUB_PATH $PATH
+		set fish_user_paths $fish_user_paths $BUNDLE_BINSTUB_PATH
 	end
 end
