@@ -17,8 +17,8 @@ function insist
 				echo "[Failed attempt $try]"
 		end
 
-		set -l wait (math 1.3 ^ $try)
-		printf "[Waiting %0.2f seconds before next try]\n" $wait
+		set -l wait (math "1.3 ^ $try")
+		printf "[Waiting %0.1f seconds before next try]\n" $wait
 		sleep $wait
 
 		set try (expr $try + 1)
