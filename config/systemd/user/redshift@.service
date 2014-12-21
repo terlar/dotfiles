@@ -8,7 +8,8 @@ After=xorg@%i.service
 
 [Service]
 Environment=DISPLAY=:%i
-ExecStart=/usr/bin/redshift -l 57.7000:11.9667
+ExecStart=/usr/bin/redshift -m randr -l 57.7000:11.9667 &
+TimeoutStopSec=5
 
 [Install]
 WantedBy=graphical.target

@@ -2,14 +2,17 @@
 Description=PulseAudio Sound System
 Documentation=man:pulseaudio(1)
 
-Requires=sound.target
-After=sound.target
+Before=sound.target
 
 [Service]
-Type=forking
-
-ExecStart=/usr/bin/pulseaudio --start
+Environment=DISPLAY=:0
+ExecStart=/usr/bin/pulseaudio --exit-idle-time=999999
 ExecStop=/usr/bin/pulseaudio --kill
+
+Restart=always
+RestartPreventExitStatus=SIGTERM SIGINT SIGABRT SIGKILL
+StartLimitInterval=10s
+StartLimitBurst=5
 
 [Install]
 WantedBy=default.target
