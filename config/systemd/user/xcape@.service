@@ -1,0 +1,16 @@
+[Unit]
+Description=Combine Ctrl+Escape on display %i
+
+Requisite=xserver@%i.target
+After=xserver@%i.target
+
+After=xorg@%i.service
+
+[Service]
+Type=forking
+
+Environment=DISPLAY=:%i
+ExecStart=/usr/bin/xcape
+
+[Install]
+WantedBy=graphical.target
