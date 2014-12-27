@@ -1,23 +1,23 @@
 #!/usr/bin/env bash
-for file in $*; do
+for file in "$*"; do
 	case $file in
 		*.tar)
-			tar -xf $file
+			tar -xf "$file"
 			;;
 		*.tar.gz|*.tgz)
-			tar -zxf $file
+			tar -zxf "$file"
 			;;
 		*.tar.bz|*.tar.bz2|*.tbz|*.tbz2)
-			tar -jxf $file
+			tar -jxf "$file"
 			;;
 		*.rar)
-			unrar e $file
+			unrar e "$file"
 			;;
 
 		*.zip)
-			unzip $file
+			unzip "$file"
 			;;
 		*)
-			echo File $file is of unknown type
+			echo "File $file is of unknown type"
 	esac
 done
