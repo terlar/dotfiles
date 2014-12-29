@@ -71,9 +71,9 @@ myKeys =
     , ("M-s t", promptSearch myXPConfig thesaurus)
     , ("M-s y", promptSearch myXPConfig youtube)
     -- Notifications
-    , ("M-8", spawn "notify-send -t 4000 Network \"$(ip -4 -o addr show | cut -d' ' -f2,7)\" --icon=dialog-information")
-    , ("M-9", spawn "notify-send -t 2000 Battery \"$(acpi)\" --icon=dialog-information")
-    , ("M-0", spawn "notify-send -t 2000 Date \"$(date)\" --icon=dialog-information")
+    , ("M-8", spawn "notify-send -i network -t 4000 Network \"$(ip -4 -o addr show | cut -d' ' -f2,7)\"")
+    , ("M-9", spawn "notify-send -i battery -t 2000 Battery \"$(acpi)\"")
+    , ("M-0", spawn "notify-send -i dialog-information -t 2000 Date \"$(date)\"")
     ]
     ++ mediaKeys
   where
