@@ -10,6 +10,10 @@ function fish_setup --description 'Setup fish variables'
 	set -Ux LESS_TERMCAP_se \e'[0m'           # end standout-mode
 	set -Ux LESS_TERMCAP_ue \e'[0m'           # end underline
 
+	# FZF Defaults
+	set -Ux FZF_DEFAULT_OPTS --no-256
+	set -Ux FZF_DEFAULT_COMMAND 'ag -l -g ""'
+
 	# Colors
 	fish_load_colors
 
