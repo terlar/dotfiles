@@ -3,7 +3,17 @@ ControlPath /tmp/%r@%h:%p
 ControlPersist yes
 
 Host *
-  ForwardAgent yes
-  KeepAlive yes
-  ServerAliveInterval 20
-  ServerAliveCountMax 10
+	ForwardAgent yes
+	KeepAlive yes
+	ServerAliveInterval 20
+	ServerAliveCountMax 10
+
+Host docker-skype
+	User docker
+	Port 55555
+	HostName 127.0.0.1
+	RemoteForward 64713 localhost:4713
+	ForwardAgent yes
+	ForwardX11 yes
+	ForwardX11Trusted yes
+	IdentityFile ~/.ssh/skype

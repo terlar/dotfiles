@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+if ! ssh docker-skype true; then
+	docker run --name skype --privileged -d -p 55555:22 -v /dev/video0:/dev/video0:rw tomparys/skype
+	ssh-copy-id -i ~/.ssh/skype.pub docker-skype
+fi
+
+ssh docker-skype skype-pulseaudio &
