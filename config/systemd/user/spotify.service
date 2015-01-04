@@ -1,0 +1,9 @@
+[Unit]
+Description=Spotify Server
+
+[Service]
+ExecStart=/usr/bin/docker run --name spotify --rm -p 22122:22 spotify
+ExecStop=/usr/bin/docker stop spotify
+
+[Install]
+WantedBy=default.target

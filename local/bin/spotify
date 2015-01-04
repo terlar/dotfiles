@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+if ! ssh -q docker-spotify true; then
+	echo -n 'Starting Spotify Server'
+	systemctl --user start spotify
+
+	until ssh -q docker-spotify true; do
+		echo -n '.'
+		sleep 0.1
+	done
+
+	echo
+fi
+
+ssh docker-spotify spotify-pulseaudio &

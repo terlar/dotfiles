@@ -17,3 +17,12 @@ Host docker-skype
 	ForwardX11 yes
 	ForwardX11Trusted yes
 	IdentityFile ~/.ssh/skype
+
+Host docker-spotify
+	User docker
+	Port 22122
+	HostName 127.0.0.1
+	RemoteForward 64713 localhost:4713
+	ForwardAgent yes
+	ForwardX11 yes
+	ForwardX11Trusted yes
