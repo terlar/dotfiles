@@ -8,19 +8,18 @@ Host *
 	ServerAliveInterval 20
 	ServerAliveCountMax 10
 
-Host docker-skype
+Host docker-spotify
 	User docker
-	Port 55555
+	Port 22122
 	HostName 127.0.0.1
 	RemoteForward 64713 localhost:4713
 	ForwardAgent yes
 	ForwardX11 yes
 	ForwardX11Trusted yes
-	IdentityFile ~/.ssh/skype
 
-Host docker-spotify
+Host docker-skype
 	User docker
-	Port 22122
+	Port 22222
 	HostName 127.0.0.1
 	RemoteForward 64713 localhost:4713
 	ForwardAgent yes

@@ -1,7 +1,14 @@
 #!/usr/bin/env bash
-if ! ssh docker-skype true; then
-	docker run --name skype --privileged -d -p 55555:22 -v /dev/video0:/dev/video0:rw tomparys/skype
-	ssh-copy-id -i ~/.ssh/skype.pub docker-skype
+if ! ssh -q docker-skype true; then
+	echo -n 'Starting Skype Server'
+	systemctl --user start skype
+
+	until ssh -q docker-skype true; do
+		echo -n '.'
+		sleep 0.1
+	done
+
+	echo
 fi
 
 ssh docker-skype skype-pulseaudio &
