@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 if [ $# -eq 0 ]; then
-	firefox & 2>/dev/null
+	firefox &>/dev/null
 	exit 0
 fi
 
@@ -11,6 +11,6 @@ case "$mime" in
 		feh -. -F "$*"
 		;;
 	*)
-		xdg-open "$*" 2>/dev/null
+		xdg-open "$*" &>/dev/null
 		;;
 esac
