@@ -15,6 +15,7 @@ import Utils
 myManageHook :: ManageHook
 myManageHook = (composeAll . concat $
     [ [ className =? "Xfce4-notifyd" --> doIgnore ]
+    , [ className =? "Spotify" --> doShift "music" ]
     , [ className =? x --> doCenterFloat | x <- floats ]
     , [ isDialog --> doCenterFloat ]
     , [ isFullscreen --> doFullFloat ]
