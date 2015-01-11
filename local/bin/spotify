@@ -1,11 +1,17 @@
 #!/usr/bin/env bash
 export SSH_ASKPASS=/usr/lib/ssh/x11-ssh-askpass
 
-if ! ssh -q docker-spotify true; then
+if command -v sshpass >/dev/null; then
+	ssh_cmd='sshpass -p spotify ssh -q docker-spotify'
+else
+	ssh_cmd='ssh -q docker-spotify'
+fi
+
+if ! $ssh_cmd true; then
 	echo -n 'Starting Spotify Server'
 	systemctl --user start spotify
 
-	until ssh -q docker-spotify true; do
+	until $ssh_cmd true; do
 		echo -n '.'
 		sleep 0.1
 	done
@@ -13,4 +19,4 @@ if ! ssh -q docker-spotify true; then
 	echo
 fi
 
-ssh -q docker-spotify spotify-pulseaudio
+$ssh_cmd spotify-pulseaudio
