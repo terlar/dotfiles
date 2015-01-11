@@ -1,0 +1,18 @@
+[Unit]
+Description=Set XKB Options on display %i
+Documentation=man:setxkbmap(1)
+
+Requisite=xserver@%i.target
+After=xserver@%i.target
+
+After=xorg@%i.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+
+Environment=DISPLAY=:%i
+ExecStart=/usr/bin/setxkbmap -option ctrl:nocaps
+
+[Install]
+WantedBy=graphical.target
