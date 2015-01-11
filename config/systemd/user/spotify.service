@@ -2,7 +2,7 @@
 Description=Spotify Server
 
 [Service]
-ExecStart=/usr/bin/docker run --name spotify --rm -p 22122:22 spotify
+ExecStart=/usr/bin/docker run --name spotify --rm -v %h/.docker-volumes/spotifydata:/data/spotify -p 22122:22 spotify
 ExecStop=/usr/bin/docker stop spotify
 
 [Install]

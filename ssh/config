@@ -9,9 +9,9 @@ Host *
 	ServerAliveCountMax 10
 
 Host docker-spotify
-	User docker
+	User spotify
 	Port 22122
-	HostName 127.0.0.1
+	HostName localhost
 	RemoteForward 64713 localhost:4713
 	ForwardAgent yes
 	ForwardX11 yes
@@ -20,7 +20,7 @@ Host docker-spotify
 Host docker-skype
 	User docker
 	Port 22222
-	HostName 127.0.0.1
+	HostName localhost
 	RemoteForward 64713 localhost:4713
 	ForwardAgent yes
 	ForwardX11 yes
