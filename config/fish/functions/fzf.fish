@@ -5,5 +5,5 @@ function fzf
 		set -gx FZF_DEFAULT_COMMAND 'git ls-tree -r --name-only HEAD'
 	end
 
-	ruby /home/terje/.fzf/fzf $argv
+	~/.fzf/bin/fzf $argv
 end
