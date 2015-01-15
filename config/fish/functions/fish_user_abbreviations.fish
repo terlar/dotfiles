@@ -73,6 +73,14 @@ function fish_user_abbreviations
 		abbr -a v=vagrant
 	end
 
+	if type -fq docker
+		abbr -a d=docker
+		abbr -a dp='docker ps'
+		abbr -a dpa='docker ps -a'
+		abbr -a dpq='docker ps -q'
+		abbr -a dic='docker rmi (docker images -q --filter "dangling=true")'
+	end
+
 	if type -q farm
 		abbr -a f='farm visit'
 		abbr -a fcd='farm cd'
