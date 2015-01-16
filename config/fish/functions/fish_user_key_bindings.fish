@@ -9,8 +9,8 @@ function fish_user_key_bindings
 
 	# Navigation
 	bind -M insert \el '__fish_list_current_token; echo'
-	bind -M insert \e'<' 'prevd; set -ge __prompt_context_current; fish_prompt'
-	bind -M insert \e'>' 'nextd; set -ge __prompt_context_current; fish_prompt'
+	bind -M insert \e'<' 'prevd; __commandline_clear_prompt'
+	bind -M insert \e'>' 'nextd; __commandline_clear_prompt'
 
 	# Commandline
 	bind \ci __commandline_edit
