@@ -9,7 +9,11 @@ mapping = { 'INBOX':              'inbox'
           , '[Gmail]/Spam':       'spam'
           , '[Gmail]/Starred':    'starred'
           , '[Gmail]/Trash':      'trash'
-          , '[Gmail]/Economy':    'economy'
+          , 'Economy':            'economy'
+          , 'Cultivation':        'cultivation'
+          , 'Entertainment':      'entertainment'
+          , 'Life':               'life'
+          , 'Chinese':            'chinese'
           }
 
 r_mapping = { val: key for key, val in mapping.items() }
