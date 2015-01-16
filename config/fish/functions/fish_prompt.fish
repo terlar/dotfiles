@@ -19,6 +19,15 @@ function fish_prompt --description 'Write out the prompt'
 	end
 	echo
 
+	if test $fish_key_bindings = 'fish_vi_key_bindings'
+		switch $fish_bind_mode
+		case default
+			set_color --background red white
+		case visual
+			set_color --background magenta white
+		end
+	end
+
 	if test $TERM = 'linux'
 		echo -n '> '
 	else
