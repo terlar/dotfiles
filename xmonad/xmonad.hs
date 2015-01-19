@@ -1,5 +1,6 @@
 import XMonad
 import XMonad.Util.EZConfig (checkKeymap, additionalKeysP)
+import XMonad.Layout.PerWorkspace (onWorkspace)
 
 import Config
 import Hooks (myManageHook, myLogHook)
@@ -13,6 +14,7 @@ myConfig = defaultConfig
     , workspaces = myTopics
     , manageHook = myManageHook
     , logHook = myLogHook
+    , layoutHook = onWorkspace "speak" Full $ layoutHook defaultConfig
     , startupHook = return () >> checkKeymap myConfig myKeys
     } `additionalKeysP` myKeys
 
