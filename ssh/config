@@ -7,21 +7,3 @@ Host *
 	KeepAlive yes
 	ServerAliveInterval 20
 	ServerAliveCountMax 10
-
-Host docker-spotify
-	User spotify
-	Port 22122
-	HostName localhost
-	RemoteForward 64713 localhost:4713
-	ForwardAgent yes
-	ForwardX11 yes
-	ForwardX11Trusted yes
-
-Host docker-skype
-	User docker
-	Port 22222
-	HostName localhost
-	RemoteForward 64713 localhost:4713
-	ForwardAgent yes
-	ForwardX11 yes
-	ForwardX11Trusted yes

@@ -1,9 +1,0 @@
-[Unit]
-Description=Skype Server
-
-[Service]
-ExecStart=/usr/bin/docker run --name skype --rm --privileged -v /dev/video0:/dev/video0:rw -p 22222:22 tomparys/skype
-ExecStop=/usr/bin/docker stop skype
-
-[Install]
-WantedBy=default.target
