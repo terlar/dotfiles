@@ -1,22 +1,2 @@
 #!/usr/bin/env bash
-export SSH_ASKPASS=/usr/lib/ssh/x11-ssh-askpass
-
-if command -v sshpass >/dev/null; then
-	ssh_cmd='sshpass -p docker ssh -q docker-skype'
-else
-	ssh_cmd='ssh -q docker-skype'
-fi
-
-if ! $ssh_cmd true; then
-	echo -n 'Starting Skype Server'
-	systemctl --user start skype
-
-	until $ssh_cmd true; do
-		echo -n '.'
-		sleep 0.1
-	done
-
-	echo
-fi
-
-$ssh_cmd skype-pulseaudio
+systemctl --user start skype@${DISPLAY:1}
