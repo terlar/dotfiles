@@ -1,2 +1,20 @@
 #!/usr/bin/env bash
-systemctl --user start skype@${DISPLAY:1}
+set -e
+
+if docker inspect -f "{{ .Name }}" skype | grep '/skype'; then
+	docker restart skype
+else
+	USER_UID=$(id -u)
+	USER_GID=$(id -g)
+
+	docker run -it --rm \
+		--privileged \
+		--env=USER_UID=$USER_UID \
+		--env=USER_GID=$USER_GID \
+		--env=DISPLAY=unix$DISPLAY \
+		--volume=/tmp/.X11-unix:/tmp/.X11-unix:ro \
+		--volume=/run/user/$USER_UID/pulse:/run/pulse:rw \
+		--volume=/dev/video0:/dev/video0:rw \
+		--name skype \
+		skype
+fi
