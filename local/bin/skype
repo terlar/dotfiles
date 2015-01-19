@@ -7,13 +7,13 @@ else
 	USER_UID=$(id -u)
 	USER_GID=$(id -g)
 
-	docker run -it --rm \
+	docker run --rm \
 		--privileged \
 		--env=USER_UID=$USER_UID \
 		--env=USER_GID=$USER_GID \
 		--env=DISPLAY=unix$DISPLAY \
 		--volume=/tmp/.X11-unix:/tmp/.X11-unix:ro \
-		--volume=/run/user/$USER_UID/pulse:/run/pulse:rw \
+		--volume=/run/user/$USER_UID/pulse:/run/pulse:ro \
 		--volume=/dev/video0:/dev/video0:rw \
 		--name skype \
 		skype
