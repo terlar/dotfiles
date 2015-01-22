@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-if docker inspect -f "{{ .Name }}" skype | grep '/skype'; then
+if docker inspect -f "{{ .Name }}" skype | grep -q '/skype'; then
 	docker restart skype
 else
 	USER_UID=$(id -u)

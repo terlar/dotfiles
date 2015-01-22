@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-if docker inspect -f "{{ .Name }}" spotify | grep '/spotify'; then
+if docker inspect -f "{{ .Name }}" spotify | grep -q '/spotify'; then
 	docker restart spotify
 else
 	USER_UID=$(id -u)
@@ -11,6 +11,11 @@ else
 		--env=USER_UID=$USER_UID \
 		--env=USER_GID=$USER_GID \
 		--env=DISPLAY=unix$DISPLAY \
+		--env=XMODIFIERS=@im=fcitx \
+		--env=XIM=fcitx \
+		--env=XIM_PROGRAM=fcitx \
+		--env=GTK_IM_MODULE=fcitx \
+		--env=QT_IM_MODULE=fcitx \
 		--volume=/tmp/.X11-unix:/tmp/.X11-unix:ro \
 		--volume=/run/user/$USER_UID/pulse:/run/pulse:ro \
 		--volume=$HOME/.docker-volumes/spotifyconfig:/data/config \
