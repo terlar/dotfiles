@@ -78,7 +78,8 @@ function fish_user_abbreviations
 		abbr -a dp='docker ps'
 		abbr -a dpa='docker ps -a'
 		abbr -a dpq='docker ps -q'
-		abbr -a dic='docker rmi (docker images -q --filter "dangling=true")'
+		abbr -a dic='docker rmi (docker images -q --filter dangling=true)'
+		abbr -a dpc='docker rm -v (docker ps -qa --filter status=exited)'
 	end
 
 	if type -q farm
