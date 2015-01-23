@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-if [ -f "${PWD}/Vagrantfile" ]; then
-	vmake test FILE=$1
+if [ -f "${PWD}/Makefile" ]; then
+	make test FILE=$1
 else
 	dir=$( cd "$( dirname "$0" )" && pwd )
 
