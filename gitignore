@@ -1,5 +1,6 @@
 # Development
 .vagrant/
+crane.json
 
 # Code
 /tmp/
@@ -10,6 +11,7 @@ TODO
 # Bundler
 .bundle
 vendor/bundle
+/bin/
 Gemfile.local*
 
 .rake_tasks
