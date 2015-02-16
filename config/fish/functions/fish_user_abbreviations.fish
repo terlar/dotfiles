@@ -75,11 +75,12 @@ function fish_user_abbreviations
 
 	if type -fq docker
 		abbr -a d=docker
+		abbr -a dim='docker images'
 		abbr -a dp='docker ps'
 		abbr -a dpa='docker ps -a'
 		abbr -a dpq='docker ps -q'
-		abbr -a dic='docker rmi (docker images -q --filter dangling=true)'
-		abbr -a dpc='docker rm -v (docker ps -qa --filter status=exited)'
+		abbr -a drmc='docker rm -v (docker ps -qa --filter status=exited)'
+		abbr -a drmi='docker rmi (docker images -q --filter dangling=true)'
 	end
 
 	if type -q farm
