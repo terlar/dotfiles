@@ -49,7 +49,7 @@ function fzf_key_bindings
   end
 
   function __fzf_ctrl_r
-    history | __fzf_reverse | fzf +s +m > $TMPDIR/fzf.result
+    history | __fzf_reverse | fzf +s --tac +m > $TMPDIR/fzf.result
     and commandline (cat $TMPDIR/fzf.result)
     commandline -f repaint
     rm -f $TMPDIR/fzf.result
