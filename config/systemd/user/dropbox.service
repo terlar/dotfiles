@@ -2,7 +2,7 @@
 Description=Dropbox Sync Daemon
 
 [Service]
-ExecStart=/usr/bin/dropboxd
+ExecStart=/usr/bin/dropbox
 Nice=15
 
 [Install]
