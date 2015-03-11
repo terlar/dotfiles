@@ -16,7 +16,7 @@ myBorderWidth :: Dimension
 myBorderWidth = 0
 
 -- Theme
-myFont = "Source Code Pro-12"
+myFont = "Input Mono-12"
 
 myBorderColor = "#b0b0b0"
 myFocusedFGColor = "#505050"
