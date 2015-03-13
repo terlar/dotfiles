@@ -2,7 +2,7 @@
 if [ -z "$TMUX" ]; then
 	mux monitoring monitor
 else
-	tmux new-window -n htop 'htop'
-	tmux new-window -n journalctl 'journalctl -f'
-	tmux new-window -n dmesg 'dmesg -w --human'
+	tmux new-window -n processes 'top'
+	tmux new-window -n systemd 'journalctl -f'
+	tmux new-window -n kernel 'dmesg -w --human'
 fi
