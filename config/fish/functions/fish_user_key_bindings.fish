@@ -24,6 +24,7 @@ function fish_user_key_bindings
 
 	# Execute
 	bind -M insert \n '__commandline_execute'
+	bind -M insert \e\n '__commandline_execute_and_keep_line'
 	bind -M insert \e, 'commandline -f execute history-search-backward'
 	bind -M insert \em 'commandline -f execute accept-autosuggestion'
 	bind -M insert \ez 'commandline "fg"; commandline -f execute'
@@ -142,8 +143,19 @@ function __commandline_execute_and_keep_line
 	set -l cmd (commandline -b)
 
 	commandline -f execute
-	commandline -r "$cmd"
-	commandline -C $pos
+
+	while true
+		set funcname __fish_restore_line_(random);
+		if not functions $funcname >/dev/null ^/dev/null
+			break;
+		end
+	end
+
+	function $funcname -V funcname -V pos -V cmd -j %self
+		commandline -r "$cmd"
+		commandline -C $pos
+		functions -e $funcname
+	end
 end
 
 function __fish_list
