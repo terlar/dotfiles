@@ -23,11 +23,20 @@ function fish_user_key_bindings
 	bind -M insert \eS __commandline_pop
 
 	# Execute
+	bind -M insert \n '__commandline_execute'
 	bind -M insert \e, 'commandline -f execute history-search-backward'
 	bind -M insert \em 'commandline -f execute accept-autosuggestion'
 	bind -M insert \ez 'commandline "fg"; commandline -f execute'
 
 	fzf_key_bindings
+end
+
+function __commandline_execute
+	if test -n (commandline)
+		commandline -f execute
+	else
+		echo
+	end
 end
 
 function __commandline_clear_prompt
