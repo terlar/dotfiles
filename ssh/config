@@ -1,6 +1,7 @@
-ControlMaster auto
-ControlPath /tmp/%r@%h:%p
-ControlPersist yes
+Host github.com
+	ControlMaster auto
+	ControlPath /tmp/%r@%h:%p
+	ControlPersist yes
 
 Host *
 	ForwardAgent yes
