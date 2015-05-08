@@ -26,10 +26,10 @@ else
 	_command=$@
 
 	if [ -z "$TMUX" ]; then
-		tmux new -A -s "$session_name" ${flags[@]} "$_command"
+		tmux new -A -s "$session_name" ${flags[@]} $_command
 	else
 		if ! tmux list-sessions | grep -q "^$session_name:"; then
-			TMUX= tmux new -d -s "$session_name" ${flags[@]} "$_command"
+			TMUX= tmux new -d -s "$session_name" ${flags[@]} $_command
 		fi
 
 		tmux switch -t "$session_name"
