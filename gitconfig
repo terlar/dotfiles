@@ -61,3 +61,5 @@
 [url "git@github.com:"]
   # With write access
   insteadOf = wgh:
+[help]
+	autoCorrect = -1
