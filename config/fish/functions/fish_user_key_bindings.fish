@@ -8,9 +8,9 @@ function fish_user_key_bindings
 	bind -M insert \cl '__commandline_clear_prompt'
 
 	# Navigation
-	bind -M insert \el '__fish_list_current_token; echo'
-	bind -M insert \e'<' 'prevd; __commandline_clear_prompt'
-	bind -M insert \e'>' 'nextd; __commandline_clear_prompt'
+	bind -M insert \el '__fish_list_current_token; __commandline_reload_prompt'
+	bind -M insert \e'<' 'prevd; __commandline_reload_prompt'
+	bind -M insert \e'>' 'nextd; __commandline_reload_prompt'
 
 	# Commandline
 	bind \ci __commandline_edit
@@ -27,7 +27,7 @@ function fish_user_key_bindings
 	bind -M insert \e\n '__commandline_execute_and_keep_line'
 	bind -M insert \e, 'commandline -f execute history-search-backward'
 	bind -M insert \em 'commandline -f execute accept-autosuggestion'
-	bind -M insert \ez 'commandline "fg"; commandline -f execute'
+	bind -M insert \ez 'fg >/dev/null ^/dev/null'
 
 	fzf_key_bindings
 end
@@ -40,12 +40,16 @@ function __commandline_execute
 	end
 end
 
+function __commandline_reload_prompt
+	set_color normal
+	fish_prompt
+	commandline -f repaint
+end
+
 function __commandline_clear_prompt
 	set -ge __prompt_context_current
 	clear
-	set_color normal
-   	fish_prompt
-	commandline -f repaint
+	__commandline_reload_prompt
 end
 
 function __commandline_insert_previous_token
