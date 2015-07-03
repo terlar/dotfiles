@@ -89,4 +89,8 @@ function fish_user_abbreviations
 		abbr -a fc='farm console'
 		abbr -a fs='farm server'
 	end
+
+	if type -q workstation
+		abbr -a wrk='workstation'
+	end
 end
