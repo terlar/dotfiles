@@ -1,5 +1,5 @@
 [Unit]
-Description=Input Method Framwork on display %i
+Description=Flexible Input Method Framework on display %i
 Documentation=man:fcitx(1)
 
 Requisite=xserver@%i.target
@@ -9,11 +9,11 @@ After=xorg@%i.service
 
 [Service]
 Environment=DISPLAY=:%i
+Environment=GTK_IM_MODULE=fcitx
+Environment=QT_IM_MODULE=fcitx
 Environment=XMODIFIERS=@im=fcitx
 Environment=XIM=fcitx
 Environment=XIM_PROGRAM=fcitx
-Environment=GTK_IM_MODULE=fcitx
-Environment=QT_IM_MODULE=fcitx
 ExecStart=/usr/bin/fcitx -D
 
 [Install]

@@ -1,0 +1,22 @@
+[Unit]
+Description=Intelligent Input Bus on display %i
+Documentation=man:ibus-daemon(1)
+
+Requisite=xserver@%i.target
+After=xserver@%i.target
+
+After=xorg@%i.service
+
+[Service]
+Environment=DISPLAY=:%i
+Environment=GTK_IM_MODULE=ibus
+Environment=QT_IM_MODULE=ibus
+Environment=XMODIFIERS=@im=ibus
+Environment=XIM=ibus
+Environment=XIM_PROGRAM=ibus
+ExecStart=/usr/bin/ibus-daemon --replace --xim
+ExecReload=/usr/bin/ibus restart
+ExecStop=/usr/bin/ibus exit
+
+[Install]
+WantedBy=graphical.target
