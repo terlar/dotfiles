@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+sudo sysctl net.ipv4.conf.docker0.forwarding=1
