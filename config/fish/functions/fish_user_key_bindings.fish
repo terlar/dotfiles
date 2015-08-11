@@ -23,6 +23,7 @@ function fish_user_key_bindings
 	bind -M insert \eS __commandline_pop
 
 	# Execute
+	bind insert \n '__commandline_execute'
 	bind -M insert \n '__commandline_execute'
 	bind -M insert \e\n '__commandline_execute_and_keep_line'
 	bind -M insert \e, 'commandline -f execute history-search-backward'
@@ -33,7 +34,8 @@ function fish_user_key_bindings
 end
 
 function __commandline_execute
-	if test -n (commandline)
+	set value (commandline)
+	if test -n "$value"
 		commandline -f execute
 	else
 		echo
