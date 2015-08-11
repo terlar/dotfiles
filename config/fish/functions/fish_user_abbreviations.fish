@@ -7,6 +7,7 @@ function fish_user_abbreviations
 	abbr -a l.='ls -d .*'
 	abbr -a m=mux
 	abbr -a e=$EDITOR
+	abbr -a week="date '+%V'"
 
 	if type -fq systemctl
 		abbr -a j='journalctl --since=yesterday'
