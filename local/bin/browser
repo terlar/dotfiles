@@ -6,6 +6,7 @@ fi
 
 url="$*"
 curl_opts=(-s)
+feature_youtube=$(command -v youtube-dl && echo 1)
 
 if [ -f $HOME/.slackcurl/team_id -a -f $HOME/.slackcurl/cookies ]; then
 	team_id=$(cat ~/.slackcurl/team_id)
@@ -16,10 +17,21 @@ if [ -f $HOME/.slackcurl/team_id -a -f $HOME/.slackcurl/cookies ]; then
 	fi
 fi
 
-mime=$(curl ${curl_opts[@]} -IX HEAD "$url" | grep '^Content-Type:' | cut -d' ' -f2)
+if [ -n "$feature_youtube" ]; then
+	if [[ "$url" == https://youtu.be/* ]] || [[ "$url" == https://www.youtube.com/watch* ]]; then
+		youtube-dl -q -o- $url | mplayer -cache 8192 -
+		exit
+	fi
+fi
+
+mime=$(curl ${curl_opts[@]} -r 0-499 -IX HEAD "$url" | grep '^Content-Type:' | cut -d' ' -f2)
+echo Detected $mime
 case "$mime" in
 	image/*)
 		curl ${curl_opts[@]} $url | feh -. -
+		;;
+	video/*)
+		curl ${curl_opts[@]} $url | mplayer -cache 8192 -
 		;;
 	*)
 		xdg-open $url &>/dev/null
