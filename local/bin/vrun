@@ -13,9 +13,15 @@ else
 fi
 
 exit_code=$?
+cmd=''
+
+# Escape white-space to retain proper arguments
+for i in "$@"; do
+	cmd+=${i// /'\ '}' '
+done
 
 if [ $exit_code -eq 0 ]; then
-	cmd='cd /vagrant; bash -l -c "'${@//'"'/'\"'}'"'
+	cmd='cd /vagrant; bash -l -c "'${cmd}'"'
 	ssh -t -t -q -F $ssh_config_cache default -- $cmd
 else
 	echo
@@ -26,7 +32,7 @@ else
 	case $choice in
 		[Yy]* )
 			echo
-			vagrant up && vrun $@
+			vagrant up && vrun $cmd
 			;;
 		* )
 			echo
