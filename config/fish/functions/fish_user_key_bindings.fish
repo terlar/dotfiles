@@ -1,36 +1,45 @@
 function fish_user_key_bindings
 	set -g fish_key_bindings fish_vi_key_bindings
-
 	fish_default_key_bindings -M insert
+	fzf_key_bindings
 
-	# Actions
+	#
+	# Normal mode
+	#
+	bind \n '__commandline_execute'
+	bind e forward-word backward-char
+	bind E forward-bigword backward-char
+
+	bind \ei __commandline_edit
 	bind \cl '__commandline_clear_prompt'
-	bind -M insert \cl '__commandline_clear_prompt'
 
-	# Navigation
+	#
+	# Insert mode
+	#
+	bind -M insert --key btab complete-and-search
+
+	bind -M insert \cl '__commandline_clear_prompt'
 	bind -M insert \el '__fish_list_current_token; __commandline_reload_prompt'
 	bind -M insert \e'<' 'prevd; __commandline_reload_prompt'
 	bind -M insert \e'>' 'nextd; __commandline_reload_prompt'
 
-	# Commandline
-	bind \ci __commandline_edit
-	bind -M insert \cx __commandline_eval_token
-	bind -M insert \er __commandline_sudo_toggle
-	# Insert last argument of previous command
-	bind -M insert \e. history-token-search-backward
-	# Stash/pop
-	bind -M insert \es __commandline_stash
-	bind -M insert \eS __commandline_pop
-
 	# Execute
-	bind insert \n '__commandline_execute'
 	bind -M insert \n '__commandline_execute'
 	bind -M insert \e\n '__commandline_execute_and_keep_line'
-	bind -M insert \e, 'commandline -f execute history-search-backward'
+	bind -M insert \e',' 'commandline -f execute history-search-backward'
 	bind -M insert \em 'commandline -f execute accept-autosuggestion'
 	bind -M insert \ez 'fg >/dev/null ^/dev/null'
 
-	fzf_key_bindings
+	# Insert last argument of previous command
+	bind -M insert \e. history-token-search-backward
+
+	# Commandline
+	bind -M insert \cx __commandline_eval_token
+	bind -M insert \er __commandline_sudo_toggle
+
+	# Stash/pop
+	bind -M insert \es __commandline_stash
+	bind -M insert \eS __commandline_pop
 end
 
 function __commandline_execute
