@@ -5,7 +5,7 @@ if [ $# -eq 0 ]; then
 fi
 
 url="$*"
-curl_opts=(-s)
+curl_opts=(-Ls)
 feature_youtube=$(command -v youtube-dl && echo 1)
 
 if [ -f $HOME/.slackcurl/team_id -a -f $HOME/.slackcurl/cookies ]; then
@@ -24,9 +24,16 @@ if [ -n "$feature_youtube" ]; then
 	fi
 fi
 
-mime=$(curl ${curl_opts[@]} -r 0-499 -IX HEAD "$url" | grep '^Content-Type:' | cut -d' ' -f2)
-echo Detected $mime
+mime=$(
+	curl ${curl_opts[@]} -r 0-499 -IX HEAD "$url" \
+		| awk '/^Content-Type:/ { print $2 }' \
+		| sed -e 's/[[:cntrl:]]//'
+)
+echo "Detected ${mime}, loading..."
 case "$mime" in
+	image/gif)
+		curl ${curl_opts[@]} $url | gifview -a -
+		;;
 	image/*)
 		curl ${curl_opts[@]} $url | feh -. -
 		;;

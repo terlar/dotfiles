@@ -22,7 +22,10 @@ myManageHook = (composeAll . concat $
     ]) <+> namedScratchpadManageHook myScratchpads
   where
     floats =
-        [ "feh"
+        [ "MPlayer"
+        , "Sxiv"
+        , "feh"
+        , "Gifview"
         , "Zenity"
         , "Gcolor2"
         , "Arandr"
