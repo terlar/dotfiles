@@ -131,7 +131,7 @@ function dotfiles_install
 			if not test -d $target_file
 				__dotfiles_link_file $target_file $source_file
 			else
-				dotfiles_install $target_file/ $source_file/ (ls --indicator-style=none $source_file)
+				dotfiles_install $target_file/ $source_file/ (printf "%s\n" $source_file/* | sed "s|$source_file/||")
 			end
 
 			continue
@@ -169,7 +169,8 @@ switch "$argv[1]"
 end
 
 set -l dotfiles_dir (dirname (status -f))
-set -l files (ls --indicator-style=none $dotfiles_dir | cat | grep -vE "(install.fish|update.fish|uninstall.fish|README.md)")
+cd $dotfiles_dir
+set -l files (printf "%s\n" * | grep -vE "(install.fish|update.fish|uninstall.fish|README.md)")
 
 echo 'Installing dotfiles...'
 mkdir -p $HOME/.local/bin
