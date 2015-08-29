@@ -40,6 +40,8 @@ function fish_user_key_bindings
 	# Stash/pop
 	bind -M insert \es __commandline_stash
 	bind -M insert \eS __commandline_pop
+
+	bind -M insert \cv __commandline_paste
 end
 
 function __commandline_execute
@@ -144,6 +146,23 @@ function __commandline_toggle -d 'Stash current commandline if not empty, otherw
 		__commandline_stash
 	else
 		__commandline_pop
+	end
+end
+
+function __commandline_paste
+	if type -fq pbpaste
+		commandline -i (pbpaste)
+		return
+	end
+
+	if not set -qg DISPLAY
+		return
+	end
+
+	if type -fq xsel
+		commandline -i (xsel)
+	else if type -fq xclip
+		commandline -i (xclip -o)
 	end
 end
 
