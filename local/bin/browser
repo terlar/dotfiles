@@ -5,15 +5,14 @@ if [ $# -eq 0 ]; then
 fi
 
 url="$*"
-curl_opts=(-Ls)
+curl_opts='-Ls'
 feature_youtube=$(command -v youtube-dl && echo 1)
 
-if [ -f $HOME/.slackcurl/team_id -a -f $HOME/.slackcurl/cookies ]; then
-	team_id=$(cat ~/.slackcurl/team_id)
-
+if [ -f $HOME/.slackcurl/cookies ]; then
 	if [[ "$url" == https://*.slack.com/files/* ]]; then
-		url=$(echo $url | sed 's|\(https://\).*\.\(slack\.com\)/files/.*/\(.*\)/\(.*\)|\1files.\2/files-pri/'$team_id'-\3/\4|')
-		curl_opts+=(--cookie ~/.slackcurl/cookies)
+		url=$(curl $curl_opts --cookie ~/.slackcurl/cookies $url \
+			| sed -e 's|boot_data.file = \({.*}\);|\1|;tx;d;:x' \
+			| jq -r '.url_download')
 	fi
 fi
 
@@ -25,20 +24,20 @@ if [ -n "$feature_youtube" ]; then
 fi
 
 mime=$(
-	curl ${curl_opts[@]} -r 0-499 -IX HEAD "$url" \
+	curl $curl_opts -r 0-499 -IX HEAD "$url" \
 		| awk '/^Content-Type:/ { print $2 }' \
 		| sed -e 's/[[:cntrl:]]//'
 )
 echo "Detected ${mime}, loading..."
 case "$mime" in
 	image/gif)
-		curl ${curl_opts[@]} $url | gifview -a -
+		curl $curl_opts $url | gifview -a -
 		;;
 	image/*)
-		curl ${curl_opts[@]} $url | feh -. -
+		curl $curl_opts $url | feh -. -
 		;;
 	video/*)
-		curl ${curl_opts[@]} $url | mplayer -cache 8192 -
+		curl $curl_opts $url | mplayer -cache 8192 -
 		;;
 	*)
 		xdg-open $url &>/dev/null
