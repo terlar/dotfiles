@@ -13,12 +13,13 @@ myImageViewer = "feh"
 myVideoPlayer = "mplayer"
 
 myBorderWidth :: Dimension
-myBorderWidth = 0
+myBorderWidth = 1
 
 -- Theme
 myFont = "Input Mono-12"
 
 myBorderColor = "#b0b0b0"
+myFocusedBorderColor = "#000000"
 myFocusedFGColor = "#505050"
 myFocusedBGColor = "#b0b0b0"
 
