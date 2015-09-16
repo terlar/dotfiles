@@ -16,6 +16,8 @@ function fish_user_abbreviations
 
 		abbr -a sc='sudo systemctl'
 		abbr -a scu='systemctl --user'
+		abbr -a scs='systemctl status'
+		abbr -a scl='systemctl list-units'
 
 		abbr -a reboot='sudo systemctl reboot'
 		abbr -a poweroff='sudo systemctl poweroff'
