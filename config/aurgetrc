@@ -1,0 +1,4 @@
+build_directory='/tmp'
+edit_pkgbuilds='never'
+keep_devels=false
+resolve_dependencies=true
