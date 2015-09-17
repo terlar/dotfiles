@@ -76,7 +76,7 @@ myKeys =
     , ("M-9", spawn "notify-send -i battery -t 2000 Battery \"$(acpi)\"")
     , ("M-0", spawn "notify-send -i dialog-information -t 2000 Date \"$(date)\"")
     -- Key sequences
-    , ("M-v", pasteSelection)
+    , ("M-v", sendKey shiftMask xK_Insert)
     ]
     ++ mediaKeys
   where
