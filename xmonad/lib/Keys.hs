@@ -8,6 +8,7 @@ import XMonad.Actions.GridSelect
 import XMonad.Actions.WithAll
 import XMonad.Actions.Search
 import XMonad.Util.NamedScratchpad
+import XMonad.Util.Paste
 
 import Config
 import Utils
@@ -44,7 +45,7 @@ myKeys =
     , ("M-c", renameWorkspace myXPConfig)
     -- Scratchpads
     , ("M-`", namedScratchpadAction myScratchpads "scratchpad")
-    , ("M-v", namedScratchpadAction myScratchpads "volume")
+    , ("M-<XF86AudioMute>", namedScratchpadAction myScratchpads "volume")
     , ("M-m", namedScratchpadAction myScratchpads "music")
     -- Global window
     , ("M-S-g", toggleGlobal)
@@ -74,6 +75,8 @@ myKeys =
     , ("M-8", spawn "notify-send -i network -t 4000 Network \"$(ip -4 -o addr show | cut -d' ' -f2,7)\"")
     , ("M-9", spawn "notify-send -i battery -t 2000 Battery \"$(acpi)\"")
     , ("M-0", spawn "notify-send -i dialog-information -t 2000 Date \"$(date)\"")
+    -- Key sequences
+    , ("M-v", pasteSelection)
     ]
     ++ mediaKeys
   where
