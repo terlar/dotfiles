@@ -2,6 +2,7 @@ module Keys where
 
 import XMonad
 import XMonad.Prompt.Shell
+import XMonad.Actions.FloatKeys
 import XMonad.Actions.CycleWS
 import XMonad.Actions.DynamicWorkspaces
 import XMonad.Actions.GridSelect
@@ -24,10 +25,10 @@ myKeys =
     , ("<XF86LaunchA>", openGridSelect)
     -- Workspace navigation
     , ("M-<Tab>", myToggleWS)
-    , ("M-<Right>", nextWS)
-    , ("M-<Left>", prevWS)
-    , ("M-S-<Right>", shiftToNext)
-    , ("M-S-<Left>", shiftToPrev)
+    , ("M-]", nextWS)
+    , ("M-[", prevWS)
+    , ("M-S-]", shiftToNext)
+    , ("M-S-[", shiftToPrev)
     , ("M-z", promptedGoto)
     , ("M-S-z", promptedShift)
     , ("M-a 1", createOrGoto "dashboard")
@@ -78,9 +79,19 @@ myKeys =
     -- Key sequences
     , ("M-v", sendKey shiftMask xK_Insert)
     ]
-    ++ mediaKeys
+    ++ windowKeys ++ mediaKeys
   where
     openGridSelect = goToSelected $ myGSConfig myColorizer
+
+windowKeys :: [(String, X ())]
+windowKeys =
+    -- Moving floating window with key
+    [ (c ++ m ++ k, withFocused $ f (d x))
+    | (d, k) <- zip [\a->(a, 0), \a->(0, a), \a->(-a, 0), \a->(0, -a)] ["<R>", "<D>", "<L>", "<U>"]
+    , (f, m) <- zip [keysMoveWindow, \d -> keysResizeWindow d (0, 0)] ["M-", "M-S-"]
+    , (c, x) <- zip ["", "C-"] [20, 2]
+    ]
+
 
 mediaKeys :: [(String, X ())]
 mediaKeys =
