@@ -59,6 +59,3 @@ myScratchpads =
 myLogHook :: X ()
 myLogHook = fadeInactiveLogHook fadeAmount
   where fadeAmount = 0.9
-
-myToggleWS = windows $
-    W.view =<< W.tag . head . filter ((/= "NSP") . W.tag) . W.hidden

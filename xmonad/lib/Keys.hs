@@ -11,6 +11,9 @@ import XMonad.Actions.Search
 import XMonad.Util.NamedScratchpad
 import XMonad.Util.Paste
 
+import qualified XMonad.StackSet as W
+import Data.Maybe (isJust)
+
 import Config
 import Utils
 import Hooks
@@ -25,10 +28,10 @@ myKeys =
     , ("<XF86LaunchA>", openGridSelect)
     -- Workspace navigation
     , ("M-<Tab>", myToggleWS)
-    , ("M-]", nextWS)
-    , ("M-[", prevWS)
-    , ("M-S-]", shiftToNext)
-    , ("M-S-[", shiftToPrev)
+    , ("M-]", moveTo Next nonSPAndNonEmptyWS)
+    , ("M-[", moveTo Prev nonSPAndNonEmptyWS)
+    , ("M-S-]", shiftToNext >> nextWS)
+    , ("M-S-[", shiftToPrev >> prevWS)
     , ("M-z", promptedGoto)
     , ("M-S-z", promptedShift)
     , ("M-a 1", createOrGoto "dashboard")
@@ -82,6 +85,7 @@ myKeys =
     ++ windowKeys ++ mediaKeys
   where
     openGridSelect = goToSelected $ myGSConfig myColorizer
+    nonSPAndNonEmptyWS = WSIs $ nonSPAndNonEmptyWS' ["NSP"]
 
 windowKeys :: [(String, X ())]
 windowKeys =
@@ -121,3 +125,6 @@ mediaKeys =
   where
     mpcAction opt = spawn $ unwords ["mpc", opt]
     amixerAction opt = spawn $ unwords ["amixer", "-q", "set", "Master", opt]
+
+nonSPAndNonEmptyWS' s = return (\w -> (W.tag w `notElem` s) && isJust (W.stack w))
+myToggleWS = windows $ W.view =<< W.tag . head . filter ((\x -> x /= "NSP" && x /= "SP") . W.tag) . W.hidden
