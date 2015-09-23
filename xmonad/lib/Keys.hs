@@ -10,6 +10,9 @@ import XMonad.Actions.WithAll
 import XMonad.Actions.Search
 import XMonad.Util.NamedScratchpad
 import XMonad.Util.Paste
+import XMonad.Layout.Reflect
+import XMonad.Layout.MultiToggle
+import XMonad.Layout.GridVariants (ChangeMasterGridGeom(IncMasterCols, IncMasterRows))
 
 import qualified XMonad.StackSet as W
 import Data.Maybe (isJust)
@@ -23,6 +26,13 @@ myKeys :: [(String, X ())]
 myKeys =
     -- Recompile and restart XMonad
     [ ("M-q", restartXMonad)
+    -- Layout
+    , ("M-\\", sendMessage $ Toggle REFLECTX)
+    , ("M-S-\\", sendMessage $ Toggle REFLECTY)
+    , ("M-S--", sendMessage $ IncMasterCols 1)
+    , ("M-S-=", sendMessage $ IncMasterCols (-1))
+    , ("M-C--", sendMessage $ IncMasterRows 1)
+    , ("M-C-=", sendMessage $ IncMasterRows (-1))
     -- Grid select
     , ("M-g", openGridSelect)
     , ("<XF86LaunchA>", openGridSelect)
