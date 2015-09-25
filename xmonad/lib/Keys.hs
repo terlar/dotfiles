@@ -8,14 +8,20 @@ import XMonad.Actions.DynamicWorkspaces
 import XMonad.Actions.GridSelect
 import XMonad.Actions.WithAll
 import XMonad.Actions.Search
+import XMonad.Actions.WindowGo
+import XMonad.Actions.Warp
 import XMonad.Util.NamedScratchpad
 import XMonad.Util.Paste
 import XMonad.Layout.Reflect
 import XMonad.Layout.MultiToggle
-import XMonad.Layout.GridVariants (ChangeMasterGridGeom(IncMasterCols, IncMasterRows))
+import XMonad.Layout.GridVariants(ChangeMasterGridGeom(IncMasterCols, IncMasterRows))
+
+import XMonad.Hooks.ManageDocks
 
 import qualified XMonad.StackSet as W
-import Data.Maybe (isJust)
+-- Data module
+import Data.Maybe(isJust)
+import Data.List(isInfixOf)
 
 import Config
 import Utils
@@ -33,17 +39,20 @@ myKeys =
     , ("M-S-=", sendMessage $ IncMasterCols (-1))
     , ("M-C--", sendMessage $ IncMasterRows 1)
     , ("M-C-=", sendMessage $ IncMasterRows (-1))
+    , ("M-b", sendMessage ToggleStruts)
     -- Grid select
-    , ("M-g", openGridSelect)
-    , ("<XF86LaunchA>", openGridSelect)
+    , ("M-g", selectWS)
+    , ("M-S-g", takeToWS)
+    , ("<XF86LaunchA>", selectWindow)
+    , ("<XF86LaunchB>", spawnApp)
+    , ("M-w", selectWindow)
+    , ("M-S-w", bringWindow)
     -- Workspace navigation
     , ("M-<Tab>", myToggleWS)
     , ("M-]", moveTo Next nonSPAndNonEmptyWS)
     , ("M-[", moveTo Prev nonSPAndNonEmptyWS)
     , ("M-S-]", shiftToNext >> nextWS)
     , ("M-S-[", shiftToPrev >> prevWS)
-    , ("M-z", promptedGoto)
-    , ("M-S-z", promptedShift)
     , ("M-a 1", createOrGoto "dashboard")
     , ("M-a n", createOrGoto "note")
     , ("M-a c", createOrGoto "code")
@@ -58,11 +67,11 @@ myKeys =
     , ("M-<Backspace>", killAll >> removeWorkspace >> createOrGoto "dashboard")
     , ("M-c", renameWorkspace myXPConfig)
     -- Scratchpads
-    , ("M-`", namedScratchpadAction myScratchpads "scratchpad")
-    , ("M-<XF86AudioMute>", namedScratchpadAction myScratchpads "volume")
-    , ("M-m", namedScratchpadAction myScratchpads "music")
+    , ("M-`", scratchToggle "scratchpad")
+    , ("M-<XF86AudioMute>", scratchToggle "volume")
+    , ("M-m", scratchToggle "music")
     -- Global window
-    , ("M-S-g", toggleGlobal)
+    , ("M-z", toggleGlobal)
     -- Launcher
     , ("M-p", programLauncher)
     -- Run
@@ -94,8 +103,24 @@ myKeys =
     ]
     ++ windowKeys ++ mediaKeys
   where
-    openGridSelect = goToSelected $ myGSConfig myColorizer
     nonSPAndNonEmptyWS = WSIs $ nonSPAndNonEmptyWS' ["NSP"]
+
+    -- Scratchpad invocation
+    scratchToggle a = namedScratchpadAction myScratchpads a >> bringMouse
+
+    -- GridSelect actions
+    spawnApp     = runSelectedAction (myGSConfig pink) myApps
+    selectWindow = goToSelected (myGSConfig blue) >> windows W.swapMaster >> bringMouse
+    bringWindow  = bringSelected (myGSConfig orange) >> bringMouse
+    selectWS     = gridselectWorkspace (myGSConfig green) W.greedyView >> bringMouse
+    takeToWS     = gridselectWorkspace (myGSConfig purple) (\ws -> W.greedyView ws . W.shift ws) >> bringMouse
+
+    -- Colors
+    blue   = myColor "#25629f"
+    green  = myColor "#629f25"
+    orange = myColor "#9f6225"
+    pink   = myColor "#9f2562"
+    purple = myColor "#62259f"
 
 windowKeys :: [(String, X ())]
 windowKeys =
@@ -105,7 +130,6 @@ windowKeys =
     , (f, m) <- zip [keysMoveWindow, \d -> keysResizeWindow d (0, 0)] ["M-", "M-S-"]
     , (c, x) <- zip ["", "C-"] [20, 2]
     ]
-
 
 mediaKeys :: [(String, X ())]
 mediaKeys =
@@ -136,5 +160,25 @@ mediaKeys =
     mpcAction opt = spawn $ unwords ["mpc", opt]
     amixerAction opt = spawn $ unwords ["amixer", "-q", "set", "Master", opt]
 
+-- Menus
+myApps =
+    [ ("Firefox",      raiseApp  "web" "firefox")
+    , ("GVim",         raiseApp' "gvim")
+    , ("Themes",       spawn     "lxappearance")
+    ]
+  where
+    raiseApp ws a = raiseNextMaybe (spawnWS ws a) (appName ~? a) >> bringMouse
+    raiseApp' a = raiseNextMaybe (spawn a) (appName ~? a) >> bringMouse
+    myRaiseTerm a d = raiseNextMaybe (spawnWS a (termApp a d)) (role ~? a) >> bringMouse
+    termApp a d = myTerm ++ " -r " ++ a ++ " --working-dir=" ++ d ++ " -l " ++ a
+    -- Named Workspace Navigation
+    spawnWS ws a = addWorkspace ws >> spawn a
+
 nonSPAndNonEmptyWS' s = return (\w -> (W.tag w `notElem` s) && isJust (W.stack w))
 myToggleWS = windows $ W.view =<< W.tag . head . filter ((\x -> x /= "NSP" && x /= "SP") . W.tag) . W.hidden
+
+-- Warp mouse
+bringMouse = warpToWindow (9/10) (9/10)
+
+-- Query operators
+q ~? x = fmap (x `isInfixOf`) q -- haystack includes needle?

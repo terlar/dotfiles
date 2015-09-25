@@ -72,7 +72,7 @@ spawnFile :: X ()
 spawnFile = currentTopicDir myTopicConfig >>= spawnFileIn
 
 spawnTermIn :: Dir -> X ()
-spawnTermIn dir = spawn $ myTerminal ++ " -d " ++ dir
+spawnTermIn dir = spawn $ myTerm ++ " -d " ++ dir
 
 spawnTerm :: X ()
 spawnTerm = currentTopicDir myTopicConfig >>= spawnTermIn

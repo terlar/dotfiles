@@ -2,18 +2,18 @@ import XMonad
 import XMonad.Util.EZConfig (checkKeymap, additionalKeysP)
 
 import Config
-import Hooks (myManageHook, myLogHook, myLayoutHook)
+import Hooks (myHooks, myLogHook, myLayoutHook)
 import Topics (myTopics)
 import Keys (myKeys)
 
 myConfig = defaultConfig
     { modMask = myModMask
-    , terminal = myTerminal
+    , terminal = myTerm
     , borderWidth = myBorderWidth
     , normalBorderColor = myBorderColor
-    , focusedBorderColor = myFocusedBorderColor
+    , focusedBorderColor = myLLight
     , workspaces = myTopics
-    , manageHook = myManageHook
+    , manageHook = myHooks
     , logHook = myLogHook
     , layoutHook = myLayoutHook
     , startupHook = return () >> checkKeymap myConfig myKeys
