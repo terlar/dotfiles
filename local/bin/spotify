@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -e
 
+if command -v pass >/dev/null 2>&1; then
+	pass show service/spotify -c
+fi
+
 if docker inspect -f "{{ .Name }}" spotify | grep -q '/spotify'; then
 	docker restart spotify
 else
