@@ -48,7 +48,7 @@ myKeys =
     , ("M-w", selectWindow)
     , ("M-S-w", bringWindow)
     -- Workspace navigation
-    , ("M-<Tab>", myToggleWS)
+    , ("M-<Tab>", toggleWS' ["NSP"])
     , ("M-]", moveTo Next nonSPAndNonEmptyWS)
     , ("M-[", moveTo Prev nonSPAndNonEmptyWS)
     , ("M-S-]", shiftToNext >> nextWS)
@@ -175,7 +175,6 @@ myApps =
     spawnWS ws a = addWorkspace ws >> spawn a
 
 nonSPAndNonEmptyWS' s = return (\w -> (W.tag w `notElem` s) && isJust (W.stack w))
-myToggleWS = windows $ W.view =<< W.tag . head . filter ((\x -> x /= "NSP" && x /= "SP") . W.tag) . W.hidden
 
 -- Warp mouse
 bringMouse = warpToWindow (9/10) (9/10)
