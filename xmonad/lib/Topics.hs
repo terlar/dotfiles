@@ -18,10 +18,10 @@ import Utils
 
 myTopics :: [Topic]
 myTopics =
-    [ "dashboard"
+    [ "web", "dash", "NSP"
     , "code", "web"
     , "music", "video", "file"
-    , "pdf", "speak"
+    , "doc", "pdf", "speak"
     ]
 
 myTopicConfig :: TopicConfig
@@ -36,6 +36,7 @@ myTopicConfig = defaultTopicConfig
         , ( "pdf", "books")
         , ( "file", "")
         , ( "speak", "")
+        , ( "doc", "documents")
         ]
     , defaultTopicAction = const spawnTerm
     , defaultTopic = "dashboard"
@@ -56,6 +57,8 @@ myTopicConfig = defaultTopicConfig
         , ( "file", spawnFile)
         -- IRC and E-mail
         , ( "speak", runInTerm "-t chat" "chat" >> runInTerm "-t mail" "mutt")
+        -- Documents
+        , ( "doc", spawn "libreoffice")
         ]
     }
 

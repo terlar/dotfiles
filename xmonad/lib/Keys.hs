@@ -62,6 +62,7 @@ myKeys =
     , ("M-a p", createOrGoto "pdf")
     , ("M-a f", createOrGoto "file")
     , ("M-a s", createOrGoto "speak")
+    , ("M-a d", createOrGoto "doc")
     -- Dynamic workspaces
     , ("M-n", addWorkspacePrompt myXPConfig)
     , ("M-<Backspace>", killAll >> removeWorkspace >> createOrGoto "dashboard")
@@ -164,6 +165,7 @@ mediaKeys =
 myApps =
     [ ("Firefox",      raiseApp  "web" "firefox")
     , ("GVim",         raiseApp' "gvim")
+    , ("LibreOffice",  raiseApp  "doc" "libreoffice")
     , ("Themes",       spawn     "lxappearance")
     ]
   where
