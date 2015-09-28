@@ -2,10 +2,16 @@ module Utils where
 
 import XMonad
 
+-- Data module
+import Data.List(isInfixOf)
+
 import Config
 
 role :: Query String
 role = stringProperty "WM_WINDOW_ROLE"
+
+-- Query operators
+q ~? x = fmap (x `isInfixOf`) q -- haystack includes needle?
 
 videoSelect :: X ()
 videoSelect = spawnSelect myVideoPlayer "Select a video" "$XDG_VIDEOS_DIR"

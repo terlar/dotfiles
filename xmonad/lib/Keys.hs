@@ -19,9 +19,9 @@ import XMonad.Layout.GridVariants(ChangeMasterGridGeom(IncMasterCols, IncMasterR
 import XMonad.Hooks.ManageDocks
 
 import qualified XMonad.StackSet as W
+
 -- Data module
 import Data.Maybe(isJust)
-import Data.List(isInfixOf)
 
 import Config
 import Utils
@@ -68,8 +68,8 @@ myKeys =
     , ("M-c", renameWorkspace myXPConfig)
     -- Scratchpads
     , ("M-`", scratchToggle "scratchpad")
-    , ("M-<XF86AudioMute>", scratchToggle "volume")
-    , ("M-m", scratchToggle "music")
+    , ("M-<XF86AudioMute>", scratchToggle "pavucontrol")
+    , ("M-m", scratchToggle "ncmpcpp")
     -- Global window
     , ("M-z", toggleGlobal)
     -- Launcher
@@ -170,7 +170,7 @@ myApps =
     raiseApp ws a = raiseNextMaybe (spawnWS ws a) (appName ~? a) >> bringMouse
     raiseApp' a = raiseNextMaybe (spawn a) (appName ~? a) >> bringMouse
     myRaiseTerm a d = raiseNextMaybe (spawnWS a (termApp a d)) (role ~? a) >> bringMouse
-    termApp a d = myTerm ++ " -r " ++ a ++ " --working-dir=" ++ d ++ " -l " ++ a
+    termApp a d = myTerm ++ " -r " ++ a ++ " -d " ++ d
     -- Named Workspace Navigation
     spawnWS ws a = addWorkspace ws >> spawn a
 
@@ -179,6 +179,3 @@ myToggleWS = windows $ W.view =<< W.tag . head . filter ((\x -> x /= "NSP" && x 
 
 -- Warp mouse
 bringMouse = warpToWindow (9/10) (9/10)
-
--- Query operators
-q ~? x = fmap (x `isInfixOf`) q -- haystack includes needle?

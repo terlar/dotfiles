@@ -46,35 +46,23 @@ myManageHook = composeAll
     , appName =? "gcolor2"       --> doCenterFloat
     , appName =? "xfce4-notifyd" --> doIgnore
     , appName =? "spotify"       --> doShift "music"
-    , appName =? "pavucontrol"   --> smallRect
+    ]
+
+myScratchpads =
+    [ workPad "scratchpad" "~" smallRect
+    , termPad "ncmpcpp" largeRect
+    , xappPad "pavucontrol" "Pavucontrol" doCenterFloat
     ]
   where
+    workPad a d = NS a (workTerm a d) (role ~? a)
+    workTerm a d = myTerm ++ " -r " ++ a ++ " -d " ++ d
+    termPad a = NS a (consoleApp a) (role ~? a)
+    consoleApp a = myTerm ++ " -r " ++ a ++ " -e \"" ++ a ++ "\""
+    xappPad a c = NS a a (className ~? c)
+
     -- Floating window sizes
     largeRect = customFloating $ W.RationalRect (1/20) (1/20) (9/10) (9/10)
     smallRect = customFloating $ W.RationalRect (1/6) (1/6) (2/3) (2/3)
-
-
-myScratchpads =
-    [ NS "scratchpad" spawnTermSP findTerm manageSP
-    , NS "volume" spawnVol findVol manageSP
-    , NS "music" spawnMusic findMusic manageSP
-    ]
-  where
-    spawnTermSP = myTerm ++ " -r scratchpad"
-    findTerm = role =? "scratchpad"
-
-    spawnVol = "pavucontrol"
-    findVol = className =? "Pavucontrol"
-
-    spawnMusic = myTerm ++ " -r music -e ncmpcpp"
-    findMusic = role =? "music"
-
-    manageSP = customFloating $ W.RationalRect l t w h
-      where
-        h = 0.7
-        w = 0.7
-        t = (1 - h) / 2
-        l = (1 - w) / 2
 
 myLayoutHook = smartBorders $
     -- Mirror the layout in the X and Y axis.
