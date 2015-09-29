@@ -10,6 +10,11 @@ import Config
 role :: Query String
 role = stringProperty "WM_WINDOW_ROLE"
 
+-- Infix (,) to clean up key and mouse bindings
+infixr 0 ~>
+(~>) :: a -> b -> (a, b)
+(~>) = (,)
+
 -- Query operators
 q ~? x = fmap (x `isInfixOf`) q -- haystack includes needle?
 

@@ -6,6 +6,7 @@ import XMonad.Actions.FloatKeys
 import XMonad.Actions.CycleWS
 import XMonad.Actions.DynamicWorkspaces
 import XMonad.Actions.GridSelect
+import XMonad.Actions.Navigation2D
 import XMonad.Actions.WithAll
 import XMonad.Actions.Search
 import XMonad.Actions.WindowGo
@@ -16,8 +17,7 @@ import XMonad.Layout.Reflect
 import XMonad.Layout.MultiToggle
 import XMonad.Layout.GridVariants(ChangeMasterGridGeom(IncMasterCols, IncMasterRows))
 
-import XMonad.Hooks.ManageDocks
-
+import qualified XMonad.Hooks.ManageDocks as M
 import qualified XMonad.StackSet as W
 
 -- Data module
@@ -39,7 +39,7 @@ myKeys =
     , ("M-S-=", sendMessage $ IncMasterCols (-1))
     , ("M-C--", sendMessage $ IncMasterRows 1)
     , ("M-C-=", sendMessage $ IncMasterRows (-1))
-    , ("M-b", sendMessage ToggleStruts)
+    , ("M-b", sendMessage M.ToggleStruts)
     -- Grid select
     , ("M-g", selectWS)
     , ("M-S-g", takeToWS)
@@ -47,6 +47,9 @@ myKeys =
     , ("<XF86LaunchB>", spawnApp)
     , ("M-w", selectWindow)
     , ("M-S-w", bringWindow)
+    -- Screen navigation
+    , ("M-S-j", screenGo M.D False >> bringMouse)
+    , ("M-S-k", screenGo M.U False >> bringMouse)
     -- Workspace navigation
     , ("M-<Tab>", toggleWS' ["NSP"])
     , ("M-]", moveTo Next nonSPAndNonEmptyWS)
@@ -82,7 +85,7 @@ myKeys =
     ++ [("M-a " ++ k, createOrGoto t) | (k,t) <- workspaces]
     ++ [("M-d " ++ k, f) | (k,f) <- utils]
     ++ [("M-s " ++ k, promptSearch myXPConfig e) | (k,e) <- searches]
-    ++ windowKeys ++ mediaKeys
+    ++ screenKeys ++ windowKeys ++ mediaKeys
   where
     nonSPAndNonEmptyWS = WSIs $ nonSPAndNonEmptyWS' ["NSP"]
 
@@ -130,6 +133,13 @@ myKeys =
     orange = myColor "#9f6225"
     pink   = myColor "#9f2562"
     purple = myColor "#62259f"
+
+screenKeys :: [(String, X ())]
+screenKeys =
+    [ mask ++ [key] ~> screenWorkspace s >>= flip whenJust (windows . action)
+    | (key, s) <- zip "123" [0..]
+    , (mask, action) <- [("M-", W.view), ("M-S-", W.shift)]
+    ]
 
 windowKeys :: [(String, X ())]
 windowKeys =
