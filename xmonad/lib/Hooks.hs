@@ -44,6 +44,7 @@ myManageHook = composeAll
     , appName =? "gifview"       --> doCenterFloat
     , appName =? "zenity"        --> doCenterFloat
     , appName =? "gcolor2"       --> doCenterFloat
+    , appName =? "font-manager"  --> doCenterFloat
     , appName =? "xfce4-notifyd" --> doIgnore
     , appName =? "spotify"       --> doShift "music"
     ]
