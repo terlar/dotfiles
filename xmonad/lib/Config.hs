@@ -16,7 +16,7 @@ myBorderWidth :: Dimension
 myBorderWidth = 4
 
 -- Theme
-myFont = "Input Mono-12"
+myFont = "Input Mono-8"
 
 myBGColor     = "#f5f5f5" -- Background color
 myFGColor     = "#2a2e6e" -- Foreground color
@@ -43,16 +43,16 @@ myXPConfig = defaultXPConfig
     , bgHLight = myLLight
     , borderColor = myBGColor
     , promptBorderWidth = 1
-    , height = 23
+    , height = 30
     , position = Top
     , historySize = 100
     , historyFilter = deleteConsecutive
     }
 
 myGSConfig colorizer = (buildDefaultGSConfig colorizer)
-    { gs_cellheight = 40
+    { gs_cellheight = 50
     , gs_cellwidth = 300
-    , gs_cellpadding = 5
+    , gs_cellpadding = 10
     , gs_font = "xft:" ++ myFont
     }
 
