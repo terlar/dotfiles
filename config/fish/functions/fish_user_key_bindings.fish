@@ -173,16 +173,9 @@ function __commandline_paste
 	end
 end
 
-function __commandline_sudo_execute
-	commandline -C 0
-	commandline -i 'sudo '
-	commandline -f execute
-end
-
 function __commandline_execute_and_keep_line
-	set pos (commandline -C)
-	set cmd (commandline)
-
+	__commandline_stash
+	commandline $command_stash[-1]
 	commandline -f execute
 
 	while true
@@ -192,9 +185,8 @@ function __commandline_execute_and_keep_line
 		end
 	end
 
-	function $funcname -V funcname -V pos -V cmd -j %self
-		commandline "$cmd"
-		commandline -C $pos
+	function $funcname -V funcname -j %self
+		__commandline_pop
 		functions -e $funcname
 	end
 end
