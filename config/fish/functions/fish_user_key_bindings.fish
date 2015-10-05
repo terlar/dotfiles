@@ -85,7 +85,7 @@ function __commandline_eval_token
 	set -l token (commandline -t)
 
 	if test -n "$token"
-		set -l value (eval __fish_list $token | tr \n ' ')
+		set -l value (eval string escape $token | string join ' ')
 		if test -n "$value" -a "$value" != ' '
 			commandline -t $value
 			commandline -f backward-char
@@ -192,11 +192,5 @@ function __commandline_execute_and_keep_line
 		commandline -r "$cmd"
 		commandline -C $pos
 		functions -e $funcname
-	end
-end
-
-function __fish_list
-	for item in $argv
-		echo $item | sed -e 's/ /\\\\ /g'
 	end
 end
