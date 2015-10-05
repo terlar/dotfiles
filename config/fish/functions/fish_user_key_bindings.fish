@@ -109,13 +109,13 @@ function __commandline_sudo_toggle
 	set -l pos (commandline -C)
 	set -l cmd (commandline -b)
 
-	if test (expr "$cmd" : 'sudo ') -eq 0
+	if string match -q 'sudo *' $cmd
+		set pos (expr $pos - 5)
+		commandline (string replace 'sudo ' '' $cmd)
+	else
 		commandline -C 0
 		commandline -i 'sudo '
 		set pos (expr $pos + 5)
-	else
-		set pos (expr $pos - 5)
-		commandline (echo $cmd | cut -c6- )
 	end
 
 	commandline -C $pos
