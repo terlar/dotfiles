@@ -69,10 +69,10 @@ function __commandline_clear_prompt
 end
 
 function __commandline_insert_previous_token
-	set -l tokens (commandline -po)
+	set tokens (commandline -po)
 	test $tokens[1]; or return
 
-	set -l previous_token $tokens[-1]
+	set previous_token $tokens[-1]
 
 	if test -n (commandline -pt)
 		set previous_token " $previous_token"
@@ -82,10 +82,10 @@ function __commandline_insert_previous_token
 end
 
 function __commandline_eval_token
-	set -l token (commandline -t)
+	set token (commandline -t)
 
 	if test -n "$token"
-		set -l value (eval string escape $token | string join ' ')
+		set value (eval string escape $token | string join ' ')
 		if test -n "$value" -a "$value" != ' '
 			commandline -t $value
 			commandline -f backward-char
@@ -94,20 +94,20 @@ function __commandline_eval_token
 end
 
 function __commandline_edit --description 'Input command in external editor'
-	set -l f (mktemp /tmp/fish.cmd.XXXXXXXX)
+	set f (mktemp /tmp/fish.cmd.XXXXXXXX)
 	if test -n "$f"
-		set -l p (commandline -C)
-		commandline -b > $f
+		set p (commandline -C)
+		commandline > $f
 		eval $EDITOR $f
-		commandline -r (more $f)
+		commandline (more $f)
 		commandline -C $p
 		command rm $f
 	end
 end
 
 function __commandline_sudo_toggle
-	set -l pos (commandline -C)
-	set -l cmd (commandline -b)
+	set pos (commandline -C)
+	set cmd (commandline)
 
 	if string match -q 'sudo *' $cmd
 		set pos (expr $pos - 5)
@@ -122,28 +122,32 @@ function __commandline_sudo_toggle
 end
 
 function __commandline_stash -d 'Stash current command line'
-	set -g __stash_command_position (commandline -C)
-	set -g __stash_command (commandline -b)
-	commandline -r ''
+	set cmd (commandline)
+	test "$cmd"; or return
+	set pos (commandline -C)
+
+	set -U command_stash $command_stash $cmd
+	set -U __command_stash_pos $__command_stash_pos $pos
+	commandline ''
 end
 
 function __commandline_pop -d 'Pop last stashed command line'
-	if not set -q __stash_command
+	if not set -q command_stash[-1]
 		return
 	end
 
-	commandline -r $__stash_command
+	commandline $command_stash[-1]
 
-	if set -q __stash_command_position
-		commandline -C $__stash_command_position
+	if set -q __command_stash_pos[-1]
+		commandline -C $__command_stash_pos[-1]
+		set -e __command_stash_pos[-1]
 	end
 
-	set -e __stash_command
-	set -e __stash_command_position
+	set -e command_stash[-1]
 end
 
 function __commandline_toggle -d 'Stash current commandline if not empty, otherwise pop last stashed commandline'
-	set -l cmd (commandline -b)
+	set cmd (commandline)
 
 	if test "$cmd"
 		__commandline_stash
@@ -176,8 +180,8 @@ function __commandline_sudo_execute
 end
 
 function __commandline_execute_and_keep_line
-	set -l pos (commandline -C)
-	set -l cmd (commandline -b)
+	set pos (commandline -C)
+	set cmd (commandline)
 
 	commandline -f execute
 
@@ -189,7 +193,7 @@ function __commandline_execute_and_keep_line
 	end
 
 	function $funcname -V funcname -V pos -V cmd -j %self
-		commandline -r "$cmd"
+		commandline "$cmd"
 		commandline -C $pos
 		functions -e $funcname
 	end
