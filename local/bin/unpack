@@ -17,6 +17,9 @@ for file in "$*"; do
 		*.zip)
 			unzip "$file"
 			;;
+		*.7z)
+			7z e "$file"
+			;;
 		*)
 			echo "File $file is of unknown type"
 	esac
