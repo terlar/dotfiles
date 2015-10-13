@@ -9,7 +9,7 @@ allow_bold = true
 dynamic_title = true
 urgent_on_bell = true
 clickable_url = true
-font = Input Mono 10
+font = Input Mono 14
 scrollback_lines = 10000
 search_wrap = true
 
