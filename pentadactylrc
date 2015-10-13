@@ -6,8 +6,17 @@ group user
 set guioptions=bCrsT
 set editor='termite -r scratchpad -e "vim +<line> +\"sil! call cursor(0, <column>)\" <file>"'
 
+" DPI fixes
+set! layout.css.dpi=0
+set! layout.css.devPixelsPerPx="1.5"
+hi Normal -a font-size: 10pt !important;
+hi FontFixed -a font-size: 10pt !important;
+
+" Fix alt key bond to menu bar
 set! ui.key.menuAccessKey=0
 set! ui.key.menuAccessKeyFocuses=false
+
+" Enable moving of readability plugin icons
 set! extensions.readability.first_run_complete=true
 
 style -name hide-toolbar chrome://* <<EOM
