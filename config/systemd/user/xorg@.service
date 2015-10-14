@@ -14,6 +14,6 @@ Before=graphical.target
 [Service]
 Slice=wm.slice
 
-ExecStart=/usr/bin/Xorg :%i -dpi 227 -nolisten tcp -noreset -verbose 2 "vt${XDG_VTNR}"
+ExecStart=/usr/bin/Xorg :%i -dpi 114 -nolisten tcp -noreset -verbose 2 "vt${XDG_VTNR}"
 ExecStartPost=/usr/bin/systemctl --user restart pulseaudio
 SuccessExitStatus=0 1

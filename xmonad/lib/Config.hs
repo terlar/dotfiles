@@ -16,7 +16,7 @@ myBorderWidth :: Dimension
 myBorderWidth = 4
 
 -- Theme
-myFont = "Input Mono-8"
+myFont = "sans-10"
 
 myBGColor     = "#f5f5f5" -- Background color
 myFGColor     = "#2a2e6e" -- Foreground color
