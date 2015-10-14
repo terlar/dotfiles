@@ -1,0 +1,27 @@
+body, .gdarticle {
+	font-family: serif, "Merriweather", "Source Han Sans CN";
+	font-size: 10pt;
+}
+
+.gdarticle .sdct_h, .gdarticle .sdct_m {
+	background: #fafafa;
+	padding: .5em;
+	border: 1px solid #ddd;
+	line-height: 2em;
+}
+
+.gdarticle h3 {
+	font-family: sans-serif, "Source Pro Sans", "Source Han Sans CN";
+	margin: .5em 0 0 0;
+	font-size: 2em;
+	font-weight: normal;
+}
+
+.gdarticle big {
+	font-size: 1.3em;
+}
+.gdarticle b {
+	cursor: pointer;
+	font-weight: normal;
+	border-bottom: 1px dashed #aaa;
+}
