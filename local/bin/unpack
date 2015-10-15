@@ -10,6 +10,9 @@ for file in "$*"; do
 		*.tar.bz|*.tar.bz2|*.tbz|*.tbz2)
 			tar -jxf "$file"
 			;;
+		*.gz)
+			gunzip -k "$file"
+			;;
 		*.rar)
 			unrar e "$file"
 			;;
