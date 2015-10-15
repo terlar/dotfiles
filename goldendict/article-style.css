@@ -3,7 +3,7 @@ body, .gdarticle {
 	font-size: 14pt;
 }
 
-.gdarticle .sdct_h, .gdarticle .sdct_m {
+.gdarticle .sdct_h, .gdarticle .sdct_m, .gdarticle .gdarticlebody > div {
 	background: #fafafa;
 	padding: .5em;
 	border: 1px solid #ddd;
@@ -24,4 +24,11 @@ body, .gdarticle {
 	cursor: pointer;
 	font-weight: normal;
 	border-bottom: 1px dashed #aaa;
+}
+
+.gdarticle .gdarticlebody div > hr {
+	display: none;
+}
+.gdarticle .gdarticlebody div p + hr {
+	display: block;
 }
