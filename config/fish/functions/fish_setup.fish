@@ -1,6 +1,9 @@
 function fish_setup --description 'Setup fish variables'
 	set -U fish_greeting
 
+	# Enable VI mode
+	set -U fish_key_bindings fish_vi_key_bindings
+
 	# Less colors
 	set -Ux LESS_TERMCAP_mb \e'[01;31m'       # begin blinking
 	set -Ux LESS_TERMCAP_md \e'[01;38;5;75m'  # begin bold
