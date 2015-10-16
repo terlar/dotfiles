@@ -49,7 +49,7 @@ function fish_user_abbreviations
 		abbr -a gm='git merge'
 		abbr -a gr='git rebase'
 		abbr -a gcp='git cherry-pick'
-		abbr -a gpr='git pull-request'
+		abbr -a gpr='git-pull-request'
 	end
 
 	if type -fq pacman
