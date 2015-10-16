@@ -49,15 +49,25 @@
 [difftool]
 	prompt = false
 [merge]
+	defaultToUpstream = true
 	tool = vimdiff
 	conflictstyle = diff3
+[rebase]
+	# Support fixup and squash commits
+	autosquash = true
 [mergetool]
 	keepBackup = false
 	prompt = false
 [branch]
+	# Force all new branches to automatically use rebase
 	autosetuprebase = always
+	# Automatic remote tracking
+	autosetupmerge = always
 [push]
-	default = tracking
+	default = simple
+[rerere]
+	# Reuse recorded resolution
+	enabled = true
 [github]
 	user = terlar
 [url "git://github.com/"]
@@ -66,5 +76,7 @@
 [url "git@github.com:"]
 	# With write access
 	insteadOf = wgh:
+[advice]
+	detachedHead = false
 [help]
 	autoCorrect = -1
