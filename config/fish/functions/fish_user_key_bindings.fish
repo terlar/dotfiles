@@ -154,20 +154,19 @@ function __commandline_toggle -d 'Stash current commandline if not empty, otherw
 end
 
 function __commandline_paste
+	set buffer
+
 	if type -fq pbpaste
-		commandline -i (pbpaste)
-		return
+		set buffer (pbpaste)
+	else if set -qg DISPLAY
+		if type -fq xsel
+			set buffer (xsel)
+		else if type -fq xclip
+			set buffer (xclip -o)
+		end
 	end
 
-	if not set -qg DISPLAY
-		return
-	end
-
-	if type -fq xsel
-		commandline -i (xsel)
-	else if type -fq xclip
-		commandline -i (xclip -o)
-	end
+	commandline -i "$buffer"
 end
 
 function __commandline_execute_and_keep_line
