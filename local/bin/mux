@@ -25,6 +25,8 @@ else
 
 	_command=$@
 
+	tmux start-server > /dev/null 2>&1
+
 	if [ -z "$TMUX" ]; then
 		tmux new -A -s "$session_name" ${flags[@]} $_command
 	else
