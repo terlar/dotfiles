@@ -31,15 +31,15 @@ mime=$(
 echo "Detected ${mime}, loading..."
 case "$mime" in
 	image/gif)
-		curl $curl_opts $url | gifview -a -
+		exec curl $curl_opts $url | gifview -a -
 		;;
 	image/*)
-		curl $curl_opts $url | feh -. -
+		exec curl $curl_opts $url | feh -. -
 		;;
 	video/*)
-		curl $curl_opts $url | mplayer -cache 8192 -
+		exec curl $curl_opts $url | mplayer -cache 8192 -
 		;;
 	*)
-		xdg-open $url &>/dev/null
+		exec firefox $url &>/dev/null
 		;;
 esac
