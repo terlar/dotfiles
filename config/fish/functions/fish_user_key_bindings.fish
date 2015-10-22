@@ -40,8 +40,6 @@ function fish_user_key_bindings
 	# Stash/pop
 	bind -M insert \es __commandline_stash
 	bind -M insert \eS __commandline_pop
-
-	bind -M insert \cv __commandline_paste
 end
 
 function __commandline_execute
@@ -151,22 +149,6 @@ function __commandline_toggle -d 'Stash current commandline if not empty, otherw
 	else
 		__commandline_pop
 	end
-end
-
-function __commandline_paste
-	set buffer
-
-	if type -fq pbpaste
-		set buffer (pbpaste)
-	else if set -qg DISPLAY
-		if type -fq xsel
-			set buffer (xsel)
-		else if type -fq xclip
-			set buffer (xclip -o)
-		end
-	end
-
-	commandline -i "$buffer"
 end
 
 function __commandline_execute_and_keep_line

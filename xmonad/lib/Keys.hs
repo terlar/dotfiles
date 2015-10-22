@@ -12,7 +12,6 @@ import XMonad.Actions.Search
 import XMonad.Actions.WindowGo
 import XMonad.Actions.Warp
 import XMonad.Util.NamedScratchpad
-import XMonad.Util.Paste
 import XMonad.Layout.Reflect
 import XMonad.Layout.MultiToggle
 import XMonad.Layout.GridVariants(ChangeMasterGridGeom(IncMasterCols, IncMasterRows))
@@ -79,8 +78,6 @@ myKeys =
     , ("M-8", spawn "notify-send -i network -t 4000 Network \"$(ip -4 -o addr show | cut -d' ' -f2,7)\"")
     , ("M-9", spawn "notify-send -i battery -t 2000 Battery \"$(acpi)\"")
     , ("M-0", spawn "notify-send -i dialog-information -t 2000 Date \"$(date)\"")
-    -- Key sequences
-    , ("M-v", sendKey shiftMask xK_Insert)
     ]
     ++ [("M-a " ++ k, createOrGoto t) | (k,t) <- workspaces]
     ++ [("M-d " ++ k, f) | (k,f) <- utils]
