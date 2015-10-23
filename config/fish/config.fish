@@ -12,10 +12,16 @@ for plugin in $plugins_path/*/autoload.fish
 	source $plugin
 end
 
-# Farm
-source /usr/local/share/fish-farm/farm.fish
-# Fry
-source /usr/local/share/fry/fry.fish
+# Scripts
+set -l script_files \
+	/usr/local/share/fish-farm/farm.fish \
+	/usr/local/share/fry/fry.fish \
+	/usr/share/fish/functions/fzf.fish
+
+for file in $script_files
+	test -f $file; or continue
+	source $file
+end
 
 # Envoy
 if type -fq envoy
