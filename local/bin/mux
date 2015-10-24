@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 if [ $# -eq 0 ]; then
 	if [ -z "$TMUX" ]; then
-		tmux attach || tmux new
+		exec tmux attach || tmux new
 	else
-		tmux choose-session
+		exec tmux choose-session
 	fi
 else
 	session_name="$1"
@@ -28,12 +28,12 @@ else
 	tmux start-server > /dev/null 2>&1
 
 	if [ -z "$TMUX" ]; then
-		tmux new -A -s "$session_name" ${flags[@]} $_command
+		exec tmux new -A -s "$session_name" ${flags[@]} $_command
 	else
 		if ! tmux list-sessions | grep -q "^$session_name:"; then
 			TMUX= tmux new -d -s "$session_name" ${flags[@]} $_command
 		fi
 
-		tmux switch -t "$session_name"
+		exec tmux switch -t "$session_name"
 	fi
 fi
