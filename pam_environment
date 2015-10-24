@@ -28,7 +28,7 @@ XDG_VIDEOS_DIR    DEFAULT=${HOME}/videos
 
 # Input Manager
 GTK_IM_MODULE     DEFAULT=ibus
-XMODIFIERS        DEFAULT=@im=ibus
+XMODIFIERS        DEFAULT=\@im=ibus
 QT_IM_MODULE      DEFAULT=ibus
 
 # QT
