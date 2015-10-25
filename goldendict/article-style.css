@@ -1,6 +1,10 @@
 body, .gdarticle {
 	font-family: serif, "Merriweather", "Source Han Sans CN";
-	font-size: 14pt;
+	font-size: 16pt;
+}
+
+.gddictname {
+	font-family: sans-serif, "Source Sans Pro", "Source Han Sans CN";
 }
 
 .gdnotfound b {
@@ -13,6 +17,11 @@ body, .gdarticle {
 	padding: .5em;
 	border: 1px solid #ddd;
 	line-height: 2em;
+}
+.gdarticle .gdarticlebody .website_padding {
+	background: none;
+	border: none;
+	padding: 0;
 }
 
 .gdarticle h3 {
