@@ -3,8 +3,11 @@ Description=Terminal Multiplexer Server
 Documentation=man:tmux(1)
 
 [Service]
-ExecStart=/usr/bin/tmux start-server \x3B wait-for systemd
-ExecStop=/usr/bin/tmux wait-for -S systemd \x3B kill-server
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/tmux new-session -d -s %H
+ExecStop=/usr/bin/tmux kill-server
+KillMode=none
 
 [Install]
 WantedBy=default.target
