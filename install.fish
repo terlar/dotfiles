@@ -151,7 +151,7 @@ function dotfiles_install_vim
 	end
 
 	if __dotfiles_prepare_linking $HOME/.vimrc
-		ln -s $HOME/.vim/vimrc $HOME/.vimrc
+		ln -s $HOME/.vim/init.vim $HOME/.vimrc
 	end
 end
 
@@ -203,6 +203,12 @@ if not test -d $HOME/.vim
 		set_color normal
 		echo 'SKIPPED!'
 	end
+end
+
+set -l config_dir $XDG_CONFIG_HOME $HOME/.config
+
+if not test -e $config_dir[1]/nvim
+	ln -s $HOME/.vim $config_dir[1]/nvim
 end
 
 functions -e dotfiles_install
