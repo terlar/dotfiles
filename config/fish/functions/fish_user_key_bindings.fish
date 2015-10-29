@@ -34,7 +34,7 @@ function fish_user_key_bindings
 	bind -M insert \e. history-token-search-backward
 
 	# Commandline
-	bind -M insert \cx __commandline_eval_token
+	bind -M insert \ex __commandline_eval_token
 	bind -M insert \er __commandline_sudo_toggle
 
 	# Stash/pop
