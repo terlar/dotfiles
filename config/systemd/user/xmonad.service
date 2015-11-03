@@ -1,0 +1,11 @@
+[Unit]
+Description=XMonad Window Manager
+Documentation=man:xmonad(1)
+
+[Service]
+ExecStart=/usr/bin/xmonad
+Restart=always
+IgnoreSIGPIPE=no
+
+[Install]
+Alias=window-manager.service

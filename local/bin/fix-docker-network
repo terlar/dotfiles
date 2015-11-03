@@ -1,3 +1,2 @@
 #!/usr/bin/env bash
-sudo sysctl net.ipv4.conf.wlp3s0.forwarding=1
-sudo sysctl net.ipv4.conf.docker0.forwarding=1
+gksudo sysctl net.ipv4.conf.wlp3s0.forwarding=1 net.ipv4.conf.docker0.forwarding=1

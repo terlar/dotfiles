@@ -1,0 +1,9 @@
+[Unit]
+Description=Color temperature adjustment
+
+[Service]
+Type=forking
+ExecStart=/usr/bin/redshift -m randr -l 57.7000:11.9667
+
+[Install]
+WantedBy=graphical.target

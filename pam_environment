@@ -5,7 +5,7 @@ LC_ALL DEFAULT=${LANG}
 # Paths
 HOME      DEFAULT=/home/@{PAM_USER} OVERRIDE=${HOME}
 GOPATH    DEFAULT=${HOME}/go
-PATH      DEFAULT=${HOME}/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/bin/core_perl:${HOME}/.cabal/bin:${GOPATH}/bin
+PATH      DEFAULT=${HOME}/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:${HOME}/.cabal/bin:${GOPATH}/bin:/usr/bin/core_perl
 XBMC_HOME DEFAULT=/usr/share/plexhometheater
 VAGRANT_DOCKER_CACHE DEFAULT=${HOME}/.docker-cache
 
@@ -18,20 +18,9 @@ BROWSER   DEFAULT=browser
 LESS      DEFAULT=-R
 
 # XDG
-XDG_VTNR          DEFAULT=7
 XDG_DESKTOP_DIR   DEFAULT=${HOME}
 XDG_DOCUMENTS_DIR DEFAULT=${HOME}/documents
 XDG_DOWNLOAD_DIR  DEFAULT=${HOME}/downloads
 XDG_MUSIC_DIR     DEFAULT=${HOME}/music
 XDG_PICTURES_DIR  DEFAULT=${HOME}/pictures
 XDG_VIDEOS_DIR    DEFAULT=${HOME}/videos
-
-# Input Manager
-GTK_IM_MODULE     DEFAULT=ibus
-XMODIFIERS        DEFAULT=\@im=ibus
-QT_IM_MODULE      DEFAULT=ibus
-
-# QT
-QT_STYLE_OVERRIDE DEFAULT=GTK+
-
-FT2_SUBPIXEL_HINTING=1

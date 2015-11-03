@@ -1,5 +1,4 @@
 [Unit]
 Description=Defaults
 AllowIsolate=true
-
 Wants=console.target
