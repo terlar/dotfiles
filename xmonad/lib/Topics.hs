@@ -18,10 +18,10 @@ import Utils
 
 myTopics :: [Topic]
 myTopics =
-    [ "dash", "NSP"
-    , "code", "web"
+    [ "dash", "web", "speak"
+    , "code", "doc", "pdf"
     , "music", "video", "file"
-    , "doc", "pdf", "speak"
+    , "NSP"
     ]
 
 myTopicConfig :: TopicConfig
