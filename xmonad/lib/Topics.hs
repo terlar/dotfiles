@@ -18,7 +18,7 @@ import Utils
 
 myTopics :: [Topic]
 myTopics =
-    [ "web", "dash", "NSP"
+    [ "dash", "NSP"
     , "code", "web"
     , "music", "video", "file"
     , "doc", "pdf", "speak"
