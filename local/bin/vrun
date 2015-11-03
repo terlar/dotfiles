@@ -10,13 +10,14 @@ run() {
 		cache_ssh_config
 	fi
 
-	cmd=''
+	local cmd=''
 	# Escape white-space to retain proper arguments
 	for i in "$@"; do
 		cmd+=${i// /'\ '}' '
 	done
 
-	cmd="cd /vagrant; bash -l -c '${cmd}'"
+	cmd="trap true SIGINT; cd /vagrant; bash -l -c '${cmd}'"
+
 	ssh -t -t -q -F $SSH_CONFIG_CACHE default -- $cmd
 }
 
@@ -27,7 +28,7 @@ initialize() {
 	fi
 
 	run "$@"
-	exit_code=$?
+	local exit_code=$?
 
 	if [[ $exit_code -eq 255 ]]; then
 		echo
