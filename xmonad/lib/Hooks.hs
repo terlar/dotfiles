@@ -14,9 +14,10 @@ import XMonad.Layout.Accordion
 import XMonad.Layout.Renamed as R
 import XMonad.Layout.MultiToggle
 import XMonad.Layout.PerWorkspace (onWorkspace)
-import XMonad.Layout.Magnifier (magnifiercz)
+import XMonad.Layout.Magnifier (magnifiercz')
 import XMonad.Layout.ResizableTile
 import XMonad.Layout.TwoPane
+import XMonad.Layout.LimitWindows
 import XMonad.Layout.NoBorders (smartBorders)
 
 import qualified XMonad.StackSet as W
@@ -72,12 +73,15 @@ myLayoutHook = smartBorders $
 
     onWorkspace "speak" Full $
 
-    tall ||| grid ||| magnifiercz 1.2 grid ||| dual ||| Full ||| fold
+    tall ||| grid ||| magnifiercz' 1.4 triple ||| dual ||| Full ||| fold
   where
     tall = renamed [R.Replace "Tile"] $
-        ResizableTall 1 (2/100) (11/18) []
+        ResizableTall 1 delta (2/3) []
     grid = renamed [R.Replace "Grid"] $
         GV.SplitGrid GV.L 2 3 (2/3) (16/10) (5/100)
     dual = renamed [R.Replace "Dual"] $
-        TwoPane (2/100) (1/2)
+        TwoPane delta (2/3)
+    triple = renamed [R.Replace "Triple"] $
+        limitWindows 3 tall
     fold = renamed [R.Replace "Fold"] Accordion
+    delta = 2/100
