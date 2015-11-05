@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-sudo systemctl start mysqld
-sudo systemctl start nginx
-prax start

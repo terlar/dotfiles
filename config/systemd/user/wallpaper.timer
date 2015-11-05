@@ -1,0 +1,9 @@
+[Unit]
+Description=Change the wallpaper periodically
+
+[Timer]
+OnBootSec=0
+OnUnitInactiveSec=30min
+
+[Install]
+WantedBy=graphical.target

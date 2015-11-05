@@ -1,0 +1,11 @@
+[Unit]
+Description=Flexible Input Method Framework
+Documentation=man:fcitx(1)
+Conflicts=ibus.service
+
+[Service]
+ExecStart=/usr/bin/fcitx -D
+Environment=GTK_IM_MODULE=fcitx XMODIFIERS="@im=fcitx" QT_IM_MODULE=fcitx
+
+[Install]
+Alias=input-method.service

@@ -1,14 +1,8 @@
 [Unit]
 Description=Break Service
 
-Requisite=xserver@%i.target
-After=xserver@%i.target
-
-After=xorg@%i.service
-
 [Service]
 Type=simple
-Environment=DISPLAY=:%i
 ExecStart=/usr/bin/notify-send 'Time for a Break' 'Take a walk, get some hot bevarage, you know what to do...'
 
 [Install]

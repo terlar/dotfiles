@@ -1,5 +1,0 @@
-[Unit]
-Description=X Server on display %i
-RefuseManualStart=true
-
-PartOf=xorg@%i.service

@@ -3,11 +3,11 @@ Description=Terminal Multiplexer Server
 Documentation=man:tmux(1)
 
 [Service]
-Type=oneshot
-RemainAfterExit=yes
-ExecStart=/usr/bin/tmux new-session -d -s %H
+Type=forking
+ExecStart=/usr/bin/tmux new-session -d -s %u
 ExecStop=/usr/bin/tmux kill-server
-KillMode=none
+KillMode=control-group
+Restart=always
 
 [Install]
 WantedBy=default.target

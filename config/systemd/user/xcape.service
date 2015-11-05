@@ -1,0 +1,9 @@
+[Unit]
+Description=Combine Ctrl+Escape
+
+[Service]
+Type=forking
+ExecStart=/usr/bin/xcape
+
+[Install]
+WantedBy=graphical.target

@@ -1,0 +1,11 @@
+[Unit]
+Description=Screen Locker
+Documentation=man:i3lock(1)
+
+[Service]
+Type=forking
+Environment=IMAGE="$XDG_PICUTRES_DIR/lock.png"
+ExecStart=/usr/bin/i3lock -c 000000 -i "$IMAGE"
+
+[Install]
+WantedBy=graphical.target

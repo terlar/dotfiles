@@ -1,0 +1,9 @@
+[Unit]
+Description=X Composite Manager
+Documentation=man:xcompmgr(1)
+
+[Service]
+ExecStart=/usr/bin/xcompmgr
+
+[Install]
+WantedBy=graphical.target

@@ -1,17 +1,10 @@
 [Unit]
-Description=Set Autorepeat Rate on display %i
+Description=Set Autorepeat Rate
 Documentation=man:xset(1)
-
-Requisite=xserver@%i.target
-After=xserver@%i.target
-
-After=xorg@%i.service
 
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-
-Environment=DISPLAY=:%i
 ExecStart=/usr/bin/xset r rate 200 60
 ExecStop=/usr/bin/xset r rate
 
