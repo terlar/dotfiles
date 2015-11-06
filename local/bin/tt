@@ -1,14 +1,18 @@
 #!/usr/bin/env bash
-current_time=$(t t | grep Total | rev | cut -d' ' -f1 | rev)
+current_time=$(timetrap t 2>/dev/null | grep Total | rev | cut -d' ' -f1 | rev)
+if [ -z "$current_time" ]; then
+	echo -e '??:??'
+	exit 1
+fi
 hours=$(echo $current_time | cut -d':' -f1)
 
 if [ $hours -eq 7 ]; then
-	echo -e '\e[33;7;1m'
+	echo -ne '\e[33;7;1m'
 elif [ $hours -eq 8 ]; then
-	echo -e '\e[32;7;1m'
+	echo -ne '\e[32;7;1m'
 else
-	echo -e '\e[31;7;1m'
+	echo -ne '\e[31;7;1m'
 fi
 
 echo $current_time | cut -d':' -f1-2
-echo -e '\e[0m'
+echo -ne '\e[0m'
