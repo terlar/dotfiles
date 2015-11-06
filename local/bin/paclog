@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+tac /var/log/pacman.log | less
