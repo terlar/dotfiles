@@ -149,22 +149,12 @@ windowKeys =
 
 mediaKeys :: [(String, X ())]
 mediaKeys =
-    [ ("<XF86MonBrightnessUp>", spawn "xbacklight -inc 40")   -- Monitor brighness up
-    , ("<XF86MonBrightnessDown>", spawn "xbacklight -dec 40") -- Monitor brighness down
-    , ("<XF86KbdBrightnessUp>", spawn "kbdlight up")          -- Keyboard brighness up
-    , ("<XF86KbdBrightnessDown>", spawn "kbdlight down")      -- Keyboard brighness down
-
-    , ("<XF86AudioPlay>", mpcAction "toggle")        -- Play/Pause track
-    , ("<XF86AudioStop>", mpcAction "stop")          -- Stop track
-    , ("<XF86AudioNext>", mpcAction "next")          -- Next track
-    , ("<XF86AudioPrev>", mpcAction "prev")          -- Previous track
-    , ("<XF86AudioLowerVolume>", amixerAction "5%-") -- Decrease volume
-    , ("<XF86AudioRaiseVolume>", amixerAction "5%+") -- Increase volume
-    , ("<XF86AudioMute>", amixerAction "toggle")     -- Mute volume
+    [ ("<XF86KbdBrightnessUp>", spawn "kbdlight up")
+    , ("<XF86KbdBrightnessDown>", spawn "kbdlight down")
+    , ("<XF86AudioPlay>", spawn "playerctl play-pause")  -- Play/Pause track
+    , ("<XF86AudioNext>", spawn "playerctl next")        -- Next track
+    , ("<XF86AudioPrev>", spawn "playerctl previous")    -- Previous track
     ]
-  where
-    mpcAction opt = spawn $ unwords ["mpc", opt]
-    amixerAction opt = spawn $ unwords ["amixer", "-q", "set", "Master", opt]
 
 -- Menus
 myApps =
