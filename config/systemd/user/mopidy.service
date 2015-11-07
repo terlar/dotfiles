@@ -1,5 +1,6 @@
 [Unit]
-Description=Mopidy Music Server
+Description=Mopidy music server
+After=pulseaudio.service
 
 [Service]
 ExecStart=/usr/bin/mopidy
