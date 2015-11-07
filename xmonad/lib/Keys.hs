@@ -151,9 +151,6 @@ mediaKeys :: [(String, X ())]
 mediaKeys =
     [ ("<XF86KbdBrightnessUp>", spawn "kbdlight up")
     , ("<XF86KbdBrightnessDown>", spawn "kbdlight down")
-    , ("<XF86AudioPlay>", spawn "playerctl play-pause")  -- Play/Pause track
-    , ("<XF86AudioNext>", spawn "playerctl next")        -- Next track
-    , ("<XF86AudioPrev>", spawn "playerctl previous")    -- Previous track
     ]
 
 -- Menus
