@@ -16,7 +16,7 @@ if [ -f $HOME/.Xresources ]; then
 fi
 
 # Set XKB Options
-setxkbmap -option ctrl:nocaps
+setxkbmap -option 'ctrl:nocaps,compose:ralt'
 # Set Root Window Settings
 xsetroot -cursor_name left_ptr
 # Set DPI
