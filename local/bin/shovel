@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+if [ -z "$SANDBOX_DIR" ]; then
+	echo 'shovel: SANDBOX_DIR is required'
+	exit 1
+fi
+
+pushd $SANDBOX_DIR >/dev/null
+$SANDBOX_DIR/bin/shovel $*
+exit_status=$?
+popd >/dev/null
+exit $exit_status
