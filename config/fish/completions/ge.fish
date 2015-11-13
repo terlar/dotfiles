@@ -1,1 +1,1 @@
-complete -f -c ge -a '(git status --porcelain -u | cut -c4-)'
+complete -f -c ge -a '(git status --porcelain -u | string sub -s4)'

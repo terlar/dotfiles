@@ -1,9 +1,6 @@
 # fish completion for pacmd
 function __fish_pacmd
-	pacmd help |\
-		grep '^  ' |\
-		sed 's|^ *||; s|[[:blank:]]|'\t'|' |\
-		unexpand -t1
+	pacmd help | grep '^  ' | string trim | string replace -r ' +' \t
 end
 
 complete -f -c pacmd -a '(__fish_pacmd)'

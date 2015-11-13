@@ -18,11 +18,11 @@ function __pactl_using_command
 end
 
 function __pactl_sinks
-	pactl list short sinks | cut -f1-2 | sed 's|'\t'|'\t'Sink: |'
+	pactl list short sinks | cut -f1-2 | string replace \t \t'Sink: '
 end
 
 function __pactl_sources
-	pactl list short sources | cut -f1-2 | sed 's|'\t'|'\t'Source: |'
+	pactl list short sources | cut -f1-2 | string replace \t \t'Source: '
 end
 
 function __pactl_sink-inputs

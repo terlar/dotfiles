@@ -1,5 +1,5 @@
 function tmux_sessions
-	tmux list-sessions | cut -d ':' -f 1 ^/dev/null
+	tmux list-sessions | string replace -r ':.*' ''
 end
 
 complete -f -c mux -a '(tmux_sessions)'
