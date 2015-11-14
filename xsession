@@ -24,3 +24,5 @@ systemctl --user import-environment
 systemctl --user start graphical.target
 
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
+
+gpg-connect-agent /bye

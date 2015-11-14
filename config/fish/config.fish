@@ -25,5 +25,3 @@ end
 
 # Secrets
 source $HOME/.secrets
-
-gpg-connect-agent /bye
