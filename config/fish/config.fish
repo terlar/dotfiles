@@ -23,10 +23,7 @@ for file in $script_files
 	source $file
 end
 
-# Envoy
-if type -fq envoy
-	envoy -fp | source
-end
-
 # Secrets
 source $HOME/.secrets
+
+gpg-connect-agent /bye
