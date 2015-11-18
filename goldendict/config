@@ -25,7 +25,7 @@
  <inactiveDictionaries id="0" name="">
   <mutedDictionaries/>
  </inactiveDictionaries>
- <groups nextId="3">
+ <groups nextId="4">
   <group id="2" name="Chinese">
    <dictionary name="CC-CEDICT 漢英辭典">a8748c2ec416f398ee757455d6d3ca7a</dictionary>
    <dictionary name="URX ZHEN Chinese-English dictionary">93205f71c9487af15b7d19afae0a8c3d</dictionary>
@@ -35,6 +35,9 @@
    <dictionary name="Unicode Han Database">cedb95044c7b593efa3ae9a5dd8e78c4</dictionary>
    <dictionary name="CDICT5英汉辞典">873d5b4a84fca2fb10da85f4404b6600</dictionary>
    <dictionary name="专业字典">af0f30d8b5ee1666a3a16694664b72b5</dictionary>
+   <mutedDictionaries/>
+  </group>
+  <group id="3" name="Chinese Character">
    <dictionary name="MDBG">15344ac5842151e342382e2a3505b842</dictionary>
    <dictionary name="ZDic">42c7b4ed279cbcf97846dccf1f40a3bf</dictionary>
    <dictionary name="Vividict">e0e852eed5031358b8e7b7da2cbc9a5f</dictionary>
@@ -150,16 +153,16 @@
   <collapseBigArticles>0</collapseBigArticles>
   <articleSizeLimit>2000</articleSizeLimit>
  </preferences>
- <lastMainGroupId>2</lastMainGroupId>
+ <lastMainGroupId>3</lastMainGroupId>
  <lastPopupGroupId>2</lastPopupGroupId>
  <popupWindowState>AAAA/wAAAAH9AAAAAAAAA40AAAGTAAAABAAAAAQAAAAIAAAACPwAAAABAAAAAQAAAAEAAAAaAGQAaQBjAHQAaQBvAG4AYQByAHkAQgBhAHIDAAAAAP////8AAAAAAAAAAA==</popupWindowState>
- <popupWindowGeometry>AdnQywABAAAAAABaAAAA1QAABAsAAAJnAAAAWgAAANUAAAQLAAACZwAAAAAAAA==</popupWindowGeometry>
+ <popupWindowGeometry>AdnQywABAAAAAAWgAAAA1QAACVEAAAJnAAAFoAAAANUAAAlRAAACZwAAAAAAAA==</popupWindowGeometry>
  <pinPopupWindow>0</pinPopupWindow>
  <mainWindowState>AAAA/wAAAAH9AAAAAgAAAAAAAAAAAAAAAPwCAAAAAfsAAAAUAHMAZQBhAHIAYwBoAFAAYQBuAGUAAAAAAP////8AAACYAP///wAAAAEAAAEUAAAGGPwCAAAAAvsAAAASAGQAaQBjAHQAcwBQAGEAbgBlAQAAACgAAAMPAAAAaAD////7AAAAFgBoAGkAcwB0AG8AcgB5AFAAYQBuAGUBAAADPQAAAwMAAABoAP///wAACOYAAAYYAAAABAAAAAQAAAAIAAAACPwAAAABAAAAAgAAAAIAAAAUAG4AYQB2AFQAbwBvAGwAYgBhAHIBAAAAAP////8AAAAAAAAAAAAAABoAZABpAGMAdABpAG8AbgBhAHIAeQBCAGEAcgEAAAMG/////wAAAAAAAAAA</mainWindowState>
  <mainWindowGeometry>AdnQywABAAAAAAAAAAAAAAAACf8AAAY/AAAAAAAAAAAAAAn/AAAGPwAAAAAAAA==</mainWindowGeometry>
  <dictInfoGeometry></dictInfoGeometry>
  <inspectorGeometry>AdnQywABAAAAAAAAAAAAAAAABhsAAAY/AAAABAAAAAQAAAYXAAAGOwAAAAAAAA==</inspectorGeometry>
- <timeForNewReleaseCheck>2015-10-25T18:26:03</timeForNewReleaseCheck>
+ <timeForNewReleaseCheck>2015-11-20T18:08:29</timeForNewReleaseCheck>
  <skippedRelease></skippedRelease>
  <showingDictBarNames>0</showingDictBarNames>
  <usingSmallIconsInToolbars>0</usingSmallIconsInToolbars>
