@@ -70,6 +70,9 @@ myKeys =
     , ("M-S-p", shellPrompt myXPConfig)
     -- Lock screen
     , ("M-<Esc>", spawn "i3lock -i ~/pictures/saltside.png -c 000000" )
+    -- Display management
+    , ("M-<F1>", spawn "autorandr --load mobile")
+    , ("M-<F2>", spawn "autorandr --change --default mobile")
     -- Screenshot
     , ("M-<F12>", spawn "scrot")
     -- Partial screenshot
