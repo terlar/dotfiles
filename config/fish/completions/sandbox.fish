@@ -26,5 +26,6 @@ function __fish_sandbox_overrides
 	sandbox override | grep '-' | string replace ' - ' ''
 end
 
+complete -f -c sandbox -n '__fish_sandbox_needs_command' -s 'v' -d 'Verbose output'
 complete -f -c sandbox -n '__fish_sandbox_needs_command' -a '(__fish_sandbox_commands)'
 complete -f -c sandbox -n '__fish_sandbox_using_command override' -a '(__fish_sandbox_overrides)' -d 'Service'
