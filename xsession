@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 
 # Fix PATH
-export PATH=$PATH:$HOME/.cabal/bin:$GOPATH/bin
+export PATH=$HOME/.local/bin:$PATH:$HOME/.cabal/bin:$GOPATH/bin
 
 # Input Manager
 export GTK_IM_MODULE=ibus
