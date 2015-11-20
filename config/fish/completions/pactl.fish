@@ -18,19 +18,19 @@ function __pactl_using_command
 end
 
 function __pactl_sinks
-	pactl list short sinks | cut -f1-2 | string replace \t \t'Sink: '
+	pactl list short sinks | string replace -r '^(\d+)\s+([^\s]+).*' '$1'\t'Sink: $2'
 end
 
 function __pactl_sources
-	pactl list short sources | cut -f1-2 | string replace \t \t'Source: '
+	pactl list short sources | string replace -r '^(\d+)\s+([^\s]+).*' '$1'\t'Source: $2'
 end
 
 function __pactl_sink-inputs
-	pactl list short sink-inputs | cut -f1
+	pactl list short sink-inputs | string replace -r '^(\d+).*' '$1'
 end
 
 function __pactl_source-outputs
-	pactl list short source-outputs | cut -f1
+	pactl list short source-outputs | string replace -r '^(\d+).*' '$1'
 end
 
 # List

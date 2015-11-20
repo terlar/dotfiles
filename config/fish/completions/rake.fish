@@ -14,7 +14,7 @@ function __fish_rake
 	if __rake_task_list_outdated
 		set -l tasks (rake --silent --tasks)
 		test $status -eq 0; or return 1
-		string sub -s6 $tasks | string replace -r ' +# ' \t > .rake_tasks
+		string replace -r 'rake ([^\s]+)\s+# (.*)' '$1'\t'$2' $tasks > .rake_tasks
 	end
 
 	cat .rake_tasks
