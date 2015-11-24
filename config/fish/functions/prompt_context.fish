@@ -18,7 +18,7 @@ function prompt_context
 		set short_pwd (string replace $git_dir $project $PWD)
 
 		set branch (command git symbolic-ref --short --quiet HEAD)
-		set dirty (command git diff --no-ext-diff --ignore-submodules --quiet --exit-code; echo $status)
+		set dirty (command git diff --no-ext-diff --ignore-submodules --quiet; echo $status)
 		set unmerged (command git cherry -v @\{upstream\} ^/dev/null)
 
 		if test $dirty -ne 0
