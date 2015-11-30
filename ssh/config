@@ -4,7 +4,6 @@ Host github.com
 	ControlPersist yes
 
 Host *
-	ForwardAgent yes
 	KeepAlive yes
 	ServerAliveInterval 20
 	ServerAliveCountMax 10
