@@ -1,0 +1,7 @@
+[Default Applications]
+application/pdf=zathura.desktop
+image/jpeg=feh.desktop
+image/png=feh.desktop
+image/gif=feh.desktop
+image/tiff=feh.desktop
+image/tiff-fx=feh.desktop
