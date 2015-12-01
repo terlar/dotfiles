@@ -80,7 +80,7 @@ myKeys =
     -- Notifications
     , ("M-8", spawn "notify-send -i network -t 4000 Network \"$(ip -4 -o addr show | cut -d' ' -f2,7)\"")
     , ("M-9", spawn "notify-send -i battery -t 2000 Battery \"$(acpi)\"")
-    , ("M-0", spawn "notify-send -i dialog-information -t 2000 Date \"$(date)\"")
+    , ("M-0", spawn "notify-send -i dialog-information -t 2000 Date \"$(date '+%F%nW%V %A%n%T')\"")
     ]
     ++ [("M-a " ++ k, createOrGoto t) | (k,t) <- workspaces]
     ++ [("M-d " ++ k, f) | (k,f) <- utils]
