@@ -5,3 +5,8 @@ image/png=feh.desktop
 image/gif=feh.desktop
 image/tiff=feh.desktop
 image/tiff-fx=feh.desktop
+
+[Added Associations]
+video/mp4=mplayer.desktop;
+video/x-ms-wmv=mplayer.desktop;
+application/x-font-ttf=org.gnome.FontManager.desktop;
