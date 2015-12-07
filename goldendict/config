@@ -20,6 +20,13 @@
   <dictionary name="专业字典">af0f30d8b5ee1666a3a16694664b72b5</dictionary>
   <dictionary name="ZDic">42c7b4ed279cbcf97846dccf1f40a3bf</dictionary>
   <dictionary name="Vividict">e0e852eed5031358b8e7b7da2cbc9a5f</dictionary>
+  <dictionary name="Yellow Bridge">b669c94a79f902ec4d0fc7e8a365bac5</dictionary>
+  <dictionary name="Xiaoma English">a044f41615778262ea73ecce9e38f67d</dictionary>
+  <dictionary name="Xiaoma Pinyin">e830383bf963c6ad8e59e32641df4533</dictionary>
+  <dictionary name="Xiaoma Chinese">1ff1c517fa778a1dd3863ef4c362ccc1</dictionary>
+  <dictionary name="Yabla">869ba9834d8a343e8bd4bbb9509d046c</dictionary>
+  <dictionary name="Trans">8ffa1e595cbad17acbb3ec6b8f0387ff</dictionary>
+  <dictionary name="Trans Audio">b6551d09f764c14870db026a955331c7</dictionary>
   <mutedDictionaries/>
  </dictionaryOrder>
  <inactiveDictionaries id="0" name="">
@@ -35,6 +42,9 @@
    <dictionary name="Unicode Han Database">cedb95044c7b593efa3ae9a5dd8e78c4</dictionary>
    <dictionary name="CDICT5英汉辞典">873d5b4a84fca2fb10da85f4404b6600</dictionary>
    <dictionary name="专业字典">af0f30d8b5ee1666a3a16694664b72b5</dictionary>
+   <dictionary name="Yabla">869ba9834d8a343e8bd4bbb9509d046c</dictionary>
+   <dictionary name="Trans">8ffa1e595cbad17acbb3ec6b8f0387ff</dictionary>
+   <dictionary name="Trans Audio">b6551d09f764c14870db026a955331c7</dictionary>
    <mutedDictionaries/>
   </group>
   <group id="3" name="Chinese Character">
@@ -91,8 +101,16 @@
   <website enabled="1" url="http://www.mdbg.net/chindict/chindict.php?page=worddict&amp;wdrst=0&amp;wdqtm=0&amp;wdqcham=1&amp;wdqt=%GDWORD%" icon="" id="15344ac5842151e342382e2a3505b842" name="MDBG"/>
   <website enabled="1" url="http://www.zdic.net/sousuo/?q=%GDWORD%" icon="" id="42c7b4ed279cbcf97846dccf1f40a3bf" name="ZDic"/>
   <website enabled="1" url="http://www.vividict.com/Word.aspx?wd=%GDWORD%" icon="" id="e0e852eed5031358b8e7b7da2cbc9a5f" name="Vividict"/>
+  <website enabled="1" url="http://www.yellowbridge.com/chinese/dictionary.php?word=%GDWORD%" icon="" id="b669c94a79f902ec4d0fc7e8a365bac5" name="Yellow Bridge"/>
+  <website enabled="1" url="http://www.xiaoma.info/compound.php?def=%GDWORD%&amp;fdef=%GDWORD%" icon="" id="a044f41615778262ea73ecce9e38f67d" name="Xiaoma English"/>
+  <website enabled="1" url="http://www.xiaoma.info/spy.php?py=%GDWORD%&amp;fpy=%GDWORD%" icon="" id="e830383bf963c6ad8e59e32641df4533" name="Xiaoma Pinyin"/>
+  <website enabled="1" url="http://www.xiaoma.info/compound.php?cp=%GDWORD%&amp;fhz=%GDWORD%" icon="" id="1ff1c517fa778a1dd3863ef4c362ccc1" name="Xiaoma Chinese"/>
+  <website enabled="1" url="https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=%GDWORD%" icon="" id="869ba9834d8a343e8bd4bbb9509d046c" name="Yabla"/>
  </websites>
- <programs/>
+ <programs>
+  <program enabled="1" commandLine="trans -no-ansi :zh+en %GDWORD%" icon="" type="1" id="8ffa1e595cbad17acbb3ec6b8f0387ff" name="Trans"/>
+  <program enabled="1" commandLine="trans -p :zh %GDWORD%" icon="" type="0" id="b6551d09f764c14870db026a955331c7" name="Trans Audio"/>
+ </programs>
  <voiceEngines/>
  <mutedDictionaries/>
  <popupMutedDictionaries/>
@@ -153,16 +171,16 @@
   <collapseBigArticles>0</collapseBigArticles>
   <articleSizeLimit>2000</articleSizeLimit>
  </preferences>
- <lastMainGroupId>3</lastMainGroupId>
+ <lastMainGroupId>2</lastMainGroupId>
  <lastPopupGroupId>2</lastPopupGroupId>
  <popupWindowState>AAAA/wAAAAH9AAAAAAAAA40AAAGTAAAABAAAAAQAAAAIAAAACPwAAAABAAAAAQAAAAEAAAAaAGQAaQBjAHQAaQBvAG4AYQByAHkAQgBhAHIDAAAAAP////8AAAAAAAAAAA==</popupWindowState>
- <popupWindowGeometry>AdnQywABAAAAAAWgAAAA1QAACVEAAAJnAAAFoAAAANUAAAlRAAACZwAAAAAAAA==</popupWindowGeometry>
+ <popupWindowGeometry>AdnQywABAAAAAAOaAAAB4wAAB0sAAAN1AAADmgAAAeMAAAdLAAADdQAAAAAAAA==</popupWindowGeometry>
  <pinPopupWindow>0</pinPopupWindow>
  <mainWindowState>AAAA/wAAAAH9AAAAAgAAAAAAAAAAAAAAAPwCAAAAAfsAAAAUAHMAZQBhAHIAYwBoAFAAYQBuAGUAAAAAAP////8AAACYAP///wAAAAEAAAEUAAAGGPwCAAAAAvsAAAASAGQAaQBjAHQAcwBQAGEAbgBlAQAAACgAAAMPAAAAaAD////7AAAAFgBoAGkAcwB0AG8AcgB5AFAAYQBuAGUBAAADPQAAAwMAAABoAP///wAACOYAAAYYAAAABAAAAAQAAAAIAAAACPwAAAABAAAAAgAAAAIAAAAUAG4AYQB2AFQAbwBvAGwAYgBhAHIBAAAAAP////8AAAAAAAAAAAAAABoAZABpAGMAdABpAG8AbgBhAHIAeQBCAGEAcgEAAAMG/////wAAAAAAAAAA</mainWindowState>
  <mainWindowGeometry>AdnQywABAAAAAAAAAAAAAAAACf8AAAY/AAAAAAAAAAAAAAn/AAAGPwAAAAAAAA==</mainWindowGeometry>
  <dictInfoGeometry></dictInfoGeometry>
  <inspectorGeometry>AdnQywABAAAAAAAAAAAAAAAABhsAAAY/AAAABAAAAAQAAAYXAAAGOwAAAAAAAA==</inspectorGeometry>
- <timeForNewReleaseCheck>2015-11-20T18:08:29</timeForNewReleaseCheck>
+ <timeForNewReleaseCheck>2015-12-08T09:31:50</timeForNewReleaseCheck>
  <skippedRelease></skippedRelease>
  <showingDictBarNames>0</showingDictBarNames>
  <usingSmallIconsInToolbars>0</usingSmallIconsInToolbars>
