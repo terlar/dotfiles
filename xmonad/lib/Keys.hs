@@ -61,7 +61,7 @@ myKeys =
     , ("M-c", renameWorkspace myXPConfig)
     -- Scratchpads
     , ("M-`", scratchToggle "scratchpad")
-    , ("M-<XF86AudioMute>", scratchToggle "pavucontrol")
+    , ("M-<XF86AudioRaiseVolume>", scratchToggle "pavucontrol")
     , ("M-m", scratchToggle "ncmpcpp")
     -- Global window
     , ("M-z", toggleGlobal)
