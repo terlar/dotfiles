@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-gksudo sysctl net.ipv4.conf.wlp3s0.forwarding=1 net.ipv4.conf.docker0.forwarding=1
+systemctl restart docker
