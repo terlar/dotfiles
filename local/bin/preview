@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+initialize() {
+	local file="$*"
+	case "$file" in
+		*.rst)
+			rst2html $file | browser
+			;;
+		*)
+			echo "File $file is of unknown type"
+	esac
+}
+
+initialize "$@"
