@@ -5,8 +5,12 @@ initialize() {
 		*.rst)
 			rst2html $file | browser
 			;;
+		*.md)
+			pandoc -s $file | browser
+			;;
 		*)
 			echo "File $file is of unknown type"
+			;;
 	esac
 }
 
