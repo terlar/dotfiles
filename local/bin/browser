@@ -1,45 +1,57 @@
 #!/usr/bin/env bash
-if [ $# -eq 0 ]; then
-	firefox &>/dev/null
-	exit 0
-fi
-
-url="$*"
-curl_opts='-Ls'
-feature_youtube=$(command -v youtube-dl && echo 1)
-
-if [ -f $HOME/.slackcurl/cookies ]; then
-	if [[ "$url" == https://*.slack.com/files/* ]]; then
-		url=$(curl $curl_opts --cookie ~/.slackcurl/cookies $url \
-			| sed -e 's|boot_data.file = \({.*}\);|\1|;tx;d;:x' \
-			| jq -r '.url_download')
+initialize() {
+	local url
+	if [[ -t 0 ]]; then
+		if [[ $# -eq 0 ]]; then
+			firefox &>/dev/null
+			exit 0
+		fi
+		url="$*"
+	else
+		url=$(mktemp /tmp/browser.XXXXXXXX.html)
+		cat /dev/stdin > $url
 	fi
-fi
 
-if [ -n "$feature_youtube" ]; then
-	if [[ "$url" == https://youtu.be/* ]] || [[ "$url" == https://www.youtube.com/watch* ]]; then
-		youtube-dl -q -o- $url | mplayer -cache 8192 -
-		exit
+	local curl_opts='-Ls'
+	local slack_cookie="$HOME/.slackcurl/cookies"
+	local feature_slack=$([[ -f "$slack_cookie" ]] && echo 1)
+	local feature_youtube=$(command -v youtube-dl && echo 1)
+
+	if [[ -n "$feature_slack" ]]; then
+		if [[ "$url" == https://*.slack.com/files/* ]]; then
+			url=$(curl $curl_opts --cookie "$slack_cookie" "$url" \
+				| sed -e 's|boot_data.file = \({.*}\);|\1|;tx;d;:x' \
+				| jq -r '.url_download')
+		fi
 	fi
-fi
 
-mime=$(
-	curl $curl_opts -r 0-499 -IX HEAD "$url" \
-		| awk '/^Content-Type:/ { print $2 }' \
-		| sed -e 's/[[:cntrl:]]//'
-)
-echo "Detected ${mime}, loading..."
-case "$mime" in
-	image/gif)
-		exec curl $curl_opts $url | gifview -a -
-		;;
-	image/*)
-		exec curl $curl_opts $url | feh -. -
-		;;
-	video/*)
-		exec curl $curl_opts $url | mplayer -cache 8192 -
-		;;
-	*)
-		exec firefox $url &>/dev/null
-		;;
-esac
+	if [[ -n "$feature_youtube" ]]; then
+		if [[ "$url" == https://youtu.be/* ]] || [[ "$url" == https://www.youtube.com/watch* ]]; then
+			youtube-dl -q -o- $url | mplayer -cache 8192 -
+			exit
+		fi
+	fi
+
+	local mime=$(
+		curl $curl_opts -r 0-499 -IX HEAD "$url" \
+			| awk '/^Content-Type:/ { print $2 }' \
+			| sed -e 's/[[:cntrl:]]//'
+	)
+	echo "Detected ${mime}, loading..."
+	case "$mime" in
+		image/gif)
+			exec curl $curl_opts $url | gifview -a -
+			;;
+		image/*)
+			exec curl $curl_opts $url | feh -. -
+			;;
+		video/*)
+			exec curl $curl_opts $url | mplayer -cache 8192 -
+			;;
+		*)
+			exec firefox $url &>/dev/null
+			;;
+	esac
+}
+
+initialize "$@"
