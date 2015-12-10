@@ -20,13 +20,9 @@
   <dictionary name="专业字典">af0f30d8b5ee1666a3a16694664b72b5</dictionary>
   <dictionary name="ZDic">42c7b4ed279cbcf97846dccf1f40a3bf</dictionary>
   <dictionary name="Vividict">e0e852eed5031358b8e7b7da2cbc9a5f</dictionary>
-  <dictionary name="Yellow Bridge">b669c94a79f902ec4d0fc7e8a365bac5</dictionary>
-  <dictionary name="Xiaoma English">a044f41615778262ea73ecce9e38f67d</dictionary>
-  <dictionary name="Xiaoma Pinyin">e830383bf963c6ad8e59e32641df4533</dictionary>
-  <dictionary name="Xiaoma Chinese">1ff1c517fa778a1dd3863ef4c362ccc1</dictionary>
-  <dictionary name="Yabla">869ba9834d8a343e8bd4bbb9509d046c</dictionary>
-  <dictionary name="Trans">8ffa1e595cbad17acbb3ec6b8f0387ff</dictionary>
   <dictionary name="Trans Audio">b6551d09f764c14870db026a955331c7</dictionary>
+  <dictionary name="Yabla">54d9829651afd37603859688d3d2a1b3</dictionary>
+  <dictionary name="Notes">d821f9f97b4485ee074bbec29d1688b4</dictionary>
   <mutedDictionaries/>
  </dictionaryOrder>
  <inactiveDictionaries id="0" name="">
@@ -35,6 +31,7 @@
  <groups nextId="4">
   <group id="2" name="Chinese">
    <dictionary name="CC-CEDICT 漢英辭典">a8748c2ec416f398ee757455d6d3ca7a</dictionary>
+   <dictionary name="Yabla">54d9829651afd37603859688d3d2a1b3</dictionary>
    <dictionary name="URX ZHEN Chinese-English dictionary">93205f71c9487af15b7d19afae0a8c3d</dictionary>
    <dictionary name="Babylon English-Chinese (S)">a7747fb86cb81da2d8fc605606fbb041</dictionary>
    <dictionary name="Babylon Chinese(S)-English">d254da995c3b01002819af943a3d272e</dictionary>
@@ -42,9 +39,8 @@
    <dictionary name="Unicode Han Database">cedb95044c7b593efa3ae9a5dd8e78c4</dictionary>
    <dictionary name="CDICT5英汉辞典">873d5b4a84fca2fb10da85f4404b6600</dictionary>
    <dictionary name="专业字典">af0f30d8b5ee1666a3a16694664b72b5</dictionary>
-   <dictionary name="Yabla">869ba9834d8a343e8bd4bbb9509d046c</dictionary>
-   <dictionary name="Trans">8ffa1e595cbad17acbb3ec6b8f0387ff</dictionary>
    <dictionary name="Trans Audio">b6551d09f764c14870db026a955331c7</dictionary>
+   <dictionary name="Notes">d821f9f97b4485ee074bbec29d1688b4</dictionary>
    <mutedDictionaries/>
   </group>
   <group id="3" name="Chinese Character">
@@ -101,15 +97,17 @@
   <website enabled="1" url="http://www.mdbg.net/chindict/chindict.php?page=worddict&amp;wdrst=0&amp;wdqtm=0&amp;wdqcham=1&amp;wdqt=%GDWORD%" icon="" id="15344ac5842151e342382e2a3505b842" name="MDBG"/>
   <website enabled="1" url="http://www.zdic.net/sousuo/?q=%GDWORD%" icon="" id="42c7b4ed279cbcf97846dccf1f40a3bf" name="ZDic"/>
   <website enabled="1" url="http://www.vividict.com/Word.aspx?wd=%GDWORD%" icon="" id="e0e852eed5031358b8e7b7da2cbc9a5f" name="Vividict"/>
-  <website enabled="1" url="http://www.yellowbridge.com/chinese/dictionary.php?word=%GDWORD%" icon="" id="b669c94a79f902ec4d0fc7e8a365bac5" name="Yellow Bridge"/>
-  <website enabled="1" url="http://www.xiaoma.info/compound.php?def=%GDWORD%&amp;fdef=%GDWORD%" icon="" id="a044f41615778262ea73ecce9e38f67d" name="Xiaoma English"/>
-  <website enabled="1" url="http://www.xiaoma.info/spy.php?py=%GDWORD%&amp;fpy=%GDWORD%" icon="" id="e830383bf963c6ad8e59e32641df4533" name="Xiaoma Pinyin"/>
-  <website enabled="1" url="http://www.xiaoma.info/compound.php?cp=%GDWORD%&amp;fhz=%GDWORD%" icon="" id="1ff1c517fa778a1dd3863ef4c362ccc1" name="Xiaoma Chinese"/>
-  <website enabled="1" url="https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=%GDWORD%" icon="" id="869ba9834d8a343e8bd4bbb9509d046c" name="Yabla"/>
+  <website enabled="0" url="http://www.yellowbridge.com/chinese/dictionary.php?word=%GDWORD%" icon="" id="b669c94a79f902ec4d0fc7e8a365bac5" name="Yellow Bridge"/>
+  <website enabled="0" url="http://www.xiaoma.info/compound.php?def=%GDWORD%&amp;fdef=%GDWORD%" icon="" id="a044f41615778262ea73ecce9e38f67d" name="Xiaoma English"/>
+  <website enabled="0" url="http://www.xiaoma.info/spy.php?py=%GDWORD%&amp;fpy=%GDWORD%" icon="" id="e830383bf963c6ad8e59e32641df4533" name="Xiaoma Pinyin"/>
+  <website enabled="0" url="http://www.xiaoma.info/compound.php?cp=%GDWORD%&amp;fhz=%GDWORD%" icon="" id="1ff1c517fa778a1dd3863ef4c362ccc1" name="Xiaoma Chinese"/>
+  <website enabled="0" url="http://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=%GDWORD%" icon="" id="869ba9834d8a343e8bd4bbb9509d046c" name="Yabla"/>
  </websites>
  <programs>
-  <program enabled="1" commandLine="trans -no-ansi :zh+en %GDWORD%" icon="" type="1" id="8ffa1e595cbad17acbb3ec6b8f0387ff" name="Trans"/>
+  <program enabled="0" commandLine="trans -no-ansi :zh+en %GDWORD%" icon="" type="1" id="8ffa1e595cbad17acbb3ec6b8f0387ff" name="Trans"/>
   <program enabled="1" commandLine="trans -p :zh %GDWORD%" icon="" type="0" id="b6551d09f764c14870db026a955331c7" name="Trans Audio"/>
+  <program enabled="1" commandLine="curl https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=%GDWORD%" icon="" type="2" id="54d9829651afd37603859688d3d2a1b3" name="Yabla"/>
+  <program enabled="1" commandLine="notes -n %GDWORD%" icon="" type="2" id="d821f9f97b4485ee074bbec29d1688b4" name="Notes"/>
  </programs>
  <voiceEngines/>
  <mutedDictionaries/>
@@ -138,21 +136,21 @@
   <enableScanPopup>1</enableScanPopup>
   <startWithScanPopupOn>0</startWithScanPopupOn>
   <enableScanPopupModifiers>0</enableScanPopupModifiers>
-  <scanPopupModifiers>0</scanPopupModifiers>
+  <scanPopupModifiers>6</scanPopupModifiers>
   <scanPopupAltMode>0</scanPopupAltMode>
   <scanPopupAltModeSecs>3</scanPopupAltModeSecs>
-  <scanToMainWindow>0</scanToMainWindow>
+  <scanToMainWindow>1</scanToMainWindow>
   <scanPopupUseUIAutomation>1</scanPopupUseUIAutomation>
   <scanPopupUseIAccessibleEx>1</scanPopupUseIAccessibleEx>
   <scanPopupUseGDMessage>1</scanPopupUseGDMessage>
   <pronounceOnLoadMain>0</pronounceOnLoadMain>
-  <pronounceOnLoadPopup>0</pronounceOnLoadPopup>
+  <pronounceOnLoadPopup>1</pronounceOnLoadPopup>
   <useExternalPlayer>0</useExternalPlayer>
   <useInternalPlayer>1</useInternalPlayer>
   <audioPlaybackProgram>mplayer</audioPlaybackProgram>
   <alwaysOnTop>0</alwaysOnTop>
   <searchInDock>0</searchInDock>
-  <historyStoreInterval>0</historyStoreInterval>
+  <historyStoreInterval>5</historyStoreInterval>
   <proxyserver enabled="0">
    <type>0</type>
    <host></host>
@@ -174,13 +172,13 @@
  <lastMainGroupId>2</lastMainGroupId>
  <lastPopupGroupId>2</lastPopupGroupId>
  <popupWindowState>AAAA/wAAAAH9AAAAAAAAA40AAAGTAAAABAAAAAQAAAAIAAAACPwAAAABAAAAAQAAAAEAAAAaAGQAaQBjAHQAaQBvAG4AYQByAHkAQgBhAHIDAAAAAP////8AAAAAAAAAAA==</popupWindowState>
- <popupWindowGeometry>AdnQywABAAAAAAOaAAAB4wAAB0sAAAN1AAADmgAAAeMAAAdLAAADdQAAAAAAAA==</popupWindowGeometry>
+ <popupWindowGeometry>AdnQywABAAAAAARJAAAC1gAAB/oAAARoAAAESQAAAtYAAAf6AAAEaAAAAAAAAA==</popupWindowGeometry>
  <pinPopupWindow>0</pinPopupWindow>
  <mainWindowState>AAAA/wAAAAH9AAAAAgAAAAAAAAAAAAAAAPwCAAAAAfsAAAAUAHMAZQBhAHIAYwBoAFAAYQBuAGUAAAAAAP////8AAACYAP///wAAAAEAAAEUAAAGGPwCAAAAAvsAAAASAGQAaQBjAHQAcwBQAGEAbgBlAQAAACgAAAMPAAAAaAD////7AAAAFgBoAGkAcwB0AG8AcgB5AFAAYQBuAGUBAAADPQAAAwMAAABoAP///wAACOYAAAYYAAAABAAAAAQAAAAIAAAACPwAAAABAAAAAgAAAAIAAAAUAG4AYQB2AFQAbwBvAGwAYgBhAHIBAAAAAP////8AAAAAAAAAAAAAABoAZABpAGMAdABpAG8AbgBhAHIAeQBCAGEAcgEAAAMG/////wAAAAAAAAAA</mainWindowState>
  <mainWindowGeometry>AdnQywABAAAAAAAAAAAAAAAACf8AAAY/AAAAAAAAAAAAAAn/AAAGPwAAAAAAAA==</mainWindowGeometry>
  <dictInfoGeometry></dictInfoGeometry>
  <inspectorGeometry>AdnQywABAAAAAAAAAAAAAAAABhsAAAY/AAAABAAAAAQAAAYXAAAGOwAAAAAAAA==</inspectorGeometry>
- <timeForNewReleaseCheck>2015-12-08T09:31:50</timeForNewReleaseCheck>
+ <timeForNewReleaseCheck>2015-12-11T18:37:16</timeForNewReleaseCheck>
  <skippedRelease></skippedRelease>
  <showingDictBarNames>0</showingDictBarNames>
  <usingSmallIconsInToolbars>0</usingSmallIconsInToolbars>
