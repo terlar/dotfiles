@@ -63,6 +63,7 @@ myKeys =
     , ("M-`", scratchToggle "scratchpad")
     , ("M-<XF86AudioRaiseVolume>", scratchToggle "pavucontrol")
     , ("M-m", scratchToggle "ncmpcpp")
+    , ("M-'", scratchToggle "goldendict")
     -- Global window
     , ("M-z", toggleGlobal)
     -- Shell prompt

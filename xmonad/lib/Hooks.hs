@@ -54,6 +54,7 @@ myScratchpads =
     [ workPad "scratchpad" "~" smallRect
     , termPad "ncmpcpp" largeRect
     , xappPad "pavucontrol" "Pavucontrol" doCenterFloat
+    , xappPad "goldendict" "Goldendict" doRightFloat
     ]
   where
     workPad a d = NS a (workTerm a d) (role ~? a)
@@ -65,6 +66,8 @@ myScratchpads =
     -- Floating window sizes
     largeRect = customFloating $ W.RationalRect (1/20) (1/20) (9/10) (9/10)
     smallRect = customFloating $ W.RationalRect (1/6) (1/6) (2/3) (2/3)
+    doLeftFloat = customFloating $ W.RationalRect 0 0 (1/3) 1
+    doRightFloat = customFloating $ W.RationalRect (2/3) 0 (1/3) 1
 
 myLayoutHook = smartBorders $
     -- Mirror the layout in the X and Y axis.
