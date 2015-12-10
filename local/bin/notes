@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+initialize() {
+	local flags=()
+
+	while true ; do
+		case "$1" in
+			-n)
+				flags+=(-n)
+				shift 1
+			;;
+			*)
+				break
+			;;
+		esac
+	done
+
+	dir=${NOTES:=$HOME/notes}
+	for i in $(grep -lr "$@" $dir); do
+		preview ${flags[@]} $i
+	done
+}
+
+initialize "$@"

@@ -1,17 +1,48 @@
 #!/usr/bin/env bash
 initialize() {
+	local no_browser
+
+	while true ; do
+		case "$1" in
+			-n)
+				no_browser=1
+				shift 1
+			;;
+			*)
+				break
+			;;
+		esac
+	done
+
 	local file="$*"
+	local cmd
+
 	case "$file" in
 		*.rst)
-			rst2html $file | browser
+			if command -v rst2html >/dev/null; then
+				cmd=rst2html
+			fi
 			;;
 		*.md)
-			pandoc -s $file | browser
-			;;
-		*)
-			echo "File $file is of unknown type"
+			if command -v pandoc >/dev/null; then
+				cmd='pandoc -s'
+			elif command -v marked >/dev/null; then
+				cmd=marked
+			fi
 			;;
 	esac
+
+	if [[ -z "$cmd"  ]]; then
+		echo "File $file is of unknown type"
+		exit 1
+
+	fi
+
+	if [ "$no_browser" = 1 ] ; then
+		eval $cmd $file
+	else
+		eval $cmd $file | browser
+	fi
 }
 
 initialize "$@"
