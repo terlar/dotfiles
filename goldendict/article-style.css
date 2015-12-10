@@ -46,3 +46,19 @@ body, .gdarticle {
 .gdarticle .gdarticlebody div p + hr {
 	display: block;
 }
+
+.gdarticle .programs_html header,
+.gdarticle .programs_html footer,
+.gdarticle .programs_html h2,
+.gdarticle .programs_html #form_container,
+.gdarticle .programs_html #browse_header,
+.gdarticle .programs_html #dictionary_list,
+.gdarticle .programs_html #search_results li.promo,
+.gdarticle .programs_html #search_results li .tools {
+	display: none;
+}
+
+.gdarticle .programs_html #search_results li:first-child {
+	padding-top: 0;
+	border-top: none;
+}
