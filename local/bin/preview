@@ -15,7 +15,7 @@ initialize() {
 	done
 
 	local file="$*"
-	local cmd
+	local cmd='awk 1 ORS="<br>"'
 
 	case "$file" in
 		*.rst)
@@ -31,12 +31,6 @@ initialize() {
 			fi
 			;;
 	esac
-
-	if [[ -z "$cmd"  ]]; then
-		echo "File $file is of unknown type"
-		exit 1
-
-	fi
 
 	if [ "$no_browser" = 1 ] ; then
 		eval $cmd $file
