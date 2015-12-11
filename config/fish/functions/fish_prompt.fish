@@ -10,7 +10,7 @@ function fish_prompt --description 'Write out the prompt'
 		set_color $fish_color_error
 	else
 		set_color normal
-		set_color white
+		set_color grey
 	end
 
 	# Line divider
