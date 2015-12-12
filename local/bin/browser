@@ -1,15 +1,17 @@
 #!/usr/bin/env bash
 initialize() {
 	local url
-	if [[ -t 0 ]]; then
-		if [[ $# -eq 0 ]]; then
+
+	if [[ $# -eq 0 ]]; then
+		if [[ -t 0 ]]; then
 			firefox &>/dev/null
 			exit 0
+		else
+			url=$(mktemp /tmp/browser.XXXXXXXX.html)
+			cat /dev/stdin > $url
 		fi
-		url="$*"
 	else
-		url=$(mktemp /tmp/browser.XXXXXXXX.html)
-		cat /dev/stdin > $url
+		url="$*"
 	fi
 
 	local curl_opts='-Ls'
