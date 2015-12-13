@@ -11,17 +11,14 @@ function fish_user_key_bindings
 	bind E forward-bigword backward-char
 
 	bind \ei __commandline_edit
-	bind \cl '__commandline_clear_prompt'
 
 	#
 	# Insert mode
 	#
 	bind -M insert --key btab complete-and-search
 
-	bind -M insert \cl '__commandline_clear_prompt'
-	bind -M insert \el '__fish_list_current_token; __commandline_reload_prompt'
-	bind -M insert \e'<' 'prevd; __commandline_reload_prompt'
-	bind -M insert \e'>' 'nextd; __commandline_reload_prompt'
+	bind -M insert \e'<' 'prevd; echo; commandline -f repaint'
+	bind -M insert \e'>' 'nextd; echo; commandline -f repaint'
 
 	# Execute
 	bind -M insert \n '__commandline_execute'
@@ -49,18 +46,6 @@ function __commandline_execute
 	else
 		echo
 	end
-end
-
-function __commandline_reload_prompt
-	set_color normal
-	fish_prompt
-	commandline -f repaint
-end
-
-function __commandline_clear_prompt
-	set -ge __prompt_context_current
-	clear
-	__commandline_reload_prompt
 end
 
 function __commandline_insert_previous_token

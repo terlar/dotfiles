@@ -13,12 +13,6 @@ function fish_prompt --description 'Write out the prompt'
 		set_color grey
 	end
 
-	# Line divider
-	for i in (seq 2 $COLUMNS)
-		echo -n ─
-	end
-	echo
-
 	if test $fish_key_bindings = 'fish_vi_key_bindings'
 		switch $fish_bind_mode
 		case default
@@ -28,10 +22,6 @@ function fish_prompt --description 'Write out the prompt'
 		end
 	end
 
-	if test $TERM = 'linux'
-		echo -n '> '
-	else
-		echo -n '➥ '
-	end
+	echo -n '$ '
 	set_color normal
 end
