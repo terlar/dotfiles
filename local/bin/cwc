@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+cat /dev/stdin | sed 's|[！？。，；：、（）【】]||g' | wc -m
