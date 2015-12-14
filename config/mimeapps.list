@@ -1,12 +1,16 @@
 [Default Applications]
 application/pdf=zathura.desktop
-image/jpeg=feh.desktop
-image/png=feh.desktop
-image/gif=feh.desktop
-image/tiff=feh.desktop
-image/tiff-fx=feh.desktop
+image/jpeg=gpicview.desktop
+image/png=gpicview.desktop
+image/gif=gpicview.desktop
+image/tiff=gpicview.desktop
+image/tiff-fx=gpicview.desktop
 
 [Added Associations]
 video/mp4=mplayer.desktop;
 video/x-ms-wmv=mplayer.desktop;
+audio/x-mpegurl=mplayer.desktop;
+audio/mpeg=mplayer.desktop;
 application/x-font-ttf=org.gnome.FontManager.desktop;
+application/zip=org.gnome.FileRoller.desktop;
+application/x-tar=org.gnome.FileRoller.desktop;

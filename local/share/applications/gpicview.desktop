@@ -1,0 +1,5 @@
+[Desktop Entry]
+Type=Application
+Name=gpicview
+MimeType=image/jpeg;image/png;image/gif;image/tiff;image/tiff-fx;
+Exec=gpicview %f
