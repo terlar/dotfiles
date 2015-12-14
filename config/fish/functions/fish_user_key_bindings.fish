@@ -16,6 +16,7 @@ function fish_user_key_bindings
 	# Insert mode
 	#
 	bind -M insert --key btab complete-and-search
+	bind -M insert \cc 'commandline ""'
 
 	bind -M insert \e'<' 'prevd; echo; commandline -f repaint'
 	bind -M insert \e'>' 'nextd; echo; commandline -f repaint'
