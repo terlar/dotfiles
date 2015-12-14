@@ -33,9 +33,9 @@ initialize() {
 	esac
 
 	if [ "$no_browser" = 1 ] ; then
-		eval $cmd $file
+		eval $cmd "'$file'"
 	else
-		eval $cmd $file | browser
+		eval $cmd "'$file'" | browser
 	fi
 }
 

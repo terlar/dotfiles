@@ -15,8 +15,18 @@ initialize() {
 	done
 
 	dir=${NOTES:=$HOME/notes}
-	for i in $(grep -lr "$@" $dir); do
-		preview ${flags[@]} $i
+
+	local oldifs fileArray fileArrayLen
+
+	oldifs=$IFS
+	IFS=$'\n'
+	fileArray=($(grep -lr "$@" $dir))
+	IFS=$oldifs
+	fileArrayLen=${#fileArray[@]}
+
+	for (( i=0; i < ${fileArrayLen}; i++ )); do
+		echo "${fileArray[$i]}"
+		preview ${flags[@]} "${fileArray[$i]}"
 	done
 }
 
