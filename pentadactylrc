@@ -26,4 +26,8 @@ style -name hide-toolbar chrome://* <<EOM
 }
 EOM
 
+" Passkeys
+autocmd LocationChange 'https://docs.google.com/*' :normal! <C-z>
+autocmd LocationChange 'https://connect1.du.se/*' :normal! <C-z>
+
 " vim: set ft=pentadactyl:
