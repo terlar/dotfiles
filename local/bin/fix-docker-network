@@ -1,2 +1,6 @@
 #!/usr/bin/env bash
-systemctl restart docker
+main() {
+	systemctl restart docker
+}
+
+main

@@ -1,17 +1,21 @@
 #!/usr/bin/env bash
-if [ -f "${PWD}/Makefile" ]; then
-	make test FILE=$1
-else
-	dir=$( cd "$( dirname "$0" )" && pwd )
+main() {
+	if [[ -f "$PWD/Makefile" ]]; then
+		make test FILE=$1
+	else
+		dir=$( cd "$( dirname "$0" )" && pwd )
 
-	for p in ${PATH//:/$'\n'}; do
-		if test "$p" = "$dir"; then
-			continue
-		fi
+		for p in ${PATH//:/$'\n'}; do
+			if [[ "$p" = "$dir" ]]; then
+				continue
+			fi
 
-		if test -x $p/testrb; then
-			$p/testrb
-			break
-		fi
-	done
-fi
+			if [[ -x "$p/testrb" ]]; then
+				$p/testrb
+				break
+			fi
+		done
+	fi
+}
+
+main "$*"

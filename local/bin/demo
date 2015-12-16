@@ -1,11 +1,15 @@
 #!/usr/bin/env bash
-port="${1-80}"
-subdomain="${2-$USER-${PWD##*/}}"
-username="$3"
-password="$4"
+main() {
+	local port="${1-80}"
+	local subdomain="${2-$USER-${PWD##*/}}"
+	local username="$3"
+	local password="$4"
 
-if [ -n "$username"  ] && [ -n "$password" ]; then
-	httpauth="-httpauth=${username}:${password}"
-fi
+	if [ -n "$username"  ] && [ -n "$password" ]; then
+		local httpauth="-httpauth=${username}:${password}"
+	fi
 
-ngrok -subdomain="$subdomain""$httpauth" "$port"
+	ngrok -subdomain="$subdomain""$httpauth" "$port"
+}
+
+main "$@"

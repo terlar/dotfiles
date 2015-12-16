@@ -1,11 +1,40 @@
 #!/usr/bin/env bash
-initialize() {
+has_slack() {
+	local cookie="$@"
+
+	[[ -f "$cookie" ]]
+}
+
+has_youtube() {
+	command -v youtube-dl >/dev/null 2>&1
+}
+
+is_slack_url() {
+	local url="$@"
+
+	[[ "$url" == https://*.slack.com/files/* ]]
+}
+
+is_youtube_url() {
+	local url="$@"
+
+	[[ "$url" == https://youtu.be/* || "$url" == https://www.youtube.com/watch* ]]
+}
+
+is_not_empty() {
+    local var=$1
+
+    [[ -n $var ]]
+}
+
+main() {
 	local url
+	local curl_opts='-Ls'
+	local slack_cookie="$HOME/.slackcurl/cookies"
 
 	if [[ $# -eq 0 ]]; then
 		if [[ -t 0 ]]; then
-			firefox &>/dev/null
-			exit 0
+			exec firefox &>/dev/null
 		else
 			url=$(mktemp /tmp/browser.XXXXXXXX.html)
 			cat /dev/stdin > $url
@@ -14,33 +43,24 @@ initialize() {
 		url="$*"
 	fi
 
-	local curl_opts='-Ls'
-	local slack_cookie="$HOME/.slackcurl/cookies"
-	local feature_slack=$([[ -f "$slack_cookie" ]] && echo 1)
-	local feature_youtube=$(command -v youtube-dl && echo 1)
-
-	if [[ -n "$feature_slack" ]]; then
-		if [[ "$url" == https://*.slack.com/files/* ]]; then
-			url=$(curl $curl_opts --cookie "$slack_cookie" "$url" \
-				| sed -e 's|boot_data.file = \({.*}\);|\1|;tx;d;:x' \
-				| jq -r '.url_download')
-		fi
+	if has_slack $slack_cookie && is_slack_url $url; then
+		url=$(curl $curl_opts --cookie "$slack_cookie" "$url" \
+			| sed -e 's|boot_data.file = \({.*}\);|\1|;tx;d;:x' \
+			| jq -r '.url_download')
 	fi
 
-	if [[ -n "$feature_youtube" ]]; then
-		if [[ "$url" == https://youtu.be/* ]] || [[ "$url" == https://www.youtube.com/watch* ]]; then
-			youtube-dl -q -o- $url | mplayer -cache 8192 -
-			exit
-		fi
+	if has_youtube && is_youtube_url $url; then
+		exec youtube-dl -q -o- $url | mplayer -cache 8192 -
 	fi
 
-	local mime=$(
-		curl $curl_opts -r 0-499 -IX HEAD "$url" \
-			| awk '/^Content-Type:/ { print $2 }' \
-			| sed -e 's/[[:cntrl:]]//'
-	)
-	echo "Detected ${mime}, loading..."
-	case "$mime" in
+	local mime=$(curl $curl_opts -r 0-499 -IX HEAD "$url" \
+		| awk '/^Content-Type:/ { print $2 }' \
+		| sed -e 's/[[:cntrl:]]//')
+
+	is_not_empty $mime \
+		&& echo "Detected $mime, loading..."
+
+	case $mime in
 		image/gif)
 			exec curl $curl_opts $url | gifview -a -
 			;;
@@ -56,4 +76,4 @@ initialize() {
 	esac
 }
 
-initialize "$@"
+main "$@"

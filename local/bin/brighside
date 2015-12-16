@@ -1,8 +1,16 @@
 #!/usr/bin/env bash
-if [ -n "$DISPLAY" ]; then
-	ln -sf "${HOME}/.config/termite/config_light" "${HOME}/.config/termite/config"
-	killall -USR1 termite
-else
-	"${HOME}/.vconsole_light"
-	clear
-fi
+has_display() {
+	[[ -n "$DISPLAY" ]]
+}
+
+main() {
+	if has_display; then
+		ln -sf "$HOME/.config/termite/config_light" "$HOME/.config/termite/config"
+		killall -USR1 termite
+	else
+		"$HOME/.vconsole_light"
+		clear
+	fi
+}
+
+main

@@ -1,2 +1,6 @@
 #!/usr/bin/env bash
-cat /dev/stdin | jq -C . | less -R
+main() {
+	cat /dev/stdin | jq -C . | less -R
+}
+
+main

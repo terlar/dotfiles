@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
-if [ -d "$*" ]; then
-	command tar cj "$*"
-else
-	command cat "$*"
-fi | nc -lcp 1337
+main() {
+	if [[ -d "$*" ]]; then
+		command tar cj "$*"
+	else
+		command cat "$*"
+	fi | nc -lcp 1337
+}
+
+main "$@"

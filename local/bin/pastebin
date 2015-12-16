@@ -1,19 +1,23 @@
 #!/usr/bin/env bash
-content=/dev/stdin
+main() {
+	local content=/dev/stdin
 
-if [[ -f "$1" ]]; then
-	content="$1"; shift
-fi
+	if [[ -f "$*" ]]; then
+		content="$*"; shift
+	fi
 
-ext="$1"
+	local ext="$*"
 
-if [[ -z "$ext" ]] && [[ "$content" == *.* ]]; then
-	ext="${content##*.}"
-fi
+	if [[ -z "$ext" ]] && [[ "$content" == *.* ]]; then
+		ext="${content##*.}"
+	fi
 
-read -r link < <(curl -# -F 'sprunge=<-' http://sprunge.us < "$content")
+	read -r link < <(curl -# -F 'sprunge=<-' http://sprunge.us < "$content")
 
-link="$link?$ext"
+	local link="$link?$ext"
 
-[[ -n "$DISPLAY" ]] && printf "$link" | xclip
-printf "%s\n" "$link"
+	[[ -n "$DISPLAY" ]] && printf "$link" | xclip
+	printf "%s\n" "$link"
+}
+
+main "$@"

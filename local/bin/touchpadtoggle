@@ -1,11 +1,14 @@
 #!/usr/bin/env bash
-device_name="bcm5974"
+main() {
+	local device_name="bcm5974"
+	local device=$(xinput --list | grep "$device_name" | sed -r 's/.*id=([0-9]*).*/\1/g')
+	local device_enabled=$(xinput --list-props "$device" | grep 'Device Enabled' | cut -f3)
 
-device=$(xinput --list | grep "$device_name" | sed -r 's/.*id=([0-9]*).*/\1/g')
-device_enabled=$(xinput --list-props "$device" | grep 'Device Enabled' | cut -f3)
+	if [[ "$device_enabled" -eq 1 ]]; then
+		xinput --set-prop "$device" 'Device Enabled' 0
+	else
+		xinput --set-prop "$device" 'Device Enabled' 1
+	fi
+}
 
-if test "$device_enabled" -eq 1; then
-	xinput --set-prop "$device" 'Device Enabled' 0
-else
-	xinput --set-prop "$device" 'Device Enabled' 1
-fi
+main

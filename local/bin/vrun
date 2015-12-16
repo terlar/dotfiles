@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-SSH_CONFIG_CACHE="/tmp/vagrant-ssh-config-${PWD//\//%}"
+readonly SSH_CONFIG_CACHE="/tmp/vagrant-ssh-config-${PWD//\//%}"
 
 cache_ssh_config() {
 	vagrant ssh-config > "$SSH_CONFIG_CACHE"
@@ -21,7 +21,7 @@ run() {
 	ssh -t -t -q -F $SSH_CONFIG_CACHE default -- $cmd
 }
 
-initialize() {
+main() {
 	if [[ ! -f "${PWD}/Vagrantfile" ]]; then
 		echo 'Error: No Vagrantfile in current directory'
 		exit 1
@@ -46,4 +46,4 @@ initialize() {
 	fi
 }
 
-initialize "$@"
+main "$@"

@@ -1,15 +1,23 @@
 #!/usr/bin/env bash
-if [ -z "$DISPLAY" ]; then
-	echo "Error: Display must be available"
-	exit 1
-fi
+has_display() {
+	[[ -n "$DISPLAY" ]]
+}
 
-if [ $# -eq 0 ]; then
-	xclip
-else
-	if [ -f "$*" ]; then
-		xclip "$*"
-	else
-		echo -n "$*" | xclip
+main() {
+	if ! has_display; then
+		echo "Error: Display must be available"
+		exit 1
 	fi
-fi
+
+	if [[ $# -eq 0 ]]; then
+		xclip
+	else
+		if [[ -f "$*" ]]; then
+			xclip "$*"
+		else
+			echo -n "$*" | xclip
+		fi
+	fi
+}
+
+main "$@"

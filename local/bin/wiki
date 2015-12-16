@@ -1,2 +1,6 @@
 #!/usr/bin/env bash
-dig +short txt "${*// /_}.wp.dg.cx"
+main() {
+	dig +short txt "${*// /_}.wp.dg.cx"
+}
+
+main "$@"

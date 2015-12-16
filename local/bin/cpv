@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
-if [ ! $# -eq 2 ]; then
-	echo "Error: You must provide a source and a target"
-	exit 1
-fi
+main() {
+	if [[ ! $# -eq 2 ]]; then
+		echo "Error: You must provide a source and a target"
+		exit 1
+	fi
 
-rsync -r -poghb --backup-dir=/tmp/rsync -e /dev/null --progress -- "$1" "$2"
+	rsync -r -poghb --backup-dir=/tmp/rsync -e /dev/null --progress -- "$1" "$2"
+}
+
+main "$@"

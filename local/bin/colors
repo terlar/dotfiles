@@ -1,21 +1,29 @@
 #!/usr/bin/env bash
-echo System colors:
-for i in {30..37}; do
-	echo -en '\e['$i';7m  \e[0m'
-done
+is_linux_term() {
+	[[ "$TERM" = linux ]]
+}
 
-echo
-
-for i in {30..37}; do
-	echo -en '\e['$i';7;1m  \e[0m'
-done
-
-if [ ! "$TERM" = linux ]; then
-	echo; echo
-	echo 256 color space:
-	for i in {16..21}; do
-		echo -en '\e[38;05;'$i';7m  \e[0m'
+main() {
+	echo System colors:
+	for i in {30..37}; do
+		echo -en '\e['$i';7m  \e[0m'
 	done
-fi
 
-echo
+	echo
+
+	for i in {30..37}; do
+		echo -en '\e['$i';7;1m  \e[0m'
+	done
+
+	if ! is_linux_term; then
+		echo; echo
+		echo 256 color space:
+		for i in {16..21}; do
+			echo -en '\e[38;05;'$i';7m  \e[0m'
+		done
+	fi
+
+	echo
+}
+
+main

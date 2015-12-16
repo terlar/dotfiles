@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-initialize() {
+main() {
 	local no_browser
 
 	while true ; do
@@ -32,11 +32,11 @@ initialize() {
 			;;
 	esac
 
-	if [ "$no_browser" = 1 ] ; then
+	if [[ "$no_browser" = 1 ]] ; then
 		eval $cmd "'$file'"
 	else
 		eval $cmd "'$file'" | browser
 	fi
 }
 
-initialize "$@"
+main "$@"

@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
-if [ $# -eq 0 ]; then
-	variant=light
-else
-	variant="$1"
-fi
+main() {
+	local variant=${1:-light}
+	local script_path="$HOME/.vconsole_$variant"
 
-source "${HOME}/.vconsole_${variant}"
-echo "Arch Linux \\r (\\l)"
-echo
+	[[ -f $script_path ]] \
+		&& source $script_path
+	echo "Arch Linux \\r (\\l)"
+	echo
+}
+
+main "$@"

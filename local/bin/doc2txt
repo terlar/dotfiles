@@ -1,2 +1,6 @@
 #!/usr/bin/env bash
-libreoffice --headless --convert-to txt "$@"
+main() {
+	libreoffice --headless --convert-to txt "$@"
+}
+
+main "$@"

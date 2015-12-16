@@ -1,2 +1,6 @@
 #!/usr/bin/env bash
-systemctl --user start console.target
+main() {
+	systemctl --user start console.target
+}
+
+main

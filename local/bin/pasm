@@ -1,15 +1,19 @@
 #!/usr/bin/env bash
-if [ -z "$1" ]; then
-	echo "Usage: $(basename $0) <sinkId/sinkName>" >&2
-	echo "Valid sinks:" >&2
-	pactl list short sinks >&2
-	exit
-fi
+main() {
+	if [[ -z "$1" ]]; then
+		echo "Usage: $(basename $0) <sinkId/sinkName>" >&2
+		echo "Valid sinks:" >&2
+		pactl list short sinks >&2
+		exit
+	fi
 
-newSink="$1"
+	local newSink="$1"
 
-while read stream; do
-	streamId=$(echo $stream | cut '-d ' -f1)
-	echo "moving stream $streamId"
-	pactl move-sink-input "$streamId" "$newSink"
-done < <(pactl list short sink-inputs)
+	while read stream; do
+		local streamId=$(echo $stream | cut '-d ' -f1)
+		echo "moving stream $streamId"
+		pactl move-sink-input "$streamId" "$newSink"
+	done < <(pactl list short sink-inputs)
+}
+
+main "$@"

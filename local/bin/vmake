@@ -1,2 +1,6 @@
 #!/usr/bin/env bash
-vrun make $@
+main() {
+	vrun make $@
+}
+
+main "$@"

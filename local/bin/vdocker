@@ -1,2 +1,6 @@
 #!/usr/bin/env bash
-vrun docker $@
+main() {
+	vrun docker $@
+}
+
+main "$@"

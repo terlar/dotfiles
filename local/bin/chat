@@ -1,2 +1,6 @@
 #!/usr/bin/env bash
-mux chat weechat
+main() {
+	mux chat weechat
+}
+
+main

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-initialize() {
+main() {
 	local flags=()
 
 	while true ; do
@@ -14,15 +14,15 @@ initialize() {
 		esac
 	done
 
-	dir=${NOTES:=$HOME/notes}
+	local dir=${NOTES:=$HOME/notes}
 
 	local oldifs fileArray fileArrayLen
 
-	oldifs=$IFS
+	local oldifs=$IFS
 	IFS=$'\n'
-	fileArray=($(grep -lr "$@" $dir))
+	local fileArray=($(grep -lr "$@" $dir))
 	IFS=$oldifs
-	fileArrayLen=${#fileArray[@]}
+	local fileArrayLen=${#fileArray[@]}
 
 	for (( i=0; i < ${fileArrayLen}; i++ )); do
 		echo "${fileArray[$i]}"
@@ -30,4 +30,4 @@ initialize() {
 	done
 }
 
-initialize "$@"
+main "$@"
