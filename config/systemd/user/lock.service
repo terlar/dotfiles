@@ -4,8 +4,8 @@ Documentation=man:i3lock(1)
 
 [Service]
 Type=forking
-Environment=IMAGE="$XDG_PICUTRES_DIR/lock.png"
-ExecStart=/usr/bin/i3lock -c 000000 -i "$IMAGE"
+ExecStartPre=/usr/bin/ibus engine xkb:us::eng
+ExecStart=/usr/bin/i3lock -eu -p win -c 000000 -i %h/pictures/lock.png
 
 [Install]
 WantedBy=graphical.target

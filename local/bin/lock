@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+main() {
+	systemctl --user start lock.service
+}
+
+main

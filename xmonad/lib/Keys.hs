@@ -70,7 +70,7 @@ myKeys =
     , ("M-p", programLauncher)
     , ("M-S-p", shellPrompt myXPConfig)
     -- Lock screen
-    , ("M-<Esc>", spawn "i3lock -i ~/pictures/lock.png -c 000000" )
+    , ("M-<Esc>", spawn "lock" )
     -- Display management
     , ("M-<F1>", spawn "autorandr --load mobile")
     , ("M-<F2>", spawn "autorandr --change --default mobile")
