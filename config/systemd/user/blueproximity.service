@@ -1,0 +1,9 @@
+[Unit]
+Description=Proximity Detector
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/start_proximity.sh
+
+[Install]
+WantedBy=graphical.target
