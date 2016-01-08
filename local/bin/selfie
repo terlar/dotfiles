@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+main() {
+	local file=$(date '+%F-%H%M%S').jpg
+	ffmpeg -f v4l2 -i /dev/video0 -vframes 1 $file
+}
+
+main

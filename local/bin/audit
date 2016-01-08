@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+main() {
+	local dir="$HOME/Dropbox/pictures/audit"
+	[[ "$(ls -A $dir)" ]] || return 0
+
+	for pic in "$dir"/*.jpg; do
+		feh $pic
+		rm -i $pic
+	done
+}
+
+main
