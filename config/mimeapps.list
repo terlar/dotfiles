@@ -18,3 +18,6 @@ audio/mpeg=mplayer.desktop;
 application/x-font-ttf=org.gnome.FontManager.desktop;
 application/zip=org.gnome.FileRoller.desktop;
 application/x-tar=org.gnome.FileRoller.desktop;
+application/pdf=zathura.desktop;
+image/jpeg=gpicview.desktop;
+video/x-matroska=mplayer.desktop;
