@@ -11,7 +11,7 @@ main() {
 
 unnamed_session() {
 	if [[ -z "$TMUX" ]]; then
-		exec tmux attach || tmux new
+		exec tmux attach || exec tmux new
 	else
 		exec tmux choose-session
 	fi
