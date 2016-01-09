@@ -1,5 +1,9 @@
 [Default Applications]
 application/pdf=zathura.desktop
+application/msword=libreoffice-writer.desktop
+application/rtf=libreoffice-writer.desktop
+application/vnd.oasis.opendocument.spreadsheet=libreoffice-calc.desktop
+application/vnd.oasis.opendocument.text=libreoffice-writer.desktop
 image/jpeg=gpicview.desktop
 image/png=gpicview.desktop
 image/gif=gpicview.desktop
