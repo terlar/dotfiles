@@ -22,7 +22,7 @@ main() {
 				unzip "$file"
 				;;
 			*.7z)
-				7z e "$file"
+				7z x "$file"
 				;;
 			*)
 				echo "File $file is of unknown type"
