@@ -1,5 +1,5 @@
 function fish_load_colors --description 'Restore colors'
-	set fish_color_autosuggestion 555 yellow
+	set fish_color_autosuggestion 999 yellow
 	set fish_color_command blue
 	set fish_color_comment red
 	set fish_color_cwd green
@@ -21,7 +21,7 @@ function fish_load_colors --description 'Restore colors'
 	set fish_color_user -o green
 	set fish_color_valid_path --underline
 	set fish_pager_color_completion purple
-	set fish_pager_color_description white
+	set fish_pager_color_description 999 yellow
 	set fish_pager_color_prefix cyan
 	set fish_pager_color_progress cyan
 end
