@@ -5,7 +5,7 @@ Documentation=man:i3lock(1)
 [Service]
 Type=forking
 ExecStartPre=/usr/bin/ibus engine xkb:us::eng
-ExecStart=/usr/bin/i3lock -eu -p win -c 000000 -i %h/pictures/lock.png
+ExecStart=/usr/bin/i3lock -u -p default -c 000000 -i %h/pictures/lock.png
 
 [Install]
 WantedBy=graphical.target
