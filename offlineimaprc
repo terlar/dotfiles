@@ -1,9 +1,8 @@
 [general]
-accounts = personal, work
-maxsyncaccounts = 2
 ui = ttyui
-pythonfile = ~/.local/bin/offlineimap-helpers.py
+accounts = personal,work
 fsync = False
+pythonfile = ~/.local/bin/offlineimap-helpers.py
 
 [mbnames]
 enabled = yes
@@ -36,23 +35,29 @@ localfolders = ~/mail/work
 nametrans = nt_local
 
 [Repository personal-remote]
-type = Gmail
-remoteusereval = get_credentials('personal', 'login')
-remotepasseval = get_credentials('personal')
-realdelete = no
 maxconnections = 3
-nametrans = nt_remote
+type = Gmail
+remoteuser = 
+oauth2_client_id = 
+oauth2_client_secret = 
+oauth2_refresh_token = 
+oauth2_access_token = 
 ssl = yes
 sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+realdelete = no
+nametrans = nt_remote
 folderfilter = exclude([])
 
 [Repository work-remote]
-type = Gmail
-remoteusereval = get_credentials('work', 'login')
-remotepasseval = get_credentials('work')
-realdelete = no
 maxconnections = 3
-nametrans = nt_remote
+type = Gmail
+remoteuser = 
+oauth2_client_id = 
+oauth2_client_secret = 
+oauth2_refresh_token = 
+oauth2_access_token = 
 ssl = yes
 sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+realdelete = no
+nametrans = nt_remote
 folderfilter = exclude([])
