@@ -44,9 +44,10 @@ main() {
 	fi
 
 	if has_slack $slack_cookie && is_slack_url $url; then
-		url=$(curl $curl_opts --cookie "$slack_cookie" "$url" \
+		curl_opts="$curl_opts --cookie $slack_cookie"
+		url=$(curl $curl_opts "$url" \
 			| sed -e 's|boot_data.file = \({.*}\);|\1|;tx;d;:x' \
-			| jq -r '.url_download')
+			| jq -r '.url_private_download')
 	fi
 
 	if has_youtube && is_youtube_url $url; then
