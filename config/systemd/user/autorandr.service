@@ -1,0 +1,8 @@
+[Unit]
+Description=Auto RandR Daemon
+
+[Service]
+ExecStart=/usr/local/bin/x-on-resize --config /usr/bin/autorandr
+
+[Install]
+WantedBy=graphical.target
