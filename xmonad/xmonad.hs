@@ -1,5 +1,6 @@
 import XMonad
 import XMonad.Util.EZConfig (checkKeymap, additionalKeysP)
+import XMonad.Hooks.SetWMName (setWMName)
 
 import Config
 import Hooks (myHooks, myLogHook, myLayoutHook)
@@ -16,7 +17,7 @@ myConfig = defaultConfig
     , manageHook = myHooks
     , logHook = myLogHook
     , layoutHook = myLayoutHook
-    , startupHook = return () >> checkKeymap myConfig myKeys
+    , startupHook = setWMName "LG3D" >> checkKeymap myConfig myKeys
     } `additionalKeysP` myKeys
 
 main = xmonad myConfig
