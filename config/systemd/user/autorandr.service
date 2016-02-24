@@ -2,7 +2,7 @@
 Description=Auto RandR Daemon
 
 [Service]
-ExecStart=/usr/bin/x-on-resize --config /usr/bin/autorandr
+ExecStart=/usr/bin/x-on-resize --config '/usr/bin/autorandr -c'
 
 [Install]
 WantedBy=graphical.target
