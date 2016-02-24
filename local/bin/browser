@@ -52,6 +52,7 @@ main() {
 
 	if has_youtube && is_youtube_url $url; then
 		exec youtube-dl -q -o- $url | mplayer -cache 8192 -
+		return
 	fi
 
 	local mime=$(curl $curl_opts -r 0-499 -IX HEAD "$url" \
