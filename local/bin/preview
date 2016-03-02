@@ -1,4 +1,13 @@
 #!/usr/bin/env bash
+has_cmd() {
+	local cmd="$@"
+	if command -v $cmd >/dev/null; then
+		return 0
+	else
+		return 1
+	fi
+}
+
 main() {
 	local no_browser
 
@@ -15,22 +24,26 @@ main() {
 	done
 
 	local file="$*"
-	local cmd='awk 1 ORS="<br>"'
+	local cmd
 
 	case "$file" in
 		*.rst)
-			if command -v rst2html >/dev/null; then
-				cmd=rst2html
-			fi
+			has_cmd rst2html && cmd=rst2html
+			has_cmd rst2html2 && cmd=rst2html2
+			has_cmd pandoc && cmd='pandoc -s'
 			;;
 		*.md)
-			if command -v pandoc >/dev/null; then
-				cmd='pandoc -s'
-			elif command -v marked >/dev/null; then
-				cmd=marked
-			fi
+			has_cmd marked && cmd='marked'
+			has_cmd pandoc && cmd='pandoc -s'
+			;;
+		*.html)
+			cmd='cat'
 			;;
 	esac
+
+	if [[ -z "$cmd" ]]; then
+		cmd='awk 1 ORS="<br>"'
+	fi
 
 	if [[ "$no_browser" = 1 ]] ; then
 		eval $cmd "'$file'"
