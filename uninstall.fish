@@ -97,7 +97,7 @@ function dotfiles_uninstall_vim
 	end
 end
 
-set -l dotfiles_dir (dirname (status -f))
+set -l dotfiles_dir (dirname (readlink -f (status -f)))
 cd $dotfiles_dir
 set -l files (printf "%s\n" * | grep -vE "(install.fish|update.fish|uninstall.fish|README.md)")
 

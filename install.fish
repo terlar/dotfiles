@@ -85,7 +85,7 @@ function __dotfiles_backup_file
 	set_color normal
 	echo Backup $target_file
 
-	mv $target_file $target_file.backup
+	mv $target_file{,.backup}
 end
 
 function __dotfiles_link_file
@@ -168,7 +168,7 @@ switch "$argv[1]"
 		set -g unattended 1
 end
 
-set -l dotfiles_dir (dirname (status -f))
+set -l dotfiles_dir (dirname (readlink -f (status -f)))
 cd $dotfiles_dir
 set -l files (printf "%s\n" * | grep -vE "(install.fish|update.fish|uninstall.fish|README.md)")
 
