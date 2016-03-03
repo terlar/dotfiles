@@ -2,10 +2,6 @@ set -Uq fish_setup_done; or fish_setup
 
 set -g fish_user_paths $HOME/.local/bin
 
-function __prompt_context_reload -v __prompt_context_current
-	echo $__prompt_context_current
-end
-
 # Plugins
 set -l plugins_path (dirname (status -f))/plugins
 for plugin in $plugins_path/*/autoload.fish
