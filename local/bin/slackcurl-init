@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+extract_cookies() {
+	for cookiejar in $HOME/.mozilla/firefox/*.default/cookies.sqlite; do
+		sqlite3 $cookiejar <<EOF
+.mode tabs
+SELECT host,
+  CASE
+    WHEN host glob '.*' THEN 'TRUE'
+    ELSE 'FALSE'
+  END,
+
+  path,
+
+  CASE
+    WHEN isSecure THEN 'TRUE'
+    ELSE 'FALSE'
+  END,
+
+  expiry, name, value
+FROM moz_cookies
+WHERE baseDomain = 'slack.com';
+EOF
+	done
+}
+
+main() {
+	extract_cookies > $HOME/.slackcurl/cookies
+}
+
+main
