@@ -1,0 +1,36 @@
+#!/usr/bin/env python
+import os, re, subprocess, configparser
+
+def get_secrets(account):
+    out = subprocess.check_output(['pass', 'show', 'mail/%s' % account], universal_newlines=True)
+    lines = str(out).strip().splitlines()
+
+    secrets = dict()
+    regex = re.compile('^(?P<key>[a-z_]+): (?P<value>.+)')
+    for line in lines:
+        try:
+            match = regex.search(line)
+            secrets[match.group('key')] = match.group('value')
+        except AttributeError:
+            pass
+
+    return secrets
+
+config_file_path = os.path.join(os.path.expanduser("~"), '.offlineimaprc')
+
+config = configparser.RawConfigParser()
+config.read(config_file_path)
+
+accounts = ["personal", "work"]
+
+for account in accounts:
+    secrets = get_secrets(account)
+    section = "Repository {}-remote".format(account)
+    config.set(section, 'remoteuser', secrets['login'])
+    config.set(section, 'oauth2_client_id', secrets['client_id'])
+    config.set(section, 'oauth2_client_secret', secrets['client_secret'])
+    config.set(section, 'oauth2_refresh_token', secrets['refresh_token'])
+    config.set(section, 'oauth2_access_token', '')
+
+with open(config_file_path, 'w') as config_file:
+    config.write(config_file)
