@@ -1,100 +1,97 @@
 function fish_user_abbreviations
 	set -U fish_user_abbreviations
 
-	abbr -a !=sudo
-	abbr -a tf='tail -f'
-	abbr -a l='ls -a'
-	abbr -a l.='ls -d .*'
-	abbr -a m=mux
-	abbr -a e=$EDITOR
-	abbr -a week="date '+%V'"
+	abbr tf 'tail -f'
+	abbr l 'ls -a'
+	abbr l. 'ls -d .*'
+	abbr m mux
+	abbr e $EDITOR
+	abbr week "date '+%V'"
 
 	if type -fq systemctl
-		abbr -a j='journalctl --since=yesterday'
-		abbr -a je='journalctl --since=yesterday --priority=0..3'
-		abbr -a jf='journalctl -f'
+		abbr j 'journalctl --since=yesterday'
+		abbr je 'journalctl --since=yesterday --priority=0..3'
+		abbr jf 'journalctl -f'
+		abbr ju 'journalctl -u'
+		abbr juu 'journalctl --user-unit'
 
-		abbr -a sc='sudo systemctl'
-		abbr -a scu='systemctl --user'
-		abbr -a scs='systemctl status'
-		abbr -a scl='systemctl list-units'
+		abbr sc 'sudo systemctl'
+		abbr scu 'systemctl --user'
+		abbr scs 'systemctl status'
+		abbr scl 'systemctl list-units'
 
-		abbr -a reboot='sudo systemctl reboot'
-		abbr -a poweroff='sudo systemctl poweroff'
-		abbr -a suspend='sudo systemctl suspend'
+		abbr reboot 'sudo systemctl reboot'
+		abbr poweroff 'sudo systemctl poweroff'
+		abbr suspend 'sudo systemctl suspend'
 	end
 
 	if type -fq git
-		abbr -a g='git'
-		abbr -a gs='git status -sb'
-		abbr -a gh='git head'
+		abbr g 'git'
+		abbr gs 'git status -sb'
+		abbr gh 'git head'
 
-		abbr -a gl='git l'
-		abbr -a gll='git ll'
-		abbr -a gwc='git wc'
+		abbr gl 'git l'
+		abbr gll 'git ll'
+		abbr gwc 'git wc'
 
-		abbr -a gd='git diff'
-		abbr -a gdt='git difftool'
-		abbr -a gdc='git diff --cached'
-		abbr -a gdw='git diff --color-words'
-		abbr -a gds='git diff --stat'
+		abbr gd 'git diff'
+		abbr gdt 'git difftool'
+		abbr gdc 'git diff --cached'
+		abbr gdw 'git diff --color-words'
+		abbr gds 'git diff --stat'
 
-		abbr -a ga='git add'
-		abbr -a gc='git commit -v'
-		abbr -a gca='git commit -v -a'
-		abbr -a gb='git branch'
-		abbr -a gco='git checkout'
-		abbr -a gf='git fetch'
-		abbr -a gfa='git fetch --all'
-		abbr -a gm='git merge'
-		abbr -a gr='git rebase'
-		abbr -a gcp='git cherry-pick'
-		abbr -a gpr='git-pull-request'
+		abbr ga 'git add'
+		abbr gc 'git commit -v'
+		abbr gca 'git commit -v -a'
+		abbr gb 'git branch'
+		abbr gco 'git checkout'
+		abbr gf 'git fetch'
+		abbr gfa 'git fetch --all'
+		abbr gm 'git merge'
+		abbr gr 'git rebase'
+		abbr gcp 'git cherry-pick'
+		abbr gpr 'git-pull-request'
 	end
 
 	if type -fq pacman
-		abbr -a pac='sudo pacman'
+		abbr pac 'sudo pacman'
 	end
 
 	if type -fq aura
-		abbr -a aur='sudo aura'
+		abbr aur 'sudo aura'
 	end
 
 	if type -fq pygmentize
-		abbr -a ccat=pygmentize
+		abbr ccat pygmentize
 	end
 
 	if type -fq bundle
-		abbr -a b=bundle
-		abbr -a be='bundle exec'
+		abbr b bundle
+		abbr be 'bundle exec'
 	end
 
 	if type -fq prax
-		abbr -a prs='prax restart'
+		abbr prs 'prax restart'
 	end
 
 	if type -fq vagrant
-		abbr -a v=vagrant
+		abbr v vagrant
 	end
 
 	if type -fq docker
-		abbr -a d=docker
-		abbr -a dim='docker images'
-		abbr -a dp='docker ps'
-		abbr -a dpa='docker ps -a'
-		abbr -a dpq='docker ps -q'
-		abbr -a drmc='docker rm -v (docker ps -qa --filter status=exited)'
-		abbr -a drmi='docker rmi (docker images -q --filter dangling=true)'
+		abbr d docker
+		abbr dim 'docker images'
+		abbr dp 'docker ps'
+		abbr dpa 'docker ps -a'
+		abbr dpq 'docker ps -q'
+		abbr drmc 'docker rm -v (docker ps -qa --filter status=exited)'
+		abbr drmi 'docker rmi (docker images -q --filter dangling=true)'
 	end
 
 	if type -q farm
-		abbr -a f='farm visit'
-		abbr -a fcd='farm cd'
-		abbr -a fc='farm console'
-		abbr -a fs='farm server'
-	end
-
-	if type -q workstation
-		abbr -a wrk='workstation'
+		abbr f 'farm visit'
+		abbr fcd 'farm cd'
+		abbr fc 'farm console'
+		abbr fs 'farm server'
 	end
 end
