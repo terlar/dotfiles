@@ -1,1 +1,1 @@
-COMMAND xdg-open %s
+COMMAND browser %s
