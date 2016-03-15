@@ -1,0 +1,10 @@
+[Unit]
+Description=parcimonie GnuPG keyring refresh
+
+[Service]
+Type=simple
+EnvironmentFile=%h/.parcimonie.conf
+ExecStart=/usr/bin/parcimonie.sh
+
+[Install]
+WantedBy=default.target
