@@ -1,0 +1,9 @@
+[Unit]
+Description=eclim daemon
+
+[Service]
+Type=simple
+ExecStart=/usr/lib/eclipse/eclimd
+
+[Install]
+WantedBy=default.target
