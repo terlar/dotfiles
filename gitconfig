@@ -1,6 +1,7 @@
 [user]
 	name = Terje Larsen
 	email = terlar@gmail.com
+	signingkey = 89AF679B037E1D2A
 [core]
 	excludesfile = ~/.gitignore
 [alias]
