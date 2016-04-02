@@ -3,7 +3,7 @@
 	email = terlar@gmail.com
 	signingkey = 89AF679B037E1D2A
 [core]
-	excludesfile = ~/.gitignore
+	excludesfile = ~/.gitignore.global
 [alias]
 	subpull  = submodule foreach git pull
 	unstage  = reset HEAD
