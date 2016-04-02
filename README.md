@@ -4,6 +4,7 @@
 
 ```sh
 git clone git://github.com/terlar/dotfiles.git ~/.dotfiles
+cd ~/.dotfiles
 make install
 ```
 
@@ -11,6 +12,7 @@ make install
 
 ```sh
 git clone git://github.com/terlar/dotfiles.git ~/.dotfiles
+cd ~/.dotfiles
 stow component
 ```
 
@@ -19,6 +21,7 @@ stow component
 Pull the latest dotfiles and install.
 
 ```sh
+cd ~/.dotfiles
 make update
 ```
 
@@ -27,6 +30,7 @@ make update
 Unlinks the dotfiles.
 
 ```sh
+cd ~/.dotfiles
 make uninstall
 rm -rf ~/.dotfiles
 ```
