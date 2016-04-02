@@ -1,27 +1,32 @@
 ## Installation
 
-During the installation you will get an interactive menu for any
-conflicting file. You can choose to either keep, replace or backup the
-old files.
+### Install everything
 
 ```sh
 git clone git://github.com/terlar/dotfiles.git ~/.dotfiles
-fish ~/.dotfiles/install.fish
+make install
+```
+
+### Install components
+
+```sh
+git clone git://github.com/terlar/dotfiles.git ~/.dotfiles
+stow component
 ```
 
 ## Update
 
-Pull the latest dotfiles.
+Pull the latest dotfiles and install.
 
 ```sh
-fish ~/.dotfiles/update.fish
+make update
 ```
 
 ## Uninstall
 
-Unlinks the dotfiles and restores eventual backups.
+Unlinks the dotfiles.
 
 ```sh
-fish ~/.dotfiles/uninstall.fish
+make uninstall
 rm -rf ~/.dotfiles
 ```
