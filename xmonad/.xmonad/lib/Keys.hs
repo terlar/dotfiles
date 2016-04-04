@@ -158,6 +158,7 @@ mediaKeys =
     ]
 
 -- Menus
+myApps :: [([Char], X ())]
 myApps =
     [ ("Firefox",      raiseApp  "web" "firefox")
     , ("GVim",         raiseApp' "gvim")
@@ -175,4 +176,5 @@ myApps =
 nonSPAndNonEmptyWS' s = return (\w -> (W.tag w `notElem` s) && isJust (W.stack w))
 
 -- Warp mouse
+bringMouse :: X ()
 bringMouse = warpToWindow (9/10) (9/10)
