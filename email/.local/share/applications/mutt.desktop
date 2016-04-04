@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Mutt
+GenericName=Mail Client
+NoDisplay=true
+Exec=termite -e "mutt %u"
+MimeType=x-scheme-handler/mailto

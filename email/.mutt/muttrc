@@ -10,7 +10,7 @@ unset wait_key
 set beep_new
 unset confirmappend
 set delete
-set editor = "vim +:silent+?^$"
+set editor = "nvim +:silent+?^$"
 set query_command = "ppl mutt '%s'"
 set ispell = "aspell -e -c"
 set mail_check = 0
