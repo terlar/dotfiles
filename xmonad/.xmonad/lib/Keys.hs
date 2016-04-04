@@ -2,6 +2,7 @@ module Keys where
 
 import XMonad
 import XMonad.Prompt.Shell
+import XMonad.Prompt.Pass
 import XMonad.Actions.FloatKeys
 import XMonad.Actions.CycleWS
 import XMonad.Actions.DynamicWorkspaces
@@ -69,6 +70,8 @@ myKeys =
     -- Shell prompt
     , ("M-p", programLauncher)
     , ("M-S-p", shellPrompt myXPConfig)
+    -- Password prompt
+    , ("M-S-8", passPrompt myXPConfig)
     -- Lock screen
     , ("M-<Esc>", spawn "lock" )
     -- Display management
