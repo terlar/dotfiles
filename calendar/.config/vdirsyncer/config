@@ -1,0 +1,35 @@
+[general]
+status_path = ~/.vdirsyncer/status/
+
+# Calendar
+[pair work_calendar]
+conflict_resolution = b wins
+a = work_calendar_local
+b = work_calendar_remote
+collections = ["from a", "from b"]
+metadata = ["color", "displayname"]
+
+[storage work_calendar_local]
+type = filesystem
+path = ~/.calendars/work/
+fileext = .ics
+
+[storage work_calendar_remote]
+type = google_calendar
+token_file = ~/.google-token-work
+
+[pair personal_calendar]
+conflict_resolution = b wins
+a = personal_calendar_local
+b = personal_calendar_remote
+collections = ["from a", "from b"]
+metadata = ["color", "displayname"]
+
+[storage personal_calendar_local]
+type = filesystem
+path = ~/.calendars/personal/
+fileext = .ics
+
+[storage personal_calendar_remote]
+type = google_calendar
+token_file = ~/.google-token-personal
