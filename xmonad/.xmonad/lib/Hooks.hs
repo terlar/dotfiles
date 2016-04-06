@@ -1,6 +1,6 @@
 module Hooks where
 
-import XMonad hiding (Tall)
+import XMonad hiding ((|||))
 import XMonad.ManageHook
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.FadeInactive
@@ -11,13 +11,17 @@ import XMonad.Util.NamedScratchpad
 import XMonad.Layout.HintedTile
 import XMonad.Layout.Reflect
 import XMonad.Layout.Accordion
-import XMonad.Layout.Renamed as R
+import XMonad.Layout.Named
+import XMonad.Layout.Combo
+import XMonad.Layout.LayoutCombinators
 import XMonad.Layout.MultiToggle
 import XMonad.Layout.PerWorkspace (onWorkspace)
 import XMonad.Layout.Magnifier (magnifiercz')
 import XMonad.Layout.ResizableTile
 import XMonad.Layout.TwoPane
+import XMonad.Layout.StackTile
 import XMonad.Layout.LimitWindows
+import XMonad.Layout.Tabbed
 import XMonad.Layout.NoBorders (smartBorders)
 
 import qualified XMonad.StackSet as W
@@ -74,17 +78,17 @@ myLayoutHook = smartBorders $
     mkToggle (single REFLECTX) $
     mkToggle (single REFLECTY) $
 
-    onWorkspace "speak" Full $
+    onWorkspace "web" tabs $
+    onWorkspace "speak" (Full ||| tiled ||| dualStack ||| tabs) $
 
-    tall ||| grid ||| magnifiercz' 1.4 triple ||| dual ||| Full ||| fold
+    tiled ||| grid ||| tabs ||| dualStack ||| accordionFull ||| magnifiercz' 1.4 triple ||| Full
   where
-    tall = renamed [R.Replace "Tile"] $
-        ResizableTall 1 delta (2/3) []
-    grid = renamed [R.Replace "Grid"] $
-        GV.SplitGrid GV.L 2 3 (2/3) (16/10) (5/100)
-    dual = renamed [R.Replace "Dual"] $
-        TwoPane delta (2/3)
-    triple = renamed [R.Replace "Triple"] $
-        limitWindows 3 tall
-    fold = renamed [R.Replace "Fold"] Accordion
-    delta = 2/100
+    tiled = named "Tiled" (ResizableTall 1 delta (2/3) [])
+    triple = named "Triple" (limitWindows 3 tiled)
+    tabs = named "Tabbed" (tabbed shrinkText myTabConfig)
+    accordion = named "Folded" (Accordion)
+    accordionFull = named "Folded Full" (combineTwo (TwoPane delta (1/2)) (Accordion) (Full))
+    dual = named "Dual" (TwoPane delta (2/3))
+    dualStack = named "Dual Stacked" (combineTwo (StackTile 1 delta (1/2)) (Full) (Full))
+    grid = named "Grid" (GV.SplitGrid GV.L 2 3 (2/3) (16/10) (5/100))
+    delta = 3/100
