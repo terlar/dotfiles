@@ -1,0 +1,10 @@
+[Unit]
+Description=Vdirsyncer Contact/Calendar Synchronization
+Documentation=man:vdirsyncer
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/vdirsyncer sync
+
+[Install]
+WantedBy=default.target
