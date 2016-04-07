@@ -8,7 +8,7 @@ import XMonad.Layout.Tabbed
 myModMask = mod4Mask
 
 myTerm = "termite"
-myBrowser = "firefox"
+myBrowser = "qutebrowser"
 myPDFViewer = "zathura"
 myImageViewer = "feh"
 myVideoPlayer = "mplayer"

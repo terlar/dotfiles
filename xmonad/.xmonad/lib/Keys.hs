@@ -163,8 +163,8 @@ mediaKeys =
 -- Menus
 myApps :: [([Char], X ())]
 myApps =
-    [ ("Firefox",      raiseApp  "web" "firefox")
-    , ("GVim",         raiseApp' "gvim")
+    [ ("Browser",      raiseApp  "web" myBrowser)
+    , ("Vim",          raiseApp' "nyaovim")
     , ("LibreOffice",  raiseApp  "doc" "libreoffice")
     , ("Themes",       spawn     "lxappearance")
     ]

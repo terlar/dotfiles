@@ -28,13 +28,14 @@ is_not_empty() {
 }
 
 main() {
+	local browser='qutebrowser'
 	local url
 	local curl_opts='-Ls'
 	local slack_cookie="$HOME/.slackcurl/cookies"
 
 	if [[ $# -eq 0 ]]; then
 		if [[ -t 0 ]]; then
-			exec firefox &>/dev/null
+			exec $browser &>/dev/null
 		else
 			url=$(mktemp /tmp/browser.XXXXXXXX.html)
 			cat /dev/stdin > $url
@@ -77,7 +78,7 @@ main() {
 			exec curl $curl_opts $url | mplayer -cache 8192 -
 			;;
 		*)
-			exec firefox $url &>/dev/null
+			exec $browser $url &>/dev/null
 			;;
 	esac
 }
