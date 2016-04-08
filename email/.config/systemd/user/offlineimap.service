@@ -3,8 +3,8 @@ Description=OfflineIMAP IMAP/Maildir Synchronization
 Documentation=man:offlineimap
 
 [Service]
-Type=simple
-ExecStart=/usr/bin/offlineimap -o -u quiet
+Type=oneshot
+ExecStart=/usr/bin/offlineimap -o -u syslog
 
 [Install]
 WantedBy=default.target

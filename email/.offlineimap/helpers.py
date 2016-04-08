@@ -27,13 +27,3 @@ def nt_local(folder):
 # folderfilter = exclude(['Label', 'Label', ... ])
 def exclude(excludes):
     return lambda folder: not folder in excludes
-
-def get_credentials(account, meta=None):
-    out = subprocess.check_output(['pass', 'show', 'mail/%s' % account], universal_newlines=True)
-    lines = str(out).strip().splitlines()
-    if meta is None:
-        return lines[0]
-    else:
-        regex = re.compile('^%s: (.*)' % meta)
-        matches = (m.group(1) for l in lines for m in [regex.search(l)] if m)
-        return next(matches, None)

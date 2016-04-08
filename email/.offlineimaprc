@@ -1,8 +1,9 @@
 [general]
 ui = ttyui
-accounts = personal,work
+accounts = personal, work
+maxsyncaccounts = 2
 fsync = False
-pythonfile = ~/.local/bin/offlineimap-helpers.py
+pythonfile = ~/.offlineimap/helpers.py
 
 [mbnames]
 enabled = yes
@@ -25,12 +26,12 @@ status_backend = sqlite
 postsynchook = notmuch new
 
 [Repository personal-local]
-type = Maildir
+type = GmailMaildir
 localfolders = ~/mail/personal
 nametrans = nt_local
 
 [Repository work-local]
-type = Maildir
+type = GmailMaildir
 localfolders = ~/mail/work
 nametrans = nt_local
 
