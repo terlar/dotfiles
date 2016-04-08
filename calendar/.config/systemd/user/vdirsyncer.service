@@ -3,8 +3,10 @@ Description=Vdirsyncer Contact/Calendar Synchronization
 Documentation=man:vdirsyncer
 
 [Service]
-Type=simple
+Type=oneshot
 ExecStart=/usr/bin/vdirsyncer sync
+# Update khal caching DB
+ExecStopPost=/usr/bin/khal
 
 [Install]
 WantedBy=default.target

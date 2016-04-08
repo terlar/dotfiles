@@ -2,8 +2,8 @@
 Description=Vdirsyncer Synchronization Timer
 
 [Timer]
-OnBootSec=5min
-OnUnitActiveSec=60
+OnUnitInactiveSec=15m
+Unit=vdirsyncer.service
 
 [Install]
 WantedBy=timers.target

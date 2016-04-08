@@ -1,7 +1,6 @@
 [general]
 status_path = ~/.vdirsyncer/status/
 
-# Calendar
 [pair work_calendar]
 conflict_resolution = b wins
 a = work_calendar_local
@@ -16,7 +15,9 @@ fileext = .ics
 
 [storage work_calendar_remote]
 type = google_calendar
-token_file = ~/.google-token-work
+token_file = ~/.vdirsyncer/google-token-work
+client_id.fetch = ["command", "secret", "oauth/vdirsyncer", "client_id"]
+client_secret.fetch = ["command", "secret", "oauth/vdirsyncer"]
 
 [pair personal_calendar]
 conflict_resolution = b wins
@@ -32,4 +33,6 @@ fileext = .ics
 
 [storage personal_calendar_remote]
 type = google_calendar
-token_file = ~/.google-token-personal
+token_file = ~/.vdirsyncer/google-token-personal
+client_id.fetch = ["command", "secret", "oauth/vdirsyncer", "client_id"]
+client_secret.fetch = ["command", "secret", "oauth/vdirsyncer"]
