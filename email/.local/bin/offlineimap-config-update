@@ -10,18 +10,11 @@ def get_secrets(account):
     for line in lines:
         try:
             match = regex.search(line)
-            secrets[match.group('key')] = match.group('value')
+            secrets[match.group('key')] = match.group('value').strip()
         except AttributeError:
             pass
 
     return secrets
-
-def get_tokens(account):
-    token_file_path = os.path.join(os.path.expanduser("~"), '.google-token-' + account)
-    file = open(token_file_path)
-    data = json.load(file)
-
-    return data
 
 config_file_path = os.path.join(os.path.expanduser("~"), '.offlineimaprc')
 
@@ -31,15 +24,19 @@ config.read(config_file_path)
 accounts = ["personal", "work"]
 
 for account in accounts:
-    secrets = get_secrets(account)
-    tokens = get_tokens(account)
+    print("Updating account {}".format(account))
 
-    section = "Repository {}-remote".format(account)
-    config.set(section, 'remoteuser', secrets['login'])
-    config.set(section, 'oauth2_client_id', secrets['client_id'])
-    config.set(section, 'oauth2_client_secret', secrets['client_secret'])
-    config.set(section, 'oauth2_refresh_token', tokens['refresh_token'])
-    config.set(section, 'oauth2_access_token', tokens['access_token'])
+    secrets = get_secrets(account)
+
+    try:
+        section = "Repository {}-remote".format(account)
+        config.set(section, 'remoteuser', secrets['login'])
+        config.set(section, 'oauth2_client_id', secrets['client_id'])
+        config.set(section, 'oauth2_client_secret', secrets['client_secret'])
+        config.set(section, 'oauth2_refresh_token', secrets['refresh_token'])
+    except configparser.NoSectionError:
+        print("Config section not found, skipping.")
+        pass
 
 with open(config_file_path, 'w') as config_file:
     config.write(config_file)
