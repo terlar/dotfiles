@@ -16,26 +16,26 @@ def get_secrets(account):
 
     return secrets
 
-config_file_path = os.path.join(os.path.expanduser("~"), '.offlineimaprc')
+config_file_path = os.path.join(os.path.expanduser('~'), '.offlineimaprc')
 
 config = configparser.RawConfigParser()
 config.read(config_file_path)
 
-accounts = ["personal", "work"]
+accounts = ['personal', 'work']
 
 for account in accounts:
-    print("Updating account {}".format(account))
+    print('Updating account %s' % account)
 
     secrets = get_secrets(account)
 
     try:
-        section = "Repository {}-remote".format(account)
+        section = 'Repository %s-remote' % account
         config.set(section, 'remoteuser', secrets['login'])
         config.set(section, 'oauth2_client_id', secrets['client_id'])
         config.set(section, 'oauth2_client_secret', secrets['client_secret'])
         config.set(section, 'oauth2_refresh_token', secrets['refresh_token'])
     except configparser.NoSectionError:
-        print("Config section not found, skipping.")
+        print('Config section not found, skipping.')
         pass
 
 with open(config_file_path, 'w') as config_file:
