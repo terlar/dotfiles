@@ -66,6 +66,10 @@
 	autosetupmerge = always
 [push]
 	default = simple
+[advice]
+	detachedHead = false
+[help]
+	autoCorrect = -1
 [rerere]
 	# Reuse recorded resolution
 	enabled = true
@@ -77,7 +81,3 @@
 [url "git@github.com:"]
 	# With write access
 	insteadOf = wgh:
-[advice]
-	detachedHead = false
-[help]
-	autoCorrect = -1
