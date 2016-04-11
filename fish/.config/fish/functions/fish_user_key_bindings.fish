@@ -71,12 +71,10 @@ function __commandline_eval_token
 	test -n "$value"; or return
 
 	commandline -t $value
-	if string match -q '(*' $token
-		commandline -f backward-char
-	else if string match -q '/*' $value
+	if string match -q '*/' $value
 		test -d $value; and return
 		mkdir -p $value
-		commandline -t $value/
+		commandline -t $value
 	end
 end
 
