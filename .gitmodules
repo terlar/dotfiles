@@ -1,3 +1,4 @@
 [submodule "vim/.config/nvim"]
 	path = vim/.config/nvim
 	url = https://github.com/terlar/vimfiles.git
+	branch = master
