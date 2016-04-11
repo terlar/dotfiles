@@ -1,0 +1,39 @@
+#!/usr/bin/env python
+import os, re, subprocess, configparser, json
+
+def get_secrets():
+    out = subprocess.check_output(['pass', 'show', 'oauth/vdirsyncer'], universal_newlines=True)
+    lines = str(out).strip().splitlines()
+
+    secrets = dict()
+    regex = re.compile('^(?P<key>[a-z_]+): (?P<value>.+)')
+    for line in lines:
+        try:
+            match = regex.search(line)
+            secrets[match.group('key')] = match.group('value').strip()
+        except AttributeError:
+            pass
+
+    return secrets
+
+config_file_path = os.path.join(os.path.expanduser('~'), '.config', 'vdirsyncer', 'config')
+
+config = configparser.RawConfigParser()
+config.read(config_file_path)
+
+accounts = ['personal', 'work']
+secrets = get_secrets()
+
+for account in accounts:
+    print('Updating account %s' % account)
+
+    try:
+        section = 'storage %s_calendar_remote' % account
+        config.set(section, 'client_id', secrets['client_id'])
+        config.set(section, 'client_secret', secrets['client_secret'])
+    except configparser.NoSectionError:
+        print('Config section not found, skipping.')
+        pass
+
+with open(config_file_path, 'w') as config_file:
+    config.write(config_file)
