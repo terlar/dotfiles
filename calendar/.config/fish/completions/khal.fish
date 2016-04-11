@@ -14,7 +14,7 @@ function __khal_commands
 		return
 	end
 
-	khal --help | awk '/Commands:/{f=1;next}/\n/{f=0}f' | string replace  -r '^\s+([^\s]+) +(.+)$' '$1'\t'$2'
+	khal --help | awk '/Commands:/{f=1;next}/^\s*$/{f=0}f' | string replace  -r '^\s+([^\s]+)\s+(.+)$' '$1'\t'$2'
 end
 
 complete -f -c khal -l config -s 'c' -d 'The config file to use.'
