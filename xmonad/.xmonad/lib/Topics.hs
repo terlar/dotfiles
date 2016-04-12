@@ -52,7 +52,7 @@ myTopicConfig = defaultTopicConfig
         -- Video selection prompt
         , ( "video", videoSelect)
         -- PDF selection prompt
-        , ( "pdf", pdfSelect)
+        , ( "pdf", spawn myPDFViewer)
         -- File manager
         , ( "file", spawnFile)
         -- IRC and E-mail

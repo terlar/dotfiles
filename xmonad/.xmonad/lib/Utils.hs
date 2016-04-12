@@ -21,9 +21,6 @@ q ~? x = fmap (x `isInfixOf`) q -- haystack includes needle?
 videoSelect :: X ()
 videoSelect = spawnSelect myVideoPlayer "Select a video" "$XDG_VIDEOS_DIR"
 
-pdfSelect :: X ()
-pdfSelect = spawnSelect myPDFViewer "Select a PDF" "$XDG_DOCUMENTS_DIR"
-
 pictureSelect :: X ()
 pictureSelect = spawnSelect myImageViewer "Select a picture" "$XDG_PICTURES_DIR"
 
