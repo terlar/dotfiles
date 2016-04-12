@@ -1,0 +1,211 @@
+#!/usr/bin/env python
+import sys, re, subprocess, json
+
+class JsonOutput:
+    def __init__(self, dict):
+        self.dict = dict
+
+    def build(self):
+        return json.dumps(self.dict, ensure_ascii=False)
+
+class FishOutput:
+    def __init__(self, path, dict):
+        self.path = path
+        self.dict = dict
+
+    def build(self):
+        l = []
+
+        cmd = self.path[0]
+        no_cmd_func = '__{}_no_command'.format(cmd)
+        use_cmd_func = '__{}_using_command'.format(cmd)
+
+        l.append('''### BEGIN GENERATED
+        function {}
+            set -l cmd (commandline -poc)
+            set -e cmd[1]
+            if test (count $cmd) -eq 0
+                return 0
+            end
+            return 1
+        end
+
+        function {}
+            set cmd (commandline -poc)
+            if test (count $cmd) -gt 1
+                if test $argv[1] = $cmd[2]
+                    return 0
+                end
+            end
+            return 1
+        end
+        '''.format(no_cmd_func, use_cmd_func))
+
+        for key, value in self.dict.items():
+            path = key.split('.')
+
+            if path == self.path:
+                for subcmd in value['commands']:
+                    l.append('complete -c {} -f -n "{}" -a {} -d "{}"'.format(
+                        cmd,
+                        no_cmd_func,
+                        subcmd['name'],
+                        subcmd['desc']
+                    ))
+
+                for opt in value['options']:
+                    if opt['short'] is not None:
+                        l.append('complete -c {} -s "{}" -d "{}"'.format(
+                            cmd,
+                            opt['short'],
+                            opt['desc']
+                        ))
+
+                    if opt['long'] is not None:
+                        l.append('complete -c {} -l "{}" -d "{}"'.format(
+                            cmd,
+                            opt['long'],
+                            opt['desc']
+                        ))
+            else:
+                for opt in value['options']:
+                    if opt['short'] is not None:
+                        l.append('complete -c {} -n "{} {}" -s "{}" -d "{}"'.format(
+                            cmd,
+                            use_cmd_func,
+                            path[1],
+                            opt['short'],
+                            opt['desc']
+                        ))
+
+                    if opt['long'] is not None:
+                        l.append('complete -c {} -n "{} {}" -l "{}" -d "{}"'.format(
+                            cmd,
+                            use_cmd_func,
+                            path[1],
+                            opt['long'],
+                            opt['desc']
+                        ))
+                continue
+
+        l.append('### END GENERATED')
+        return '\n'.join(l)
+
+class HelpParser:
+    USAGE_START = re.compile(r'(?i)usage:')
+    OPT_START = re.compile(r'(?i).*options:')
+    CMD_START = re.compile(r'(?i)commands:')
+    DESC_LINE = re.compile(r'^\s+(?P<desc>.*$)')
+    SECTION_END = re.compile(r'^\s*$')
+
+    OPT_LINE_TMPL = r'''
+        ^\s*
+        (
+            (-(?P<short>\w)      # short option
+            |                    # or
+            --(?P<long>[\w_-]+)) # long option
+            (,\s)?               # separated by comma and space
+        )*                       # occuring in any order or times
+        (\s(?P<param>[A-Z]+)\s)? # parameter
+        \s*                      # spacing
+        (?P<desc>.*)$            # description
+    '''
+    OPT_LINE = re.compile(OPT_LINE_TMPL, re.VERBOSE)
+    CMD_LINE = re.compile(r'^\s*(?P<name>[\w_-]+)\s*(?P<desc>.*)$')
+
+    def __init__(self, cmd_path, dict = {}):
+        self.cmd_path = cmd_path
+
+        self.dict = dict
+        self.options = []
+        self.commands = []
+
+        key = '.'.join(cmd_path)
+        dict[key] = {'options': self.options, 'commands': self.commands}
+
+    def parse_usage(self, line):
+        return
+
+    def parse_option(self, line):
+        mo = self.OPT_LINE.match(line)
+
+
+        if mo is None:
+            return None
+
+        data = mo.groupdict()
+        self.options.append(data)
+        return data
+
+    def parse_command(self, line):
+        mo = self.CMD_LINE.match(line)
+
+        if mo is None:
+            return None
+
+        data = mo.groupdict()
+        cmd = data['name']
+        desc = data['desc']
+        self.commands.append(data)
+
+        sub_cmd_path = self.cmd_path + [cmd]
+        output = subprocess.check_output(sub_cmd_path + ['--help'], universal_newlines=True)
+
+        parser = HelpParser(sub_cmd_path, self.dict)
+        parser.read(output)
+
+    def read(self, output):
+        cursect = None
+        curdata = None
+        lineno = 0
+
+        for lineno, line in enumerate(output.splitlines(), start=1):
+            if cursect is not None:
+                mo = self.SECTION_END.match(line)
+                if mo:
+                    cursect = None
+                    continue
+                else:
+                    data = getattr(self, 'parse_%s' % cursect)(line)
+
+                    if data is not None:
+                        curdata = data
+                    else:
+                        mo = self.DESC_LINE.match(line)
+                        if mo and curdata is not None:
+                            curdata['desc'] += ' %s' % mo.group('desc')
+                            curdata = None
+            else:
+                mo = self.USAGE_START.match(line)
+                if mo:
+                    cursect = 'usage'
+                    continue
+
+                mo = self.OPT_START.match(line)
+                if mo:
+                    cursect = 'option'
+                    continue
+
+                mo = self.CMD_START.match(line)
+                if mo:
+                    cursect = 'command'
+                    continue
+
+        return self.dict
+
+def main(argv):
+    if len(argv) != 1:
+        print('help_parser <command>')
+        sys.exit(2)
+
+    output = subprocess.check_output(argv + ['--help'], universal_newlines=True)
+
+    parser = HelpParser(argv)
+    data = parser.read(output)
+
+    output = FishOutput(argv, data)
+    print(output.build())
+
+if __name__ == '__main__':
+    main(sys.argv[1:])
+    sys.exit(0)
