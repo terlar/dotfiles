@@ -73,6 +73,12 @@
 [rerere]
 	# Reuse recorded resolution
 	enabled = true
+[ghq]
+	root = ~/src
+	root = ~/go/src
+[ghq "import"]
+	starred = github-list-starred
+	user = getgithubrepos
 [github]
 	user = terlar
 [url "git://github.com/"]
