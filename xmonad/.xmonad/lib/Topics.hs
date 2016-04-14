@@ -29,7 +29,7 @@ myTopicConfig = defaultTopicConfig
     { topicDirs = M.fromList
         [ ( "dashboard", "")
         , ( "note", "notes")
-        , ( "code", "code")
+        , ( "code", "src")
         , ( "web", "downloads")
         , ( "music", "music")
         , ( "video", "video")
