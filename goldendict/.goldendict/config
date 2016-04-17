@@ -147,7 +147,7 @@
   <pronounceOnLoadPopup>1</pronounceOnLoadPopup>
   <useExternalPlayer>0</useExternalPlayer>
   <useInternalPlayer>1</useInternalPlayer>
-  <audioPlaybackProgram>mplayer</audioPlaybackProgram>
+  <audioPlaybackProgram>mpv</audioPlaybackProgram>
   <alwaysOnTop>0</alwaysOnTop>
   <searchInDock>0</searchInDock>
   <historyStoreInterval>5</historyStoreInterval>

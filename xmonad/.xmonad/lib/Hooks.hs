@@ -43,7 +43,7 @@ myManageHook = composeAll
     , isDialog                   --> doCenterFloat
     , appName =? "lxappearance"  --> doCenterFloat
     , appName =? "qtconfig-qt4"  --> doCenterFloat
-    , appName =? "mplayer"       --> doCenterFloat
+    , appName =? "mpv"           --> doCenterFloat
     , appName =? "sxiv"          --> doCenterFloat
     , appName =? "feh"           --> doCenterFloat
     , appName =? "gifview"       --> doCenterFloat

@@ -5,10 +5,6 @@ has_slack() {
 	[[ -f "$cookie" ]]
 }
 
-has_youtube() {
-	command -v youtube-dl >/dev/null 2>&1
-}
-
 is_slack_url() {
 	local url="$@"
 
@@ -31,6 +27,7 @@ main() {
 	local browser='qutebrowser'
 	local url
 	local curl_opts='-Ls'
+	local mpv_opts
 	local slack_cookie="$HOME/.slackcurl/cookies"
 
 	if [[ $# -eq 0 ]]; then
@@ -46,6 +43,7 @@ main() {
 
 	if has_slack $slack_cookie && is_slack_url $url; then
 		curl_opts="$curl_opts --cookie $slack_cookie"
+		mpv_opts="$mpv_opts --cookies=yes --cookies-file $slack_cookie"
 		local new_url=$(curl $curl_opts "$url" \
 			| sed -e 's|boot_data.file = \({.*}\);|\1|;tx;d;:x' \
 			| jq -r '.url_private_download')
@@ -55,14 +53,16 @@ main() {
 		fi
 	fi
 
-	if has_youtube && is_youtube_url $url; then
-		exec youtube-dl -q -o- $url | mplayer -cache 8192 -
-		return
+	local mime
+
+	if is_youtube_url $url; then
+		mime=video/youtube
+	else
+		mime=$(curl $curl_opts -r 0-499 -IX HEAD "$url" \
+			| awk '/^Content-Type:/ { print $2 }' \
+			| sed -e 's/[[:cntrl:]]//')
 	fi
 
-	local mime=$(curl $curl_opts -r 0-499 -IX HEAD "$url" \
-		| awk '/^Content-Type:/ { print $2 }' \
-		| sed -e 's/[[:cntrl:]]//')
 
 	is_not_empty $mime \
 		&& echo "Detected $mime, loading..."
@@ -75,7 +75,7 @@ main() {
 			exec curl $curl_opts $url | feh -. -
 			;;
 		video/*)
-			exec curl $curl_opts $url | mplayer -cache 8192 -
+			exec mpv $mpv_opts $url
 			;;
 		*)
 			exec $browser $url &>/dev/null

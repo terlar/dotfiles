@@ -11,7 +11,7 @@ myTerm = "termite"
 myBrowser = "qutebrowser"
 myPDFViewer = "zathura"
 myImageViewer = "feh"
-myVideoPlayer = "mplayer"
+myVideoPlayer = "mpv"
 
 myBorderWidth :: Dimension
 myBorderWidth = 4
