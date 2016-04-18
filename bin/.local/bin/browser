@@ -17,6 +17,12 @@ is_youtube_url() {
 	[[ "$url" == https://youtu.be/* || "$url" == https://www.youtube.com/watch* ]]
 }
 
+is_tumblr_url() {
+	local url="$@"
+
+	[[ "$url" == http://*.tumblr.com/* || "$url" == https://*.tumblr.com/* ]]
+}
+
 is_not_empty() {
     local var=$1
 
@@ -47,6 +53,14 @@ main() {
 		local new_url=$(curl $curl_opts "$url" \
 			| sed -e 's|boot_data.file = \({.*}\);|\1|;tx;d;:x' \
 			| jq -r '.url_private_download')
+
+		if [[ -n $new_url ]]; then
+			url=$new_url
+		fi
+	fi
+
+	if is_tumblr_url $url; then
+		local new_url=$(curl $curl_opts "$url" | sed -n '/<img/s/.*src="\([^"]*\)".*/\1/p' | grep -m1 '.gif$')
 
 		if [[ -n $new_url ]]; then
 			url=$new_url
