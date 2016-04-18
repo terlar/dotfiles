@@ -6,6 +6,7 @@ group :tools do
 end
 
 group :development do
+  gem 'rack'                # Web server
   gem 'pry'                 # Interactive shell
   gem 'pry-byebug'          # Debugger
   gem 'awesome_print'       # Improved output
