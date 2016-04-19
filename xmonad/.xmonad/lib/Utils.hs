@@ -33,3 +33,6 @@ restartXMonad = spawn "xmonad --recompile && xmonad --restart"
 
 programLauncher :: MonadIO m => m ()
 programLauncher = spawn $ "x=$(yeganesh -x -- " ++ dmenuConfig ++ ") && exec $x"
+
+passPrompt :: MonadIO m => m ()
+passPrompt = spawn $ "x=$(passmenu " ++ dmenuConfig ++ ") && exec $x"
