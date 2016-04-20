@@ -1,12 +1,14 @@
 .DEFAULT_GOAL:=install
 
+PACKAGES=$(sort $(dir $(wildcard */)))
+
 .PHONY: install
 install:
-	stow -t ~ $(sort $(dir $(wildcard */)))
+	stow -t ~ $(PACKAGES)
 
 .PHONY: uninstall
 uninstall:
-	stow -Dt ~ $(sort $(dir $(wildcard */)))
+	stow -Dt ~ $(PACKAGES)
 
 .PHONY: update
 update: pull install
