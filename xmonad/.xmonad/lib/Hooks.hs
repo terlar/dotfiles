@@ -78,7 +78,7 @@ myLayoutHook = smartBorders $
     mkToggle (single REFLECTX) $
     mkToggle (single REFLECTY) $
 
-    onWorkspace "web" tabs $
+    onWorkspace "web" (tabs ||| Full ||| dualStack) $
     onWorkspace "speak" (Full ||| tiled ||| dualStack ||| tabs) $
 
     tiled ||| grid ||| tabs ||| dualStack ||| accordionFull ||| magnifiercz' 1.4 triple ||| Full
