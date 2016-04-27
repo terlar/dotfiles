@@ -94,7 +94,7 @@ class FishOutput:
 class HelpParser:
     USAGE_START = re.compile(r'(?i)usage:')
     OPT_START = re.compile(r'(?i).*options:')
-    CMD_START = re.compile(r'(?i)commands:')
+    CMD_START_TMPL = r'(?i)(commands:|{})$'
     DESC_LINE = re.compile(r'^\s+(?P<desc>.*$)')
     SECTION_END = re.compile(r'^\s*$')
 
@@ -104,7 +104,7 @@ class HelpParser:
             (-(?P<short>\w)      # short option
             |                    # or
             --(?P<long>[\w_-]+)) # long option
-            (,\s)?               # separated by comma and space
+            (,?\s)?              # separated by comma and space
         )*                       # occuring in any order or times
         (\s(?P<param>[A-Z]+)\s)? # parameter
         \s*                      # spacing
@@ -113,8 +113,10 @@ class HelpParser:
     OPT_LINE = re.compile(OPT_LINE_TMPL, re.VERBOSE)
     CMD_LINE = re.compile(r'^\s*(?P<name>[\w_-]+)\s*(?P<desc>.*)$')
 
-    def __init__(self, cmd_path, dict = {}):
+    def __init__(self, cmd_path, help_pattern, dict = {}):
+        self.cmd_start = re.compile(self.CMD_START_TMPL.format(cmd_path[0]))
         self.cmd_path = cmd_path
+        self.help_pattern = help_pattern
 
         self.dict = dict
         self.options = []
@@ -149,46 +151,55 @@ class HelpParser:
         self.commands.append(data)
 
         sub_cmd_path = self.cmd_path + [cmd]
-        output = subprocess.check_output(sub_cmd_path + ['--help'], universal_newlines=True)
+        output = subprocess.check_output(
+            self.help_pattern.format(''.join(self.cmd_path), cmd),
+            universal_newlines=True,
+            shell=True)
 
-        parser = HelpParser(sub_cmd_path, self.dict)
+        parser = HelpParser(sub_cmd_path, self.help_pattern, self.dict)
         parser.read(output)
 
     def read(self, output):
         cursect = None
         curdata = None
         lineno = 0
+        processed = 0
 
         for lineno, line in enumerate(output.splitlines(), start=1):
             if cursect is not None:
                 mo = self.SECTION_END.match(line)
                 if mo:
-                    cursect = None
+                    if processed > 0:
+                        cursect = None
                     continue
                 else:
-                    data = getattr(self, 'parse_%s' % cursect)(line)
+                    processed += 1
+                    data = getattr(self, 'parse_{}'.format(cursect))(line)
 
                     if data is not None:
                         curdata = data
                     else:
                         mo = self.DESC_LINE.match(line)
                         if mo and curdata is not None:
-                            curdata['desc'] += ' %s' % mo.group('desc')
+                            curdata['desc'] += ' {}'.format(mo.group('desc'))
                             curdata = None
             else:
                 mo = self.USAGE_START.match(line)
                 if mo:
                     cursect = 'usage'
+                    processed = 0
                     continue
 
                 mo = self.OPT_START.match(line)
                 if mo:
                     cursect = 'option'
+                    processed = 0
                     continue
 
-                mo = self.CMD_START.match(line)
+                mo = self.cmd_start.match(line)
                 if mo:
                     cursect = 'command'
+                    processed = 0
                     continue
 
         return self.dict
@@ -198,9 +209,23 @@ def main(argv):
         print('help_parser <command>')
         sys.exit(2)
 
-    output = subprocess.check_output(argv + ['--help'], universal_newlines=True)
+    help_patterns = ['{} help {}', '{} {} --help']
+    help_pattern = None
+    output = None
 
-    parser = HelpParser(argv)
+    for pattern in help_patterns:
+        try:
+            output = subprocess.check_output(
+                pattern.format(''.join(argv), ''),
+                stderr=subprocess.STDOUT,
+                universal_newlines=True,
+                shell=True)
+            help_pattern = pattern
+            break
+        except subprocess.CalledProcessError:
+            continue
+
+    parser = HelpParser(argv, help_pattern)
     data = parser.read(output)
 
     output = FishOutput(argv, data)
