@@ -28,7 +28,10 @@
 	sshow = "!f() { git stash show stash^{/$*} -p; }; f"
 	sapply = "!f() { git stash apply stash^{/$*}; }; f"
 
-	# Logging
+	# Branch
+	bactive = for-each-ref --sort=-committerdate --format=\"%(refname:short)\"
+
+	# History
 	l      = log --graph --decorate --pretty=format:\"%C(yellow)%h%C(reset)%C(auto)%d%C(reset) %s %C(yellow)(%C(cyan)%ar%C(yellow), %C(blue)%an%C(yellow))%C(reset)\"
 	ll     = log --graph --decorate --stat --pretty=format:\"%C(yellow)%h%C(reset)%C(auto)%d%C(reset) %s%n %C(cyan)%ar%C(reset), %C(blue)%an%C(reset)%n\"
 	fup    = log --since '1 day ago' --oneline --author terlar@gmail.com
