@@ -41,8 +41,8 @@ function fish_user_abbreviations
 		abbr gds 'git diff --stat'
 
 		abbr ga 'git add'
-		abbr gc 'git commit -v'
-		abbr gca 'git commit -v -a'
+		abbr gc 'git commit'
+		abbr gca 'git commit -a'
 		abbr gb 'git branch'
 		abbr gco 'git checkout'
 		abbr gf 'git fetch'
