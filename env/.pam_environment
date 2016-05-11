@@ -5,17 +5,24 @@ LC_ALL DEFAULT=${LANG}
 # Paths
 HOME      DEFAULT=/home/@{PAM_USER} OVERRIDE=${HOME}
 GOPATH    DEFAULT=${HOME}/go
-PATH      DEFAULT=${HOME}/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:${HOME}/.cabal/bin:${GOPATH}/bin:/usr/bin/core_perl
+PATH      DEFAULT=${HOME}/.local/bin\
+:/usr/local/sbin\
+:/usr/local/bin\
+:/usr/bin:/bin\
+:${GOPATH}/bin\
+:${HOME}/.cabal/bin\
+:/usr/bin/core_perl
 XBMC_HOME DEFAULT=/usr/share/plexhometheater
 VAGRANT_DOCKER_CACHE DEFAULT=${HOME}/.docker-cache
 
 # Tools
 VISUAL    DEFAULT=nvim
 EDITOR    DEFAULT=nvim
-PAGER     DEFAULT=less
 TERMINAL  DEFAULT=termite
 BROWSER   DEFAULT=browser
-LESS      DEFAULT=-MR +Gg
+PAGER     DEFAULT=less
+MANPAGER  DEFAULT=less
+LESS      DEFAULT="-MR +Gg"
 
 # XDG
 XDG_DESKTOP_DIR   DEFAULT=${HOME}
