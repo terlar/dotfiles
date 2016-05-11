@@ -8,6 +8,7 @@ ExecStart=/usr/bin/tmux new-session -d -s %u
 ExecStop=/usr/bin/tmux kill-server
 KillMode=control-group
 Restart=always
+TimeoutStopSec=3
 
 [Install]
 WantedBy=default.target
