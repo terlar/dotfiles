@@ -9,20 +9,21 @@ function fish_user_abbreviations
 	abbr week "date '+%V'"
 
 	if type -fq systemctl
-		abbr j 'journalctl --since=yesterday'
-		abbr je 'journalctl --since=yesterday --priority=0..3'
+		abbr j 'journalctl --since=today'
+		abbr je 'journalctl --since=today --priority=0..3'
+		abbr jb 'journalctl -b'
 		abbr jf 'journalctl -f'
 		abbr ju 'journalctl -u'
 		abbr juu 'journalctl --user-unit'
 
-		abbr sc 'sudo systemctl'
+		abbr sc 'systemctl'
 		abbr scu 'systemctl --user'
 		abbr scs 'systemctl status'
 		abbr scl 'systemctl list-units'
 
-		abbr reboot 'sudo systemctl reboot'
-		abbr poweroff 'sudo systemctl poweroff'
-		abbr suspend 'sudo systemctl suspend'
+		abbr reboot 'systemctl reboot'
+		abbr poweroff 'systemctl poweroff'
+		abbr suspend 'systemctl suspend'
 	end
 
 	if type -fq git
@@ -54,11 +55,11 @@ function fish_user_abbreviations
 	end
 
 	if type -fq pacman
-		abbr pac 'sudo pacman'
+		abbr pac 'pacman'
 	end
 
-	if type -fq aura
-		abbr aur 'sudo aura'
+	if type -fq aurget
+		abbr aur 'aurget'
 	end
 
 	if type -fq pygmentize
