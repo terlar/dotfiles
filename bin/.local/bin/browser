@@ -91,6 +91,12 @@ main() {
 		video/*)
 			exec mpv $mpv_opts $url
 			;;
+		application/force-download)
+			cd $XDG_DOWNLOAD_DIR
+			curl $curl_opts -O $url
+			cd -
+			notify-send -i down 'File saved' "${XDG_DOWNLOAD_DIR}"
+			;;
 		*)
 			exec $browser $url &>/dev/null
 			;;
