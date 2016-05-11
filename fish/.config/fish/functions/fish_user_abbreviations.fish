@@ -70,14 +70,6 @@ function fish_user_abbreviations
 		abbr be 'bundle exec'
 	end
 
-	if type -fq prax
-		abbr prs 'prax restart'
-	end
-
-	if type -fq vagrant
-		abbr v vagrant
-	end
-
 	if type -fq docker
 		abbr d docker
 		abbr dim 'docker images'
@@ -91,7 +83,5 @@ function fish_user_abbreviations
 	if type -q farm
 		abbr f 'farm visit'
 		abbr fcd 'farm cd'
-		abbr fc 'farm console'
-		abbr fs 'farm server'
 	end
 end
