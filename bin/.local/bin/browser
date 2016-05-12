@@ -23,6 +23,12 @@ is_tumblr_url() {
 	[[ "$url" == http://*.tumblr.com/* || "$url" == https://*.tumblr.com/* ]]
 }
 
+is_imgur_url() {
+	local url="$@"
+
+	[[ "$url" == http://imgur.com/* || "$url" == https://imgur.com/* ]]
+}
+
 is_not_empty() {
     local var=$1
 
@@ -57,14 +63,14 @@ main() {
 		if [[ -n $new_url ]]; then
 			url=$new_url
 		fi
-	fi
-
-	if is_tumblr_url $url; then
+	elif is_tumblr_url $url; then
 		local new_url=$(curl $curl_opts "$url" | sed -n '/<img/s/.*src="\([^"]*\)".*/\1/p' | grep -m1 '.gif$')
 
 		if [[ -n $new_url ]]; then
 			url=$new_url
 		fi
+	elif is_imgur_url $url; then
+		url="${url/imgur.com/i.imgur.com}.png"
 	fi
 
 	local mime
