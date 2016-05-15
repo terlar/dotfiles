@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 main() {
-	cat /dev/stdin | tr -d "\n" | sed 's|[　！？。，；：、（）【】]||g' | wc -m
+	cat /dev/stdin | tr -d "\n" | sed 's|[　！？。，；：、（）【】·‘“]||g' | wc -m
 }
 
 main
