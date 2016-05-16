@@ -1,3 +1,3 @@
 function git-watch-diff
-	watch -t --color "git diff --color=always $argv"
+    watch -t --color "git diff --color=always $argv"
 end

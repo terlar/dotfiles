@@ -1,36 +1,36 @@
 # fish completion for pactl
 function __pactl_needs_command
-	set cmd (commandline -opc)
-	if [ (count $cmd) -eq 1 -a $cmd[1] = 'pactl' ]
-		return 0
-	end
-	return 1
+    set cmd (commandline -opc)
+    if [ (count $cmd) -eq 1 -a $cmd[1] = 'pactl' ]
+        return 0
+    end
+    return 1
 end
 
 function __pactl_using_command
-	set cmd (commandline -opc)
-	if [ (count $cmd) -gt 1 ]
-		if [ $argv[1] = $cmd[2] ]
-			return 0
-		end
-	end
-	return 1
+    set cmd (commandline -opc)
+    if [ (count $cmd) -gt 1 ]
+        if [ $argv[1] = $cmd[2] ]
+            return 0
+        end
+    end
+    return 1
 end
 
 function __pactl_sinks
-	pactl list short sinks | string replace -r '^(\d+)\s+([^\s]+).*' '$1'\t'Sink: $2'
+    pactl list short sinks | string replace -r '^(\d+)\s+([^\s]+).*' '$1'\t'Sink: $2'
 end
 
 function __pactl_sources
-	pactl list short sources | string replace -r '^(\d+)\s+([^\s]+).*' '$1'\t'Source: $2'
+    pactl list short sources | string replace -r '^(\d+)\s+([^\s]+).*' '$1'\t'Source: $2'
 end
 
 function __pactl_sink-inputs
-	pactl list short sink-inputs | string replace -r '^(\d+).*' '$1'
+    pactl list short sink-inputs | string replace -r '^(\d+).*' '$1'
 end
 
 function __pactl_source-outputs
-	pactl list short source-outputs | string replace -r '^(\d+).*' '$1'
+    pactl list short source-outputs | string replace -r '^(\d+).*' '$1'
 end
 
 # List
