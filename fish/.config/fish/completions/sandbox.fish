@@ -17,9 +17,7 @@ function __fish_sandbox_using_command
 end
 
 function __fish_sandbox_commands
-    sandbox help \
-        | grep '^  ' \
-        | string replace -r '^\s+([^\s]+)\s+(.+)$' '$1'\t'$2'
+    sandbox help | grep '^  ' | string replace -r '^\s+([^\s]+)\s+(.+)$' '$1'\t'$2'
 end
 
 function __fish_sandbox_overrides

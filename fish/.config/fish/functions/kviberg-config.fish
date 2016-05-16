@@ -18,10 +18,9 @@ end
 
 function kviberg-config-export
     echo '==> Dumping database'
-    mysqldump -uroot -t --skip-extended-insert \
-              --ignore-table=kviberg-config-development.schema_migrations \
-              kviberg-config-development > db/export.sql
-    ok; or return 1
+    mysqldump -uroot -t --skip-extended-insert --ignore-table=kviberg-config-development.schema_migrations kviberg-config-development >db/export.sql
+    ok
+    or return 1
 end
 
 function kviberg-config-import
@@ -31,15 +30,20 @@ function kviberg-config-import
     end
 
     echo '==> Recreating database'
-    rake db:drop db:create db:schema:load >/dev/null; ok; or return 1
+    rake db:drop db:create db:schema:load >/dev/null
+    ok
+    or return 1
     echo '==> Populating database'
-    mysql -uroot kviberg-config-development < db/export.sql; ok; or return 1
+    mysql -uroot kviberg-config-development <db/export.sql
+    ok
+    or return 1
 
     echo '==> Flushing redis'
     redis-cli flushall
     echo '==> Flushing memcached'
     echo 'flush_all' | telnet 127.0.0.1 11211 >/dev/null ^/dev/null
-    ok; or return 1
+    ok
+    or return 1
 end
 
 function ok

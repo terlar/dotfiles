@@ -56,7 +56,8 @@ end
 
 function __commandline_insert_previous_token
     set tokens (commandline -po)
-    test $tokens[1]; or return
+    test $tokens[1]
+    or return
 
     set previous_token $tokens[-1]
 
@@ -69,14 +70,17 @@ end
 
 function __commandline_eval_token
     set token (commandline -t)
-    test -n "$token"; or return
+    test -n "$token"
+    or return
 
     set value (eval string escape $token | string join ' ')
-    test -n "$value"; or return
+    test -n "$value"
+    or return
 
     commandline -t $value
     if string match -q '*/' $value
-        test -d $value; and return
+        test -d $value
+        and return
         mkdir -p $value
         commandline -t $value
     end
@@ -86,7 +90,7 @@ function __commandline_edit --description 'Input command in external editor'
     set f (mktemp /tmp/fish.cmd.XXXXXXXX)
     if test -n "$f"
         set p (commandline -C)
-        commandline > $f
+        commandline >$f
         eval $EDITOR $f
         commandline (more $f)
         commandline -C $p
@@ -112,7 +116,8 @@ end
 
 function __commandline_stash -d 'Stash current command line'
     set cmd (commandline)
-    test "$cmd"; or return
+    test "$cmd"
+    or return
     set pos (commandline -C)
 
     set -U command_stash $command_stash $cmd
@@ -151,9 +156,11 @@ function __commandline_execute_and_keep_line
     commandline -f execute
 
     while true
-        set funcname __fish_restore_line_(random);
+        set funcname __fish_restore_line_(random)
+
         if not functions $funcname >/dev/null ^/dev/null
-            break;
+            break
+
         end
     end
 

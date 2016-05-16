@@ -1,5 +1,6 @@
 function __bundle_reset_binstub_path --description 'Remove binstub from path'
-    set -qg BUNDLE_BINSTUB_PATH; or return
+    set -qg BUNDLE_BINSTUB_PATH
+    or return
     set -l new_path
 
     for i in $fish_user_paths

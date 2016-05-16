@@ -36,9 +36,7 @@ end
 # List
 complete -f -c pactl -n '__pactl_needs_command' -a list
 complete -f -c pactl -n '__pactl_using_command list' -a short
-complete -f -c pactl -n '__pactl_using_command list' \
-         -a 'modules sinks sources sink-inputs source-outputs clients samples cards' \
-         -d 'Type'
+complete -f -c pactl -n '__pactl_using_command list' -a 'modules sinks sources sink-inputs source-outputs clients samples cards' -d 'Type'
 
 # Move
 complete -f -c pactl -n '__pactl_needs_command' -a 'move-sink-input move-source-output'
