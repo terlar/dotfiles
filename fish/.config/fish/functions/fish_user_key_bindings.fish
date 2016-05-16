@@ -3,6 +3,10 @@ function fish_user_key_bindings
 		fzf_key_bindings
 	end
 
+	for i in $fish_config_path/key_bindings.d/*
+		source $i
+	end
+
 	#
 	# Normal mode
 	#

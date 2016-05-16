@@ -1,6 +1,28 @@
 function fish_setup --description 'Setup fish variables'
 	set -U fish_greeting
 
+    # Set config path
+    set -l config_home ~/.config
+    if set -q XDG_CONFIG_HOME
+        set config_home $XDG_CONFIG_HOME
+    end
+    set -U fish_config_path "$config_home/fish"
+    set -U fish_binding_path "$fish_config_path/key_bindings.d"
+
+    # Bootstrap folders
+    if not test -d "$fish_config_path/conf.d"
+        mkdir -p "$fish_config_path/conf.d"
+    end
+    if not test -d "$fish_config_path/key_bindings.d"
+        mkdir -p "$fish_config_path/key_bindings.d"
+    end
+    if not test -d "$fish_config_path/functions"
+        mkdir -p "$fish_config_path/functions"
+    end
+    if not test -d "$fish_config_path/completions"
+        mkdir -p "$fish_config_path/completions"
+    end
+
 	# Enable VI mode
 	set -U fish_key_bindings fish_vi_key_bindings
 
