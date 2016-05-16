@@ -82,7 +82,7 @@ function fish_user_abbreviations
 	end
 
 	if type -q farm
-		abbr f 'farm visit'
+		abbr f 'farm'
 		abbr fcd 'farm cd'
 	end
 end
