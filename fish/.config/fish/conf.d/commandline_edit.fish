@@ -1,6 +1,6 @@
 # Commandline external editor
 function __commandline_edit_kb -e fish_user_key_bindings
-    bind \ei __commandline_edit
+    bind -M insert \ei __commandline_edit
 end
 
 function __commandline_edit --description 'Input command in external editor'

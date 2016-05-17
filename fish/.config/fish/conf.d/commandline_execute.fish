@@ -4,19 +4,20 @@ function __commandline_execute_kb -e fish_user_key_bindings
     bind \n '__commandline_execute'
 
     # Insert mode
-    bind -M insert \n '__commandline_execute'
-    bind -M insert \e\n '__commandline_execute_and_keep_line'
-    bind -M insert \e',' 'commandline -f execute history-search-backward'
-    bind -M insert \em 'commandline -f execute accept-autosuggestion'
+    bind -M insert \n 'commandline -i \n'
+    bind -M insert \r __commandline_execute
+    bind -M insert \e\r __commandline_execute_and_keep_line
+    bind -M insert \e\n 'commandline -f accept-autosuggestion execute'
+    bind -M insert \e',' 'commandline -f history-search-backward execute'
     bind -M insert \ez 'fg >/dev/null ^/dev/null'
 end
 
 function __commandline_execute
-    set value (commandline)
-    if test -n "$value"
-        commandline -f execute
-    else
+    set -l cmd (commandline)
+    if test -z "$cmd"
         echo
+    else
+        commandline -f execute
     end
 end
 
