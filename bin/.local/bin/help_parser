@@ -209,7 +209,7 @@ def main(argv):
         print('help_parser <command>')
         sys.exit(2)
 
-    help_patterns = ['{} help {}', '{} {} --help']
+    help_patterns = ['{} help {}', '{} {} --help', '{} {} help']
     help_pattern = None
     output = None
 
@@ -222,8 +222,16 @@ def main(argv):
                 shell=True)
             help_pattern = pattern
             break
-        except subprocess.CalledProcessError:
-            continue
+        except subprocess.CalledProcessError as e:
+            if e.returncode != 255:
+                continue
+
+            output = e.output
+            help_pattern = pattern
+
+    if output is None:
+        print('no help output parsed')
+        sys.exit(1)
 
     parser = HelpParser(argv, help_pattern)
     data = parser.read(output)
