@@ -1,3 +1,10 @@
+alias mirror "mirror -v"
+alias sync "mirror -R -v -n"
+alias reconnect "close; cache flush; cd ."
+alias upload "mirror -R -v"
+
+set prompt "\[\033[36m\]\u\[\033[32m\]\@\[\033[36m\]\h\[\033[33m\]:ftp\[\033[32m\] [\[\033[32m\]\w\[\033[32m\]] \[\033[0m\]\n"
+
 set ssl:verify-certificate no
 set ftp:ssl-protect-list no
 set ftp:list-options -a
