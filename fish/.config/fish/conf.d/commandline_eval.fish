@@ -4,19 +4,18 @@ function __commandline_eval_kb -e fish_user_key_bindings
 end
 
 function __commandline_eval_token
-    set token (commandline -t)
-    test -n "$token"
+    set -l tokens (eval string escape -- (commandline -ct))
+    set -q tokens[1]
     or return
 
-    set value (eval string escape $token | string join ' ')
-    test -n "$value"
-    or return
+    commandline -tr ''
+    commandline -i -- "$tokens"
 
-    commandline -t $value
-    if string match -q '*/' $value
-        test -d $value
+    # Create directory if not existing. Needs to end with trailing `/`.
+    if string match -q -- '*/' "$tokens"
+        test -d "$tokens"
         and return
-        mkdir -p $value
-        commandline -t $value
+        mkdir -p "$tokens"
+        commandline -t -- "$tokens"
     end
 end
