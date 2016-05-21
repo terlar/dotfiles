@@ -1,6 +1,6 @@
-.DEFAULT_GOAL:=install
+.DEFAULT_GOAL := install
 
-PACKAGES=$(sort $(dir $(wildcard */)))
+PACKAGES ?= $(sort $(dir $(wildcard */)))
 
 .PHONY: install
 install:
