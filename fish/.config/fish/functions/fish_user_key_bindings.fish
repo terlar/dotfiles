@@ -21,4 +21,7 @@ function fish_user_key_bindings
 
     # Insert last argument of previous command
     bind -M insert \e. history-token-search-backward
+
+    # Resume background job
+    bind -M insert \ez 'fg >/dev/null ^/dev/null'
 end
