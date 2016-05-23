@@ -19,9 +19,6 @@ function fish_user_key_bindings
     bind -M insert \e'<' 'prevd; echo; commandline -f repaint'
     bind -M insert \e'>' 'nextd; echo; commandline -f repaint'
 
-    # Insert last argument of previous command
-    bind -M insert \e. history-token-search-backward
-
     # Resume background job
     bind -M insert \ez 'fg >/dev/null ^/dev/null'
 end
