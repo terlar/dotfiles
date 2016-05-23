@@ -10,22 +10,22 @@ function todo --argument cmd
     and set cmd list
 
     switch "$cmd"
-        case list ls
+        case list ls show all
             cat $todo_file
-        case add new create push '+'
+        case add new create push +
             echo $argv >>$todo_file
         case edit
             eval $EDITOR $todo_file
         case next current pop up
             head -n1 -- $todo_file
-        case count size
+        case count size amount
             wc -l $todo_file | cut -b 1
         case clear
             echo 'todo: you are about the clear the todo list'
             if read_confirm
                 echo -n '' >$todo_file
             end
-        case done finish complete remove rm '-'
+        case done finish complete remove rm -
             set -l task
             if string match -qr '^\d$' -- "$argv"
                 set -l lines (cat $todo_file)
