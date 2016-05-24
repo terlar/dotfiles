@@ -6,8 +6,8 @@
 	excludesfile = ~/.gitignore.global
 [alias]
 	cloneall = clone --recurse-submodules -j 4
-	fetchall = fetch --all --recurse-submodules -j 4
-	pullall = pull --all --recurse-submodules -j 4
+	fetchall = fetch --all -j 4
+	pullall = pull --all -j 4
 
 	subpull  = submodule foreach git pull
 	unstage  = reset HEAD
