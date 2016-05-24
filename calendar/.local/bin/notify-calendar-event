@@ -26,7 +26,7 @@ main() {
 
 		is_within_notify_time "$time" 900 || continue
 
-		notify-send "Event @ ${time}" "$message"
+		notify-send -i appointment-soon "Event @ ${time}" "$message"
 	done
 }
 
