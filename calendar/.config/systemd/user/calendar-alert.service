@@ -1,0 +1,9 @@
+[Unit]
+Description=Calendar Alert
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/env notify-calendar-event
+
+[Install]
+WantedBy=graphical.target

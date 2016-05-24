@@ -1,0 +1,9 @@
+[Unit]
+Description=Calendar Alert Timer
+
+[Timer]
+OnBootSec=2min
+OnUnitInactiveSec=2min
+
+[Install]
+WantedBy=timers.target
