@@ -5,28 +5,16 @@
 [core]
 	excludesfile = ~/.gitignore.global
 [alias]
+	cloneall = clone --recurse-submodules -j 4
+	fetchall = fetch --all --recurse-submodules -j 4
+	pullall = pull --all --recurse-submodules -j 4
+
 	subpull  = submodule foreach git pull
 	unstage  = reset HEAD
 	uncommit = reset --soft HEAD^
 	recommit = commit --amend
 
-	cp  = cherry-pick
-	st  = status -sb
-	ci  = commit -v
-	cim = commit -v -m
-	co  = checkout
-	fa  = fetch --all
-
-	di  = diff
-	dt  = difftool
-	dc  = diff --cached
-	dw  = diff --color-words
-	ds  = diff --stat
 	wc  = whatchanged -p --abbrev-commit --pretty=medium
-
-	# Stash
-	sshow = "!f() { git stash show stash^{/$*} -p; }; f"
-	sapply = "!f() { git stash apply stash^{/$*}; }; f"
 
 	# Branch
 	bactive = for-each-ref --sort=-committerdate --format=\"%(refname:short)\"
@@ -50,6 +38,7 @@
 	meta = white
 [diff]
 	tool = vimdiff
+	submodule = log
 [difftool]
 	prompt = false
 [merge]
@@ -90,3 +79,5 @@
 [url "git@github.com:"]
 	# With write access
 	insteadOf = wgh:
+[credential]
+	helper = cache

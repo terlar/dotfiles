@@ -28,9 +28,17 @@ function fish_user_abbreviations
 
     if type -fq git
         abbr g 'git'
+        abbr gb 'git branch'
+        abbr gba 'git bactive'
         abbr gs 'git status -sb'
-        abbr gh 'git head'
 
+        abbr gco 'git checkout'
+        abbr gf 'git fetch'
+        abbr gfa 'git fetchall'
+        abbr gsmr 'git-submodule-reset'
+        abbr gsmp 'git subpull'
+
+        abbr gh 'git head'
         abbr gl 'git l'
         abbr gll 'git ll'
         abbr gwc 'git wc'
@@ -42,16 +50,18 @@ function fish_user_abbreviations
         abbr gds 'git diff --stat'
 
         abbr ga 'git add'
+
         abbr gc 'git commit'
         abbr gca 'git commit -a'
-        abbr gb 'git branch'
-        abbr gco 'git checkout'
-        abbr gf 'git fetch'
-        abbr gfa 'git fetch --all'
-        abbr gm 'git merge'
-        abbr gr 'git rebase'
         abbr gcp 'git cherry-pick'
+        abbr gr 'git rebase'
+
+        abbr gm 'git merge'
         abbr gpr 'git-pull-request'
+
+        abbr gst 'git stash'
+        abbr gsts 'git stash show -p'
+        abbr gsta 'git stash apply'
     end
 
     if type -fq pacman
