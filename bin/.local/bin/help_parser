@@ -106,7 +106,7 @@ class HelpParser:
             --(?P<long>[\w_-]+)) # long option
             (,?\s)?              # separated by comma and space
         )*                       # occuring in any order or times
-        (\s(?P<param>[A-Z]+)\s)? # parameter
+        ((?P<param>[A-Z]+)\s)?   # parameter
         \s*                      # spacing
         (?P<desc>.*)$            # description
     '''
@@ -209,7 +209,7 @@ def main(argv):
         print('help_parser <command>')
         sys.exit(2)
 
-    help_patterns = ['{} help {}', '{} {} --help', '{} {} help']
+    help_patterns = ['{} {} --help', '{} help {}', '{} {} help']
     help_pattern = None
     output = None
 
