@@ -34,3 +34,7 @@ XDG_VIDEOS_DIR    DEFAULT=${HOME}/videos
 
 # GnuPG
 SSH_AUTH_SOCK DEFAULT=${HOME}/.gnupg/S.gpg-agent.ssh
+
+# Java
+_JAVA_OPTIONS               DEFAULT="-Dawt.useSystemAAFontSettings=on"
+_JAVA_AWT_WM_NONREPARENTING DEFAULT=1
