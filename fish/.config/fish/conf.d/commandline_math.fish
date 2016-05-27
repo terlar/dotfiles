@@ -8,7 +8,7 @@ function __commandline_math_expand
 
     commandline -i '='
 
-    if test -z $buffer
+    if test -z "$buffer"
         commandline -a " ''"
         commandline -C 3
     end
