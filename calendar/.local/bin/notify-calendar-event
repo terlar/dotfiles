@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 agenda() {
 	khal agenda --days 1 | \
-		sed -E -e 's|^([0-9]+:[0-9]+)-[0-9]+:[0-9]+: (.*)|\1 \2|' \
+		sed -E -e 's|^([0-9]+:[0-9]+-[0-9]+:[0-9]+): (.*)|\1 \2|' \
 			-e 'tx' \
 			-e 'd' \
 			-e ':x'
@@ -18,15 +18,49 @@ is_within_notify_time() {
 	[[ "$now_ts" -lt "$event_ts" ]] && [[ "$now_ts" -gt "$alert_ts" ]]
 }
 
+get_time_remaining() {
+	local time="$1"
+
+	now_ts=$(date '+%s')
+	event_ts=$(date -d "$time" '+%s')
+	remaining=$(($event_ts - $now_ts))
+
+	humanize_seconds "$remaining"
+}
+
+humanize_seconds() {
+	local time="$1"
+	local h m s
+
+	(( h=${time} / 3600 ))
+	(( m=(${time} % 3600) / 60 ))
+	(( s=${time} % 60 ))
+
+	if [[ "$h" > 0 ]]; then
+		echo -n "${m} hours"
+	elif [[ "$m" > 0 ]]; then
+		echo -n "${m} minutes"
+	elif [[ "$s" > 0 ]]; then
+		echo -n "${s} seconds"
+	fi
+}
+
 main() {
-	local time message
+	local time start_time end_time message
+
 	agenda | while read event; do
 		time=$(echo "$event" | cut -d ' ' -f 1)
+		start_time=$(echo "$time" | cut -d '-' -f 1)
+		end_time=$(echo "$time" | cut -d '-' -f 2)
 		message=$(echo "$event" | cut -d ' ' -f 2-)
 
-		is_within_notify_time "$time" 900 || continue
+		is_within_notify_time "$start_time" 900 || continue
 
-		notify-send -i appointment-soon "Event @ ${time}" "$message"
+		remaining=$(get_time_remaining "$start_time")
+
+		notify-send -i appointment-soon \
+			"$message" \
+			"$time\nin ${remaining}"
 	done
 }
 
