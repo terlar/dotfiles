@@ -16,17 +16,19 @@
 
 	wc  = whatchanged -p --abbrev-commit --pretty=medium
 
+	edit = !bash -c '${EDITOR} $(git ls-files --modified --other --exclude-standard)'
+
 	# Branch
 	bactive = for-each-ref --sort=-committerdate --format=\"%(refname:short)\"
 
 	# History
-	l      = log --graph --decorate --pretty=format:\"%C(yellow)%h%C(reset)%C(auto)%d%C(reset) %s %C(yellow)(%C(cyan)%ar%C(yellow), %C(blue)%an%C(yellow))%C(reset)\"
-	ll     = log --graph --decorate --stat --pretty=format:\"%C(yellow)%h%C(reset)%C(auto)%d%C(reset) %s%n %C(cyan)%ar%C(reset), %C(blue)%an%C(reset)%n\"
-	fup    = log --since '1 day ago' --oneline --author terlar@gmail.com
-	head   = !git --no-pager ll -1
-	h      = !git head
-	recent = !git ll -30
-	r      = !git recent
+	l      = log --decorate --oneline
+	lg     = log --decorate --oneline --graph
+	ll     = log --decorate
+	lll    = log --decorate --stat
+	fup    = !git --no-pager lll --since '1 day ago' --author terlar@gmail.com
+	head   = !git --no-pager lll -1
+	recent = !git lll -30
 [pager]
 	color = true
 [color]
