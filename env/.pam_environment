@@ -36,5 +36,5 @@ XDG_VIDEOS_DIR    DEFAULT=${HOME}/videos
 SSH_AUTH_SOCK DEFAULT=${HOME}/.gnupg/S.gpg-agent.ssh
 
 # Java
-_JAVA_OPTIONS               DEFAULT="-Dawt.useSystemAAFontSettings=on"
+_JAVA_OPTIONS               DEFAULT="-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel -Dswing.crossplatformlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel"
 _JAVA_AWT_WM_NONREPARENTING DEFAULT=1
