@@ -2,26 +2,41 @@
 	name = Terje Larsen
 	email = terlar@gmail.com
 	signingkey = 89AF679B037E1D2A
+[github]
+	user = terlar
 [core]
 	excludesfile = ~/.gitignore.global
+[help]
+	autoCorrect = -1
+# Reuse recorded resolution
+[rerere]
+	enabled = true
+	autoUpdate = true
+[credential]
+	helper = cache
 [alias]
-	cloneall = clone --recurse-submodules -j 4
+	clone    = clone --recursive -j 4
 	fetchall = fetch --all -j 4
-	pullall = pull --all -j 4
+	pullall  = pull --all -j 4
 
 	subpull  = submodule foreach git pull
 	unstage  = reset HEAD
 	uncommit = reset --soft HEAD^
+	undopush = push -f origin HEAD^:master
 	recommit = commit --amend
+	ignore   = update-index --assume-unchanged
+	unignore = update-index --no-assume-unchanged
+	ignored  = !git ls-files -v | grep '^[[:lower:]]'
 
-	wc  = whatchanged -p --abbrev-commit --pretty=medium
+	tags     = tag -l
+	branches = branch -a
+	remotes  = remote -v
+	bactive = for-each-ref --sort=-committerdate --format=\"%(refname:short)\"
 
 	edit = !bash -c '${EDITOR} $(git ls-files --modified --other --exclude-standard)'
 
-	# Branch
-	bactive = for-each-ref --sort=-committerdate --format=\"%(refname:short)\"
-
 	# History
+	wc  = whatchanged -p --abbrev-commit --pretty=medium
 	l      = log --decorate --oneline
 	lg     = log --decorate --oneline --graph
 	ll     = log --decorate
@@ -38,48 +53,45 @@
 	interactive = auto
 [color "diff"]
 	meta = white
+[branch]
+	# Automatic remote tracking
+	autoSetupMerge = always
+	# Force all new branches to automatically use rebase
+	autoSetupRebase = always
+[fetch]
+	recurseSubmodules = true
+	prune = true
+[push]
+	default = simple
+[rebase]
+	# Support fixup and squash commits
+	autoSquash = true
+	# Stash dirty worktree
+	autoStash = true
 [diff]
-	tool = vimdiff
+	tool = ediff
 	submodule = log
 [difftool]
 	prompt = false
 [merge]
-	defaultToUpstream = true
-	tool = vimdiff
-	conflictstyle = diff3
-[rebase]
-	# Support fixup and squash commits
-	autosquash = true
+	log = true
+	tool = ediff
 [mergetool]
-	keepBackup = false
 	prompt = false
-[branch]
-	# Force all new branches to automatically use rebase
-	autosetuprebase = always
-	# Automatic remote tracking
-	autosetupmerge = always
-[push]
-	default = simple
-[advice]
-	detachedHead = false
-[help]
-	autoCorrect = -1
-[rerere]
-	# Reuse recorded resolution
-	enabled = true
+[mergetool "ediff"]
+	cmd = emacsclient -c -a \"\"  --eval \"\
+		(ediff-merge-files-with-ancestor\
+		\\\"$LOCAL\\\" \\\"$REMOTE\\\"\
+		\\\"$BASE\\\" nil \\\"$MERGED\\\")\"
+[mergetool "meld"]
+	trustExitCode = false
+[url "git@github.com:"]
+	insteadOf = "gh:"
+	pushInsteadOf = "github:"
+	pushInsteadOf = "git://github.com/"
 [ghq]
 	root = ~/src
 	root = ~/go/src
 [ghq "import"]
 	starred = github-list-starred
 	user = getgithubrepos
-[github]
-	user = terlar
-[url "git://github.com/"]
-	# Read-only
-	insteadOf = gh:
-[url "git@github.com:"]
-	# With write access
-	insteadOf = wgh:
-[credential]
-	helper = cache
