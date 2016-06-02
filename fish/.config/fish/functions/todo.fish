@@ -6,7 +6,7 @@ function todo --argument cmd
     or touch $todo_file
 
     set -e argv[1]
-    test -z $cmd
+    test -z "$cmd"
     and set cmd list
 
     switch "$cmd"
@@ -26,6 +26,10 @@ function todo --argument cmd
                 echo -n '' >$todo_file
             end
         case done finish complete remove rm -
+            if test -z "$argv"
+                set argv 1
+            end
+
             set -l task
             if string match -qr '^\d$' -- "$argv"
                 set -l lines (cat $todo_file)
