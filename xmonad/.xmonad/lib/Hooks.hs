@@ -59,6 +59,7 @@ myScratchpads =
     , termPad "ncmpcpp" largeRect
     , xappPad "pavucontrol" "Pavucontrol" doCenterFloat
     , xappPad "goldendict" "Goldendict" doRightFloat
+    , xappPad' "editor" myEditor "Emacs" smallRect
     ]
   where
     workPad a d = NS a (workTerm a d) (role ~? a)
@@ -66,6 +67,7 @@ myScratchpads =
     termPad a = NS a (consoleApp a) (role ~? a)
     consoleApp a = myTerm ++ " -r " ++ a ++ " -e \"" ++ a ++ "\""
     xappPad a c = NS a a (className ~? c)
+    xappPad' a r c = NS a r (className ~? c)
 
     -- Floating window sizes
     largeRect = customFloating $ W.RationalRect (1/20) (1/20) (9/10) (9/10)

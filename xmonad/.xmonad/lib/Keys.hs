@@ -62,6 +62,7 @@ myKeys =
     -- Scratchpads
     , ("M-`", scratchToggle "scratchpad")
     , ("M-<XF86AudioRaiseVolume>", scratchToggle "pavucontrol")
+    , ("M-e", scratchToggle "editor")
     , ("M-m", scratchToggle "ncmpcpp")
     , ("M-'", scratchToggle "goldendict")
     -- Global window
@@ -163,7 +164,7 @@ mediaKeys =
 myApps :: [([Char], X ())]
 myApps =
     [ ("Browser",      raiseApp  "web" myBrowser)
-    , ("Vim",          raiseApp' "nyaovim")
+    , ("Editor",       raiseApp' myEditor)
     , ("LibreOffice",  raiseApp  "doc" "libreoffice")
     , ("Themes",       spawn     "lxappearance")
     ]
