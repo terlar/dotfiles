@@ -69,15 +69,19 @@
 	# Stash dirty worktree
 	autoStash = true
 [diff]
-	tool = ediff
 	submodule = log
+	tool = ediff
 [difftool]
 	prompt = false
+[difftool "ediff"]
+	cmd = emacsclient -c -a \"\" --eval \"\
+		(ediff-files \\\"$LOCAL\\\" \\\"$REMOTE\\\")\"
 [merge]
 	log = true
 	tool = ediff
 [mergetool]
 	prompt = false
+	keepBackup = false
 [mergetool "ediff"]
 	cmd = emacsclient -c -a \"\"  --eval \"\
 		(ediff-merge-files-with-ancestor\
@@ -87,8 +91,9 @@
 	trustExitCode = false
 [url "git@github.com:"]
 	insteadOf = "gh:"
-	pushInsteadOf = "github:"
-	pushInsteadOf = "git://github.com/"
+	insteadOf = "github:"
+	insteadOf = "git://github.com/"
+	insteadOf = "https://github.com/"
 [ghq]
 	root = ~/src
 	root = ~/go/src
