@@ -4,7 +4,7 @@ Documentation=man:vdirsyncer
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/vdirsyncer sync --max-workers=1
+ExecStart=/usr/bin/vdirsyncer sync
 # Update khal caching DB
 ExecStopPost=/usr/bin/sh -c 'khal >/dev/null'
 
