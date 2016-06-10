@@ -1,6 +1,7 @@
+log
 tags
-
-doc
+tmp
 vendor
-public/assets
-public/coffeescripts
+.git/
+bower_components/
+node_modules/
