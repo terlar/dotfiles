@@ -1,0 +1,54 @@
+--regex-ruby=/(^|;)[ \t]*(class|module)[ \t]+([A-Z][[:alnum:]_]+(::[A-Z][[:alnum:]_]+)+)/\3/c,class,constant/
+--regex-ruby=/(^|[:;])[ \t]*([A-Z][[:alnum:]_]+) *=/\2/c,class,constant/
+--regex-ruby=/^[ \t]*attr_(reader|writer|accessor) (:[a-z0-9_]+, )*:([a-z0-9_]+)/\3/A,attr/
+--regex-ruby=/(^|;)[ \t]*(has_many|belongs_to|has_one|has_and_belongs_to_many)\(? *:([[:alnum:]_]+)/\3/f,function,association/
+--regex-ruby=/(^|;)[ \t]*(named_)?scope\(? *:([[:alnum:]_]+)/\3/f,function,named_scope/
+--regex-ruby=/(^|;)[ \t]*expose\(? *:([[:alnum:]_]+)/\2/f,function,exposure/
+--regex-ruby=/(^|;)[ \t]*event\(? *:([[:alnum:]_]+)/\2/f,function,aasm_event/
+--regex-ruby=/(^|;)[ \t]*event\(? *:([[:alnum:]_]+)/\2!/f,function,aasm_event/
+--regex-ruby=/(^|;)[ \t]*event\(? *:([[:alnum:]_]+)/\2?/f,function,aasm_event/
+--langdef=Elixir
+--langmap=Elixir:.ex.exs
+--regex-Elixir=/^[ \t]*def(p?)[ \t]+([a-z_][a-zA-Z0-9_?!]*)/\2/f,functions,functions (def ...)/
+--regex-Elixir=/^[ \t]*defcallback[ \t]+([a-z_][a-zA-Z0-9_?!]*)/\1/c,callbacks,callbacks (defcallback ...)/
+--regex-Elixir=/^[ \t]*defdelegate[ \t]+([a-z_][a-zA-Z0-9_?!]*)/\1/d,delegates,delegates (defdelegate ...)/
+--regex-Elixir=/^[ \t]*defexception[ \t]+([A-Z][a-zA-Z0-9_]*\.)*([A-Z][a-zA-Z0-9_?!]*)/\2/e,exceptions,exceptions (defexception ...)/
+--regex-Elixir=/^[ \t]*defimpl[ \t]+([A-Z][a-zA-Z0-9_]*\.)*([A-Z][a-zA-Z0-9_?!]*)/\2/i,implementations,implementations (defimpl ...)/
+--regex-Elixir=/^[ \t]*defmacro(p?)[ \t]+([a-z_][a-zA-Z0-9_?!]*)\(/\2/a,macros,macros (defmacro ...)/
+--regex-Elixir=/^[ \t]*defmacro(p?)[ \t]+([a-zA-Z0-9_?!]+)?[ \t]+([^ \tA-Za-z0-9_]+)[ \t]*[a-zA-Z0-9_!?!]/\3/o,operators,operators (e.g. "defmacro a <<< b")/
+--regex-Elixir=/^[ \t]*defmodule[ \t]+([A-Z][a-zA-Z0-9_]*\.)*([A-Z][a-zA-Z0-9_?!]*)/\2/m,modules,modules (defmodule ...)/
+--regex-Elixir=/^[ \t]*defprotocol[ \t]+([A-Z][a-zA-Z0-9_]*\.)*([A-Z][a-zA-Z0-9_?!]*)/\2/p,protocols,protocols (defprotocol...)/
+--regex-Elixir=/^[ \t]*Record\.defrecord[ \t]+:([a-zA-Z0-9_]+)/\1/r,records,records (defrecord...)/
+--regex-Elixir=/^[ \t]*test[ \t]+\"([a-z_][a-zA-Z0-9_?! ]*)\"*/\1/t,tests,tests (test ...)/
+--langdef=js
+--langmap=js:.js
+--regex-js=/([A-Za-z0-9._$]+)[ \t]*[:=][ \t]*\{/\1/,object/
+--regex-js=/([A-Za-z0-9._$()]+)[ \t]*[:=][ \t]*function[ \t]*\(/\1/,function/
+--regex-js=/function[ \t]+([A-Za-z0-9._$]+)[ \t]*\(([^)])\)/\1/,function/
+--regex-js=/([A-Za-z0-9._$]+)[ \t]*[:=][ \t]*\[/\1/,array/
+--regex-js=/([^= ]+)[ \t]*=[ \t]*[^"]'[^']*/\1/,string/
+--regex-js=/([^= ]+)[ \t]*=[ \t]*[^']"[^"]*/\1/,string/
+--regex-js=/(,|(;|^)[ \t]*(var|let|([A-Za-z_$][A-Za-z0-9_$.]+\.)*))[ \t]*([A-Za-z0-9_$]+)[ \t]*=[ \t]*\{/\5/,object/
+--regex-js=/(,|(;|^)[ \t]*(var|let|([A-Za-z_$][A-Za-z0-9_$.]+\.)*))[ \t]*([A-Za-z0-9_$]+)[ \t]*=[ \t]*function[ \t]*\(/\5/,function/
+--regex-js=/(,|(;|^)[ \t]*(var|let|([A-Za-z_$][A-Za-z0-9_$.]+\.)*))[ \t]*([A-Za-z0-9_$]+)[ \t]*=[ \t]*\[/\5/,array/
+--regex-js=/(,|(;|^)[ \t]*(var|let|([A-Za-z_$][A-Za-z0-9_$.]+\.)*))[ \t]*([A-Za-z0-9_$]+)[ \t]*=[ \t]*[^"]'[^']*/\5/,string/
+--regex-js=/(,|(;|^)[ \t]*(var|let|([A-Za-z_$][A-Za-z0-9_$.]+\.)*))[ \t]*([A-Za-z0-9_$]+)[ \t]*=[ \t]*(true|false)/\5/,boolean/
+--regex-js=/(,|(;|^)[ \t]*(var|let|([A-Za-z_$][A-Za-z0-9_$.]+\.)*))[ \t]*([A-Za-z0-9_$]+)[ \t]*=[ \t]*[0-9]+/\5/,number/
+--regex-js=/(,|(;|^)[ \t]*(var|let|([A-Za-z_$][A-Za-z0-9_$.]+\.)*))[ \t]*([A-Za-z0-9_$]+)[ \t]*=[ \t]*.+([,;=]|$)/\5/,variable/
+--regex-js=/(,|(;|^)[ \t]*(var|let|([A-Za-z_$][A-Za-z0-9_$.]+\.)*))[ \t]*([A-Za-z0-9_$]+)[ \t]*[ \t]*([,;]|$)/\5/,variable/
+--regex-js=/function[ \t]+([A-Za-z0-9_$]+)[ \t]*\([^)]*\)/\1/,function/
+--regex-js=/(,|^)[ \t]*([A-Za-z_$][A-Za-z0-9_$]+)[ \t]*:[ \t]*\{/\2/,object/
+--regex-js=/(,|^)[ \t]*([A-Za-z_$][A-Za-z0-9_$]+)[ \t]*:[ \t]*function[ \t]*\(/\2/,function/
+--regex-js=/(,|^)[ \t]*([A-Za-z_$][A-Za-z0-9_$]+)[ \t]*:[ \t]*\[/\2/,array/
+--regex-js=/(,|^)[ \t]*([A-Za-z_$][A-Za-z0-9_$]+)[ \t]*:[ \t]*[^"]'[^']*/\2/,string/
+--regex-js=/(,|^)[ \t]*([A-Za-z_$][A-Za-z0-9_$]+)[ \t]*:[ \t]*(true|false)/\2/,boolean/
+--regex-js=/(,|^)[ \t]*([A-Za-z_$][A-Za-z0-9_$]+)[ \t]*:[ \t]*[0-9]+/\2/,number/
+--regex-js=/(,|^)[ \t]*([A-Za-z_$][A-Za-z0-9_$]+)[ \t]*:[ \t]*[^=]+([,;]|$)/\2/,variable/
+--exclude=*.min.js
+--exclude=.git
+--exclude=node_modules
+--exclude=.vagrant
+--exclude=.idea
+--exclude=vendor
+--exclude=db
+--langmap=Lisp:+.clj
