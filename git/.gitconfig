@@ -29,7 +29,8 @@
 	ignored  = !git ls-files -v | grep '^[[:lower:]]'
 
 	tags     = tag -l
-	branches = branch -a
+
+	branches = for-each-ref --sort=-committerdate --format=\"%(color:blue)%(authordate:relative)\t%(color:red)%(authorname)\t%(color:black)%(color:bold)%(refname:short)\" refs/remotes
 	remotes  = remote -v
 	bactive = for-each-ref --sort=-committerdate --format=\"%(refname:short)\"
 
@@ -63,6 +64,8 @@
 	prune = true
 [push]
 	default = simple
+[pull]
+	rebase = true
 [rebase]
 	# Support fixup and squash commits
 	autoSquash = true
@@ -77,6 +80,7 @@
 	cmd = emacsclient -c -a \"\" --eval \"\
 		(ediff-files \\\"$LOCAL\\\" \\\"$REMOTE\\\")\"
 [merge]
+	ff = only
 	log = true
 	tool = ediff
 [mergetool]
