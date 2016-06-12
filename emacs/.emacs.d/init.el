@@ -1,3 +1,7 @@
+;;; init.el --- main config entry point
+;;; Commentary:
+;;; Code:
+
 ;; Delay garbage collection during startup
 (setq gc-cons-threshold most-positive-fixnum)
 
@@ -5,30 +9,30 @@
 (add-hook 'after-init-hook (lambda ()
                              (setq gc-cons-threshold 800000)))
 
-;;; Paths
+;;;; Paths
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/lisp"))
 (dolist (dir load-path)
   (make-directory dir t))
 
 ;; Packages inside XDG_DATA_HOME/emacs
-(setq user-data-directory
+(defvar user-data-directory
       (if (getenv "XDG_DATA_HOME")
           (getenv "XDG_DATA_HOME") "~/.local/share"))
 (setq package-user-dir (expand-file-name "emacs" user-data-directory))
 ;; Cache inside XDG_CACHE_HOME/emacs
-(setq user-cache-directory
+(defvar user-cache-directory
       (if (getenv "XDG_CACHE_HOME")
           (getenv "XDG_CACHE_HOME") "~/.cache"))
 
-(setq backup-dir   (expand-file-name "emacs/backup" user-cache-directory)
-      autosave-dir (expand-file-name "emacs/save" user-cache-directory)
-      undo-dir     (expand-file-name "emacs/undo" user-cache-directory))
+(defvar backup-dir   (expand-file-name "emacs/backup" user-cache-directory))
+(defvar autosave-dir (expand-file-name "emacs/save" user-cache-directory))
+(defvar undo-dir     (expand-file-name "emacs/undo" user-cache-directory))
 
 (make-directory backup-dir t)
 (make-directory autosave-dir t)
 (make-directory undo-dir t)
 
-;;; Package
+;;;; Package
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 (package-initialize)
@@ -36,16 +40,16 @@
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
+(require 'use-package)
 (setq use-package-verbose t
       use-package-always-ensure t
       bind-key-describe-special-forms t)
-(require 'use-package)
 
 (use-package auto-compile
   :config (auto-compile-on-load-mode))
 (setq load-prefer-newer t)
 
-;;; Settings
+;;;; Settings
 (setq inhibit-startup-screen t
       inhibit-startup-echo-area-message t
       inhibit-startup-buffer-menu t
@@ -54,7 +58,7 @@
       create-lockfiles nil
       vc-follow-symlinks t)
 
-;; Backup
+;;; Backup
 (setq auto-save-file-name-transforms `((".*" ,autosave-dir t))
       auto-save-list-file-prefix autosave-dir
       backup-directory-alist `((".*" . ,backup-dir))
@@ -64,7 +68,7 @@
       backup-by-copying-when-linked t
       vc-make-backup-files t)
 
-;;; Appearance
+;;;; Appearance
 (when (fboundp #'menu-bar-mode) (menu-bar-mode -1))
 (when (fboundp #'tool-bar-mode) (tool-bar-mode -1))
 (when (fboundp #'scroll-bar-mode) (scroll-bar-mode -1))
@@ -72,7 +76,7 @@
 (load-theme 'leuven)
 (set-face-attribute 'default nil :family "monospace" :height 120)
 
-;;; Usability
+;;;; Usability
 (defalias #'yes-or-no-p #'y-or-n-p)
 
 ;; Undo and redo the window configuration
@@ -83,18 +87,20 @@
       switch-to-buffer-preserve-window-point t)
 
 ;; Remember point position in files
-(require #'saveplace)
+(require 'saveplace)
 (setq-default save-place t)
 (setq save-place-file (expand-file-name "emacs/places" user-cache-directory)
       save-place-forget-unreadable-files nil)
 
 ;; Save mini buffer history
+(require 'savehist)
 (setq savehist-file (expand-file-name "emacs/history" user-cache-directory)
       history-length t
       history-delete-duplicates t)
 (savehist-mode)
 
 ;; Bookmarks
+(require 'bookmark)
 (setq bookmark-default-file (expand-file-name "emacs/bookmarks" user-cache-directory))
 
 ;; Indicate buffer boundaries and empty lines
@@ -118,7 +124,7 @@
 ;; Show column-number in the mode line
 (column-number-mode)
 
-;;; Edit
+;;;; Edit
 
 ;; Newline at end of file
 (setq require-final-newline t)
@@ -130,13 +136,13 @@
 (setq-default fill-column 72)
 (setq auto-fill-mode t)
 
-;; Indentation
+;;; Indentation
 (setq-default tab-width 4
               standard-indent 4
               indent-tabs-mode nil)
 
 (defun my-tab-width ()
-  "Cycle tab-width between values 2, 4, and 8."
+  "Cycle 'tab-width' between values 2, 4, and 8."
   (interactive)
   (setq tab-width
         (cond ((eq tab-width 8) 2)
@@ -146,12 +152,13 @@
 
 (global-set-key (kbd "C-c t t") 'my-tab-width)
 
-;; White-space
+;;; White-space
+(require 'whitespace)
 (diminish 'whitespace-mode "WS")
 (setq whitespace-line-column 100)
 (add-hook 'before-save-hook 'whitespace-cleanup)
 
-;; Spell
+;;; Spell
 (use-package flyspell
   :diminish (flyspell-mode . "FS")
   :bind ("C-c t s" . flyspell-mode)
@@ -160,20 +167,20 @@
   (add-hook 'text-mode-hook #'flyspell-mode)
   (add-hook 'prog-mode-hook #'flyspell-prog-mode))
 
-;;; Shell
+;;;; Shell
 
 ;; Pager that works inside Emacs
 (setenv "PAGER" "/usr/bin/cat")
 
-;;; Features
+;;;; Features
 
-;; Diff
+;;; Diff
 (require 'ediff)
 (setq ediff-window-setup-function #'ediff-setup-windows-plain
       ediff-split-window-function #'split-window-horizontally)
 (add-hook 'ediff-after-quit-hook-internal 'winner-undo)
 
-;; Undo
+;;; Undo
 (use-package undo-tree
   :diminish (undo-tree-mode . "UT")
   :commands global-undo-tree-mode
@@ -185,7 +192,7 @@
         undo-tree-visualizer-diff t
         undo-tree-visualizer-timestamps t))
 
-;; Completion
+;;; Completion
 (setq completion-cycle-threshold 5
       tab-always-indent 'complete)
 
@@ -222,29 +229,73 @@
   :init
   (add-hook 'after-init-hook #'company-statistics-mode)
   :config
-  (setq company-statistics-file (expand-file-name "emacs/company-statistics-cache.el" user-cache-directory)))
+  (setq company-statistics-file (expand-file-name "emacs/company-statistics-cache.Eli" user-cache-directory)))
 
-;; VIM
+;;; VIM
 (use-package evil
   :bind ("C-c t v" . evil-mode))
 
-;; Helm
+;;; Helm
 (use-package helm
   :diminish helm-mode
-  :init
-  (setq helm-M-x-fuzzy-match t
-        helm-buffers-fuzzy-matching t
-        helm-display-header-line nil)
-  :config
-  (helm-mode)
-  (helm-autoresize-mode)
   :bind (("M-x" . helm-M-x)
          ("C-x C-f" . helm-find-files)
-         ("C-x b" . helm-buffers-list)))
+         ("C-x C-b" . helm-buffers-list)
+         ("C-x b" . helm-mini)
+         ("M-y" . helm-show-kill-ring))
+  :commands (helm-mode helm-autoresize-mode)
+  :init
+  (add-hook 'after-init-hook #'helm-mode)
+  (add-hook 'after-init-hook #'helm-autoresize-mode)
+  :config
+  (setq helm-M-x-fuzzy-match t
+        helm-buffers-fuzzy-matching t
+        helm-display-header-line nil))
 
-;;; Keys
+(use-package helm-projectile
+  :commands help-projectile-on
+  :init
+  (add-hook 'after-init-hook #'helm-projectile-on)
+  :config
+  (setq projectile-completion-system 'helm)
+  (setq helm-projectile-fuzzy-match t))
+
+(use-package helm-ag)
+
+;;; Linting
+(use-package flycheck
+  :commands flycheck-mode
+  :init
+  (add-hook 'prog-mode-hook #'flycheck-mode)
+  :config
+  (setq-default flycheck-emacs-lisp-load-path 'inherit))
+
+;;; File navigation
+(use-package projectile
+  :diminish projectile-mode
+  :commands projectile-global-mode
+  :init
+  (add-hook 'after-init-hook #'projectile-global-mode)
+  :config
+  (setq projectile-enable-caching t
+        projectile-cache-file (expand-file-name "emacs/projectile.cache" user-cache-directory)
+        projectile-known-projects-file (expand-file-name "emacs/projectile-bookmarks.eld" user-cache-directory)))
+
+;;; Zoom window
+(use-package zoom-window
+  :bind ("C-c C-z" . zoom-window-zoom)
+  :config
+  (setq zoom-window-mode-line-color "DarkGreen"))
+
+;;;; Keys
 (define-key emacs-lisp-mode-map
   (kbd "M-.") 'find-function-at-point)
+
+;; Increase/decrease font-size with scroll
+(global-set-key [C-mouse-4] 'text-scale-increase)
+(global-set-key [C-mouse-5] 'text-scale-decrease)
+
+(bind-key [remap dabbrev-expand] #'hippie-expand)
 
 (bind-key "C-c t l" #'linum-mode)
 (bind-key "C-c t r" #'ruler-mode)
@@ -252,3 +303,4 @@
 
 (bind-key "C-c f e" #'ediff)
 (bind-key "C-c f w" #'whitespace-cleanup)
+;;; init.el ends here
