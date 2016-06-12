@@ -20,8 +20,8 @@ VISUAL    DEFAULT="emacsclient -c"
 EDITOR    DEFAULT="emacsclient -t"
 TERMINAL  DEFAULT=termite
 BROWSER   DEFAULT=browser
-PAGER     DEFAULT=less
-MANPAGER  DEFAULT=less
+PAGER     DEFAULT=most
+MANPAGER  DEFAULT=most
 LESS      DEFAULT="-MR"
 
 # XDG
