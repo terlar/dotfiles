@@ -53,7 +53,7 @@
 	branch = auto
 	interactive = auto
 [color "diff"]
-	meta = white
+	meta = bold yellow
 [branch]
 	# Automatic remote tracking
 	autoSetupMerge = always
