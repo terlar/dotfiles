@@ -24,7 +24,7 @@ background      = #263238
 
 color0  = #263238
 color1  = #F44336
-color2  = #00C853
+color2  = #4CAF50
 color3  = #FF9800
 color4  = #2196F3
 color5  = #AB47BC
@@ -32,7 +32,7 @@ color6  = #26A69A
 color7  = #B0BEC5
 color8  = #607D8B
 color9  = #EF5350
-color10 = #00E676
+color10 = #00C853
 color11 = #BCAAA4
 color12 = #42A5F5
 color13 = #BA68C8
