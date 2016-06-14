@@ -18,7 +18,7 @@ main() {
 	if ! is_linux_term; then
 		echo; echo
 		echo 256 color space:
-		for i in {16..21}; do
+		for i in {16..255}; do
 			echo -en '\e[38;05;'$i';7m  \e[0m'
 		done
 	fi
