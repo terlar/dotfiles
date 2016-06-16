@@ -30,9 +30,14 @@
 
 	tags     = tag -l
 
-	branches = for-each-ref --sort=-committerdate --format=\"%(color:blue)%(authordate:relative)\t%(color:red)%(authorname)\t%(color:black)%(color:bold)%(refname:short)\" refs/remotes
+	branches = !git for-each-ref \
+		--sort=-committerdate \
+		--format=\"%(color:blue)%(authordate:relative)\t \
+				 %(color:red)%(authorname)\t \
+				 %(color:black)%(color:bold)%(refname:short)\" \
+		refs/remotes \
+		| column -t -s \"\t\"
 	remotes  = remote -v
-	bactive = for-each-ref --sort=-committerdate --format=\"%(refname:short)\"
 
 	edit = !bash -c '${EDITOR} $(git ls-files --modified --other --exclude-standard)'
 
@@ -42,7 +47,7 @@
 	lg     = log --decorate --oneline --graph
 	ll     = log --decorate
 	lll    = log --decorate --stat
-	fup    = !git --no-pager lll --since '1 day ago' --author terlar@gmail.com
+	fup    = !git --no-pager lll --since '1 day ago' --author $(git config user.email)
 	head   = !git --no-pager lll -1
 	recent = !git lll -30
 [pager]
