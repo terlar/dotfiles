@@ -15,9 +15,9 @@
 [credential]
 	helper = cache
 [alias]
-	clone    = clone --recursive -j 4
-	fetchall = fetch --all -j 4
-	pullall  = pull --all -j 4
+	clone    = clone --recursive
+	fetchall = fetch --all
+	pullall  = pull --all
 
 	subpull  = submodule foreach git pull
 	unstage  = reset HEAD
@@ -64,6 +64,8 @@
 	autoSetupMerge = always
 	# Force all new branches to automatically use rebase
 	autoSetupRebase = always
+[submodule]
+	fetchJobs = 4
 [fetch]
 	recurseSubmodules = true
 	prune = true
@@ -77,6 +79,7 @@
 	# Stash dirty worktree
 	autoStash = true
 [diff]
+	compactionHeuristic = true
 	submodule = log
 	tool = ediff
 [difftool]
