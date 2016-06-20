@@ -5,7 +5,7 @@ function fish_user_abbreviations
     abbr l 'ls -a'
     abbr l. 'ls -d .*'
     abbr m mux
-    abbr e $EDITOR
+    abbr e editor
     abbr week "date '+%V'"
 
     if type -fq systemctl
@@ -94,5 +94,9 @@ function fish_user_abbreviations
     if type -q farm
         abbr f 'farm'
         abbr fcd 'farm cd'
+    end
+
+    if type -q saltside-workstation
+        abbr sw saltside-workstation
     end
 end
