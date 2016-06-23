@@ -36,10 +36,15 @@ is_not_empty() {
 }
 
 main() {
-	local browser='qutebrowser'
-	local url
-	local curl_opts='-Ls'
-	local mpv_opts
+	local url browser
+	if [[ -n "$DISPLAY" ]]; then
+		browser=qutebrowser
+	else
+		browser=w3m
+	fi
+
+	declare -a curl_opts=('-Ls')
+	declare -a mpv_opts=()
 	local slack_cookie="$HOME/.slackcurl/cookies"
 
 	if [[ $# -eq 0 ]]; then
@@ -55,9 +60,9 @@ main() {
 
 	local new_url
 	if has_slack "$slack_cookie" && is_slack_url "$url"; then
-		curl_opts="$curl_opts --cookie $slack_cookie"
-		mpv_opts="$mpv_opts --cookies=yes --cookies-file $slack_cookie"
-		new_url=$(curl $curl_opts "$url" \
+		curl_opts+=("--cookie" "$slack_cookie")
+		mpv_opts+=("--cookies=yes" "--cookies-file=$slack_cookie")
+		new_url=$(curl "${curl_opts[@]}" "$url" \
 			| sed -e 's|boot_data.file = \({.*}\);|\1|;tx;d;:x' \
 			| jq -r '.url_private_download')
 
@@ -65,7 +70,7 @@ main() {
 			url=$new_url
 		fi
 	elif is_tumblr_url "$url"; then
-		new_url=$(curl $curl_opts "$url" \
+		new_url=$(curl "${curl_opts[@]}" "$url" \
 			| sed -n '/<img/s/.*src="\([^"]*\)".*/\1/p' \
 			| grep -m1 '.gif$')
 
@@ -81,7 +86,7 @@ main() {
 	if is_youtube_url "$url"; then
 		mime=video/youtube
 	else
-		mime=$(curl $curl_opts -r 0-499 -IX HEAD "$url" \
+		mime=$(curl "${curl_opts[@]}" -r 0-499 -IX HEAD "$url" \
 			| awk '/^Content-Type:/ { print $2 }' \
 			| sed -e 's/[[:cntrl:]]//')
 	fi
@@ -92,17 +97,17 @@ main() {
 
 	case $mime in
 		image/gif)
-			exec curl $curl_opts "$url" | gifview -a -
+			exec curl "${curl_opts[@]}" "$url" | gifview -a -
 			;;
 		image/*)
-			exec curl $curl_opts "$url" | feh -. -
+			exec curl "${curl_opts[@]}" "$url" | feh -. -
 			;;
 		video/*)
-			exec mpv $mpv_opts "$url"
+			exec mpv "${mpv_opts[@]}" "$url"
 			;;
 		application/force-download)
 			cd "$XDG_DOWNLOAD_DIR" || exit
-			curl $curl_opts -O "$url"
+			curl "${curl_opts[@]}" -O "$url"
 			cd - || exit
 			notify-send -i down 'File saved' "${XDG_DOWNLOAD_DIR}"
 			;;
