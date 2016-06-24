@@ -16,8 +16,8 @@ XBMC_HOME DEFAULT=/usr/share/plexhometheater
 VAGRANT_DOCKER_CACHE DEFAULT=${HOME}/.docker-cache
 
 # Tools
-VISUAL    DEFAULT="emacsclient -c"
-EDITOR    DEFAULT="emacsclient -t"
+VISUAL    DEFAULT=emacsclient
+EDITOR    DEFAULT=emacsclient
 TERMINAL  DEFAULT=termite
 BROWSER   DEFAULT=browser
 PAGER     DEFAULT=most

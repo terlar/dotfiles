@@ -50,16 +50,21 @@ myManageHook = composeAll
     , appName =? "zenity"        --> doCenterFloat
     , appName =? "gcolor2"       --> doCenterFloat
     , appName =? "font-manager"  --> doCenterFloat
+    , appName =? "emacs"         --> smallRect
     , appName =? "xfce4-notifyd" --> doIgnore
     , appName =? "spotify"       --> doShift "music"
     ]
+  where
+    -- Floating window sizes
+    largeRect = customFloating $ W.RationalRect (1/20) (1/20) (9/10) (9/10)
+    smallRect = customFloating $ W.RationalRect (1/6) (1/6) (2/3) (2/3)
 
 myScratchpads =
     [ termNS    "scratchpad" "~"           smallRect
     , termAppNS "music"      "ncmpcpp"     largeRect
     , xAppNS    "volume"     "pavucontrol" doCenterFloat
     , xAppNS    "dictionary" "goldendict"  doRightFloat
-    , emacsNS   "editor"                   smallRect
+    , emacsNS   "editor"                   largeRect
     ]
   where
     -- NS types
