@@ -55,19 +55,26 @@ myManageHook = composeAll
     ]
 
 myScratchpads =
-    [ workPad "scratchpad" "~" smallRect
-    , termPad "ncmpcpp" largeRect
-    , xappPad "pavucontrol" "Pavucontrol" doCenterFloat
-    , xappPad "goldendict" "Goldendict" doRightFloat
-    , xappPad' "editor" myEditor "Emacs" smallRect
+    [ termNS    "scratchpad" "~"           smallRect
+    , termAppNS "music"      "ncmpcpp"     largeRect
+    , xAppNS    "volume"     "pavucontrol" doCenterFloat
+    , xAppNS    "dictionary" "goldendict"  doRightFloat
+    , emacsNS   "editor"                   smallRect
     ]
   where
-    workPad a d = NS a (workTerm a d) (role ~? a)
-    workTerm a d = myTerm ++ " -r " ++ a ++ " -d " ++ d
-    termPad a = NS a (consoleApp a) (role ~? a)
-    consoleApp a = myTerm ++ " -r " ++ a ++ " -e \"" ++ a ++ "\""
-    xappPad a c = NS a a (className ~? c)
-    xappPad' a r c = NS a r (className ~? c)
+    -- NS types
+    termNS     n d = roleNS n (myTerm ++ " -r " ++ n ++ " -d " ++ d) n
+    termAppNS  n c = roleNS n (myTerm ++ " -r " ++ n ++ " -e '" ++ c ++ "'") n
+    xAppNS     n c = classNS n c c
+    emacsNS    n   = nameNS n ("emacsclient -c -F '((name . \"" ++ n ++ "\"))'")
+    emacsAppNS n c = nameNS n ("emacsclient -c -F '((name . \"" ++ n ++ "\"))' -e '" ++ c ++ "'")
+
+    -- Query methods
+    roleNS  n c r  = NS n c (roleName ~? r)
+    classNS n c cl = NS n c (className ~? cl)
+    nameNS  n c    = NS n c (wmName =? n)
+    wmName = stringProperty "WM_NAME"
+
 
     -- Floating window sizes
     largeRect = customFloating $ W.RationalRect (1/20) (1/20) (9/10) (9/10)
@@ -88,9 +95,9 @@ myLayoutHook = smartBorders $
     tiled = named "Tiled" (ResizableTall 1 delta (2/3) [])
     triple = named "Triple" (limitWindows 3 tiled)
     tabs = named "Tabbed" (tabbed shrinkText myTabConfig)
-    accordion = named "Folded" (Accordion)
-    accordionFull = named "Folded Full" (combineTwo (TwoPane delta (1/2)) (Accordion) (Full))
+    accordion = named "Folded" Accordion
+    accordionFull = named "Folded Full" (combineTwo (TwoPane delta (1/2)) Accordion Full)
     dual = named "Dual" (TwoPane delta (2/3))
-    dualStack = named "Dual Stacked" (combineTwo (StackTile 1 delta (1/2)) (Full) (Full))
+    dualStack = named "Dual Stacked" (combineTwo (StackTile 1 delta (1/2)) Full Full)
     grid = named "Grid" (GV.SplitGrid GV.L 2 3 (2/3) (16/10) (5/100))
     delta = 3/100

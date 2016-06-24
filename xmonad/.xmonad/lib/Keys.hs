@@ -51,20 +51,20 @@ myKeys =
     , ("M-S-k", screenGo M.U False >> bringMouse)
     -- Workspace navigation
     , ("M-<Tab>", toggleWS' ["NSP"])
-    , ("M-]", moveTo Next nonSPAndNonEmptyWS)
-    , ("M-[", moveTo Prev nonSPAndNonEmptyWS)
-    , ("M-S-]", shiftToNext >> nextWS)
-    , ("M-S-[", shiftToPrev >> prevWS)
+    , ("M-]", moveTo Next nonEmptyWSNoNSP)
+    , ("M-[", moveTo Prev nonEmptyWSNoNSP)
+    , ("M-S-]", shiftTo Next nonEmptyWSNoNSP)
+    , ("M-S-[", shiftTo Prev nonEmptyWSNoNSP)
     -- Dynamic workspaces
     , ("M-n", addWorkspacePrompt myXPConfig)
     , ("M-<Backspace>", killAll >> removeWorkspace >> createOrGoto "dashboard")
     , ("M-c", renameWorkspace myXPConfig)
     -- Scratchpads
-    , ("M-`", scratchToggle "scratchpad")
-    , ("M-<XF86AudioRaiseVolume>", scratchToggle "pavucontrol")
-    , ("M-e", scratchToggle "editor")
-    , ("M-m", scratchToggle "ncmpcpp")
-    , ("M-'", scratchToggle "goldendict")
+    , ("M-`"                     , scratchToggle "scratchpad")
+    , ("M-<XF86AudioRaiseVolume>", scratchToggle "volume")
+    , ("M-e"                     , scratchToggle "editor")
+    , ("M-m"                     , scratchToggle "music")
+    , ("M-'"                     , scratchToggle "dictionary")
     -- Global window
     , ("M-z", toggleGlobal)
     -- Shell prompt
@@ -91,8 +91,6 @@ myKeys =
     ++ [("M-s " ++ k, promptSearch myXPConfig e) | (k,e) <- searches]
     ++ screenKeys ++ windowKeys ++ mediaKeys
   where
-    nonSPAndNonEmptyWS = WSIs $ nonSPAndNonEmptyWS' ["NSP"]
-
     workspaces =
         [ ("1", "dashboard")
         , ("n", "note")
@@ -121,15 +119,19 @@ myKeys =
         , ("y", youtube)
         ]
 
+    -- Work space selection
+    nonEmptyWSNoNSP = WSIs $ nonEmptyWSExcept ["NSP"]
+    nonEmptyWSExcept s = return (\w -> (W.tag w `notElem` s) && isJust (W.stack w))
+
     -- Scratchpad invocation
-    scratchToggle a = namedScratchpadAction myScratchpads a >> bringMouse
+    scratchToggle = namedScratchpadAction myScratchpads
 
     -- GridSelect actions
     spawnApp     = runSelectedAction (myGSConfig pink) myApps
-    selectWindow = goToSelected (myGSConfig blue) >> windows W.swapMaster >> bringMouse
-    bringWindow  = bringSelected (myGSConfig orange) >> bringMouse
-    selectWS     = gridselectWorkspace (myGSConfig green) W.greedyView >> bringMouse
-    takeToWS     = gridselectWorkspace (myGSConfig purple) (\ws -> W.greedyView ws . W.shift ws) >> bringMouse
+    selectWindow = goToSelected (myGSConfig blue) >> windows W.swapMaster
+    bringWindow  = bringSelected (myGSConfig orange)
+    selectWS     = gridselectWorkspace (myGSConfig green) W.greedyView
+    takeToWS     = gridselectWorkspace (myGSConfig purple) (\ws -> W.greedyView ws . W.shift ws)
 
     -- Colors
     blue   = myColor "#25629f"
@@ -169,14 +171,12 @@ myApps =
     , ("Themes",       spawn     "lxappearance")
     ]
   where
-    raiseApp ws a = raiseNextMaybe (spawnWS ws a) (appName ~? a) >> bringMouse
-    raiseApp' a = raiseNextMaybe (spawn a) (appName ~? a) >> bringMouse
-    myRaiseTerm a d = raiseNextMaybe (spawnWS a (termApp a d)) (role ~? a) >> bringMouse
+    raiseApp ws a = raiseNextMaybe (spawnWS ws a) (appName ~? a)
+    raiseApp' a = raiseNextMaybe (spawn a) (appName ~? a)
+    myRaiseTerm a d = raiseNextMaybe (spawnWS a (termApp a d)) (roleName ~? a)
     termApp a d = myTerm ++ " -r " ++ a ++ " -d " ++ d
     -- Named Workspace Navigation
     spawnWS ws a = addWorkspace ws >> spawn a
-
-nonSPAndNonEmptyWS' s = return (\w -> (W.tag w `notElem` s) && isJust (W.stack w))
 
 -- Warp mouse
 bringMouse :: X ()

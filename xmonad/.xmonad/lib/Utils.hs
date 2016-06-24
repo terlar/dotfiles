@@ -4,11 +4,12 @@ import XMonad
 
 -- Data module
 import Data.List(isInfixOf)
+import Data.Char(toUpper)
 
 import Config
 
-role :: Query String
-role = stringProperty "WM_WINDOW_ROLE"
+roleName :: Query String
+roleName = stringProperty "WM_WINDOW_ROLE"
 
 -- Infix (,) to clean up key and mouse bindings
 infixr 0 ~>
@@ -16,7 +17,9 @@ infixr 0 ~>
 (~>) = (,)
 
 -- Query operators
-q ~? x = fmap (x `isInfixOf`) q -- haystack includes needle?
+needle `isInfixOfI` haystack = upper needle `isInfixOf` upper haystack
+upper = map toUpper
+q ~? x = fmap (x `isInfixOfI`) q -- haystack includes needle?
 
 videoSelect :: X ()
 videoSelect = spawnSelect myVideoPlayer "Select a video" "$XDG_VIDEOS_DIR"
