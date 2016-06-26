@@ -53,6 +53,8 @@
       bind-key-describe-special-forms t)
 
 ;;; Settings
+(prefer-coding-system 'utf-8)
+
 (setq inhibit-startup-screen t
       inhibit-startup-echo-area-message t
       inhibit-startup-buffer-menu t
@@ -60,12 +62,18 @@
       initial-scratch-message nil
       echo-keystrokes 0.1
       completion-cycle-threshold 5
-      tab-always-indent 'complete)
+      tab-always-indent 'complete
+      uniquify-buffer-name-style 'forward)
 
 ;; Files
 (setq create-lockfiles nil
       load-prefer-newer t
       vc-follow-symlinks t)
+
+;; Kill-ring
+(setq kill-ring-max 200
+      kill-do-not-save-duplicates t
+      save-interprogram-paste-before-kill t)
 
 ;; Backup
 (setq auto-save-file-name-transforms `((".*" ,autosave-dir t))
@@ -116,10 +124,17 @@
 (global-set-key [C-mouse-4] 'text-scale-increase)
 (global-set-key [C-mouse-5] 'text-scale-decrease)
 
-(bind-key [remap dabbrev-expand] #'hippie-expand)
-
 ;; C-
-(bind-key* "<C-return>" #'other-window)
+(defun kill-region-or-backward-kill-word (&optional arg region)
+  "Takes ARG and REGION and passes to:
+`kill-region' if the region is active, otherwise `backward-kill-word'."
+  (interactive
+   (list (prefix-numeric-value current-prefix-arg) (use-region-p)))
+  (if region
+      (kill-region (region-beginning) (region-end))
+    (backward-kill-word arg)))
+
+(bind-key "C-w" #'kill-region-or-backward-kill-word)
 
 ;; M-
 (bind-key "M-W" #'mark-word)
@@ -176,8 +191,6 @@
 
 (bind-key "C-c d" #'delete-current-line)
 (bind-key "C-c q" #'fill-region)
-(bind-key "C-c r" #'replace-regexp)
-(bind-key "C-c s" #'replace-string)
 (bind-key "C-c ;" #'comment-or-uncomment-region)
 
 ;; C-c t (Toggle)
@@ -189,6 +202,13 @@
            ("v" . variable-pitch-mode)) ; Toggle fixed-width/variable-width
 
 ;; C-c w (Window)
+(defun switch-to-minibuffer ()
+  "Switch to minibuffer window."
+  (interactive)
+  (if (active-minibuffer-window)
+      (select-window (active-minibuffer-window))
+    (error "Minibuffer is not active")))
+
 (bind-keys :prefix-map window-map
            :prefix "C-c w"
            ("=" . balance-windows)
@@ -196,9 +216,14 @@
            ("/" . split-window-right)
            ("-" . split-window-below)
            ("m" . delete-other-windows)
-           ("u" . rename-uniquely))
+           ("u" . rename-uniquely)
+           ("b" . switch-to-minibuffer))
 
 ;;; Usability
+
+;; Isearch
+(setq isearch-allow-scroll t)
+(diminish 'isearch-mode)
 
 ;; Window behavior
 (setq window-combination-resize t
@@ -223,6 +248,8 @@
 
 ;;; Editing
 
+(setq-default line-spacing 0.2) ; Increase line spacing
+
 ;; Newline at end of file
 (setq indicate-empty-lines t
       require-final-newline t)
@@ -244,9 +271,11 @@
 
 ;;; Builtin packages
 (use-package align ; Align text
-  :commands align
   :bind
-  ("C-c [" . align-regexp))
+  (("C-c [" . align-regexp)
+   ("C-c x a a" . align)
+   ("C-c x a c" . align-current))
+  :commands align)
 
 (use-package autorevert ; Auto-revert buffers of changed files
   :init
@@ -265,8 +294,7 @@
 
 (use-package compile
   :bind
-  (("C-c c c" . recompile)
-   ("<f5>" . recompile))
+  ("C-c c C" . recompile)
   :config
   (setq compilation-ask-about-save nil
         compilation-always-kill t
@@ -285,6 +313,10 @@
                 (ansi-color-apply-on-region compilation-filter-start
                                             (point)))))
   :commands ansi-color-apply-on-region)
+
+(use-package delsel
+  :defer t
+  :init (delete-selection-mode))
 
 (use-package ediff
   :bind
@@ -348,6 +380,20 @@
   (unbind-key "C-." flyspell-mode-map)
   :diminish (flyspell-mode . " ⓢ"))
 
+(use-package hippie-exp ; Expansion and completion (line)
+  :bind (([remap dabbrev-expand] . hippie-expand))
+  :config
+  (setq hippie-expand-try-functions-list
+        '(try-expand-dabbrev
+          try-expand-dabbrev-all-buffers
+          try-expand-dabbrev-from-kill
+          try-complete-file-name-partially
+          try-complete-file-name
+          try-expand-all-abbrevs
+          try-expand-list
+          try-complete-lisp-symbol-partially
+          try-complete-lisp-symbol)))
+
 (use-package hl-line ; Highlight current line
   :defer t
   :init
@@ -357,6 +403,24 @@
   :defer t
   :init
   (auto-image-file-mode))
+
+(use-package outline ; Navigate outlines in buffers
+  :defer t
+  :init
+  (dolist (hook '(text-mode-hook prog-mode-hook))
+    (add-hook hook #'outline-minor-mode))
+  :diminish outline-minor-mode)
+
+(use-package recentf
+  :defer t
+  :init
+  (recentf-mode)
+  :config
+  (setq recentf-max-saved-items 200
+        recentf-max-menu-items 15
+        recentf-auto-cleanup 300
+        recentf-exclude (list "/\\.git/.*\\'"  ; Git contents
+                              "/elpa/.*\\'"))) ; Package files
 
 (use-package savehist ; Save mini buffer history
   :defer t
@@ -407,13 +471,32 @@
   (winner-mode))
 
 ;;; Packages
+(use-package ace-window ; Fast window switching
+  :bind (("<C-return>" . ace-window)
+         ("C-c w w"    . ace-window)))
+
+(use-package adaptive-wrap ; Align wrapped lines
+  :defer t
+  :init (add-hook 'visual-line-mode-hook #'adaptive-wrap-prefix-mode))
+
 (use-package ag ; File grep/search
   :config
   (use-package helm-ag
-    :commands helm-ag)
+    :bind
+    (("C-c s a" . helm-ag)
+     ("C-c s A" . helm-do-ag))
+    :config
+    (setq helm-ag-fuzzy-match t
+          helm-ag-insert-at-point 'symbol
+          helm-ag-edit-save t)
+    :commands (helm-ag helm-do-ag))
   :commands (ag ag-regexp))
 
-(use-package aggressive-indent)
+(use-package aggressive-indent
+  :defer 5
+  :init
+  (global-aggressive-indent-mode t)
+  :diminish aggressive-indent-mode)
 
 (use-package anzu ; Position/matches count for search
   :bind
@@ -431,6 +514,13 @@
    anzu--reset-mode-line
    anzu--cons-mode-line-search)
   :diminish anzu-mode)
+
+(use-package auto-dictionary ; Automatically infer dictionary
+  :bind
+  (("C-c l l" . adict-change-dictionary)
+   ("C-c l g" . adict-guess-dictionary))
+  :init
+  (add-hook 'flyspell-mode-hook #'auto-dictionary-mode))
 
 (use-package company ; Completion
   :bind
@@ -460,7 +550,10 @@
     :config
     (setq company-statistics-file (expand-file-name
                                    "emacs/company-statistics-cache.el" user-cache-directory)))
-  (setq company-minimum-prefix-length 3
+  (use-package company-quickhelp
+    :init
+    (company-quickhelp-mode))
+  (setq company-minimum-prefix-length 2
         company-idle-delay 0
         company-show-numbers t
         company-require-match 'never
@@ -487,7 +580,13 @@
   :init
   (dtrt-indent-mode)
   :config
-  (setq dtrt-indent-active-mode-line-info "(⇥)"))
+  (setq dtrt-indent-active-mode-line-info "(⇥)")
+  :commands dtrt-indent-mode)
+
+(use-package easy-kill
+  :bind
+  (([remap kill-ring-save] . easy-kill)
+   ([remap mark-sexp]      . easy-mark)))
 
 (use-package evil ; VIM-behavior
   :defer t
@@ -513,21 +612,39 @@
   (use-package evil-god-state ; Ctrl prefix everything
     :bind
     (:map evil-normal-state-map
-     ("SPC" . evil-execute-in-god-state))
+          ("SPC" . evil-execute-in-god-state))
     :config
     (evil-define-key 'god global-map [escape] 'evil-god-state-bail))
-    :commands evil-execute-in-god-state)
+  :commands evil-execute-in-god-state)
 
-(use-package flycheck ; Linting
+(use-package golden-ratio
+  :init
+  (golden-ratio-mode)
+  :diminish (golden-ratio-mode . " ⓖ"))
+
+(use-package flycheck ; Linting and syntax checking
   :defer 5
+  :bind
+  ("C-c t f" . flycheck-mode)
   :init
   (global-flycheck-mode)
   :config
+  (use-package helm-flycheck)
   (setq-default flycheck-emacs-lisp-load-path 'inherit)
+  (setq flycheck-standard-error-navigation nil
+        flycheck-display-errors-function #'flycheck-display-error-messages-unless-error-list)
   :commands
   (global-flycheck-mode
+   flycheck-display-error-messages-unless-error-list
    flycheck-next-error
    flycheck-previous-error))
+
+(use-package focus-autosave-mode ; Save buffers when focus is lost
+  :init
+  (focus-autosave-mode)
+  :commands focus-autosave-mode
+  :diminish
+  focus-autosave-mode)
 
 (use-package git-messenger
   :bind
@@ -535,14 +652,17 @@
 
 (use-package helm ; Completion system
   :bind
-  (("C-h a"   . helm-apropos)
+  (([remap execute-extended-command] . helm-M-x)
+   ([remap switch-to-buffer]         . helm-mini)
+   ([remap list-buffers]             . helm-buffers-list)
+   ([remap find-files]               . helm-find-files)
+   ([remap occur]                    . helm-occur)
+   ([remap yank-pop]                 . helm-show-kill-ring)
+   ([remap insert-register]          . helm-register)
    ("C-x f"   . helm-multi-files)
-   ("C-x C-f" . helm-find-files)
-   ("C-x C-b" . helm-buffers-list)
-   ("C-x b"   . helm-mini)
-   ("M-x"     . helm-M-x)
-   ("M-y"     . helm-show-kill-ring)
-   ("M-s b"   . helm-occur)
+   ("C-x r"   . helm-recentf)
+   ("C-c j t" . helm-imenu)
+   ("C-h a"   . helm-apropos)
    ("M-H"     . helm-resume)
    :map helm-map
    ("<tab>" . helm-execute-persistent-action)
@@ -550,34 +670,48 @@
    ("C-z"   . helm-select-action)
    ("A-v"   . helm-previous-page))
   :config
-  (use-package helm-swoop
-    :bind
-    (("M-s o" . helm-swoop)
-     ("M-s /" . helm-multi-swoop)))
   (use-package helm-descbinds ; Describe key bindings
     :bind
     ("C-h b" . helm-descbinds)
     :init
     (fset 'describe-bindings 'helm-descbinds))
-
+  (use-package helm-swoop
+    :bind
+    (("C-c s s" . helm-swoop)
+     ("C-c s S" . helm-multi-swoop)
+     ("C-c s C-s" . helm-multi-swoop-all))
+    :config
+    (setq helm-swoop-split-window-function #'helm-default-display-buffer)
+    :commands helm-default-display-buffer)
   (setq helm-M-x-fuzzy-match t
         helm-buffers-fuzzy-matching t
         helm-recentf-fuzzy-match t
         helm-imenu-fuzzy-match t
-        helm-display-header-line nil)
+        helm-ff-file-name-history-use-recentf t
+        helm-ff-search-library-in-sexp t
+        helm-display-header-line nil
+        helm-imenu-execute-action-at-once-if-one nil)
   (helm-autoresize-mode)
   :defines
   (helm-M-x-fuzzy-match
    helm-buffers-fuzzy-matching
    helm-recentf-fuzzy-match
    helm-imenu-fuzzy-match
-   helm-display-header-line)
+   helm-ff-file-name-history-use-recentf
+   helm-ff-search-library-in-sexp
+   helm-display-header-line
+   helm-imenu-execute-action-at-once-if-one)
   :commands
   (helm-autoresize-mode
    helm-execute-persistent-action
    helm-select-action
    helm-previous-page)
   :diminish helm-mode)
+
+(use-package helm-make
+  :bind
+  (("C-c c c" . helm-make-projectile)
+   ("<f5>"    . helm-make-projectile)))
 
 (use-package hlinum
   :defer t
@@ -590,11 +724,28 @@
 
 (use-package magit
   :bind
-  ("C-c g s" . magit-status)
+  (("C-c g c" . magit-clone)
+   ("C-c g s" . magit-status)
+   ("C-c g b" . magit-blame)
+   ("C-c g l" . magit-log-buffer-file)
+   ("C-c g p" . magit-pull))
+  :init
+  (global-magit-file-mode)
   :config
-  (setenv "GIT_PAGER" "")
   (use-package evil-magit)
-  (unbind-key "<C-return>" magit-file-section-map))
+  (unbind-key "<C-return>" magit-file-section-map)
+  (setenv "GIT_PAGER" "")
+  (setq magit-save-repository-buffers 'dontask
+        magit-refs-show-commit-count 'all
+        magit-log-buffer-file-locked t))
+
+(use-package restclient ; REST REPL
+  :defer t
+  :config
+  (use-package company-restclient
+    :after company
+    :config
+    (add-to-list 'company-backends 'company-restclient)))
 
 (use-package page-break-lines ; Display page breaks as a horizontal line
   :defer t
@@ -631,6 +782,12 @@
                       :foreground (face-attribute 'default :foreground)
                       :background (face-attribute 'hl-line :background)))
 
+(use-package sudo-edit
+  :defer t
+  :bind
+  (("C-c f s" . sudo-edit)
+   ("C-c f S" . sudo-edit-current-file)))
+
 (use-package undo-tree
   :defer t
   :init
@@ -649,6 +806,14 @@
                 visual-fill-column-center-text t)
   (add-hook 'text-mode-hook #'visual-fill-column-mode)
   (add-hook 'prog-mode-hook #'visual-fill-column-mode))
+
+(use-package visual-regexp-steroids
+  :bind
+  (([remap isearch-backward] . vr/isearch-backward)
+   ([remap isearch-forward]  . vr/isearch-forward)
+   ("C-c s r" . vr/query-repalce)
+   ("C-c s R" . vr/replace))
+  :commands pcre-to-elisp)
 
 (use-package which-key
   :defer t
@@ -672,18 +837,23 @@
           ("projectile-"    . "pt-")
           ("helm-"          . "h-")))
   (which-key-declare-prefixes
-   "C-c !" "flycheck"
-   "C-c =" "diff"
-   "C-c b" "buffers"
-   "C-c f" "files"
-   "C-c g" "git"
-   "C-c h" "helm/help"
-   "C-c p" "projects"
-   "C-c t" "toggle"
-   "C-c w" "windows")
+    "C-c !" "flycheck"
+    "C-c =" "diff"
+    "C-c b" "buffers"
+    "C-c f" "files"
+    "C-c g" "git"
+    "C-c h" "helm/help"
+    "C-c j" "jump"
+    "C-c p" "projects"
+    "C-c s" "search"
+    "C-c t" "toggle"
+    "C-c w" "windows")
   (which-key-enable-god-mode-support)
   :commands which-key-enable-god-mode-support
   :diminish which-key-mode)
+
+(use-package writeroom-mode ; Distraction-free editing
+  :bind (("C-c t r" . writeroom-mode)))
 
 (use-package zoom-window ; Temporary one window
   :bind
@@ -761,8 +931,12 @@
          ("\\.md\\'"          . markdown-mode)
          ("\\.markdown\\'"    . markdown-mode))
   :init
+  (add-hook 'gfm-mode-hook #'turn-off-auto-fill)
+  :config
   (setq markdown-header-scaling t
-        markdown-asymmetric-header t))
+        markdown-enable-wiki-links t
+        markdown-wiki-link-fontify-missing t)
+  :commands (markdown-mode gfm-mode))
 
 (use-package puppet-mode
   :mode ("\\.pp\\'" . puppet-mode))
@@ -770,6 +944,14 @@
 (use-package python-mode
   :mode ("\\.py\\'" . python-mode)
   :interpreter ("python" . python-mode))
+
+(use-package rst
+  :bind
+  (:map rst-mode-map
+        ("M-RET" . rst-insert-list))
+  :config
+  (setq rst-indent-literal-minimized 3
+        rst-indent-literal-normal 3))
 
 (use-package ruby-mode
   :mode ("\\.rb\\'" . ruby-mode)
