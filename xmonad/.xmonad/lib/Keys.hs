@@ -29,44 +29,44 @@ import Topics
 
 myKeys :: [(String, X ())]
 myKeys =
-    -- Recompile and restart XMonad
-    [ ("M-q", restartXMonad)
     -- Layout
-    , ("M-\\", sendMessage $ Toggle REFLECTX)
+    [ ("M-\\", sendMessage $ Toggle REFLECTX)
     , ("M-S-\\", sendMessage $ Toggle REFLECTY)
     , ("M-S--", sendMessage $ IncMasterCols 1)
     , ("M-S-=", sendMessage $ IncMasterCols (-1))
     , ("M-C--", sendMessage $ IncMasterRows 1)
     , ("M-C-=", sendMessage $ IncMasterRows (-1))
     , ("M-b", sendMessage M.ToggleStruts)
-    -- Grid select
-    , ("M-g", selectWS)
-    , ("M-S-g", takeToWS)
-    , ("<XF86LaunchA>", selectWindow)
-    , ("<XF86LaunchB>", spawnApp)
-    , ("M-w", selectWindow)
-    , ("M-S-w", bringWindow)
     -- Screen navigation
     , ("M-S-j", screenGo M.D False >> bringMouse)
     , ("M-S-k", screenGo M.U False >> bringMouse)
+    -- Dynamic workspaces
+    , ("M-- n", addWorkspacePrompt myXPConfig)
+    , ("M-- r", renameWorkspace myXPConfig)
+    , ("M-- k", killAll >> removeWorkspace >> createOrGoto "dashboard")
     -- Workspace navigation
     , ("M-<Tab>", toggleWS' ["NSP"])
     , ("M-]", moveTo Next nonEmptyWSNoNSP)
     , ("M-[", moveTo Prev nonEmptyWSNoNSP)
-    , ("M-S-]", shiftTo Next nonEmptyWSNoNSP)
-    , ("M-S-[", shiftTo Prev nonEmptyWSNoNSP)
-    -- Dynamic workspaces
-    , ("M-n", addWorkspacePrompt myXPConfig)
-    , ("M-<Backspace>", killAll >> removeWorkspace >> createOrGoto "dashboard")
-    , ("M-c", renameWorkspace myXPConfig)
+    , ("M-S-]", shiftTo Next nonEmptyWSNoNSP >> moveTo Next nonEmptyWSNoNSP)
+    , ("M-S-[", shiftTo Prev nonEmptyWSNoNSP >> moveTo Prev nonEmptyWSNoNSP)
+    -- Sticky global window
+    , ("M-z", toggleGlobal)
+    -- Grid select
+    , ("<XF86LaunchB>", spawnApp)
+    , ("<XF86LaunchA>", selectWindow)
+    , ("S-<XF86LaunchA>", bringWindow)
+    , ("M-w", selectWindow)
+    , ("M-S-w", bringWindow)
+    , ("M-s", selectWS)
+    , ("M-S-s", takeToWS)
     -- Scratchpads
     , ("M-`"                     , scratchToggle "scratchpad")
-    , ("M-<XF86AudioRaiseVolume>", scratchToggle "volume")
     , ("M-e"                     , scratchToggle "editor")
-    , ("M-m"                     , scratchToggle "music")
+    , ("M-<XF86AudioLowerVolume>", scratchToggle "volume")
+    , ("M-<XF86AudioRaiseVolume>", scratchToggle "volume")
+    , ("M-a m"                   , scratchToggle "music")
     , ("M-'"                     , scratchToggle "dictionary")
-    -- Global window
-    , ("M-z", toggleGlobal)
     -- Shell prompt
     , ("M-p", programLauncher)
     , ("M-S-p", shellPrompt myXPConfig)
@@ -78,17 +78,18 @@ myKeys =
     , ("M-<F1>", spawn "autorandr --load mobile")
     , ("M-<F2>", spawn "autorandr --change --default mobile")
     -- Screenshot
-    , ("M-<F12>", spawn "scrot")
-    -- Partial screenshot
-    , ("M-S-<F12>", spawn "sleep 0.2; scrot -s")
+    , ("M-<F11>", spawn "scrot -e 'mv $f ~/pictures/screenshots/'")
+    , ("M-S-<F11>", spawn "scrot --multidisp -e 'mv $f ~/pictures/screenshots/'")
+    , ("M-<F12>", spawn "scrot --focused -e 'mv $f ~/pictures/screenshots/'")
+    , ("M-S-<F12>", spawn "sleep 0.3; scrot --select -e 'mv $f ~/pictures/screenshots/'")
     -- Notifications
-    , ("M-8", spawn "notify-send -i network -t 4000 Network \"$(ip -4 -o addr show | cut -d' ' -f2,7)\"")
-    , ("M-9", spawn "notify-send -i battery -t 2000 Battery \"$(acpi)\"")
-    , ("M-0", spawn "notify-send -i dialog-information -t 2000 Date \"$(date '+%F%nW%V %A%n%T')\"")
+    , ("M-n n", spawn "notify-send -i network -t 4000 Network \"$(ip -4 -o addr show | cut -d' ' -f2,7)\"")
+    , ("M-n b", spawn "notify-send -i battery -t 2000 Battery \"$(acpi)\"")
+    , ("M-n d", spawn "notify-send -i dialog-information -t 2000 Date \"$(date '+%F%nW%V %A%n%T')\"")
     ]
-    ++ [("M-a " ++ k, createOrGoto t) | (k,t) <- workspaces]
-    ++ [("M-d " ++ k, f) | (k,f) <- utils]
-    ++ [("M-s " ++ k, promptSearch myXPConfig e) | (k,e) <- searches]
+    ++ [("M-g " ++ k, createOrGoto t) | (k,t) <- workspaces]
+    ++ [("M-r " ++ k, f) | (k,f) <- utils]
+    ++ [("M-q " ++ k, promptSearch myXPConfig e) | (k,e) <- searches]
     ++ screenKeys ++ windowKeys ++ mediaKeys
   where
     workspaces =

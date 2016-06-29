@@ -28,15 +28,15 @@ myTopicConfig :: TopicConfig
 myTopicConfig = defaultTopicConfig
     { topicDirs = M.fromList
         [ ( "dashboard", "")
-        , ( "note", "notes")
-        , ( "code", "src")
-        , ( "web", "downloads")
-        , ( "music", "music")
-        , ( "video", "video")
-        , ( "pdf", "books")
-        , ( "file", "")
-        , ( "speak", "")
-        , ( "doc", "documents")
+        , ( "note"     , "notes")
+        , ( "code"     , "src")
+        , ( "web"      , "downloads")
+        , ( "music"    , "music")
+        , ( "video"    , "video")
+        , ( "pdf"      , "books")
+        , ( "file"     , "")
+        , ( "speak"    , "")
+        , ( "doc"      , "documents")
         ]
     , defaultTopicAction = const spawnTerm
     , defaultTopic = "dashboard"
@@ -63,7 +63,7 @@ myTopicConfig = defaultTopicConfig
     }
 
 spawnEditorIn :: Dir -> X ()
-spawnEditorIn dir = runInTerm "-t editor" ("vim " ++ dir)
+spawnEditorIn dir = spawn $ myEditor ++ " " ++ dir
 
 spawnEditor :: X ()
 spawnEditor = currentTopicDir myTopicConfig >>= spawnEditorIn
