@@ -1,12 +1,13 @@
 import XMonad
 import XMonad.Util.EZConfig (checkKeymap, additionalKeysP)
+import XMonad.Hooks.UrgencyHook
 
 import Config
 import Hooks (myHooks, myLogHook, myLayoutHook)
 import Topics (myTopics)
 import Keys (myKeys)
 
-myConfig = defaultConfig
+myConfig = withUrgencyHook NoUrgencyHook $ defaultConfig
     { modMask = myModMask
     , terminal = myTerm
     , borderWidth = myBorderWidth
