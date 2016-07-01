@@ -22,14 +22,14 @@
 
 ;; Packages inside XDG_DATA_HOME/emacs
 (defvar user-data-directory
-      (if (getenv "XDG_DATA_HOME")
-          (getenv "XDG_DATA_HOME") "~/.local/share"))
+  (if (getenv "XDG_DATA_HOME")
+      (getenv "XDG_DATA_HOME") "~/.local/share"))
 (setq package-user-dir (expand-file-name "emacs" user-data-directory))
 
 ;; Cache inside XDG_CACHE_HOME/emacs
 (defvar user-cache-directory
-      (if (getenv "XDG_CACHE_HOME")
-          (getenv "XDG_CACHE_HOME") "~/.cache"))
+  (if (getenv "XDG_CACHE_HOME")
+      (getenv "XDG_CACHE_HOME") "~/.cache"))
 
 (defvar backup-dir   (expand-file-name "emacs/backup" user-cache-directory))
 (defvar autosave-dir (expand-file-name "emacs/save" user-cache-directory))
@@ -109,7 +109,7 @@
 
 ;;; Libraries
 (use-package auto-compile
-  :config
+  :init
   (auto-compile-on-load-mode))
 
 ;;; Enable disabled commands
@@ -118,11 +118,7 @@
 ;;; Keys
 (defalias #'yes-or-no-p #'y-or-n-p)
 
-(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-
-;; Increase/decrease font-size with scroll
-(global-set-key [C-mouse-4] 'text-scale-increase)
-(global-set-key [C-mouse-5] 'text-scale-decrease)
+(bind-key "<escape>" #'keyboard-escape-quit)
 
 ;; C-
 (defun kill-region-or-backward-kill-word (&optional arg region)
@@ -261,8 +257,16 @@
 (diminish 'auto-fill-function " Ⓕ")
 
 ;; Indentation
-(setq-default indent-tabs-mode t
-              tab-width 4)
+(setq-default indent-tabs-mode t)
+(setq-default tab-width 8)
+(setq-default tab-stop-list '(8 16 24 32 40 48 56 64 72 80))
+
+(defvaralias 'c-basic-offset 'tab-width)
+(defvaralias 'c-indent-level 'tab-width)
+
+(add-hook 'emacs-lisp-mode-hook
+          (lambda ()
+            (setq indent-tabs-mode nil)))
 
 ;;; Shell
 
@@ -275,6 +279,13 @@
   (("C-c [" . align-regexp)
    ("C-c x a a" . align)
    ("C-c x a c" . align-current))
+  :init
+  (defadvice align (around smart-tabs activate)
+    (let ((indent-tabs-mode nil)) ad-do-it))
+  (defadvice align-regexp (around smart-tabs activate)
+    (let ((indent-tabs-mode nil)) ad-do-it))
+  (defadvice indent-relative (around smart-tabs activate)
+    (let ((indent-tabs-mode nil)) ad-do-it))
   :commands align)
 
 (use-package autorevert ; Auto-revert buffers of changed files
@@ -344,7 +355,7 @@
   (add-hook 'emacs-lisp-mode-hook #'eldoc-mode)
   (add-hook 'lisp-interaction-mode-hook #'eldoc-mode)
   (add-hook 'eval-expression-minibuffer-setup-hook #'eldoc-mode)
-  :diminish (eldoc-mode . " ⓓ"))
+  :diminish (eldoc-mode))
 
 (use-package electric
   :defer t
@@ -381,7 +392,8 @@
   :diminish (flyspell-mode . " ⓢ"))
 
 (use-package hippie-exp ; Expansion and completion (line)
-  :bind (([remap dabbrev-expand] . hippie-expand))
+  :bind
+  ([remap dabbrev-expand] . hippie-expand)
   :config
   (setq hippie-expand-try-functions-list
         '(try-expand-dabbrev
@@ -440,6 +452,12 @@
   (setq save-place-file (expand-file-name "emacs/places" user-cache-directory)
         save-place-forget-unreadable-files nil))
 
+(use-package smart-tabs-mode
+  :config
+  (smart-tabs-insinuate 'c++ 'c 'java 'javascript 'python)
+  :commands
+  smart-tabs-insinuate)
+
 (use-package subword ; Recognize camel and snake case
   :defer t
   :init
@@ -449,12 +467,9 @@
 (use-package whitespace
   :bind
   ("C-c t w" . whitespace-mode)
-  :init
-  (dolist (hook '(prog-mode-hook text-mode-hook conf-mode-hook))
-    (add-hook hook #'whitespace-cleanup))
   :config
   (setq whitespace-line-column 100)
-  :diminish (whitespace-mode . " ⓦ"))
+  :diminish (whitespace-mode))
 
 (use-package windmove ; Move between windows
   :bind
@@ -472,8 +487,9 @@
 
 ;;; Packages
 (use-package ace-window ; Fast window switching
-  :bind (("<C-return>" . ace-window)
-         ("C-c w w"    . ace-window)))
+  :bind
+  (("<C-return>" . ace-window)
+   ("C-c w w"    . ace-window)))
 
 (use-package adaptive-wrap ; Align wrapped lines
   :defer t
@@ -524,7 +540,9 @@
 
 (use-package company ; Completion
   :bind
-  (("<tab>" . indent-or-complete)
+  (""
+   :map company-mode-map
+   ("<tab>" . company-indent-or-complete)
    :map company-active-map
    ("C-e"       . company-complete-selection)
    ("C-f"       . company-complete-selection)
@@ -537,7 +555,7 @@
    ("<escape>"  . company-abort))
   :init
   (global-company-mode)
-  (defun indent-or-complete ()
+  (defun company-indent-or-complete ()
     "Try to indent before trying to complete."
     (interactive)
     (if (looking-at "\\_>")
@@ -561,6 +579,13 @@
         company-tooltip-flip-when-above t
         company-selection-wrap-around t)
   :diminish company-mode)
+
+(use-package default-text-scale ; Text scale for all buffers
+  :bind
+  (([C-mouse-4] . default-text-scale-increase)
+   ([C-mouse-5] . default-text-scale-decrease)
+   ("C-M-=" . default-text-scale-increase)
+   ("C-M--" . default-text-scale-decrease)))
 
 (use-package dired+
   :defer 1
@@ -611,16 +636,12 @@
   :init
   (use-package evil-god-state ; Ctrl prefix everything
     :bind
-    (:map evil-normal-state-map
-          ("SPC" . evil-execute-in-god-state))
+    (""
+     :map evil-normal-state-map
+     ("SPC" . evil-execute-in-god-state))
     :config
     (evil-define-key 'god global-map [escape] 'evil-god-state-bail))
   :commands evil-execute-in-god-state)
-
-(use-package golden-ratio
-  :init
-  (golden-ratio-mode)
-  :diminish (golden-ratio-mode . " ⓖ"))
 
 (use-package flycheck ; Linting and syntax checking
   :defer 5
@@ -655,7 +676,7 @@
   (([remap execute-extended-command] . helm-M-x)
    ([remap switch-to-buffer]         . helm-mini)
    ([remap list-buffers]             . helm-buffers-list)
-   ([remap find-files]               . helm-find-files)
+   ([remap find-file]                . helm-find-files)
    ([remap occur]                    . helm-occur)
    ([remap yank-pop]                 . helm-show-kill-ring)
    ([remap insert-register]          . helm-register)
@@ -669,6 +690,8 @@
    ("C-i"   . helm-execute-persistent-action)
    ("C-z"   . helm-select-action)
    ("A-v"   . helm-previous-page))
+  :init
+  (helm-mode)
   :config
   (use-package helm-descbinds ; Describe key bindings
     :bind
@@ -766,10 +789,14 @@
     (setq projectile-completion-system 'helm
           helm-projectile-fuzzy-match t)
     (helm-projectile-on))
-  (setq projectile-enable-caching nil
-        projectile-cache-file (expand-file-name "emacs/projectile.cache" user-cache-directory)
-        projectile-known-projects-file (expand-file-name "emacs/projectile-bookmarks.eld" user-cache-directory))
-  :diminish projectile-mode)
+  (setq projectile-enable-caching nil)
+  (setq projectile-cache-file
+        (expand-file-name "emacs/projectile.cache"
+                          user-cache-directory))
+  (setq projectile-known-projects-file
+        (expand-file-name "emacs/projectile-bookmarks.eld"
+                          user-cache-directory))
+  (setq projectile-mode-line '(:eval (format " <%s>" (projectile-project-name)))))
 
 (use-package stripe-buffer ; Striped directory listing
   :defer 1
@@ -852,8 +879,17 @@
   :commands which-key-enable-god-mode-support
   :diminish which-key-mode)
 
+(use-package whitespace-cleanup-mode ; Cleanup whitespace on save
+  :bind
+  ("C-c t c" . whitespace-cleanup-mode)
+  :init
+  (dolist (hook '(prog-mode-hook text-mode-hook conf-mode-hook))
+    (add-hook hook #'whitespace-cleanup-mode))
+  :diminish (whitespace-cleanup-mode . " Ⓦ"))
+
 (use-package writeroom-mode ; Distraction-free editing
-  :bind (("C-c t r" . writeroom-mode)))
+  :bind
+  ("C-c t r" . writeroom-mode))
 
 (use-package zoom-window ; Temporary one window
   :bind
@@ -882,9 +918,7 @@
 (use-package fish-mode
   :mode ("\\.fish\\'" . fish-mode)
   :interpreter ("fish" . fish-mode)
-  :commands fish-mode
-  :init
-  (setq-default indent-tabs-mode nil))
+  :commands fish-mode)
 
 (use-package gitattributes-mode)
 (use-package gitconfig-mode)
@@ -943,17 +977,22 @@
 
 (use-package python-mode
   :mode ("\\.py\\'" . python-mode)
-  :interpreter ("python" . python-mode))
+  :interpreter ("python" . python-mode)
+  :config
+  (defvaralias 'python-indent 'tab-width)
+  (setq py-indent-tabs-mode t))
 
 (use-package rst
   :bind
-  (:map rst-mode-map
-        ("M-RET" . rst-insert-list))
+  (""
+   :map rst-mode-map
+   ("M-RET" . rst-insert-list))
   :config
   (setq rst-indent-literal-minimized 3
         rst-indent-literal-normal 3))
 
 (use-package ruby-mode
+  :defer t
   :mode ("\\.rb\\'" . ruby-mode)
   :interpreter ("ruby" . ruby-mode)
   :functions inf-ruby-keys
@@ -961,6 +1000,7 @@
   (use-package yari))
 
 (use-package rust-mode
+  :defer t
   :mode ("\\.rust\\'" . rust-mode)
   :config
   (use-package flycheck-rust
@@ -969,17 +1009,47 @@
 
 (use-package sh-script
   :defer t
-  :mode (("\\.sh\\'" . sh-mode)
-         ("\\.zsh\\'" . sh-mode)
+  :mode (("\\.sh\\'"   . sh-mode)
+         ("\\.zsh\\'"   . sh-mode)
          ("\\.bash\\'" . sh-mode))
-  :config
-  (use-package company-shell
-    :init
-    (add-hook 'sh-mode-hook 'company-shell-mode))
-  (setq-default indent-tabs-mode t
-                sh-basic-offset 4
-                sh-indentation 4))
+  :init
+  (defvaralias 'sh-basic-offset 'tab-width)
+  (defvaralias 'sh-indentation 'tab-width))
 
 (use-package yaml-mode
   :mode ("\\.ya?ml\\'" . yaml-mode))
+
+(use-package company-shell
+  :after company
+  :config
+  (setq company-shell-delete-duplicates t)
+  (add-to-list 'company-backends 'company-shell)
+  (add-to-list 'company-backends 'company-fish-shell))
+
+
+;;; Modeline
+(setq-default
+ mode-line-format
+ '("%e"
+   mode-line-front-space
+   (:eval (format "%s:"
+                  (cond
+                   ((eq tab-width 8) "⑧")
+                   ((eq tab-width 4) "④")
+                   ((eq tab-width 2) "②")
+                   (t "⓪"))))
+   mode-line-mule-info
+   mode-line-client
+   mode-line-modified
+   mode-line-remote
+   mode-line-frame-identification
+   mode-line-buffer-identification
+   " "
+   mode-line-position
+   evil-mode-line-tag
+   (vc-mode vc-mode)
+   " "
+   mode-line-modes
+   mode-line-misc-info
+   mode-line-end-spaces))
 ;;; init.el ends here
