@@ -35,6 +35,8 @@ import qualified XMonad.Layout.GridVariants as GV
 
 import qualified XMonad.StackSet as W
 
+import XMonad.Util.PIPWindow (pipManageHook)
+
 import Config
 import Utils
 
@@ -45,6 +47,7 @@ myLogHook = dynamicLog <+> fadeInactiveLogHook fadeAmount
 myManageHook :: ManageHook
 myManageHook = composeAll
     [ manageHook defaultConfig
+    , pipManageHook
     , namedScratchpadManageHook myScratchpads
     , isFullscreen                --> doFullFloat
     , isDialog                    --> doCenterFloat

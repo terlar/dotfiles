@@ -35,6 +35,7 @@ import Data.Maybe (isJust, listToMaybe)
 import Data.Monoid
 import qualified Data.Map as M
 
+import XMonad.Util.PIPWindow (makePIPWindow, togglePIPWindow)
 import XMonad.Util.ToggleFloat (toggleFloat)
 
 import Config
@@ -80,6 +81,9 @@ myKeys =
     -- Window tagging
     , ("M-q", tagWindow)
     , ("M-S-q", bringTagged)
+    -- PIP window
+    , ("M-x", togglePIPWindow)
+    , ("M-S-x", makePIPWindow)
     -- Sticky global window
     , ("M-z", toggleGlobal)
     -- Grid select
