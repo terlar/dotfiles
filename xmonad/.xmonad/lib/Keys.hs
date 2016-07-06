@@ -21,15 +21,21 @@ import XMonad.Hooks.UrgencyHook
 
 import XMonad.Layout.Reflect
 import XMonad.Layout.MultiToggle
-import XMonad.Layout.GridVariants(ChangeMasterGridGeom(IncMasterCols, IncMasterRows))
-import XMonad.Util.NamedScratchpad
+import XMonad.Layout.Minimize
+import XMonad.Layout.GridVariants (ChangeMasterGridGeom (IncMasterCols, IncMasterRows))
+import qualified XMonad.Layout.BoringWindows as BW
+
+import qualified XMonad.Util.NamedScratchpad as NS
 
 import qualified XMonad.StackSet as W
-import qualified XMonad.Hooks.ManageDocks as M
+import qualified XMonad.Hooks.ManageDocks as MD
 
 -- Data module
-import Data.Maybe(isJust)
+import Data.Maybe (isJust, listToMaybe)
 import Data.Monoid
+import qualified Data.Map as M
+
+import XMonad.Util.ToggleFloat (toggleFloat)
 
 import Config
 import Utils
@@ -45,14 +51,14 @@ myKeys =
     , ("M-S-=", sendMessage $ IncMasterCols (-1))
     , ("M-C--", sendMessage $ IncMasterRows 1)
     , ("M-C-=", sendMessage $ IncMasterRows (-1))
-    , ("M-S-t", withFocused float)
+    , ("M-t", toggleFloat)
     -- Dynamic workspaces
     , ("M-; n", addWorkspacePrompt myXPConfig)
     , ("M-; r", renameWorkspace myXPConfig)
     , ("M-; k", killAll >> removeWorkspace >> createOrGoto "dashboard")
     -- Screen navigation
-    , ("M-S-j", screenGo M.D False >> bringMouse)
-    , ("M-S-k", screenGo M.U False >> bringMouse)
+    , ("M-S-j", screenGo MD.D False >> bringMouse)
+    , ("M-S-k", screenGo MD.U False >> bringMouse)
     -- Workspace navigation
     , ("M-<Tab>", toggleWS' ["NSP"])
     , ("M-]", moveTo Next nonEmptyWSNoNSP)
@@ -62,10 +68,15 @@ myKeys =
     , ("M-s", selectWS)
     , ("M-S-s", takeToWS)
     -- Window navigation
+    , ("M-k", BW.focusUp)
+    , ("M-j", BW.focusDown)
+    , ("M-m", BW.focusMaster)
     , ("M-w", selectWindow)
     , ("M-S-w", bringWindow)
     , ("M-u", focusUrgent)
     , ("M-S-u", clearUrgents)
+    , ("M-b", BW.markBoring)
+    , ("M-S-b", BW.clearBoring)
     -- Window tagging
     , ("M-q", tagWindow)
     , ("M-S-q", bringTagged)
@@ -77,7 +88,7 @@ myKeys =
     , ("S-<XF86LaunchA>", bringWindow)
     -- Scratchpads
     , ("M-`"                     , scratchToggle "scratchpad")
-    , ("M-S-`"                   , resetScratchpadWindow myScratchpads)
+    , ("M-S-`"                   , resetSPWindows)
     , ("M-e"                     , scratchToggle "editor")
     , ("M-<XF86AudioLowerVolume>", scratchToggle "volume")
     , ("M-<XF86AudioRaiseVolume>", scratchToggle "volume")
@@ -90,6 +101,8 @@ myKeys =
     , ("M-S-8", passPrompt)
     -- Lock screen
     , ("M-<Esc>", spawn "lock" )
+    -- Reload XMonad
+    , ("M-S-<Esc>", spawn "xmonad --recompile; xmonad --restart")
     -- Display management
     , ("M-<F1>", spawn "autorandr --load mobile")
     , ("M-<F2>", spawn "autorandr --change --default mobile")
@@ -141,7 +154,7 @@ myKeys =
     nonEmptyWSExcept s = return (\w -> (W.tag w `notElem` s) && isJust (W.stack w))
 
     -- Scratchpad invocation
-    scratchToggle = namedScratchpadAction myScratchpads
+    scratchToggle = NS.namedScratchpadAction myScratchpads
 
     -- GridSelect actions
     spawnApp     = runSelectedAction (myGSConfig pink) myApps
@@ -151,17 +164,17 @@ myKeys =
     takeToWS     = gridselectWorkspace (myGSConfig purple) (\ws -> W.greedyView ws . W.shift ws)
 
     -- Reset scratchpads
-    resetScratchpadWindow confs =
-      forM_ confs $ \scratch ->
-      withWindowSet $ \s -> do
-        sPWindows <- filterM (runQuery $ appName =? name scratch) (W.allWindows s)
-        wTrans <- forM sPWindows . runQuery $ hook scratch
+    resetSPWindows =
+      forM_ myScratchpads $ \scratch ->
+      withWindowSet $ \s ->
+      do
+        sPWindows <- filterM (runQuery $ NS.query scratch) (W.allWindows s)
+        wTrans <- forM sPWindows . runQuery $ NS.hook scratch
         windows . appEndo . mconcat $ wTrans
 
     -- Window tagging
     bringTagged = withTaggedGlobalP "tagged" shiftHere >> withTaggedGlobal "tagged" (delTag "tagged")
     tagWindow   = withFocused (addTag "tagged")
-
 
     -- Colors
     blue   = myColor "#25629f"
@@ -201,11 +214,11 @@ windowKeys =
     ]
     ++
     -- Bring window to position
-    [ ("M-b " ++ key, moveToSide side)
+    [ ("M-" ++ key, moveToSide side)
     | (key, side) <- zip
-      [ "<U> <L>", "<U> <U>", "<U> <R>"
-      , "<L>"    , "<Space>", "<R>"
-      , "<D> <L>", "<D> <D>", "<D> <R>"
+      [ "<Home>"     , "S-<Page_Up>"  , "<Page_Up>"
+      , "S-<Home>"   , "<Insert>"     , "S-<End>"
+      , "<Page_Down>", "S-<Page_Down>", "<End>"
       ]
       [ NW, NC, NE
       , CW, C , CE

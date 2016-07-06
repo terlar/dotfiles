@@ -3,7 +3,7 @@ import XMonad.Util.EZConfig (checkKeymap, additionalKeysP)
 import XMonad.Hooks.UrgencyHook
 
 import Config
-import Hooks (myHooks, myLogHook, myLayoutHook)
+import Hooks (myManageHook, myLogHook, myLayoutHook)
 import Topics (myTopics)
 import Keys (myKeys)
 
@@ -14,10 +14,10 @@ myConfig = withUrgencyHook NoUrgencyHook $ defaultConfig
     , normalBorderColor = myBorderColor
     , focusedBorderColor = myLLight
     , workspaces = myTopics
-    , manageHook = myHooks
-    , logHook = myLogHook
     , layoutHook = myLayoutHook
     , startupHook = return () >> checkKeymap myConfig myKeys
+    , manageHook = myManageHook
+    , logHook = myLogHook
     } `additionalKeysP` myKeys
 
 main = xmonad myConfig

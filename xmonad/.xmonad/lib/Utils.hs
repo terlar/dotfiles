@@ -8,8 +8,15 @@ import Data.Char(toUpper)
 
 import Config
 
+setWindowProperty :: String -> String -> Window -> X ()
+setWindowProperty prop val win = withDisplay $ \d ->
+  io $ internAtom d prop False >>= setTextProperty d win val
+
 roleName :: Query String
 roleName = stringProperty "WM_WINDOW_ROLE"
+
+setRole :: String -> Window -> X ()
+setRole val win = setWindowProperty "WM_WINDOW_ROLE" val win
 
 -- Infix (,) to clean up key and mouse bindings
 infixr 0 ~>

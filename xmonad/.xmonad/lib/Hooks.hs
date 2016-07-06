@@ -2,9 +2,14 @@ module Hooks where
 
 import XMonad hiding ((|||))
 import XMonad.ManageHook
+
+import XMonad.Actions.CopyWindow
+import XMonad.Actions.TagWindows
+
+import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.FadeInactive
-import XMonad.Actions.CopyWindow
+
 import XMonad.Util.Run
 import XMonad.Util.NamedScratchpad
 
@@ -22,37 +27,39 @@ import XMonad.Layout.TwoPane
 import XMonad.Layout.StackTile
 import XMonad.Layout.LimitWindows
 import XMonad.Layout.Tabbed
+import XMonad.Layout.Minimize
 import XMonad.Layout.NoBorders (smartBorders)
+import XMonad.Layout.BoringWindows (boringWindows)
+import XMonad.Layout.LayoutModifier
+import qualified XMonad.Layout.GridVariants as GV
 
 import qualified XMonad.StackSet as W
-import qualified XMonad.Layout.GridVariants as GV
 
 import Config
 import Utils
 
-myHooks =
-    myManageHook <+>
-    namedScratchpadManageHook myScratchpads
+myLogHook = dynamicLog <+> fadeInactiveLogHook fadeAmount
+  where
+    fadeAmount = 0.9
 
-myLogHook = fadeInactiveLogHook fadeAmount
-  where fadeAmount = 0.9
-
+myManageHook :: ManageHook
 myManageHook = composeAll
     [ manageHook defaultConfig
-    , isFullscreen               --> doFullFloat
-    , isDialog                   --> doCenterFloat
-    , appName =? "lxappearance"  --> doCenterFloat
-    , appName =? "qtconfig-qt4"  --> doCenterFloat
-    , appName =? "mpv"           --> doCenterFloat
-    , appName =? "sxiv"          --> doCenterFloat
-    , appName =? "feh"           --> doCenterFloat
-    , appName =? "gifview"       --> doCenterFloat
-    , appName =? "zenity"        --> doCenterFloat
-    , appName =? "gcolor2"       --> doCenterFloat
-    , appName =? "font-manager"  --> doCenterFloat
-    , appName =? "emacs"         --> smallRect
-    , appName =? "xfce4-notifyd" --> doIgnore
-    , appName =? "spotify"       --> doShift "music"
+    , namedScratchpadManageHook myScratchpads
+    , isFullscreen                --> doFullFloat
+    , isDialog                    --> doCenterFloat
+    , appName  =? "lxappearance"  --> doCenterFloat
+    , appName  =? "qtconfig-qt4"  --> doCenterFloat
+    , appName  =? "mpv"           --> doCenterFloat
+    , appName  =? "sxiv"          --> doCenterFloat
+    , appName  =? "feh"           --> doCenterFloat
+    , appName  =? "gifview"       --> doCenterFloat
+    , appName  =? "zenity"        --> doCenterFloat
+    , appName  =? "gcolor2"       --> doCenterFloat
+    , appName  =? "font-manager"  --> doCenterFloat
+    , appName  =? "emacs"         --> smallRect
+    , appName  =? "xfce4-notifyd" --> doIgnore
+    , appName  =? "spotify"       --> doShift "music"
     ]
   where
     -- Floating window sizes
@@ -75,22 +82,25 @@ myScratchpads =
     emacsAppNS n c = nameNS n ("emacsclient -c -F '((name . \"" ++ n ++ "\"))' -e '" ++ c ++ "'")
 
     -- Query methods
-    roleNS  n c r  = NS n c (roleName ~? r)
+    roleNS  n c r  = NS n c (roleName =? r)
     classNS n c cl = NS n c (className ~? cl)
     nameNS  n c    = NS n c (wmName =? n)
-    wmName = stringProperty "WM_NAME"
-
+    wmName         = stringProperty "WM_NAME"
 
     -- Floating window sizes
-    largeRect = customFloating $ W.RationalRect (1/20) (1/20) (9/10) (9/10)
-    smallRect = customFloating $ W.RationalRect (1/6) (1/6) (2/3) (2/3)
-    doLeftFloat = customFloating $ W.RationalRect 0 0 (1/3) 1
-    doRightFloat = customFloating $ W.RationalRect (2/3) 0 (1/3) 1
+    largeRect    = customFloating $ W.RationalRect (1/20) (1/20) (9/10) (9/10)
+    smallRect    = customFloating $ W.RationalRect (1/6)  (1/6)  (2/3)  (2/3)
+    doLeftFloat  = customFloating $ W.RationalRect 0      0      (1/3)  1
+    doRightFloat = customFloating $ W.RationalRect (2/3)  0      (1/3)  1
 
 myLayoutHook = smartBorders $
+    minimize $
     -- Mirror the layout in the X and Y axis.
     mkToggle (single REFLECTX) $
     mkToggle (single REFLECTY) $
+
+    -- Boring windows
+    boringWindows $
 
     onWorkspace "web" (tabs ||| Full ||| dualStack) $
     onWorkspace "speak" (Full ||| tiled ||| dualStack ||| tabs) $
