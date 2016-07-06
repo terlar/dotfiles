@@ -49,22 +49,28 @@ myManageHook = composeAll
     [ manageHook defaultConfig
     , pipManageHook
     , namedScratchpadManageHook myScratchpads
-    , isFullscreen                --> doFullFloat
-    , isDialog                    --> doCenterFloat
-    , appName  =? "lxappearance"  --> doCenterFloat
-    , appName  =? "qtconfig-qt4"  --> doCenterFloat
-    , appName  =? "mpv"           --> doCenterFloat
-    , appName  =? "sxiv"          --> doCenterFloat
-    , appName  =? "feh"           --> doCenterFloat
-    , appName  =? "gifview"       --> doCenterFloat
-    , appName  =? "zenity"        --> doCenterFloat
-    , appName  =? "gcolor2"       --> doCenterFloat
-    , appName  =? "font-manager"  --> doCenterFloat
-    , appName  =? "emacs"         --> smallRect
-    , appName  =? "xfce4-notifyd" --> doIgnore
-    , appName  =? "spotify"       --> doShift "music"
+    , isFullscreen                      --> doF W.focusDown <+> doFullFloat
+    , isDialog                          --> doCenterFloat
+    , appName  =? "lxappearance"        --> doCenterFloat
+    , appName  =? "qtconfig-qt4"        --> doCenterFloat
+    , appName  =? "mpv"                 --> doCenterFloat
+    , appName  =? "sxiv"                --> doCenterFloat
+    , appName  =? "feh"                 --> doCenterFloat
+    , appName  =? "gifview"             --> doCenterFloat
+    , appName  =? "zenity"              --> doCenterFloat
+    , appName  =? "gcolor2"             --> doCenterFloat
+    , appName  =? "font-manager"        --> doCenterFloat
+    , appName  =? "emacs"               --> smallRect
+    , appName  =? "spotify"             --> doShift "music"
+    , appName  =? "xfce4-notifyd"       --> doIgnore
+    , title    ~? "hangouts.google.com" --> doIgnore
+    , fmap not isDialog                 --> doF avoidMaster
     ]
   where
+    avoidMaster :: W.StackSet i l a s sd -> W.StackSet i l a s sd
+    avoidMaster = W.modify' $ \c -> case c of
+        W.Stack t [] (r:rs) ->  W.Stack r [] (t:rs)
+        otherwise           -> c
     -- Floating window sizes
     largeRect = customFloating $ W.RationalRect (1/20) (1/20) (9/10) (9/10)
     smallRect = customFloating $ W.RationalRect (1/6) (1/6) (2/3) (2/3)

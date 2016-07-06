@@ -13,6 +13,7 @@ myConfig = withUrgencyHook NoUrgencyHook $ defaultConfig
     , borderWidth = myBorderWidth
     , normalBorderColor = myBorderColor
     , focusedBorderColor = myLLight
+    , focusFollowsMouse = False
     , workspaces = myTopics
     , layoutHook = myLayoutHook
     , startupHook = return () >> checkKeymap myConfig myKeys
