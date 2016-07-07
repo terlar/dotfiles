@@ -3,7 +3,7 @@ import XMonad.Util.EZConfig (checkKeymap, additionalKeysP)
 import XMonad.Hooks.UrgencyHook
 
 import Config
-import Hooks (myManageHook, myLogHook, myLayoutHook)
+import Hooks (myLayoutHook, myManageHook, myEventHook, myLogHook)
 import Topics (myTopics)
 import Keys (myKeys)
 
@@ -18,6 +18,7 @@ myConfig = withUrgencyHook NoUrgencyHook $ defaultConfig
     , layoutHook = myLayoutHook
     , startupHook = return () >> checkKeymap myConfig myKeys
     , manageHook = myManageHook
+    , handleEventHook = myEventHook
     , logHook = myLogHook
     } `additionalKeysP` myKeys
 

@@ -5,6 +5,7 @@ import XMonad.ManageHook
 
 import XMonad.Actions.CopyWindow
 import XMonad.Actions.TagWindows
+import XMonad.Actions.Promote (promote)
 
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageHelpers
@@ -34,6 +35,9 @@ import XMonad.Layout.LayoutModifier
 import qualified XMonad.Layout.GridVariants as GV
 
 import qualified XMonad.StackSet as W
+import qualified Data.Map        as M
+
+import Data.Monoid
 
 import XMonad.Util.PIPWindow (pipManageHook)
 
@@ -116,6 +120,19 @@ myLayoutHook = smartBorders $
     dualStack = named "Dual Stacked" (combineTwo (StackTile 1 delta (1/2)) Full Full)
     grid = named "Grid" (GV.SplitGrid GV.L 2 3 (2/3) (16/10) (5/100))
     delta = 3/100
+
+myEventHook = floatClickFocusHandler
+
+-- Bring clicked floating window to the front
+floatClickFocusHandler :: Event -> X All
+floatClickFocusHandler ButtonEvent { ev_window = w } = do
+    withWindowSet $ \s -> do
+        if isFloat w s
+            then (focus w >> promote)
+            else return ()
+        return (All True)
+        where isFloat w ss = M.member w $ W.floating ss
+floatClickFocusHandler _ = return (All True)
 
 -- Queries
 matchAny :: String -> Query Bool
