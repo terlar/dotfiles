@@ -45,42 +45,41 @@ myLogHook = dynamicLog <+> fadeInactiveLogHook fadeAmount
     fadeAmount = 0.9
 
 myManageHook :: ManageHook
-myManageHook = composeAll
+myManageHook = composeAll $
     [ manageHook defaultConfig
     , pipManageHook
     , namedScratchpadManageHook myScratchpads
-    , isFullscreen                      --> doF W.focusDown <+> doFullFloat
-    , isDialog                          --> doCenterFloat
-    , appName  =? "lxappearance"        --> doCenterFloat
-    , appName  =? "qtconfig-qt4"        --> doCenterFloat
-    , appName  =? "mpv"                 --> doCenterFloat
-    , appName  =? "sxiv"                --> doCenterFloat
-    , appName  =? "feh"                 --> doCenterFloat
-    , appName  =? "gifview"             --> doCenterFloat
-    , appName  =? "zenity"              --> doCenterFloat
-    , appName  =? "gcolor2"             --> doCenterFloat
-    , appName  =? "font-manager"        --> doCenterFloat
-    , appName  =? "emacs"               --> smallRect
-    , appName  =? "spotify"             --> doShift "music"
-    , appName  =? "xfce4-notifyd"       --> doIgnore
-    , title    ~? "hangouts.google.com" --> doIgnore
-    , fmap not isDialog                 --> doF avoidMaster
-    ]
+    , isDialog          --> doCenterFloat
+    , isFullscreen      --> doF W.focusDown <+> doFullFloat
+    , fmap not isDialog --> doF avoidMaster
+    ] ++
+    [ appName =? "xfce4-notifyd"     --> doIgnore
+    , title ~? "hangouts.google.com" --> doIgnore
+    ] ++
+    [ matchAny v --> doCenterFloat | v <- floatApps ]
   where
     avoidMaster :: W.StackSet i l a s sd -> W.StackSet i l a s sd
     avoidMaster = W.modify' $ \c -> case c of
         W.Stack t [] (r:rs) ->  W.Stack r [] (t:rs)
         otherwise           -> c
-    -- Floating window sizes
-    largeRect = customFloating $ W.RationalRect (1/20) (1/20) (9/10) (9/10)
-    smallRect = customFloating $ W.RationalRect (1/6) (1/6) (2/3) (2/3)
+
+    -- Floating apps
+    floatApps =
+        [ "feh"
+        , "font-manager"
+        , "gcolor2"
+        , "gifview"
+        , "mpv"
+        , "sxiv"
+        , "zenity"
+        ]
 
 myScratchpads =
-    [ termNS    "scratchpad" "~"           smallRect
-    , termAppNS "music"      "ncmpcpp"     largeRect
+    [ termNS    "scratchpad" "~"           (customFloating smallRect)
+    , termAppNS "music"      "ncmpcpp"     (customFloating largeRect)
     , xAppNS    "volume"     "pavucontrol" doCenterFloat
-    , xAppNS    "dictionary" "goldendict"  doRightFloat
-    , emacsNS   "editor"                   largeRect
+    , xAppNS    "dictionary" "goldendict"  (customFloating rightRect)
+    , emacsNS   "editor"                   (customFloating largeRect)
     ]
   where
     -- NS types
@@ -91,25 +90,17 @@ myScratchpads =
     emacsAppNS n c = nameNS n ("emacsclient -c -F '((name . \"" ++ n ++ "\"))' -e '" ++ c ++ "'")
 
     -- Query methods
-    roleNS  n c r  = NS n c (roleName =? r)
+    roleNS  n c r  = NS n c (role =? r)
     classNS n c cl = NS n c (className ~? cl)
     nameNS  n c    = NS n c (wmName =? n)
-    wmName         = stringProperty "WM_NAME"
-
-    -- Floating window sizes
-    largeRect    = customFloating $ W.RationalRect (1/20) (1/20) (9/10) (9/10)
-    smallRect    = customFloating $ W.RationalRect (1/6)  (1/6)  (2/3)  (2/3)
-    doLeftFloat  = customFloating $ W.RationalRect 0      0      (1/3)  1
-    doRightFloat = customFloating $ W.RationalRect (2/3)  0      (1/3)  1
 
 myLayoutHook = smartBorders $
     minimize $
+    boringWindows $
+
     -- Mirror the layout in the X and Y axis.
     mkToggle (single REFLECTX) $
     mkToggle (single REFLECTY) $
-
-    -- Boring windows
-    boringWindows $
 
     onWorkspace "web" (tabs ||| Full ||| dualStack) $
     onWorkspace "speak" (Full ||| tiled ||| dualStack ||| tabs) $
@@ -125,3 +116,21 @@ myLayoutHook = smartBorders $
     dualStack = named "Dual Stacked" (combineTwo (StackTile 1 delta (1/2)) Full Full)
     grid = named "Grid" (GV.SplitGrid GV.L 2 3 (2/3) (16/10) (5/100))
     delta = 3/100
+
+-- Queries
+matchAny :: String -> Query Bool
+matchAny x = foldr ((<||>) . (=? x)) (return False) [className, title, wmName, role]
+
+wmName :: Query String
+wmName = stringProperty "WM_NAME"
+
+role :: Query String
+role = stringProperty "WM_WINDOW_ROLE"
+
+-- Floating window sizes (X, Y, width, height)
+largeRect  = W.RationalRect (1/20) (1/20) (18/20) (18/20)
+smallRect  = W.RationalRect (1/6)  (1/6)  (4/6)   (4/6)
+topRect    = W.RationalRect 0      0      1       (1/3)
+bottomRect = W.RationalRect 0      (2/3)  1       (1/3)
+leftRect   = W.RationalRect 0      0      (1/3)   1
+rightRect  = W.RationalRect (2/3)  0      (1/3)   1

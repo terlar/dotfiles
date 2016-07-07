@@ -247,7 +247,6 @@ myApps =
   where
     raiseApp ws a = raiseNextMaybe (spawnWS ws a) (appName ~? a)
     raiseApp' a = raiseNextMaybe (spawn a) (appName ~? a)
-    myRaiseTerm a d = raiseNextMaybe (spawnWS a (termApp a d)) (roleName ~? a)
     termApp a d = myTerm ++ " -r " ++ a ++ " -d " ++ d
     -- Named Workspace Navigation
     spawnWS ws a = addWorkspace ws >> spawn a
