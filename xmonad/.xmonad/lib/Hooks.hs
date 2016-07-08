@@ -5,11 +5,13 @@ import XMonad.ManageHook
 
 import XMonad.Actions.CopyWindow
 import XMonad.Actions.TagWindows
+import XMonad.Actions.UpdatePointer
 import XMonad.Actions.Promote (promote)
 
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.FadeInactive
+import XMonad.Hooks.InsertPosition
 
 import XMonad.Util.Run
 import XMonad.Util.NamedScratchpad
@@ -44,29 +46,26 @@ import XMonad.Util.PIPWindow (pipManageHook)
 import Config
 import Utils
 
-myLogHook = dynamicLog <+> fadeInactiveLogHook fadeAmount
+myLogHook =
+    dynamicLog <+>
+    fadeInactiveLogHook fadeAmount
   where
     fadeAmount = 0.9
 
 myManageHook :: ManageHook
 myManageHook = composeAll $
-    [ manageHook defaultConfig
+    [ insertPosition Master Newer
+    , manageHook defaultConfig
     , pipManageHook
     , namedScratchpadManageHook myScratchpads
     , isDialog          --> doCenterFloat
     , isFullscreen      --> doF W.focusDown <+> doFullFloat
-    , fmap not isDialog --> doF avoidMaster
     ] ++
     [ appName =? "xfce4-notifyd"     --> doIgnore
     , title ~? "hangouts.google.com" --> doIgnore
     ] ++
     [ matchAny v --> doCenterFloat | v <- floatApps ]
   where
-    avoidMaster :: W.StackSet i l a s sd -> W.StackSet i l a s sd
-    avoidMaster = W.modify' $ \c -> case c of
-        W.Stack t [] (r:rs) ->  W.Stack r [] (t:rs)
-        otherwise           -> c
-
     -- Floating apps
     floatApps =
         [ "feh"
