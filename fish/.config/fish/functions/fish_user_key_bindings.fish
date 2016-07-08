@@ -9,10 +9,12 @@ function fish_user_key_bindings
     #
     bind e forward-word backward-char
     bind E forward-bigword backward-char
+    bind \cG cancel
 
     #
     # Insert mode
     #
+    bind -M insert \cG cancel
     bind -M insert \e'|' 'echo; hr; commandline -f repaint'
 
     # Navigation
