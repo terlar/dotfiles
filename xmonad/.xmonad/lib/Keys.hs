@@ -21,7 +21,6 @@ import XMonad.Hooks.UrgencyHook
 
 import XMonad.Layout.Reflect
 import XMonad.Layout.MultiToggle
-import XMonad.Layout.Minimize
 import XMonad.Layout.GridVariants (ChangeMasterGridGeom (IncMasterCols, IncMasterRows))
 import qualified XMonad.Layout.BoringWindows as BW
 
@@ -177,8 +176,8 @@ myKeys =
         windows . appEndo . mconcat $ wTrans
 
     -- Window tagging
-    bringTagged = withTaggedGlobalP "tagged" shiftHere >> withTaggedGlobal "tagged" (delTag "tagged")
     tagWindow   = withFocused (addTag "tagged")
+    bringTagged = withTaggedGlobalP "tagged" shiftHere >> withTaggedGlobal "tagged" (delTag "tagged")
 
     -- Colors
     blue   = myColor "#25629f"
