@@ -17,6 +17,7 @@
 ;;; Paths
 (eval-and-compile
   (add-to-list 'load-path (expand-file-name "~/.emacs.d/lisp"))
+  (add-to-list 'load-path (expand-file-name "~/.emacs.d/vendor"))
   (dolist (dir load-path)
     (make-directory dir t)))
 
@@ -95,9 +96,11 @@
   (load-theme 'twilight-bright t))
 
 (set-face-attribute 'default nil
-                    :family "Input Mono" :height 120)
+                    :family "Input Mono"
+                    :height 120)
 (set-face-attribute 'variable-pitch nil
-                    :family "Merriweather Sans" :height 120)
+                    :family "Merriweather Sans"
+                    :height 120)
 (copy-face 'default 'fixed-pitch)
 
 (defun on-frame-open (&optional frame)
@@ -132,6 +135,17 @@
 
 (bind-key "C-w" #'kill-region-or-backward-kill-word)
 
+(defun my-tab-width ()
+  "Cycle 'tab-width' between values 2, 4, and 8."
+  (interactive)
+  (setq tab-width
+        (cond ((eq tab-width 8) 2)
+              ((eq tab-width 2) 4)
+              (t 8)))
+  (redraw-display))
+
+(bind-key "C-=" #'my-tab-width)
+
 ;; M-
 (bind-key "M-W" #'mark-word)
 
@@ -161,18 +175,6 @@
 
 (define-key emacs-lisp-mode-map
   (kbd "M-.") 'find-function-at-point)
-
-;; C-x
-(defun my-tab-width ()
-  "Cycle 'tab-width' between values 2, 4, and 8."
-  (interactive)
-  (setq tab-width
-        (cond ((eq tab-width 8) 2)
-              ((eq tab-width 2) 4)
-              (t 8)))
-  (redraw-display))
-
-(bind-key "C-x t" #'my-tab-width)
 
 ;; C-c
 (bind-key "C-c <tab>" #'ff-find-other-file) ; Open alternate file
@@ -628,6 +630,8 @@
   ;; Insert state uses Emacs key-map.
   (setq evil-insert-state-map (make-sparse-keymap))
   (define-key evil-insert-state-map (kbd "<escape>") 'evil-normal-state)
+  (setq evil-want-fine-undo 'fine
+        evil-auto-indent t)
   :commands evil-delay)
 
 (use-package god-mode ; Ctrl prefix everything
@@ -816,12 +820,9 @@
    ("C-c f S" . sudo-edit-current-file)))
 
 (use-package undo-tree
-  :defer t
   :init
   (global-undo-tree-mode)
-  :config
   (setq undo-tree-history-directory-alist `((".*" . ,undo-dir))
-        undo-tree-auto-save-history t
         undo-tree-visualizer-diff t
         undo-tree-visualizer-timestamps t)
   :diminish undo-tree-mode)
@@ -947,12 +948,48 @@
 
 (use-package haskell-mode
   :mode "\\.l?hs\\'"
+  :bind
+  (""
+   :map haskell-mode-map
+   ("C-c c c" . haskell-compile)
+   ("<f5>"    . haskell-compile))
+  :init
+  (add-hook 'haskell-mode-hook #'haskell-doc-mode)
+  (add-hook 'haskell-mode-hook #'haskell-decl-scan-mode)
+  (add-hook 'haskell-mode-hook #'haskell-indentation-mode)
+  (setq haskell-tags-on-save t
+        haskell-stylish-on-save t
+        haskell-notify-p t
+        haskell-process-type 'cabal-repl
+        haskell-process-log t
+        haskell-process-auto-import-loaded-modules t
+        haskell-process-suggest-remove-import-lines t)
   :config
+  (use-package hindent
+    :init
+    (add-hook 'haskell-mode-hook #'hindent-mode))
+  (use-package ghc)
+  (use-package company-ghc
+    :init
+    (add-to-list 'company-backends 'company-ghc)
+    (setq company-ghc-show-info t))
+  (use-package shm
+    :disabled t
+    :init
+    (add-hook 'haskell-mode-hook #'structured-haskell-mode))
+  (use-package intero
+    :disabled t
+    :init
+    (add-hook 'haskell-mode-hook #'intero-mode)
+    :commands intero-mode)
   (use-package flycheck-haskell
-    :config
-    (flycheck-haskell-setup)
-    (bind-key "M-n" #'flycheck-next-error haskell-mode-map)
-    (bind-key "M-p" #'flycheck-previous-error haskell-mode-map)))
+    :bind
+    (""
+     :map haskell-mode-map
+     ("M-n" . flycheck-next-error)
+     ("M-p" . flycheck-previous-error))
+    :init
+    (flycheck-haskell-setup)))
 
 (use-package js2-mode
   :mode "\\.js\\'")
@@ -966,7 +1003,6 @@
          ("\\.markdown\\'"    . markdown-mode))
   :init
   (add-hook 'gfm-mode-hook #'turn-off-auto-fill)
-  :config
   (setq markdown-header-scaling t
         markdown-enable-wiki-links t
         markdown-wiki-link-fontify-missing t)
