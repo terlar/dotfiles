@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -eo pipefail
+
+main() {
+	emacsclient --eval "(ediff-files \"${1}\" \"${2}\")"
+}
+
+main "$@"
