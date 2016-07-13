@@ -17,7 +17,6 @@
 ;;; Paths
 (eval-and-compile
   (add-to-list 'load-path (expand-file-name "~/.emacs.d/lisp"))
-  (add-to-list 'load-path (expand-file-name "~/.emacs.d/vendor"))
   (dolist (dir load-path)
     (make-directory dir t)))
 
@@ -486,6 +485,14 @@
    ("M-P" . winner-undo))
   :init
   (winner-mode))
+
+;;; Local packages
+(use-package ibus
+  :if (eq window-system 'x)
+  :ensure nil
+  :load-path "vendor/ibus/"
+  :config
+  (ibus-mode-on))
 
 ;;; Packages
 (use-package ace-window ; Fast window switching
