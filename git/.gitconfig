@@ -29,20 +29,19 @@
 	ignored  = !git ls-files -v | grep '^[[:lower:]]'
 
 	tags     = tag -l
-
+	remotes  = remote -v
 	branches = !git for-each-ref \
 		--sort=-committerdate \
 		--format=\"%(color:blue)%(authordate:relative)\t \
-				 %(color:red)%(authorname)\t \
-				 %(color:black)%(color:bold)%(refname:short)\" \
+			   %(color:red)%(authorname)\t \
+			   %(color:black)%(color:bold)%(refname:short)\" \
 		refs/remotes \
 		| column -t -s \"\t\"
-	remotes  = remote -v
 
 	edit = !bash -c '${EDITOR} $(git ls-files --modified --other --exclude-standard)'
 
 	# History
-	wc  = whatchanged -p --abbrev-commit --pretty=medium
+	wc     = whatchanged -p --abbrev-commit --pretty=medium
 	l      = log --decorate --oneline
 	lg     = log --decorate --oneline --graph
 	ll     = log --decorate
@@ -85,7 +84,7 @@
 [difftool]
 	prompt = false
 [difftool "ediff"]
-	cmd = emacsclient -c -a \"\" --eval \"\
+	cmd = emacsclient --eval \"\
 		(ediff-files \\\"$LOCAL\\\" \\\"$REMOTE\\\")\"
 [merge]
 	ff = only
@@ -95,7 +94,7 @@
 	prompt = false
 	keepBackup = false
 [mergetool "ediff"]
-	cmd = emacsclient -c -a \"\"  --eval \"\
+	cmd = emacsclient --eval \"\
 		(ediff-merge-files-with-ancestor\
 		\\\"$LOCAL\\\" \\\"$REMOTE\\\"\
 		\\\"$BASE\\\" nil \\\"$MERGED\\\")\"
