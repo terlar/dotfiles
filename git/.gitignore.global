@@ -16,6 +16,10 @@ TODO
 vendor/bundle
 Gemfile.local*
 
+# Haskell
+*.o
+*.hi
+
 .rake_tasks
 .pow*
 .pt
