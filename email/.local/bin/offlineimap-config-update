@@ -1,20 +1,21 @@
 #!/usr/bin/env python
 import os, re, subprocess, configparser, json
 
-def get_secrets(account):
-    out = subprocess.check_output(['pass', 'show', 'mail/%s' % account], universal_newlines=True)
-    lines = str(out).strip().splitlines()
+def get_secrets(secret):
+	out = subprocess.check_output(['pass', 'show', secret],
+	universal_newlines=True)
+	lines = str(out).strip().splitlines()
 
-    secrets = dict()
-    regex = re.compile('^(?P<key>[a-z_]+): (?P<value>.+)')
-    for line in lines:
-        try:
-            match = regex.search(line)
-            secrets[match.group('key')] = match.group('value').strip()
-        except AttributeError:
-            pass
+	secrets = dict()
+	regex = re.compile('^(?P<key>[a-z_]+): (?P<value>.+)')
+	for line in lines:
+		try:
+			match = regex.search(line)
+			secrets[match.group('key')] = match.group('value').strip()
+		except AttributeError:
+			pass
 
-    return secrets
+	return secrets
 
 config_file_path = os.path.join(os.path.expanduser('~'), '.offlineimaprc')
 
@@ -23,20 +24,22 @@ config.read(config_file_path)
 
 accounts = ['personal', 'work']
 
+client_secrets = get_secrets('oauth/offlineimap')
+
 for account in accounts:
-    print('Updating account %s' % account)
+	print('Updating account {}'.format(account))
 
-    secrets = get_secrets(account)
+	account_secrets = get_secrets('mail/{}'.format(account))
 
-    try:
-        section = 'Repository %s-remote' % account
-        config.set(section, 'remoteuser', secrets['login'])
-        config.set(section, 'oauth2_client_id', secrets['client_id'])
-        config.set(section, 'oauth2_client_secret', secrets['client_secret'])
-        config.set(section, 'oauth2_refresh_token', secrets['refresh_token'])
-    except configparser.NoSectionError:
-        print('Config section not found, skipping.')
-        pass
+	try:
+		section = 'Repository {}-remote'.format(account)
+		config.set(section, 'remoteuser', account_secrets['login'])
+		config.set(section, 'oauth2_client_id', client_secrets['client_id'])
+		config.set(section, 'oauth2_client_secret', client_secrets['client_secret'])
+		config.set(section, 'oauth2_refresh_token', account_secrets['refresh_token'])
+	except configparser.NoSectionError:
+		print('Config section not found, skipping.')
+		pass
 
 with open(config_file_path, 'w') as config_file:
-    config.write(config_file)
+	config.write(config_file)
