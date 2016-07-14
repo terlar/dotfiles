@@ -70,6 +70,13 @@
       load-prefer-newer t
       vc-follow-symlinks t)
 
+(defun save-all ()
+  "Save all files when focus is lost."
+  (interactive)
+  (save-some-buffers t))
+
+(add-hook 'focus-out-hook 'save-all)
+
 ;; Kill-ring
 (setq kill-ring-max 200
       kill-do-not-save-duplicates t
@@ -432,8 +439,10 @@
   (setq recentf-max-saved-items 200
         recentf-max-menu-items 15
         recentf-auto-cleanup 300
-        recentf-exclude (list "/\\.git/.*\\'"  ; Git contents
-                              "/elpa/.*\\'"))) ; Package files
+        recentf-exclude (list "/\\.git/.*\\'" ; Git contents
+                              "/elpa/.*\\'"   ; Package files
+                              "/ssh:"         ; SSH files
+                              "/tmp/")))
 
 (use-package savehist ; Save mini buffer history
   :defer t
@@ -456,8 +465,7 @@
 (use-package smart-tabs-mode
   :config
   (smart-tabs-insinuate 'c++ 'c 'java 'javascript 'python)
-  :commands
-  smart-tabs-insinuate)
+  :commands smart-tabs-insinuate)
 
 (use-package subword ; Recognize camel and snake case
   :defer t
@@ -492,7 +500,8 @@
   :ensure nil
   :load-path "vendor/ibus/"
   :config
-  (ibus-mode-on))
+  (ibus-mode-on)
+  :commands ibus-mode-on)
 
 (use-package show-tab-width-mode
   :ensure nil
@@ -923,9 +932,7 @@
   :mode ("\\.ex\\'" "\\.exs\\'" "mix\\.lock\\'")
   :config
   (use-package alchemist
-    :diminish alchemist-mode
-    :config
-    (setq alchemist-test-status-modeline nil)))
+    :diminish alchemist-mode))
 
 (use-package erlang
   :mode ("\\.erl\\'" . erlang-mode))
