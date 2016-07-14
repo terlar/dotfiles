@@ -493,6 +493,13 @@
   :load-path "vendor/ibus/"
   :config
   (ibus-mode-on))
+
+(use-package show-tab-width-mode
+  :ensure nil
+  :load-path "lisp/"
+  :init
+  (show-tab-width-mode)
+  :commands (show-tab-width-mode))
 
 ;;; Packages
 (use-package ace-window ; Fast window switching
@@ -1068,19 +1075,13 @@
   (setq company-shell-delete-duplicates t)
   (add-to-list 'company-backends 'company-shell)
   (add-to-list 'company-backends 'company-fish-shell))
-
 
 ;;; Modeline
 (setq-default
  mode-line-format
  '("%e"
    mode-line-front-space
-   (:eval (format "%s:"
-                  (cond
-                   ((eq tab-width 8) "⑧")
-                   ((eq tab-width 4) "④")
-                   ((eq tab-width 2) "②")
-                   (t "⓪"))))
+   tab-width-mode
    mode-line-mule-info
    mode-line-client
    mode-line-modified
