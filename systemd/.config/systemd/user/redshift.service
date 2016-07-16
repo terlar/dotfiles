@@ -1,8 +1,8 @@
 [Unit]
 Description=Color temperature adjustment
+Documentation=man:redshift(1)
 
 [Service]
-Type=forking
 ExecStart=/usr/bin/redshift -m randr -l 57.7000:11.9667
 
 [Install]
