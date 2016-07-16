@@ -531,6 +531,10 @@
     (setq helm-ag-fuzzy-match t
           helm-ag-insert-at-point 'symbol
           helm-ag-edit-save t)
+    :defines
+    (helm-ag-fuzzy-match
+     helm-ag-insert-at-point
+     helm-ag-edit-save)
     :commands (helm-ag helm-do-ag))
   :commands (ag ag-regexp))
 
@@ -775,6 +779,12 @@
                       :foreground "#AF0000"
                       :background (face-attribute 'linum :background)))
 
+(use-package hungry-delete
+  :defer t
+  :init
+  (global-hungry-delete-mode)
+  :diminish hungry-delete-mode)
+
 (use-package magit
   :bind
   (("C-c g c" . magit-clone)
@@ -867,8 +877,7 @@
   (([remap isearch-backward] . vr/isearch-backward)
    ([remap isearch-forward]  . vr/isearch-forward)
    ("C-c s r" . vr/query-repalce)
-   ("C-c s R" . vr/replace))
-  :commands pcre-to-elisp)
+   ("C-c s R" . vr/replace)))
 
 (use-package which-key
   :defer t
@@ -932,11 +941,11 @@
 (use-package dockerfile-mode
   :mode "\\Dockerfile\\'")
 
-(use-package elixir-mode
-  :mode ("\\.ex\\'" "\\.exs\\'" "mix\\.lock\\'")
-  :config
-  (use-package alchemist
-    :diminish alchemist-mode))
+(use-package alchemist
+  :mode ("\\.exs?\\'" "mix\\.lock\\'")
+  :init
+  (add-hook 'elixir-mode-hook #'alchemist-mode)
+  :diminish alchemist-mode)
 
 (use-package erlang
   :mode ("\\.erl\\'" . erlang-mode))
@@ -965,10 +974,13 @@
     ;; godef jump key binding
     (local-set-key (kbd "M-.") 'godef-jump))
   :config
-  (use-package go-eldoc)
+  (use-package go-eldoc
+    :init
+    (add-hook 'go-mode-hook #'go-eldoc-setup)
+    :commands
+    go-eldoc-setup)
   (use-package company-go)
 
-  (add-hook 'go-mode-hook #'go-eldoc-setup)
   (add-hook 'go-mode-hook #'my-go-mode-hook))
 
 (use-package haskell-mode
@@ -1061,16 +1073,50 @@
   :config
   (use-package flycheck-rust
     :init
-    (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)))
+    (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
+    :commands
+    flycheck-rust-setup))
 
 (use-package sh-script
   :defer t
-  :mode (("\\.sh\\'"   . sh-mode)
-         ("\\.zsh\\'"   . sh-mode)
-         ("\\.bash\\'" . sh-mode))
+  :mode
+  (("\\.sh\\'"   . sh-mode)
+   ("\\.zsh\\'"  . sh-mode)
+   ("\\.bash\\'" . sh-mode))
   :init
   (defvaralias 'sh-basic-offset 'tab-width)
   (defvaralias 'sh-indentation 'tab-width))
+
+(use-package web-mode
+  :mode
+  (("\\.html?\\'"      . web-mode)
+   ("\\.phtml\\'"      . web-mode)
+   ("\\.tpl\\.php\\'"  . web-mode)
+   ("\\.jsp\\'"        . web-mode)
+   ("\\.hbs\\'"        . web-mode)
+   ("\\.as[cp]x\\'"    . web-mode)
+   ("\\.erb\\'"        . web-mode)
+   ("\\.eex\\'"        . web-mode)
+   ("\\.mustache\\'"   . web-mode)
+   ("\\.handlebars\\'" . web-mode)
+   ("\\.djhtml\\'"     . web-mode)
+   ("\\.tsx\\'"        . web-mode))
+  :init
+  (use-package emmet-mode
+    :init
+    (add-hook 'web-mode-hook 'emmet-mode)
+    (setq emmet-indentation 2))
+  :config
+  (setq web-mode-css-indent-offset 2
+        web-mode-code-indent-offset 2
+        web-mode-markup-indent-offset 2)
+  (setq web-mode-style-padding 0
+        web-mode-script-padding 0
+        web-mode-enable-current-element-highlight t)
+
+  (set-face-attribute 'web-mode-current-element-highlight-face nil
+                      :foreground "#AF0000"
+                      :background nil))
 
 (use-package yaml-mode
   :mode ("\\.ya?ml\\'" . yaml-mode))
