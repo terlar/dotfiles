@@ -24,7 +24,7 @@
 (defvar user-data-directory
   (if (getenv "XDG_DATA_HOME")
       (getenv "XDG_DATA_HOME") "~/.local/share"))
-(setq package-user-dir (expand-file-name "emacs" user-data-directory))
+(setq package-user-dir (expand-file-name "emacs/elpa" user-data-directory))
 
 ;; Cache inside XDG_CACHE_HOME/emacs
 (defvar user-cache-directory
@@ -351,18 +351,18 @@
    ("C-c = l" . ediff-regions-linewise)
    ("C-c = w" . ediff-regions-wordwise))
   :init
-  (add-hook 'ediff-after-quit-hook-internal 'winner-undo)
-  :config
-  (setq ediff-window-setup-function #'ediff-setup-windows-plain
-        ediff-split-window-function #'split-window-horizontally)
-  :commands ediff-setup-windows-plain)
+  (setq-default ediff-window-setup-function 'ediff-setup-windows-plain
+                ediff-split-window-function 'split-window-horizontally
+                ediff-merge-split-window-function 'split-window-horizontally)
+  (add-hook 'ediff-quit-hook #'winner-undo)
+  :commands winner-undo)
 
 (use-package eldoc ; Documentation in minibuffer
   :defer t
   :init
-  (add-hook 'emacs-lisp-mode-hook #'eldoc-mode)
-  (add-hook 'lisp-interaction-mode-hook #'eldoc-mode)
   (add-hook 'eval-expression-minibuffer-setup-hook #'eldoc-mode)
+  (add-hook 'lisp-interaction-mode-hook #'eldoc-mode)
+  (add-hook 'emacs-lisp-mode-hook #'eldoc-mode)
   :diminish (eldoc-mode))
 
 (use-package electric
@@ -441,6 +441,7 @@
         recentf-auto-cleanup 300
         recentf-exclude (list "/\\.git/.*\\'" ; Git contents
                               "/elpa/.*\\'"   ; Package files
+                              "/.cache/.*\\'" ; Cache files
                               "/ssh:"         ; SSH files
                               "/tmp/")))
 
@@ -674,6 +675,8 @@
   :defer 5
   :bind
   ("C-c t f" . flycheck-mode)
+  ("M-n" . flycheck-next-error)
+  ("M-p" . flycheck-previous-error)
   :init
   (global-flycheck-mode)
   :config
@@ -843,9 +846,10 @@
    ("C-c f S" . sudo-edit-current-file)))
 
 (use-package undo-tree
-  :init
+  :config
   (global-undo-tree-mode)
   (setq undo-tree-history-directory-alist `((".*" . ,undo-dir))
+        undo-tree-auto-save-history t
         undo-tree-visualizer-diff t
         undo-tree-visualizer-timestamps t)
   :diminish undo-tree-mode)
@@ -1004,11 +1008,6 @@
     (add-hook 'haskell-mode-hook #'intero-mode)
     :commands intero-mode)
   (use-package flycheck-haskell
-    :bind
-    (""
-     :map haskell-mode-map
-     ("M-n" . flycheck-next-error)
-     ("M-p" . flycheck-previous-error))
     :init
     (flycheck-haskell-setup)))
 
