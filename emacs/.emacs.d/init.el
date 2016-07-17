@@ -617,6 +617,10 @@
    ("C-M-=" . default-text-scale-increase)
    ("C-M--" . default-text-scale-decrease)))
 
+(use-package diff-hl
+  :init
+  (global-diff-hl-mode))
+
 (use-package dired+
   :defer 1
   :init
@@ -645,6 +649,14 @@
 
 (use-package evil ; VIM-behavior
   :defer t
+  :preface
+  (defun my-evil-normal-state-entry-hook ()
+    (whitespace-mode 1)
+    (page-break-lines-mode))
+  (defun my-evil-normal-state-exit-hook ()
+    (when whitespace-mode
+      (whitespace-mode -1)
+      (page-break-lines-mode)))
   :init
   (evil-mode)
   :config
@@ -660,6 +672,14 @@
   (define-key evil-insert-state-map (kbd "<escape>") 'evil-normal-state)
   (setq evil-want-fine-undo 'fine
         evil-auto-indent t)
+
+  ;; Enable whitespace-mode during normal mode for prog-mode.
+  (add-hook 'prog-mode-hook
+            (lambda ()
+              (add-hook 'evil-normal-state-entry-hook
+                        #'my-evil-normal-state-entry-hook nil t)
+              (add-hook 'evil-normal-state-exit-hook
+                        #'my-evil-normal-state-exit-hook nil t)))
   :commands evil-delay)
 
 (use-package god-mode ; Ctrl prefix everything
@@ -704,6 +724,8 @@
 (use-package git-messenger
   :bind
   ("C-c g m" . git-messenger:popup-message))
+
+(use-package git-timemachine)
 
 (use-package helm ; Completion system
   :bind
@@ -945,6 +967,7 @@
   :mode ("\\.exs?\\'" "mix\\.lock\\'")
   :init
   (add-hook 'elixir-mode-hook #'alchemist-mode)
+  (add-hook 'elixir-mode-hook #'flycheck-mode)
   :diminish alchemist-mode)
 
 (use-package erlang
@@ -1030,9 +1053,10 @@
   :mode "\\.json\\'")
 
 (use-package markdown-mode
-  :mode (("\\`README\\.md\\'" . gfm-mode)
-         ("\\.md\\'"          . markdown-mode)
-         ("\\.markdown\\'"    . markdown-mode))
+  :mode
+  (("\\`README\\.md\\'" . gfm-mode)
+   ("\\.md\\'"          . markdown-mode)
+   ("\\.markdown\\'"    . markdown-mode))
   :init
   (add-hook 'gfm-mode-hook #'turn-off-auto-fill)
   (setq markdown-header-scaling t
@@ -1051,6 +1075,9 @@
   (setq py-indent-tabs-mode t))
 
 (use-package rst
+  :mode
+  (("\\.rst\\'" . rst-mode)
+   ("\\.text$"  . rst-mode))
   :bind
   (""
    :map rst-mode-map
@@ -1065,7 +1092,12 @@
   :interpreter ("ruby" . ruby-mode)
   :functions inf-ruby-keys
   :config
-  (use-package yari))
+  (use-package yari)
+  (use-package inf-ruby)
+  (use-package rubocop)
+  (use-package rspec-mode
+    :init
+    (add-hook 'ruby-mode-hook 'rspec-mode)))
 
 (use-package rust-mode
   :defer t
