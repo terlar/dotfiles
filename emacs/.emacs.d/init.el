@@ -1084,7 +1084,33 @@
    ("M-RET" . rst-insert-list))
   :config
   (setq rst-indent-literal-minimized 3
-        rst-indent-literal-normal 3))
+        rst-indent-literal-normal 3)
+
+  ;; Header scaling
+  (set-face-attribute 'rst-level-1 nil
+                      :background nil
+                      :inherit 'variable-pitch
+                      :height 1.8)
+  (set-face-attribute 'rst-level-2 nil
+                      :background nil
+                      :inherit 'variable-pitch
+                      :height 1.4)
+  (set-face-attribute 'rst-level-3 nil
+                      :background nil
+                      :inherit 'variable-pitch
+                      :height 1.2)
+  (set-face-attribute 'rst-level-4 nil
+                      :background nil
+                      :inherit 'variable-pitch
+                      :height 1.0)
+  (set-face-attribute 'rst-level-5 nil
+                      :background nil
+                      :inherit 'variable-pitch
+                      :height 1.0)
+  (set-face-attribute 'rst-level-6 nil
+                      :background nil
+                      :inherit 'variable-pitch
+                      :height 1.0))
 
 (use-package ruby-mode
   :defer t
