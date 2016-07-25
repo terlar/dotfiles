@@ -3,7 +3,7 @@
   <path recursive="1">/home/terje/dicts</path>
  </paths>
  <sounddirs/>
- <dictionaryOrder id="0" name="">
+ <dictionaryOrder name="" id="0">
   <dictionary name="CC-CEDICT 漢英辭典">a8748c2ec416f398ee757455d6d3ca7a</dictionary>
   <dictionary name="URX ZHEN Chinese-English dictionary">93205f71c9487af15b7d19afae0a8c3d</dictionary>
   <dictionary name="Babylon English-Chinese (S)">a7747fb86cb81da2d8fc605606fbb041</dictionary>
@@ -25,11 +25,11 @@
   <dictionary name="Notes">d821f9f97b4485ee074bbec29d1688b4</dictionary>
   <mutedDictionaries/>
  </dictionaryOrder>
- <inactiveDictionaries id="0" name="">
+ <inactiveDictionaries name="" id="0">
   <mutedDictionaries/>
  </inactiveDictionaries>
  <groups nextId="4">
-  <group id="2" name="Chinese">
+  <group name="Chinese" id="2">
    <dictionary name="CC-CEDICT 漢英辭典">a8748c2ec416f398ee757455d6d3ca7a</dictionary>
    <dictionary name="Yabla">54d9829651afd37603859688d3d2a1b3</dictionary>
    <dictionary name="URX ZHEN Chinese-English dictionary">93205f71c9487af15b7d19afae0a8c3d</dictionary>
@@ -43,13 +43,13 @@
    <dictionary name="Notes">d821f9f97b4485ee074bbec29d1688b4</dictionary>
    <mutedDictionaries/>
   </group>
-  <group id="3" name="Chinese Character">
+  <group name="Chinese Character" id="3">
    <dictionary name="MDBG">15344ac5842151e342382e2a3505b842</dictionary>
    <dictionary name="ZDic">42c7b4ed279cbcf97846dccf1f40a3bf</dictionary>
    <dictionary name="Vividict">e0e852eed5031358b8e7b7da2cbc9a5f</dictionary>
    <mutedDictionaries/>
   </group>
-  <group id="1" name="Buddhism">
+  <group name="Buddhism" id="1">
    <dictionary name="Buddhist Hybrid Sanskrit Dictionary (Edgerton)">74d9048f96a7d6cd0536004799f3c5c8</dictionary>
    <dictionary name="Rigpa Wiki">a6d1c9c4fbe950126c004072b5d41ca3</dictionary>
    <dictionary name="RY Wiki">f005493c313d1dc7f4af86ef38086e6b</dictionary>
@@ -77,43 +77,45 @@
   <languageCodes></languageCodes>
  </forvo>
  <mediawikis>
-  <mediawiki enabled="0" url="http://en.wikipedia.org/w" icon="" id="ae6f89aac7151829681b85f035d54e48" name="English Wikipedia"/>
-  <mediawiki enabled="0" url="http://en.wiktionary.org/w" icon="" id="affcf9678e7bfe701c9b071f97eccba3" name="English Wiktionary"/>
-  <mediawiki enabled="0" url="http://ru.wikipedia.org/w" icon="" id="8e0c1c2b6821dab8bdba8eb869ca7176" name="Russian Wikipedia"/>
-  <mediawiki enabled="0" url="http://ru.wiktionary.org/w" icon="" id="b09947600ae3902654f8ad4567ae8567" name="Russian Wiktionary"/>
-  <mediawiki enabled="0" url="http://de.wikipedia.org/w" icon="" id="a8a66331a1242ca2aeb0b4aed361c41d" name="German Wikipedia"/>
-  <mediawiki enabled="0" url="http://de.wiktionary.org/w" icon="" id="21c64bca5ec10ba17ff19f3066bc962a" name="German Wiktionary"/>
-  <mediawiki enabled="0" url="http://pt.wikipedia.org/w" icon="" id="96957cb2ad73a20c7a1d561fc83c253a" name="Portuguese Wikipedia"/>
-  <mediawiki enabled="0" url="http://pt.wiktionary.org/w" icon="" id="ed4c3929196afdd93cc08b9a903aad6a" name="Portuguese Wiktionary"/>
-  <mediawiki enabled="1" url="http://www.rigpawiki.org" icon="" id="a6d1c9c4fbe950126c004072b5d41ca3" name="Rigpa Wiki"/>
-  <mediawiki enabled="1" url="http://rywiki.tsadra.org" icon="" id="f005493c313d1dc7f4af86ef38086e6b" name="RY Wiki"/>
+  <mediawiki icon="" enabled="0" url="http://en.wikipedia.org/w" name="English Wikipedia" id="ae6f89aac7151829681b85f035d54e48"/>
+  <mediawiki icon="" enabled="0" url="http://en.wiktionary.org/w" name="English Wiktionary" id="affcf9678e7bfe701c9b071f97eccba3"/>
+  <mediawiki icon="" enabled="0" url="http://ru.wikipedia.org/w" name="Russian Wikipedia" id="8e0c1c2b6821dab8bdba8eb869ca7176"/>
+  <mediawiki icon="" enabled="0" url="http://ru.wiktionary.org/w" name="Russian Wiktionary" id="b09947600ae3902654f8ad4567ae8567"/>
+  <mediawiki icon="" enabled="0" url="http://de.wikipedia.org/w" name="German Wikipedia" id="a8a66331a1242ca2aeb0b4aed361c41d"/>
+  <mediawiki icon="" enabled="0" url="http://de.wiktionary.org/w" name="German Wiktionary" id="21c64bca5ec10ba17ff19f3066bc962a"/>
+  <mediawiki icon="" enabled="0" url="http://pt.wikipedia.org/w" name="Portuguese Wikipedia" id="96957cb2ad73a20c7a1d561fc83c253a"/>
+  <mediawiki icon="" enabled="0" url="http://pt.wiktionary.org/w" name="Portuguese Wiktionary" id="ed4c3929196afdd93cc08b9a903aad6a"/>
+  <mediawiki icon="" enabled="1" url="http://www.rigpawiki.org" name="Rigpa Wiki" id="a6d1c9c4fbe950126c004072b5d41ca3"/>
+  <mediawiki icon="" enabled="1" url="http://rywiki.tsadra.org" name="RY Wiki" id="f005493c313d1dc7f4af86ef38086e6b"/>
  </mediawikis>
  <websites>
-  <website enabled="0" url="http://www.google.com/dictionary?aq=f&amp;langpair=en|en&amp;q=%GDWORD%&amp;hl=en" icon="" id="b88cb2898e634c6638df618528284c2d" name="Google En-En (Oxford)"/>
-  <website enabled="0" url="http://www.urbandictionary.com/define.php?term=%GDWORD%" icon="" id="f376365a0de651fd7505e7e5e683aa45" name="Urban Dictionary"/>
-  <website enabled="0" url="http://multitran.ru/c/m.exe?CL=1&amp;l1=1&amp;s=%GD1251%" icon="" id="324ca0306187df7511b26d3847f4b07c" name="Multitran (En)"/>
-  <website enabled="0" url="http://lingvopro.abbyyonline.com/en/Search/en-ru/%GDWORD%" icon="" id="924db471b105299c82892067c0f10787" name="Lingvo (En-Ru)"/>
-  <website enabled="0" url="http://michaelis.uol.com.br/moderno/ingles/index.php?lingua=portugues-ingles&amp;palavra=%GDISO1%" icon="" id="087a6d65615fb047f4c80eef0a9465db" name="Michaelis (Pt-En)"/>
-  <website enabled="1" url="http://www.mdbg.net/chindict/chindict.php?page=worddict&amp;wdrst=0&amp;wdqtm=0&amp;wdqcham=1&amp;wdqt=%GDWORD%" icon="" id="15344ac5842151e342382e2a3505b842" name="MDBG"/>
-  <website enabled="1" url="http://www.zdic.net/sousuo/?q=%GDWORD%" icon="" id="42c7b4ed279cbcf97846dccf1f40a3bf" name="ZDic"/>
-  <website enabled="1" url="http://www.vividict.com/Word.aspx?wd=%GDWORD%" icon="" id="e0e852eed5031358b8e7b7da2cbc9a5f" name="Vividict"/>
-  <website enabled="0" url="http://www.yellowbridge.com/chinese/dictionary.php?word=%GDWORD%" icon="" id="b669c94a79f902ec4d0fc7e8a365bac5" name="Yellow Bridge"/>
-  <website enabled="0" url="http://www.xiaoma.info/compound.php?def=%GDWORD%&amp;fdef=%GDWORD%" icon="" id="a044f41615778262ea73ecce9e38f67d" name="Xiaoma English"/>
-  <website enabled="0" url="http://www.xiaoma.info/spy.php?py=%GDWORD%&amp;fpy=%GDWORD%" icon="" id="e830383bf963c6ad8e59e32641df4533" name="Xiaoma Pinyin"/>
-  <website enabled="0" url="http://www.xiaoma.info/compound.php?cp=%GDWORD%&amp;fhz=%GDWORD%" icon="" id="1ff1c517fa778a1dd3863ef4c362ccc1" name="Xiaoma Chinese"/>
-  <website enabled="0" url="http://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=%GDWORD%" icon="" id="869ba9834d8a343e8bd4bbb9509d046c" name="Yabla"/>
+  <website icon="" enabled="0" url="http://www.google.com/dictionary?aq=f&amp;langpair=en|en&amp;q=%GDWORD%&amp;hl=en" name="Google En-En (Oxford)" id="b88cb2898e634c6638df618528284c2d"/>
+  <website icon="" enabled="0" url="http://www.urbandictionary.com/define.php?term=%GDWORD%" name="Urban Dictionary" id="f376365a0de651fd7505e7e5e683aa45"/>
+  <website icon="" enabled="0" url="http://multitran.ru/c/m.exe?CL=1&amp;l1=1&amp;s=%GD1251%" name="Multitran (En)" id="324ca0306187df7511b26d3847f4b07c"/>
+  <website icon="" enabled="0" url="http://lingvopro.abbyyonline.com/en/Search/en-ru/%GDWORD%" name="Lingvo (En-Ru)" id="924db471b105299c82892067c0f10787"/>
+  <website icon="" enabled="0" url="http://michaelis.uol.com.br/moderno/ingles/index.php?lingua=portugues-ingles&amp;palavra=%GDISO1%" name="Michaelis (Pt-En)" id="087a6d65615fb047f4c80eef0a9465db"/>
+  <website icon="" enabled="1" url="http://www.mdbg.net/chindict/chindict.php?page=worddict&amp;wdrst=0&amp;wdqtm=0&amp;wdqcham=1&amp;wdqt=%GDWORD%" name="MDBG" id="15344ac5842151e342382e2a3505b842"/>
+  <website icon="" enabled="1" url="http://www.zdic.net/sousuo/?q=%GDWORD%" name="ZDic" id="42c7b4ed279cbcf97846dccf1f40a3bf"/>
+  <website icon="" enabled="1" url="http://www.vividict.com/Word.aspx?wd=%GDWORD%" name="Vividict" id="e0e852eed5031358b8e7b7da2cbc9a5f"/>
+  <website icon="" enabled="0" url="http://www.yellowbridge.com/chinese/dictionary.php?word=%GDWORD%" name="Yellow Bridge" id="b669c94a79f902ec4d0fc7e8a365bac5"/>
+  <website icon="" enabled="0" url="http://www.xiaoma.info/compound.php?def=%GDWORD%&amp;fdef=%GDWORD%" name="Xiaoma English" id="a044f41615778262ea73ecce9e38f67d"/>
+  <website icon="" enabled="0" url="http://www.xiaoma.info/spy.php?py=%GDWORD%&amp;fpy=%GDWORD%" name="Xiaoma Pinyin" id="e830383bf963c6ad8e59e32641df4533"/>
+  <website icon="" enabled="0" url="http://www.xiaoma.info/compound.php?cp=%GDWORD%&amp;fhz=%GDWORD%" name="Xiaoma Chinese" id="1ff1c517fa778a1dd3863ef4c362ccc1"/>
+  <website icon="" enabled="0" url="http://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=%GDWORD%" name="Yabla" id="869ba9834d8a343e8bd4bbb9509d046c"/>
  </websites>
+ <dictservers/>
  <programs>
-  <program enabled="0" commandLine="trans -no-ansi :zh+en %GDWORD%" icon="" type="1" id="8ffa1e595cbad17acbb3ec6b8f0387ff" name="Trans"/>
-  <program enabled="1" commandLine="trans -p :zh %GDWORD%" icon="" type="0" id="b6551d09f764c14870db026a955331c7" name="Trans Audio"/>
-  <program enabled="1" commandLine="curl https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=%GDWORD%" icon="" type="2" id="54d9829651afd37603859688d3d2a1b3" name="Yabla"/>
-  <program enabled="1" commandLine="notes -n %GDWORD%" icon="" type="2" id="d821f9f97b4485ee074bbec29d1688b4" name="Notes"/>
+  <program commandLine="trans -no-ansi :zh+en %GDWORD%" type="1" icon="" enabled="0" name="Trans" id="8ffa1e595cbad17acbb3ec6b8f0387ff"/>
+  <program commandLine="trans -p :zh %GDWORD%" type="0" icon="" enabled="1" name="Trans Audio" id="b6551d09f764c14870db026a955331c7"/>
+  <program commandLine="curl https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=%GDWORD%" type="2" icon="" enabled="1" name="Yabla" id="54d9829651afd37603859688d3d2a1b3"/>
+  <program commandLine="notes -n %GDWORD%" type="2" icon="" enabled="1" name="Notes" id="d821f9f97b4485ee074bbec29d1688b4"/>
  </programs>
  <voiceEngines/>
  <mutedDictionaries/>
  <popupMutedDictionaries/>
  <preferences>
   <interfaceLanguage></interfaceLanguage>
+  <helpLanguage></helpLanguage>
   <displayStyle>lingvo</displayStyle>
   <newTabsOpenAfterCurrentOne>0</newTabsOpenAfterCurrentOne>
   <newTabsOpenInBackground>1</newTabsOpenInBackground>
@@ -128,6 +130,7 @@
   <selectWordBySingleClick>0</selectWordBySingleClick>
   <escKeyHidesMainWindow>1</escKeyHidesMainWindow>
   <zoomFactor>1</zoomFactor>
+  <helpZoomFactor>1</helpZoomFactor>
   <wordsZoomLevel>0</wordsZoomLevel>
   <enableMainWindowHotkey>1</enableMainWindowHotkey>
   <mainWindowHotkey>Ctrl+F11, Ctrl+F11</mainWindowHotkey>
@@ -151,12 +154,14 @@
   <alwaysOnTop>0</alwaysOnTop>
   <searchInDock>0</searchInDock>
   <historyStoreInterval>5</historyStoreInterval>
-  <proxyserver enabled="0">
+  <proxyserver useSystemProxy="0" enabled="0">
    <type>0</type>
    <host></host>
    <port>3128</port>
    <user></user>
    <password></password>
+   <systemProxyUser></systemProxyUser>
+   <systemProxyPassword></systemProxyPassword>
   </proxyserver>
   <checkForNewReleases>1</checkForNewReleases>
   <disallowContentFromOtherSites>0</disallowContentFromOtherSites>
@@ -168,22 +173,44 @@
   <addonStyle></addonStyle>
   <collapseBigArticles>0</collapseBigArticles>
   <articleSizeLimit>2000</articleSizeLimit>
+  <maxDictionaryRefsInContextMenu>20</maxDictionaryRefsInContextMenu>
+  <trackClipboardChanges>0</trackClipboardChanges>
+  <fullTextSearch>
+   <searchMode>0</searchMode>
+   <matchCase>0</matchCase>
+   <maxArticlesPerDictionary>100</maxArticlesPerDictionary>
+   <maxDistanceBetweenWords>2</maxDistanceBetweenWords>
+   <useMaxArticlesPerDictionary>0</useMaxArticlesPerDictionary>
+   <useMaxDistanceBetweenWords>1</useMaxDistanceBetweenWords>
+   <dialogGeometry></dialogGeometry>
+   <disabledTypes></disabledTypes>
+   <enabled>1</enabled>
+   <maxDictionarySize>0</maxDictionarySize>
+  </fullTextSearch>
  </preferences>
  <lastMainGroupId>2</lastMainGroupId>
  <lastPopupGroupId>2</lastPopupGroupId>
  <popupWindowState>AAAA/wAAAAH9AAAAAAAAA40AAAGTAAAABAAAAAQAAAAIAAAACPwAAAABAAAAAQAAAAEAAAAaAGQAaQBjAHQAaQBvAG4AYQByAHkAQgBhAHIDAAAAAP////8AAAAAAAAAAA==</popupWindowState>
- <popupWindowGeometry>AdnQywABAAAAAARJAAAC1gAAB/oAAARoAAAESQAAAtYAAAf6AAAEaAAAAAAAAA==</popupWindowGeometry>
+ <popupWindowGeometry>AdnQywACAAAAAARJAAAC1gAAB/oAAARoAAAESQAAAtYAAAf6AAAEaAAAAAAAAAAACgA=</popupWindowGeometry>
  <pinPopupWindow>0</pinPopupWindow>
- <mainWindowState>AAAA/wAAAAH9AAAAAgAAAAAAAAAAAAAAAPwCAAAAAfsAAAAUAHMAZQBhAHIAYwBoAFAAYQBuAGUAAAAAAP////8AAACYAP///wAAAAEAAAEUAAAGGPwCAAAAAvsAAAASAGQAaQBjAHQAcwBQAGEAbgBlAQAAACgAAAMPAAAAaAD////7AAAAFgBoAGkAcwB0AG8AcgB5AFAAYQBuAGUBAAADPQAAAwMAAABoAP///wAACOYAAAYYAAAABAAAAAQAAAAIAAAACPwAAAABAAAAAgAAAAIAAAAUAG4AYQB2AFQAbwBvAGwAYgBhAHIBAAAAAP////8AAAAAAAAAAAAAABoAZABpAGMAdABpAG8AbgBhAHIAeQBCAGEAcgEAAAMG/////wAAAAAAAAAA</mainWindowState>
- <mainWindowGeometry>AdnQywABAAAAAAAAAAAAAAAACf8AAAY/AAAAAAAAAAAAAAn/AAAGPwAAAAAAAA==</mainWindowGeometry>
+ <mainWindowState>AAAA/wAAAAH9AAAAAgAAAAAAAAAAAAAAAPwCAAAAAfsAAAAUAHMAZQBhAHIAYwBoAFAAYQBuAGUAAAAAAP////8AAACkAP///wAAAAEAAAEUAAAGFfwCAAAAAvsAAAASAGQAaQBjAHQAcwBQAGEAbgBlAQAAACsAAAMNAAAAdQD////7AAAAFgBoAGkAcwB0AG8AcgB5AFAAYQBuAGUBAAADPwAAAwEAAAB1AP///wAACOUAAAYVAAAABAAAAAQAAAAIAAAACPwAAAABAAAAAgAAAAIAAAAUAG4AYQB2AFQAbwBvAGwAYgBhAHIBAAAAAP////8AAAAAAAAAAAAAABoAZABpAGMAdABpAG8AbgBhAHIAeQBCAGEAcgEAAANi/////wAAAAAAAAAA</mainWindowState>
+ <mainWindowGeometry>AdnQywACAAAAAAAAAAAAAAAACf8AAAY/AAAAAAAAAAAAAAn/AAAGPwAAAAAAAAAACgA=</mainWindowGeometry>
+ <helpWindowGeometry></helpWindowGeometry>
+ <helpSplitterState></helpSplitterState>
  <dictInfoGeometry></dictInfoGeometry>
  <inspectorGeometry>AdnQywABAAAAAAAAAAAAAAAABhsAAAY/AAAABAAAAAQAAAYXAAAGOwAAAAAAAA==</inspectorGeometry>
- <timeForNewReleaseCheck>2015-12-15T21:58:29</timeForNewReleaseCheck>
+ <timeForNewReleaseCheck>2016-07-05T23:14:50</timeForNewReleaseCheck>
  <skippedRelease></skippedRelease>
  <showingDictBarNames>0</showingDictBarNames>
  <usingSmallIconsInToolbars>0</usingSmallIconsInToolbars>
- <maxDictionaryRefsInContextMenu>20</maxDictionaryRefsInContextMenu>
  <editDictionaryCommandLine></editDictionaryCommandLine>
  <maxPictureWidth>0</maxPictureWidth>
  <maxHeadwordSize>256</maxHeadwordSize>
+ <headwordsDialog>
+  <searchMode>0</searchMode>
+  <matchCase>0</matchCase>
+  <autoApply>0</autoApply>
+  <headwordsExportPath></headwordsExportPath>
+  <headwordsDialogGeometry></headwordsDialogGeometry>
+ </headwordsDialog>
 </config>
