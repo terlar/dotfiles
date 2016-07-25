@@ -1,9 +1,12 @@
 module Config where
 
-import XMonad
-import XMonad.Prompt
-import XMonad.Actions.GridSelect
-import XMonad.Layout.Tabbed
+import           XMonad
+import           XMonad.Prompt
+
+import           XMonad.Actions.GridSelect
+import           XMonad.Actions.ShowText
+
+import           XMonad.Layout.Tabbed
 
 myModMask = mod4Mask
 

@@ -1,20 +1,21 @@
 module Topics where
 
-import XMonad
-import XMonad.Prompt
-import XMonad.Prompt.Workspace
-import XMonad.Util.Run
-import XMonad.Actions.TopicSpace
-import XMonad.Actions.DynamicWorkspaces
-import XMonad.Actions.CopyWindow
-    (copyToAll, killAllOtherCopies, wsContainingCopies)
+import           XMonad
+import           XMonad.Actions.CopyWindow        (copyToAll,
+                                                   killAllOtherCopies,
+                                                   wsContainingCopies)
+import           XMonad.Actions.DynamicWorkspaces
+import           XMonad.Actions.TopicSpace
+import           XMonad.Prompt
+import           XMonad.Prompt.Workspace
+import           XMonad.Util.Run
 
-import qualified XMonad.StackSet as W
-import qualified Data.Map as M
-import Control.Monad
+import           Control.Monad
+import qualified Data.Map                         as M
+import qualified XMonad.StackSet                  as W
 
-import Config
-import Utils
+import           Config
+import           Utils
 
 myTopics :: [Topic]
 myTopics =

@@ -1,46 +1,47 @@
 module Keys where
 
-import XMonad
-import XMonad.Prompt.Shell
+import qualified Data.Map                         as M
+import           Data.Maybe                       (isJust, listToMaybe)
+import           Data.Monoid
 
-import Control.Monad
+import           Control.Monad
 
-import XMonad.Actions.FloatKeys
-import XMonad.Actions.CycleWS
-import XMonad.Actions.DynamicWorkspaces
-import XMonad.Actions.GridSelect
-import XMonad.Actions.Navigation2D
-import XMonad.Actions.WithAll
-import XMonad.Actions.Search
-import XMonad.Actions.WindowGo
-import XMonad.Actions.Warp
-import XMonad.Actions.TagWindows
+import           XMonad
+import           XMonad.Prompt
+import           XMonad.Prompt.Input
+import           XMonad.Prompt.Shell
+import qualified XMonad.StackSet                  as W
 
-import XMonad.Hooks.ManageHelpers
-import XMonad.Hooks.UrgencyHook
+import           XMonad.Actions.CycleWS
+import           XMonad.Actions.DynamicWorkspaces
+import           XMonad.Actions.FloatKeys
+import           XMonad.Actions.GridSelect
+import           XMonad.Actions.Navigation2D
+import           XMonad.Actions.Search
+import           XMonad.Actions.TagWindows
+import           XMonad.Actions.Warp
+import           XMonad.Actions.WindowGo
+import           XMonad.Actions.WithAll
 
-import XMonad.Layout.Reflect
-import XMonad.Layout.MultiToggle
-import XMonad.Layout.GridVariants (ChangeMasterGridGeom (IncMasterCols, IncMasterRows))
-import qualified XMonad.Layout.BoringWindows as BW
+import qualified XMonad.Hooks.ManageDocks         as MD
+import           XMonad.Hooks.ManageHelpers
+import           XMonad.Hooks.UrgencyHook
 
-import qualified XMonad.Util.NamedScratchpad as NS
+import qualified XMonad.Layout.BoringWindows      as BW
+import           XMonad.Layout.GridVariants       (ChangeMasterGridGeom (IncMasterCols, IncMasterRows))
+import           XMonad.Layout.MultiToggle
+import           XMonad.Layout.Reflect
 
-import qualified XMonad.StackSet as W
-import qualified XMonad.Hooks.ManageDocks as MD
+import qualified XMonad.Util.NamedScratchpad      as NS
 
--- Data module
-import Data.Maybe (isJust, listToMaybe)
-import Data.Monoid
-import qualified Data.Map as M
+import           XMonad.Util.PIPWindow            (makePIPWindow,
+                                                   togglePIPWindow)
+import           XMonad.Util.ToggleFloat          (toggleFloat)
 
-import XMonad.Util.PIPWindow (makePIPWindow, togglePIPWindow)
-import XMonad.Util.ToggleFloat (toggleFloat)
-
-import Config
-import Utils
-import Hooks
-import Topics
+import           Config
+import           Hooks
+import           Topics
+import           Utils
 
 myKeys :: [(String, X ())]
 myKeys =
@@ -177,7 +178,8 @@ myKeys =
 
     -- Window tagging
     tagWindow   = withFocused (addTag "tagged")
-    bringTagged = withTaggedGlobalP "tagged" shiftHere >> withTaggedGlobal "tagged" (delTag "tagged")
+    bringTagged = withTaggedGlobalP "tagged" shiftHere >>
+      withTaggedGlobal "tagged" (delTag "tagged")
 
     -- Colors
     blue   = myColor "#25629f"

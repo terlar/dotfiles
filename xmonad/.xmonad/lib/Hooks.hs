@@ -1,89 +1,90 @@
 module Hooks where
 
-import XMonad hiding ((|||))
-import XMonad.ManageHook
+import           XMonad                          hiding ((|||))
+import           XMonad.ManageHook
 
-import XMonad.Actions.CopyWindow
-import XMonad.Actions.TagWindows
-import XMonad.Actions.UpdatePointer
-import XMonad.Actions.Promote (promote)
+import           XMonad.Actions.CopyWindow
+import           XMonad.Actions.Promote          (promote)
+import           XMonad.Actions.TagWindows
+import           XMonad.Actions.UpdatePointer
 
-import XMonad.Hooks.DynamicLog
-import XMonad.Hooks.ManageHelpers
-import XMonad.Hooks.FadeInactive
-import XMonad.Hooks.InsertPosition
+import           XMonad.Hooks.DynamicLog
 
-import XMonad.Util.Run
-import XMonad.Util.NamedScratchpad
+import           XMonad.Hooks.FadeInactive
+import           XMonad.Hooks.InsertPosition
+import           XMonad.Hooks.ManageHelpers
 
-import XMonad.Layout.HintedTile
-import XMonad.Layout.Reflect
-import XMonad.Layout.Accordion
-import XMonad.Layout.Named
-import XMonad.Layout.Combo
-import XMonad.Layout.LayoutCombinators
-import XMonad.Layout.MultiToggle
-import XMonad.Layout.PerWorkspace (onWorkspace)
-import XMonad.Layout.Magnifier (magnifiercz')
-import XMonad.Layout.ResizableTile
-import XMonad.Layout.TwoPane
-import XMonad.Layout.StackTile
-import XMonad.Layout.LimitWindows
-import XMonad.Layout.Tabbed
-import XMonad.Layout.Minimize
-import XMonad.Layout.NoBorders (smartBorders)
-import XMonad.Layout.BoringWindows (boringWindows)
-import XMonad.Layout.LayoutModifier
-import qualified XMonad.Layout.GridVariants as GV
+import           XMonad.Util.NamedScratchpad
+import           XMonad.Util.Run
 
-import qualified XMonad.StackSet as W
-import qualified Data.Map        as M
+import           XMonad.Layout.Accordion
+import           XMonad.Layout.BoringWindows     (boringWindows)
+import           XMonad.Layout.Combo
+import qualified XMonad.Layout.GridVariants      as GV
+import           XMonad.Layout.HintedTile
+import           XMonad.Layout.LayoutCombinators
+import           XMonad.Layout.LayoutModifier
+import           XMonad.Layout.LimitWindows
+import           XMonad.Layout.Magnifier         (magnifiercz')
+import           XMonad.Layout.Minimize
+import           XMonad.Layout.MultiToggle
+import           XMonad.Layout.Named
+import           XMonad.Layout.NoBorders         (smartBorders)
+import           XMonad.Layout.PerWorkspace      (onWorkspace)
+import           XMonad.Layout.Reflect
+import           XMonad.Layout.ResizableTile
+import           XMonad.Layout.StackTile
+import           XMonad.Layout.Tabbed
+import           XMonad.Layout.TwoPane
 
-import Data.Monoid
+import qualified Data.Map                        as M
+import qualified XMonad.StackSet                 as W
 
-import XMonad.Util.PIPWindow (pipManageHook)
+import           Data.Monoid
 
-import Config
-import Utils
+import           XMonad.Util.PIPWindow           (pipManageHook)
+
+import           Config
+import           Utils
 
 myLogHook =
-    dynamicLog <+>
-    fadeInactiveLogHook fadeAmount
+  dynamicLog <+>
+  fadeInactiveLogHook fadeAmount
   where
     fadeAmount = 0.9
 
 myManageHook :: ManageHook
 myManageHook = composeAll $
-    [ insertPosition Master Newer
-    , manageHook defaultConfig
-    , pipManageHook
-    , namedScratchpadManageHook myScratchpads
-    , isDialog          --> doCenterFloat
-    , isFullscreen      --> doF W.focusDown <+> doFullFloat
-    ] ++
-    [ appName =? "xfce4-notifyd"     --> doIgnore
-    , title ~? "hangouts.google.com" --> doIgnore
-    ] ++
-    [ matchAny v --> doCenterFloat | v <- floatApps ]
+  [ insertPosition Master Newer
+  , manageHook defaultConfig
+  , pipManageHook
+  , namedScratchpadManageHook myScratchpads
+  , isDialog     --> doCenterFloat
+  , isFullscreen --> doF W.focusDown <+> doFullFloat
+  ] ++
+  [ appName =? "xfce4-notifyd"       --> doIgnore
+  , title   ~? "hangouts.google.com" --> doIgnore
+  ] ++
+  [ matchAny v --> doCenterFloat | v <- floatApps ]
   where
     -- Floating apps
     floatApps =
-        [ "feh"
-        , "font-manager"
-        , "gcolor2"
-        , "gifview"
-        , "mpv"
-        , "sxiv"
-        , "zenity"
-        ]
+      [ "feh"
+      , "font-manager"
+      , "gcolor2"
+      , "gifview"
+      , "mpv"
+      , "sxiv"
+      , "zenity"
+      ]
 
 myScratchpads =
-    [ termNS    "scratchpad" "~"           (customFloating smallRect)
-    , termAppNS "music"      "ncmpcpp"     (customFloating largeRect)
-    , xAppNS    "volume"     "pavucontrol" doCenterFloat
-    , xAppNS    "dictionary" "goldendict"  (customFloating rightRect)
-    , emacsNS   "editor"                   (customFloating largeRect)
-    ]
+  [ termNS    "scratchpad" "~"           (customFloating smallRect)
+  , termAppNS "music"      "ncmpcpp"     (customFloating largeRect)
+  , xAppNS    "volume"     "pavucontrol" doCenterFloat
+  , xAppNS    "dictionary" "goldendict"  (customFloating rightRect)
+  , emacsNS   "editor"                   (customFloating largeRect)
+  ]
   where
     -- NS types
     termNS     n d = roleNS n (myTerm ++ " -r " ++ n ++ " -d " ++ d) n
@@ -97,18 +98,19 @@ myScratchpads =
     classNS n c cl = NS n c (className ~? cl)
     nameNS  n c    = NS n c (wmName =? n)
 
-myLayoutHook = smartBorders $
-    minimize $
-    boringWindows $
+myLayoutHook =
+  smartBorders $
+  minimize $
+  boringWindows $
 
-    -- Mirror the layout in the X and Y axis.
-    mkToggle (single REFLECTX) $
-    mkToggle (single REFLECTY) $
+  -- Mirror the layout in the X and Y axis.
+  mkToggle (single REFLECTX) $
+  mkToggle (single REFLECTY) $
 
-    onWorkspace "web" (tabs ||| Full ||| dualStack) $
-    onWorkspace "speak" (Full ||| tiled ||| dualStack ||| tabs) $
+  onWorkspace "web" (tabs ||| Full ||| dualStack) $
+  onWorkspace "speak" (Full ||| tiled ||| dualStack ||| tabs) $
 
-    tiled ||| grid ||| tabs ||| dualStack ||| accordionFull ||| magnifiercz' 1.4 triple ||| Full
+  tiled ||| grid ||| tabs ||| dualStack ||| accordionFull ||| magnifiercz' 1.4 triple ||| Full
   where
     tiled = named "Tiled" (ResizableTall 1 delta (2/3) [])
     triple = named "Triple" (limitWindows 3 tiled)
@@ -124,13 +126,15 @@ myEventHook = floatClickFocusHandler
 
 -- Bring clicked floating window to the front
 floatClickFocusHandler :: Event -> X All
-floatClickFocusHandler ButtonEvent { ev_window = w } = do
-    withWindowSet $ \s -> do
-        if isFloat w s
-            then (focus w >> promote)
-            else return ()
-        return (All True)
-        where isFloat w ss = M.member w $ W.floating ss
+floatClickFocusHandler ButtonEvent{ev_window = w} = withWindowSet $ \s ->
+  do
+    if isFloat w s
+      then (focus w >> promote)
+      else return ()
+
+    return (All True)
+    where
+      isFloat w ss = M.member w $ W.floating ss
 floatClickFocusHandler _ = return (All True)
 
 -- Queries

@@ -1,12 +1,12 @@
 module Utils where
 
-import XMonad
+import           XMonad
 
 -- Data module
-import Data.List(isInfixOf)
-import Data.Char(toUpper)
+import           Data.Char (toUpper)
+import           Data.List (isInfixOf)
 
-import Config
+import           Config
 
 -- Infix (,) to clean up key and mouse bindings
 infixr 0 ~>
