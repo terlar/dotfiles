@@ -8,6 +8,9 @@ function fish_user_abbreviations
     abbr e editor
     abbr week "date '+%V'"
 
+    abbr '*' 'mul'
+    abbr '/' 'div'
+
     if type -fq systemctl
         abbr j 'journalctl --since=today'
         abbr je 'journalctl --since=today --priority=0..3'
