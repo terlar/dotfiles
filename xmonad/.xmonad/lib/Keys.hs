@@ -18,6 +18,7 @@ import           XMonad.Actions.FloatKeys
 import           XMonad.Actions.GridSelect
 import           XMonad.Actions.Navigation2D
 import           XMonad.Actions.Search
+import           XMonad.Actions.ShowText
 import           XMonad.Actions.TagWindows
 import           XMonad.Actions.Warp
 import           XMonad.Actions.WindowGo
@@ -98,11 +99,11 @@ myKeys =
     , ("M-<XF86AudioRaiseVolume>", scratchToggle "volume")
     , ("M-a m"                   , scratchToggle "music")
     , ("M-'"                     , scratchToggle "dictionary")
-    -- Shell prompt
+    -- Prompt
     , ("M-p", programLauncher)
     , ("M-S-p", shellPrompt myXPConfig)
-    -- Password prompt
     , ("M-S-8", passPrompt)
+    , ("M-c", bigTextPrompt myXPConfig)
     -- Lock screen
     , ("M-<Esc>", spawn "lock" )
     -- Reload XMonad
@@ -180,6 +181,11 @@ myKeys =
     tagWindow   = withFocused (addTag "tagged")
     bringTagged = withTaggedGlobalP "tagged" shiftHere >>
       withTaggedGlobal "tagged" (delTag "tagged")
+
+    -- Big text
+    bigTextPrompt :: XPConfig -> X()
+    bigTextPrompt c = inputPrompt c "Text" ?+ \input ->
+      flashText myTextConfig 5 input
 
     -- Colors
     blue   = myColor "#25629f"

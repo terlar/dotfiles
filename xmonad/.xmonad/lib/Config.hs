@@ -73,6 +73,13 @@ myGSConfig colorizer = (buildDefaultGSConfig colorizer)
     , gs_font = myFont
     }
 
+myTextConfig :: ShowTextConfig
+myTextConfig = STC
+  { st_font = "xft:sans-72"
+  , st_bg   = "#020202"
+  , st_fg   = "#a9a6af"
+  }
+
 myColor color _ isFg = return $
     if isFg
     then (color, myHLight)

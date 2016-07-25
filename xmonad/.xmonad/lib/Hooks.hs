@@ -5,6 +5,7 @@ import           XMonad.ManageHook
 
 import           XMonad.Actions.CopyWindow
 import           XMonad.Actions.Promote          (promote)
+import           XMonad.Actions.ShowText
 import           XMonad.Actions.TagWindows
 import           XMonad.Actions.UpdatePointer
 
@@ -122,7 +123,7 @@ myLayoutHook =
     grid = named "Grid" (GV.SplitGrid GV.L 2 3 (2/3) (16/10) (5/100))
     delta = 3/100
 
-myEventHook = floatClickFocusHandler
+myEventHook = floatClickFocusHandler <+> handleTimerEvent
 
 -- Bring clicked floating window to the front
 floatClickFocusHandler :: Event -> X All
