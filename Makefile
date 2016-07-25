@@ -12,8 +12,13 @@ uninstall:
 	stow -Dt $(DESTDIR) $(PACKAGES)
 
 .PHONY: update
-update: pull install
+update: pull update-submodules install
 
 .PHONY: pull
 pull:
 	git pull
+
+.PHONY: update-submodules
+update-submodules:
+	git submodule sync
+	git submodule update --init --recursive --remote
