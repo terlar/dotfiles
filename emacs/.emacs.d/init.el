@@ -119,7 +119,8 @@
 ;;; Libraries
 (use-package auto-compile
   :init
-  (auto-compile-on-load-mode))
+  (auto-compile-on-load-mode)
+  (auto-compile-on-save-mode))
 
 ;;; Enable disabled commands
 (put 'downcase-region 'disabled nil) ; Let downcasing work
