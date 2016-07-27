@@ -696,6 +696,14 @@
     (evil-define-key 'god global-map [escape] 'evil-god-state-bail))
   :commands evil-execute-in-god-state)
 
+(use-package goto-addr ; Make links clickable
+  :bind
+  (("C-c t a" . goto-address-mode)
+   ("C-c t A" . goto-address-prog-mode))
+  :init
+  (add-hook 'prog-mode-hook #'goto-address-prog-mode)
+  (add-hook 'text-mode-hook #'goto-address-mode))
+
 (use-package flycheck ; Linting and syntax checking
   :defer 5
   :bind
@@ -727,6 +735,9 @@
   ("C-c g m" . git-messenger:popup-message))
 
 (use-package git-timemachine)
+
+(use-package github-browse-file
+  :commands github-browse-file)
 
 (use-package helm ; Completion system
   :bind
