@@ -1077,7 +1077,9 @@
   :commands (markdown-mode gfm-mode))
 
 (use-package puppet-mode
-  :mode ("\\.pp\\'" . puppet-mode))
+  :mode
+  (("\\.pp\\'"    . puppet-mode)
+   ("Puppetfile$" . puppet-mode)))
 
 (use-package python-mode
   :mode ("\\.py\\'" . python-mode)
@@ -1189,7 +1191,16 @@
                       :background nil))
 
 (use-package yaml-mode
-  :mode ("\\.ya?ml\\'" . yaml-mode))
+  :mode ("\\.ya?ml\\'" . yaml-mode)
+  :config
+  (use-package ansible-doc
+    :defer t
+    :init
+    (add-hook 'yaml-mode-hook #'ansible-doc-mode)
+    :diminish ansible-doc-mode)
+  (use-package company-ansible
+    :init
+    (add-to-list 'company-backends 'company-ansible)))
 
 (use-package company-shell
   :after company
