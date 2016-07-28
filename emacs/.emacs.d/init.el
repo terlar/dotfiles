@@ -312,6 +312,18 @@
   (setq bookmark-default-file (expand-file-name "emacs/bookmarks" user-cache-directory)
         bookmark-save-flag t))
 
+(use-package bug-reference
+  :defer t
+  :init
+  (add-hook 'prog-mode-hook #'bug-reference-prog-mode)
+  (add-hook 'text-mode-hook #'bug-reference-mode))
+
+(use-package calendar
+  :bind
+  ("C-c a c" . calendar)
+  :config
+  (setq calendar-week-start-day 1))
+
 (use-package compile
   :bind
   ("C-c c C" . recompile)
@@ -337,6 +349,11 @@
 (use-package delsel
   :defer t
   :init (delete-selection-mode))
+
+(use-package doc-view
+  :defer t
+  :config
+  (setq doc-view-resolution 300))
 
 (use-package ediff
   :bind
@@ -399,6 +416,14 @@
         flyspell-issue-message-flag nil)
   (unbind-key "C-." flyspell-mode-map)
   :diminish (flyspell-mode . " ⓢ"))
+
+(use-package goto-addr ; Make links clickable
+  :bind
+  (("C-c t a" . goto-address-mode)
+   ("C-c t A" . goto-address-prog-mode))
+  :init
+  (add-hook 'prog-mode-hook #'goto-address-prog-mode)
+  (add-hook 'text-mode-hook #'goto-address-mode))
 
 (use-package hippie-exp ; Expansion and completion (line)
   :bind
@@ -474,6 +499,14 @@
   :init
   (add-hook 'prog-mode-hook #'subword-mode)
   :diminish subword-mode)
+
+(use-package shell
+  :bind
+  ("C-c a t" . shell))
+
+(use-package term
+  :bind
+  ("C-c a T" . ansi-term))
 
 (use-package whitespace
   :bind
@@ -620,7 +653,8 @@
 
 (use-package diff-hl
   :init
-  (global-diff-hl-mode))
+  (global-diff-hl-mode)
+  (add-hook 'dired-mode-hook 'diff-hl-dired-mode))
 
 (use-package dired+
   :defer 1
@@ -695,14 +729,6 @@
     :config
     (evil-define-key 'god global-map [escape] 'evil-god-state-bail))
   :commands evil-execute-in-god-state)
-
-(use-package goto-addr ; Make links clickable
-  :bind
-  (("C-c t a" . goto-address-mode)
-   ("C-c t A" . goto-address-prog-mode))
-  :init
-  (add-hook 'prog-mode-hook #'goto-address-prog-mode)
-  (add-hook 'text-mode-hook #'goto-address-mode))
 
 (use-package flycheck ; Linting and syntax checking
   :defer 5
@@ -830,6 +856,9 @@
   (global-magit-file-mode)
   :config
   (use-package evil-magit)
+  (use-package magit-gh-pulls
+    :init
+    (add-hook 'magit-mode-hook #'turn-on-magit-gh-pulls))
   (unbind-key "<C-return>" magit-file-section-map)
   (setenv "GIT_PAGER" "")
   (setq magit-save-repository-buffers 'dontask
@@ -1059,7 +1088,11 @@
     (flycheck-haskell-setup)))
 
 (use-package js2-mode
-  :mode "\\.js\\'")
+  :mode "\\.js\\'"
+  :config
+  (setq js2-mode-show-parse-errors nil
+        js2-mode-show-strict-warnings nil
+        js2-highlight-level 3))
 
 (use-package json-mode
   :mode "\\.json\\'")
@@ -1085,6 +1118,13 @@
   :mode ("\\.py\\'" . python-mode)
   :interpreter ("python" . python-mode)
   :config
+  (use-package anaconda-mode
+    :defer t
+    :init
+    (add-hook 'python-mode-hook #'anaconda-mode))
+  (use-package company-anaconda
+    :init
+    (add-to-list 'company-backends 'company-anaconda))
   (defvaralias 'python-indent 'tab-width)
   (setq py-indent-tabs-mode t))
 
@@ -1126,18 +1166,36 @@
                       :inherit 'variable-pitch
                       :height 1.0))
 
-(use-package ruby-mode
+(use-package enh-ruby-mode
   :defer t
-  :mode ("\\.rb\\'" . ruby-mode)
-  :interpreter ("ruby" . ruby-mode)
-  :functions inf-ruby-keys
+  :mode
+  (("\\.rb\\'"     . enh-ruby-mode)
+   ("Gemfile$"     . enh-ruby-mode)
+   ("[Rr]akefile$" . enh-ruby-mode))
+  :interpreter "pry"
   :config
+  (setq enh-ruby-deep-indent-paren nil)
   (use-package yari)
-  (use-package inf-ruby)
-  (use-package rubocop)
+  (use-package robe
+    :init
+    (add-hook 'enh-ruby-mode-hook 'robe-mode)
+    (add-to-list 'company-backends 'company-robe)
+    :diminish robe-mode)
+  (use-package inf-ruby
+    :init
+    (add-hook 'enh-ruby-mode-hook 'inf-ruby-minor-mode)
+    :commands inf-ruby)
+  (use-package rubocop
+    :init
+    (add-hook 'enh-ruby-mode-hook 'rubocop-mode))
+  (use-package minitest
+    :init
+    (add-hook 'enh-ruby-mode-hook 'minitest-mode)
+    :diminish minitest-mode)
   (use-package rspec-mode
     :init
-    (add-hook 'ruby-mode-hook 'rspec-mode)))
+    (add-hook 'enh-ruby-mode-hook 'rspec-mode)
+    :diminish rspec-mode))
 
 (use-package rust-mode
   :defer t
@@ -1147,7 +1205,10 @@
     :init
     (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
     :commands
-    flycheck-rust-setup))
+    flycheck-rust-setup)
+  (use-package racer
+    :init
+    (add-hook 'rust-mode-hook #'racer-mode)))
 
 (use-package sh-script
   :defer t
@@ -1158,6 +1219,19 @@
   :init
   (defvaralias 'sh-basic-offset 'tab-width)
   (defvaralias 'sh-indentation 'tab-width))
+
+(use-package sql
+  :bind
+  (("C-c a s" . sql-connect)
+   :map sql-mode-map
+   ("C-c m p" . sql-set-product)))
+
+(use-package thrift
+  :defer t
+  :init
+  (put 'thrift-indent-level 'safe-local-variable #'integerp)
+  :config
+  (add-hook 'thrift-mode-hook (lambda () (run-hooks 'prog-mode-hook))))
 
 (use-package web-mode
   :mode
