@@ -854,6 +854,14 @@
   (global-hungry-delete-mode)
   :diminish hungry-delete-mode)
 
+(use-package ignoramus ; Ignore files
+  :config
+  ;; Ignore some additional directories
+  (dolist (name '(".vagrant"))
+    (add-to-list 'ignoramus-file-basename-exact-names name))
+
+  (ignoramus-setup))
+
 (use-package magit
   :bind
   (("C-c g c" . magit-clone)
