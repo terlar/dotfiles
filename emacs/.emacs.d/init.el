@@ -384,6 +384,7 @@
   (add-hook 'eval-expression-minibuffer-setup-hook #'eldoc-mode)
   (add-hook 'lisp-interaction-mode-hook #'eldoc-mode)
   (add-hook 'emacs-lisp-mode-hook #'eldoc-mode)
+  (add-hook 'python-mode-hook #'eldoc-mode)
   :diminish (eldoc-mode))
 
 (use-package electric
