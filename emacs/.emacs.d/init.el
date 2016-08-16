@@ -1034,6 +1034,12 @@
 (use-package fish-mode
   :mode ("\\.fish\\'" . fish-mode)
   :interpreter ("fish" . fish-mode)
+  :init
+  (add-hook 'fish-mode-hook
+            (lambda ()
+              (add-hook 'before-save-hook #'fish_indent-before-save)
+              (setq tab-width 4
+                    indent-tabs-mode nil)))
   :commands fish-mode)
 
 (use-package gitattributes-mode)
