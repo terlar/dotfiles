@@ -318,8 +318,8 @@
 (use-package bug-reference
   :defer t
   :init
-  (add-hook 'prog-mode-hook #'bug-reference-prog-mode)
-  (add-hook 'text-mode-hook #'bug-reference-mode))
+  (add-hook 'text-mode-hook #'bug-reference-mode)
+  (add-hook 'prog-mode-hook #'bug-reference-prog-mode))
 
 (use-package calendar
   :bind
@@ -604,6 +604,11 @@
    ("C-c l g" . adict-guess-dictionary))
   :init
   (add-hook 'flyspell-mode-hook #'auto-dictionary-mode))
+
+(use-package bug-reference-github
+  :defer t
+  :init
+  (add-hook 'find-file-hook #'bug-reference-github-set-url-format))
 
 (use-package company ; Completion
   :bind
