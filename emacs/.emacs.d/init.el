@@ -726,19 +726,6 @@
                         #'my-evil-normal-state-exit-hook nil t)))
   :commands evil-delay)
 
-(use-package god-mode ; Ctrl prefix everything
-  :bind
-  ("C-." . god-local-mode)
-  :init
-  (use-package evil-god-state ; Ctrl prefix everything
-    :bind
-    (""
-     :map evil-normal-state-map
-     ("SPC" . evil-execute-in-god-state))
-    :config
-    (evil-define-key 'god global-map [escape] 'evil-god-state-bail))
-  :commands evil-execute-in-god-state)
-
 (use-package flycheck ; Linting and syntax checking
   :defer 5
   :bind
@@ -773,6 +760,19 @@
 
 (use-package github-browse-file
   :commands github-browse-file)
+
+(use-package god-mode ; Ctrl prefix everything
+  :bind
+  ("C-." . god-local-mode)
+  :init
+  (use-package evil-god-state ; Ctrl prefix everything
+    :bind
+    (""
+     :map evil-normal-state-map
+     ("SPC" . evil-execute-in-god-state))
+    :config
+    (evil-define-key 'god global-map [escape] 'evil-god-state-bail))
+  :commands evil-execute-in-god-state)
 
 (use-package helm ; Completion system
   :bind
