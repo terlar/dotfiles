@@ -1132,6 +1132,9 @@
         markdown-wiki-link-fontify-missing t)
   :commands (markdown-mode gfm-mode))
 
+(use-package pkgbuild-mode
+  :mode "/PKGBUILD\\'")
+
 (use-package puppet-mode
   :mode
   (("\\.pp\\'"    . puppet-mode)
