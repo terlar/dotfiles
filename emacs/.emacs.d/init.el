@@ -226,6 +226,9 @@
 
 ;;; Usability
 
+;; Abbrev
+(diminish 'abbrev-mode)
+
 ;; Isearch
 (setq isearch-allow-scroll t)
 (diminish 'isearch-mode)
