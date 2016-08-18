@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 main() {
-	tac /var/log/pacman.log | less
+	tac /var/log/pacman.log | ${PAGER:-less}
 }
 
 main
