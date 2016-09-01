@@ -1,6 +1,6 @@
 function fish_mode_prompt --description 'Displays the current mode'
     # Do nothing if not in vi mode
-    if test "$fish_key_bindings" = "fish_vi_key_bindings"
+    if test "$fish_key_bindings" != "fish_default_key_bindings"
         switch $fish_bind_mode
             case default
                 set_color red

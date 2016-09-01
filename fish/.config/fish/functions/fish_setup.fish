@@ -18,8 +18,8 @@ function fish_setup --description 'Setup fish variables'
     test -d "$fish_config_path/completions"
     or mkdir -p "$fish_config_path/completions"
 
-    # Enable VI mode
-    set -U fish_key_bindings fish_vi_key_bindings
+    # Enable VI-mode + Emacs in insert
+    set -U fish_key_bindings my_key_bindings
 
     # FZF Defaults
     set -Ux FZF_DEFAULT_OPTS --no-256
