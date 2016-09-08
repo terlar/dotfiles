@@ -726,6 +726,16 @@
                         #'my-evil-normal-state-exit-hook nil t)))
   :commands evil-delay)
 
+(use-package fic-mode
+  :init
+  (add-hook 'prog-mode-hook 'fic-mode)
+  :config
+
+  (set-face-attribute 'fic-face nil
+                      :weight 'bold
+                      :background (face-attribute 'font-lock-comment-face :background)
+                      :foreground (face-attribute 'font-lock-comment-face :foreground)))
+
 (use-package flycheck ; Linting and syntax checking
   :defer 5
   :bind
