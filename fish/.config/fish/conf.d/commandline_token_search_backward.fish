@@ -1,6 +1,6 @@
 # Commandline token search backward
 function __commandline_token_search_backward_kb -e fish_user_key_bindings
-    bind -M insert \e',' __commandline_token_search_backward
+    bind \e',' __commandline_token_search_backward
 end
 
 function __commandline_token_search_backward

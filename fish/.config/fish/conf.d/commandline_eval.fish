@@ -1,6 +1,6 @@
 # Commandline eval
 function __commandline_eval_kb -e fish_user_key_bindings
-    bind -M insert \ex __commandline_eval_token
+    bind \ex __commandline_eval_token
 end
 
 function __commandline_eval_token

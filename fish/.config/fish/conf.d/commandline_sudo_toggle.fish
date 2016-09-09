@@ -1,6 +1,6 @@
 # Commandline sudo toggle
 function __sudo_toggle_kb -e fish_user_key_bindings
-    bind -M insert \er __commandline_sudo_toggle
+    bind \er __commandline_sudo_toggle
 end
 
 function __commandline_sudo_toggle

@@ -4,23 +4,13 @@ function fish_user_key_bindings
 
     emit fish_user_key_bindings
 
-    #
-    # Normal mode
-    #
-    bind e forward-word backward-char
-    bind E forward-bigword backward-char
-    bind \cG cancel
-
-    #
-    # Insert mode
-    #
-    bind -M insert \cG cancel
-    bind -M insert \e'|' 'echo; hr; commandline -f repaint'
+    bind \cg cancel
+    bind \e'|' 'echo; hr; commandline -f repaint'
 
     # Navigation
-    bind -M insert \e'<' 'prevd; echo; commandline -f repaint'
-    bind -M insert \e'>' 'nextd; echo; commandline -f repaint'
+    bind \e'<' 'prevd; echo; commandline -f repaint'
+    bind \e'>' 'nextd; echo; commandline -f repaint'
 
     # Resume background job
-    bind -M insert \ez 'fg >/dev/null ^/dev/null'
+    bind \ez 'fg >/dev/null ^/dev/null'
 end

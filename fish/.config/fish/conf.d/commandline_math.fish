@@ -1,6 +1,6 @@
 # Commandline math
 function __commandline_math_kb -e fish_user_key_bindings
-    bind -M insert = __commandline_math_expand
+    bind = __commandline_math_expand
 end
 
 function __commandline_math_expand

@@ -1,12 +1,8 @@
 # Commandline execute
 function __commandline_execute_kb -e fish_user_key_bindings
-    # Normal mode
-    bind -m insert \r __commandline_execute_non_empty
-
-    # Insert mode
-    bind -M insert \r __commandline_execute_non_empty
-    bind -M insert \n __commandline_execute_and_keep_line
-    bind -M insert \e'e' end-of-line execute
+    bind \r __commandline_execute_non_empty
+    bind \n __commandline_execute_and_keep_line
+    bind \ee end-of-line execute
 end
 
 function __commandline_execute_non_empty

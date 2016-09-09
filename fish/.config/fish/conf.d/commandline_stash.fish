@@ -1,7 +1,7 @@
 # Commandline stash/pop
 function __commandline_stash_kb -e fish_user_key_bindings
-    bind -M insert \es __commandline_stash
-    bind -M insert \eS __commandline_pop
+    bind \es __commandline_stash
+    bind \eS __commandline_pop
 end
 
 function __commandline_stash -d 'Stash current command line'
