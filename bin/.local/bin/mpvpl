@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+main() {
+	local playlist line url
+
+	playlist="${1}"
+	line="${2:-1}"
+	url="$(sed -n "${line}p" "${playlist}")"
+
+	mpv "${url}"
+}
+
+main "$@"
