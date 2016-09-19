@@ -1108,11 +1108,9 @@
     (add-to-list 'company-backends 'company-ghc)
     (setq company-ghc-show-info t))
   (use-package shm
-    :disabled t
     :init
     (add-hook 'haskell-mode-hook #'structured-haskell-mode))
   (use-package intero
-    :disabled t
     :init
     (add-hook 'haskell-mode-hook #'intero-mode)
     :commands intero-mode)
