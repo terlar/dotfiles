@@ -1,0 +1,9 @@
+[Unit]
+Description=PulseAudio Chromecast support
+After=pulseaudio.service
+
+[Service]
+ExecStart=/usr/bin/pulseaudio-dlna
+
+[Install]
+WantedBy=default.target
