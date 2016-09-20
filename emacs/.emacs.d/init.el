@@ -229,6 +229,13 @@
 ;; Abbrev
 (diminish 'abbrev-mode)
 
+;; Buffers
+(defun is-useful-buffer (buffer)
+  "Determine if BUFFER is useful."
+  (not (string-match "^ ?\\*.*\\*\\(<[0-9]+>\\)?$" (buffer-name buffer))))
+
+(push '(buffer-predicate . is-useful-buffer) default-frame-alist)
+
 ;; Isearch
 (setq isearch-allow-scroll t)
 (diminish 'isearch-mode)
@@ -693,6 +700,11 @@
 
 (use-package evil ; VIM-behavior
   :defer t
+  :bind
+  (""
+   :map evil-normal-state-map
+   ("<tab>" . next-buffer)
+   ("<backtab>" . previous-buffer))
   :preface
   (defun my-evil-normal-state-entry-hook ()
     (whitespace-mode 1)
