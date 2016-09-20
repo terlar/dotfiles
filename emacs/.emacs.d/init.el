@@ -954,8 +954,7 @@
 (use-package sudo-edit
   :defer t
   :bind
-  (("C-c f s" . sudo-edit)
-   ("C-c f S" . sudo-edit-current-file)))
+  (("C-c f s" . sudo-edit)))
 
 (use-package undo-tree
   :config
@@ -1167,7 +1166,7 @@
   (use-package anaconda-mode
     :defer t
     :init
-    (add-hook 'python-mode-hook #'anaconda-mode))
+    (add-hook 'python-mode-hook 'anaconda-mode))
   (use-package company-anaconda
     :init
     (add-to-list 'company-backends 'company-anaconda))
@@ -1249,12 +1248,10 @@
   :config
   (use-package flycheck-rust
     :init
-    (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
-    :commands
-    flycheck-rust-setup)
+    (add-hook 'flycheck-mode-hook 'flycheck-rust-setup))
   (use-package racer
     :init
-    (add-hook 'rust-mode-hook #'racer-mode)))
+    (add-hook 'rust-mode-hook 'racer-mode)))
 
 (use-package sh-script
   :defer t
