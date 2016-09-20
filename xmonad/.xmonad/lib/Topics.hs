@@ -6,11 +6,11 @@ import           XMonad.Actions.CopyWindow        (copyToAll,
                                                    wsContainingCopies)
 import           XMonad.Actions.DynamicWorkspaces
 import           XMonad.Actions.TopicSpace
-import           XMonad.Prompt
 import           XMonad.Prompt.Workspace
 import           XMonad.Util.Run
 
 import           Control.Monad
+import           Data.Default                     (def)
 import qualified Data.Map                         as M
 import qualified XMonad.StackSet                  as W
 
@@ -26,7 +26,7 @@ myTopics =
     ]
 
 myTopicConfig :: TopicConfig
-myTopicConfig = defaultTopicConfig
+myTopicConfig = def
     { topicDirs = M.fromList
         [ ( "dashboard", "")
         , ( "note"     , "notes")

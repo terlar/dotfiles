@@ -1,23 +1,23 @@
 module XMonad.Util.PIPWindow (makePIPWindow, togglePIPWindow, pipManageHook) where
 
-import Control.Monad
-import Data.Maybe  (fromMaybe)
-import Data.Monoid (Endo(..))
+import           Data.Maybe                   (fromMaybe)
+import           Data.Monoid                  (Endo (..))
 
-import XMonad
-import XMonad.Operations (withFocused)
-import qualified XMonad.StackSet as W
+import           XMonad
+import           XMonad.Operations            (withFocused)
+import qualified XMonad.StackSet              as W
 
-import XMonad.Util.WindowProperties (getProp32)
+import           XMonad.Util.WindowProperties (getProp32)
 
-import XMonad.Actions.TagWindows
-import XMonad.Actions.CopyWindow (copyToAll, killAllOtherCopies)
+import           XMonad.Actions.CopyWindow    (killAllOtherCopies)
+import           XMonad.Actions.TagWindows
 
-import XMonad.Hooks.ManageHelpers (doRectFloat)
+import           XMonad.Hooks.ManageHelpers   (doRectFloat)
 
-import XMonad.Layout.Minimize
-import qualified XMonad.Layout.BoringWindows as BW
+import qualified XMonad.Layout.BoringWindows  as BW
+import           XMonad.Layout.Minimize
 
+makePIPWindow :: X ()
 makePIPWindow = withFocused $ \win -> do
     BW.markBoring
     setTags ["pip"] win
@@ -32,10 +32,11 @@ resetPIPWindow win = do
 tagValue :: Query String
 tagValue = stringProperty "_XMONAD_TAGS"
 
+togglePIPWindow :: X ()
 togglePIPWindow = pipWindow togglePIPWindow'
 
 togglePIPWindow' :: Window -> X ()
-togglePIPWindow' win = withDisplay $ \d -> do
+togglePIPWindow' win = do
   wm_state <- getAtom "_NET_WM_STATE"
   mini <- getAtom "_NET_WM_STATE_HIDDEN"
   wstate <- fromMaybe [] `fmap` getProp32 wm_state win
@@ -54,11 +55,15 @@ showPIPWindow w = do
   sendMessage (RestoreMinimizedWin w)
   focus w >> windows W.shiftMaster
 
+pipWindow :: (Window -> X ()) -> X ()
 pipWindow = withTaggedGlobal "pip"
 
+focusUpPIP :: X ()
 focusUpPIP   = focusUpTagged "pip"
+focusDownPIP :: X ()
 focusDownPIP = focusDownTagged "pip"
 
+pipManageHook :: Query (Endo WindowSet)
 pipManageHook = composeAll
     [ tagValue =? "pip" --> doRectFloat rect ]
   where

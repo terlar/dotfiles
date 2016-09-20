@@ -1,13 +1,9 @@
 module Hooks where
 
 import           XMonad                          hiding ((|||))
-import           XMonad.ManageHook
 
-import           XMonad.Actions.CopyWindow
 import           XMonad.Actions.Promote          (promote)
 import           XMonad.Actions.ShowText
-import           XMonad.Actions.TagWindows
-import           XMonad.Actions.UpdatePointer
 
 import           XMonad.Hooks.DynamicLog
 
@@ -16,15 +12,12 @@ import           XMonad.Hooks.InsertPosition
 import           XMonad.Hooks.ManageHelpers
 
 import           XMonad.Util.NamedScratchpad
-import           XMonad.Util.Run
 
 import           XMonad.Layout.Accordion
 import           XMonad.Layout.BoringWindows     (boringWindows)
 import           XMonad.Layout.Combo
 import qualified XMonad.Layout.GridVariants      as GV
-import           XMonad.Layout.HintedTile
 import           XMonad.Layout.LayoutCombinators
-import           XMonad.Layout.LayoutModifier
 import           XMonad.Layout.LimitWindows
 import           XMonad.Layout.Magnifier         (magnifiercz')
 import           XMonad.Layout.Minimize
@@ -38,16 +31,18 @@ import           XMonad.Layout.StackTile
 import           XMonad.Layout.Tabbed
 import           XMonad.Layout.TwoPane
 
+import           Control.Monad
+import           Data.Default                    (def)
 import qualified Data.Map                        as M
-import qualified XMonad.StackSet                 as W
-
 import           Data.Monoid
+import qualified XMonad.StackSet                 as W
 
 import           XMonad.Util.PIPWindow           (pipManageHook)
 
 import           Config
 import           Utils
 
+myLogHook :: X ()
 myLogHook =
   dynamicLog <+>
   fadeInactiveLogHook fadeAmount
@@ -57,7 +52,7 @@ myLogHook =
 myManageHook :: ManageHook
 myManageHook = composeAll $
   [ insertPosition Master Newer
-  , manageHook defaultConfig
+  , manageHook def
   , pipManageHook
   , namedScratchpadManageHook myScratchpads
   , isDialog     --> doCenterFloat
@@ -79,6 +74,7 @@ myManageHook = composeAll $
       , "zenity"
       ]
 
+myScratchpads :: [NamedScratchpad]
 myScratchpads =
   [ termNS    "scratchpad" "~"           (customFloating smallRect)
   , termAppNS "music"      "ncmpcpp"     (customFloating largeRect)
@@ -95,7 +91,7 @@ myScratchpads =
     emacsAppNS n c = nameNS n ("emacsclient -c -F '((name . \"" ++ n ++ "\"))' -e '" ++ c ++ "'")
 
     -- Query methods
-    roleNS  n c r  = NS n c (role =? r)
+    roleNS  n c r  = NS n c (wmRole =? r)
     classNS n c cl = NS n c (className ~? cl)
     nameNS  n c    = NS n c (wmName =? n)
 
@@ -123,32 +119,30 @@ myLayoutHook =
     grid = named "Grid" (GV.SplitGrid GV.L 2 3 (2/3) (16/10) (5/100))
     delta = 3/100
 
+myEventHook :: Event -> X All
 myEventHook = floatClickFocusHandler <+> handleTimerEvent
 
 -- Bring clicked floating window to the front
 floatClickFocusHandler :: Event -> X All
 floatClickFocusHandler ButtonEvent{ev_window = w} = withWindowSet $ \s ->
   do
-    if isFloat w s
-      then (focus w >> promote)
-      else return ()
+    Control.Monad.when (isFloat w s) (focus w >> promote)
 
     return (All True)
     where
-      isFloat w ss = M.member w $ W.floating ss
+      isFloat win set = M.member win $ W.floating set
 floatClickFocusHandler _ = return (All True)
 
 -- Queries
 matchAny :: String -> Query Bool
-matchAny x = foldr ((<||>) . (=? x)) (return False) [className, title, wmName, role]
+matchAny x = foldr ((<||>) . (=? x)) (return False) [className, title, wmName, wmRole]
 
-wmName :: Query String
+wmName, wmRole :: Query String
 wmName = stringProperty "WM_NAME"
-
-role :: Query String
-role = stringProperty "WM_WINDOW_ROLE"
+wmRole = stringProperty "WM_WINDOW_ROLE"
 
 -- Floating window sizes (X, Y, width, height)
+largeRect, smallRect, topRect, bottomRect, leftRect, rightRect :: W.RationalRect
 largeRect  = W.RationalRect (1/20) (1/20) (18/20) (18/20)
 smallRect  = W.RationalRect (1/6)  (1/6)  (4/6)   (4/6)
 topRect    = W.RationalRect 0      0      1       (1/3)

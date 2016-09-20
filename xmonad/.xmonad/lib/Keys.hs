@@ -1,7 +1,6 @@
 module Keys where
 
-import qualified Data.Map                         as M
-import           Data.Maybe                       (isJust, listToMaybe)
+import           Data.Maybe                       (isJust)
 import           Data.Monoid
 
 import           Control.Monad
@@ -122,12 +121,12 @@ myKeys =
     , ("M-9", spawn "notify-send -i battery -t 2000 Battery \"$(acpi)\"")
     , ("M-0", spawn "notify-send -i dialog-information -t 2000 Date \"$(date '+%F%nW%V %A%n%T')\"")
     ]
-    ++ [("M-g " ++ k, createOrGoto t) | (k,t) <- workspaces]
+    ++ [("M-g " ++ k, createOrGoto t) | (k,t) <- spaces]
     ++ [("M-r " ++ k, f) | (k,f) <- utils]
     ++ [("M-/ " ++ key, promptSearch myXPConfig engine) | (key, engine) <- searches]
     ++ screenKeys ++ windowKeys ++ mediaKeys
   where
-    workspaces =
+    spaces =
         [ ("-", "dashboard")
         , ("n", "note")
         , ("c", "code")
@@ -218,7 +217,7 @@ windowKeys =
       [\a->(a, 0), \a->(0, a), \a->(-a, 0), \a->(0, -a)]
       ["<R>", "<D>", "<L>", "<U>"]
     , (f, m) <- zip
-      [keysMoveWindow, \d -> keysResizeWindow d (0, 0)]
+      [keysMoveWindow, \dim -> keysResizeWindow dim (0, 0)]
       ["M-", "M-S-"]
     , (c, x) <- zip
       ["", "C-"]
@@ -245,7 +244,7 @@ mediaKeys =
     ]
 
 -- Menus
-myApps :: [([Char], X ())]
+myApps :: [(String, X ())]
 myApps =
     [ ("Browser",      raiseApp  "web" myBrowser)
     , ("Editor",       raiseApp' myEditor)
@@ -255,7 +254,6 @@ myApps =
   where
     raiseApp ws a = raiseNextMaybe (spawnWS ws a) (appName ~? a)
     raiseApp' a = raiseNextMaybe (spawn a) (appName ~? a)
-    termApp a d = myTerm ++ " -r " ++ a ++ " -d " ++ d
     -- Named Workspace Navigation
     spawnWS ws a = addWorkspace ws >> spawn a
 

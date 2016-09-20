@@ -1,11 +1,12 @@
-import XMonad
-import XMonad.Util.EZConfig (checkKeymap, additionalKeysP)
-import XMonad.Hooks.UrgencyHook
+import           XMonad
+import           XMonad.Hooks.UrgencyHook
+import           XMonad.Util.EZConfig     (additionalKeysP, checkKeymap)
 
-import Config
-import Hooks (myLayoutHook, myManageHook, myEventHook, myLogHook)
-import Topics (myTopics)
-import Keys (myKeys)
+import           Config
+import           Hooks                    (myEventHook, myLayoutHook, myLogHook,
+                                           myManageHook)
+import           Keys                     (myKeys)
+import           Topics                   (myTopics)
 
 myConfig = withUrgencyHook NoUrgencyHook $ defaultConfig
     { modMask = myModMask

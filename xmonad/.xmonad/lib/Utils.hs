@@ -1,6 +1,6 @@
 module Utils where
 
-import           XMonad
+import           XMonad    (MonadIO, X, spawn)
 
 -- Data module
 import           Data.Char (toUpper)
@@ -14,8 +14,11 @@ infixr 0 ~>
 (~>) = (,)
 
 -- Query operators
+isInfixOfI :: String -> String -> Bool
 needle `isInfixOfI` haystack = upper needle `isInfixOf` upper haystack
+upper :: String -> String
 upper = map toUpper
+
 q ~? x = fmap (x `isInfixOfI`) q -- haystack includes needle?
 
 videoSelect :: X ()

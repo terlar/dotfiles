@@ -8,7 +8,12 @@ import           XMonad.Actions.ShowText
 
 import           XMonad.Layout.Tabbed
 
+import           Data.Default              (def)
+
+myModMask :: KeyMask
 myModMask = mod4Mask
+
+myTerm, myEditor, myBrowser, myPDFViewer, myImageViewer, myVideoPlayer :: String
 
 myTerm = "termite"
 myEditor = "emacsclient -c"
@@ -21,8 +26,10 @@ myBorderWidth :: Dimension
 myBorderWidth = 4
 
 -- Theme
+myFont :: String
 myFont = "xft:sans-10"
 
+myBGColor, myFGColor, myHLight, myLLight, myBorderColor :: String
 myBGColor     = "#f5f5f5" -- Background color
 myFGColor     = "#2a2e6e" -- Foreground color
 myHLight      = "#ecf0f1" -- Highlight color
@@ -40,7 +47,7 @@ dmenuConfig =
 
 -- XPConfig - Prompt fields
 myXPConfig :: XPConfig
-myXPConfig = defaultXPConfig
+myXPConfig = def
     { font = myFont
     , fgColor = myFGColor
     , bgColor = myBGColor
@@ -55,7 +62,7 @@ myXPConfig = defaultXPConfig
     }
 
 myTabConfig :: Theme
-myTabConfig = defaultTheme
+myTabConfig = def
     { fontName = myFont
     , activeBorderColor = myBGColor
     , activeTextColor = myHLight
@@ -66,6 +73,7 @@ myTabConfig = defaultTheme
     , decoHeight = 30
     }
 
+myGSConfig :: (a -> Bool -> X (String, String)) -> GSConfig a
 myGSConfig colorizer = (buildDefaultGSConfig colorizer)
     { gs_cellheight = 50
     , gs_cellwidth = 300
