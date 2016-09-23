@@ -77,6 +77,9 @@
 
 (add-hook 'focus-out-hook 'save-all)
 
+;; Kill magit temp buffers when done with them
+(setq-default server-temp-file-regexp "^/tmp/Re\\|/draft\\|COMMIT_EDITMSG\\|PULLREQ_EDITMSG$")
+
 ;; Kill-ring
 (setq kill-ring-max 200
       kill-do-not-save-duplicates t
