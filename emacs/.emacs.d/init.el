@@ -1261,7 +1261,11 @@
    ("\\.bash\\'" . sh-mode))
   :init
   (defvaralias 'sh-basic-offset 'tab-width)
-  (defvaralias 'sh-indentation 'tab-width))
+  (defvaralias 'sh-indentation 'tab-width)
+  :config
+  (set-face-attribute 'sh-quoted-exec nil
+                      :background (face-attribute 'font-lock-builtin-face :background)
+                      :foreground (face-attribute 'font-lock-builtin-face :foreground)))
 
 (use-package sql
   :bind
