@@ -77,9 +77,6 @@
 
 (add-hook 'focus-out-hook 'save-all)
 
-;; Kill magit temp buffers when done with them
-(setq-default server-temp-file-regexp "^/tmp/Re\\|/draft\\|COMMIT_EDITMSG\\|PULLREQ_EDITMSG$")
-
 ;; Kill-ring
 (setq kill-ring-max 200
       kill-do-not-save-duplicates t
@@ -238,6 +235,12 @@
   (not (string-match "^ ?\\*.*\\*\\(<[0-9]+>\\)?$" (buffer-name buffer))))
 
 (push '(buffer-predicate . is-useful-buffer) default-frame-alist)
+
+;; Keep buffers opened when leaving an emacs client
+(setq-default server-kill-new-buffers nil)
+
+;; Kill temp buffers when done with them
+(setq-default server-temp-file-regexp "^/tmp/Re\\|/draft\\|COMMIT_EDITMSG\\|PULLREQ_EDITMSG$")
 
 ;; Isearch
 (setq isearch-allow-scroll t)
