@@ -1320,6 +1320,11 @@
 
 (use-package yaml-mode
   :mode ("\\.ya?ml\\'" . yaml-mode)
+  :init
+  (add-hook 'yaml-mode-hook
+            (lambda ()
+              (setq tab-width 2
+                    indent-tabs-mode nil)))
   :config
   (use-package ansible-doc
     :defer t
