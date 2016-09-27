@@ -8,6 +8,7 @@
 	user = terlar
 [core]
 	excludesfile = ~/.gitignore.global
+	quotepath = false
 [help]
 	autoCorrect = -1
 # Reuse recorded resolution
