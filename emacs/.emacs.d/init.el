@@ -572,23 +572,6 @@
   :defer t
   :init (add-hook 'visual-line-mode-hook #'adaptive-wrap-prefix-mode))
 
-(use-package ag ; File grep/search
-  :config
-  (use-package helm-ag
-    :bind
-    (("C-c s a" . helm-ag)
-     ("C-c s A" . helm-do-ag))
-    :config
-    (setq helm-ag-fuzzy-match t
-          helm-ag-insert-at-point 'symbol
-          helm-ag-edit-save t)
-    :defines
-    (helm-ag-fuzzy-match
-     helm-ag-insert-at-point
-     helm-ag-edit-save)
-    :commands (helm-ag helm-do-ag))
-  :commands (ag ag-regexp))
-
 (use-package aggressive-indent
   :defer 5
   :init
@@ -928,12 +911,14 @@
 (use-package projectile
   :defer 5
   :bind-keymap
-  ("C-c p"   . projectile-command-map)
-  ("C-c C-p" . projectile-command-map)
+  (("C-c p"   . projectile-command-map)
+   ("C-c C-p" . projectile-command-map))
   :init
   (projectile-global-mode)
   :config
   (use-package helm-projectile
+    :bind
+    (("C-c s g" . helm-projectile-grep))
     :config
     (setq projectile-completion-system 'helm
           helm-projectile-fuzzy-match t)
