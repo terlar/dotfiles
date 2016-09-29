@@ -425,7 +425,6 @@
   ("C-c t s" . flyspell-mode)
   :init
   (add-hook 'text-mode-hook #'flyspell-mode)
-  (add-hook 'message-mode-hook #'flyspell-mode)
   (add-hook 'prog-mode-hook #'flyspell-prog-mode)
   :config
   (setq flyspell-use-meta-tab nil
