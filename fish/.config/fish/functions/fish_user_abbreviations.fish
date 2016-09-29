@@ -11,6 +11,16 @@ function fish_user_abbreviations
     abbr '*' 'mul'
     abbr '/' 'div'
 
+    if type -fq ag
+        abbr gg 'ag'
+
+    end
+
+    if type -fq rg
+        abbr ag 'rg'
+        abbr gg 'rg'
+    end
+
     if type -fq systemctl
         abbr j 'journalctl --since=today'
         abbr je 'journalctl --since=today --priority=0..3'
