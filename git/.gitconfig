@@ -7,7 +7,6 @@
 [github]
 	user = terlar
 [core]
-	editor = editor
 	excludesfile = ~/.gitignore.global
 	quotepath = false
 [help]
@@ -88,8 +87,7 @@
 [difftool]
 	prompt = false
 [difftool "ediff"]
-	cmd = emacsclient --eval \"\
-		(ediff-files \\\"$LOCAL\\\" \\\"$REMOTE\\\")\"
+	cmd = ediff \"$LOCAL\" \"$REMOTE\"
 [merge]
 	ff = only
 	log = true
