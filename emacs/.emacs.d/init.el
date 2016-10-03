@@ -425,6 +425,7 @@
   ("C-c t s" . flyspell-mode)
   :init
   (add-hook 'text-mode-hook #'flyspell-mode)
+  (add-hook 'message-mode-hook #'flyspell-mode)
   (add-hook 'prog-mode-hook #'flyspell-prog-mode)
   :config
   (setq flyspell-use-meta-tab nil
@@ -597,9 +598,7 @@
 (use-package auto-dictionary ; Automatically infer dictionary
   :bind
   (("C-c l l" . adict-change-dictionary)
-   ("C-c l g" . adict-guess-dictionary))
-  :init
-  (add-hook 'flyspell-mode-hook #'auto-dictionary-mode))
+   ("C-c l g" . adict-guess-dictionary)))
 
 (use-package bug-reference-github
   :defer t
