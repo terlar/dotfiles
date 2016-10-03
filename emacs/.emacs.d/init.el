@@ -917,10 +917,11 @@
   (use-package helm-projectile
     :bind
     (("C-c s g" . helm-projectile-grep))
+    :init
+    (helm-projectile-on)
     :config
     (setq projectile-completion-system 'helm
-          helm-projectile-fuzzy-match t)
-    (helm-projectile-on))
+          helm-projectile-fuzzy-match t))
   (setq projectile-enable-caching nil)
   (setq projectile-cache-file
         (expand-file-name "emacs/projectile.cache"
