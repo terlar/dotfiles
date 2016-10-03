@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+main() {
+	if [[ -n "$DISPLAY" ]]; then
+		if command -v xdotool >/dev/null 2>&1; then
+			xdotool key 'Super+E'
+		fi
+
+		"${VISUAL}" "$@"
+	else
+		"${EDITOR}" "$@"
+	fi
+}
+
+main "$@"
