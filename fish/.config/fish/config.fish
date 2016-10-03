@@ -14,7 +14,9 @@ if status --is-login
     and test -f ~/.env
 
     for line in (~/.env)
-        string split = $line | read -z key value
+        set value (string split = $line)
+        set key $value[1]
+        set -e value[1]
 
         test $key = 'PATH'
         or set -gx $key $value
