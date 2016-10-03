@@ -1,6 +1,6 @@
 module Keys where
 
-import           Data.Maybe                       (isJust)
+import           Data.Maybe                         (isJust)
 import           Data.Monoid
 
 import           Control.Monad
@@ -9,7 +9,7 @@ import           XMonad
 import           XMonad.Prompt
 import           XMonad.Prompt.Input
 import           XMonad.Prompt.Shell
-import qualified XMonad.StackSet                  as W
+import qualified XMonad.StackSet                    as W
 
 import           XMonad.Actions.CycleWS
 import           XMonad.Actions.DynamicWorkspaces
@@ -20,23 +20,25 @@ import           XMonad.Actions.Search
 import           XMonad.Actions.ShowText
 import           XMonad.Actions.TagWindows
 import           XMonad.Actions.Warp
+import           XMonad.Actions.WindowBringer       (bringWindow)
 import           XMonad.Actions.WindowGo
 import           XMonad.Actions.WithAll
 
-import qualified XMonad.Hooks.ManageDocks         as MD
+import qualified XMonad.Hooks.ManageDocks           as MD
 import           XMonad.Hooks.ManageHelpers
 import           XMonad.Hooks.UrgencyHook
 
-import qualified XMonad.Layout.BoringWindows      as BW
-import           XMonad.Layout.GridVariants       (ChangeMasterGridGeom (IncMasterCols, IncMasterRows))
+import qualified XMonad.Layout.BoringWindows        as BW
+import           XMonad.Layout.GridVariants         (ChangeMasterGridGeom (IncMasterCols, IncMasterRows))
 import           XMonad.Layout.MultiToggle
 import           XMonad.Layout.Reflect
 
-import qualified XMonad.Util.NamedScratchpad      as NS
+import qualified XMonad.Util.NamedScratchpad        as NS
 
-import           XMonad.Util.PIPWindow            (makePIPWindow,
-                                                   togglePIPWindow)
-import           XMonad.Util.ToggleFloat          (toggleFloat)
+import           XMonad.Util.NamedScratchpadBringer (bringNamedScratchpad)
+import           XMonad.Util.PIPWindow              (makePIPWindow,
+                                                     togglePIPWindow)
+import           XMonad.Util.ToggleFloat            (toggleFloat)
 
 import           Config
 import           Hooks
@@ -91,13 +93,14 @@ myKeys =
     , ("<XF86LaunchA>", selectWindow)
     , ("S-<XF86LaunchA>", bringWindow)
     -- Scratchpads
-    , ("M-`"                     , scratchToggle "scratchpad")
+    , ("M-`"                     , toggleScratch "scratchpad")
     , ("M-S-`"                   , resetSPWindows)
-    , ("M-e"                     , scratchToggle "editor")
-    , ("M-<XF86AudioLowerVolume>", scratchToggle "volume")
-    , ("M-<XF86AudioRaiseVolume>", scratchToggle "volume")
-    , ("M-a m"                   , scratchToggle "music")
-    , ("M-'"                     , scratchToggle "dictionary")
+    , ("M-e"                     , toggleScratch "editor")
+    , ("M-S-e"                   , bringScratch "editor")
+    , ("M-<XF86AudioLowerVolume>", toggleScratch "volume")
+    , ("M-<XF86AudioRaiseVolume>", toggleScratch "volume")
+    , ("M-a m"                   , toggleScratch "music")
+    , ("M-'"                     , toggleScratch "dictionary")
     -- Prompt
     , ("M-p", programLauncher)
     , ("M-S-p", shellPrompt myXPConfig)
@@ -159,7 +162,8 @@ myKeys =
     nonEmptyWSExcept s = return (\w -> (W.tag w `notElem` s) && isJust (W.stack w))
 
     -- Scratchpad invocation
-    scratchToggle = NS.namedScratchpadAction myScratchpads
+    toggleScratch = NS.namedScratchpadAction myScratchpads
+    bringScratch  = bringNamedScratchpad myScratchpads
 
     -- GridSelect actions
     spawnApp     = runSelectedAction (myGSConfig pink) myApps
