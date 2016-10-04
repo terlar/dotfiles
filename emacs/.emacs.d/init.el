@@ -57,6 +57,8 @@
 
 ;;; Settings
 (prefer-coding-system 'utf-8)
+(setq coding-system-for-read 'utf-8
+      coding-system-for-write 'utf-8)
 
 (setq inhibit-startup-screen t
       inhibit-startup-echo-area-message t
