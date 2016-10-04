@@ -9,10 +9,12 @@
 
 ;; Delay garbage collection during startup
 (setq gc-cons-threshold most-positive-fixnum)
-
-;; Reset gc threshold value to default after startup
 (add-hook 'after-init-hook (lambda ()
-                             (setq gc-cons-threshold 800000)))
+                             (setq gc-cons-threshold (* 100 1024 1024))))
+
+;; Enable debug during startup
+(setq debug-on-error t
+      debug-on-quit t)
 
 ;;; Paths
 (eval-and-compile
@@ -50,6 +52,7 @@
   (package-install 'use-package))
 (require 'use-package)
 (setq use-package-always-ensure t
+      use-package-verbose nil
       bind-key-describe-special-forms t)
 
 ;;; Settings
@@ -65,7 +68,13 @@
       tab-always-indent 'complete
       uniquify-buffer-name-style 'forward)
 
+;; Allow font-lock-mode to do background parsing
+(setq jit-lock-stealth-time 1
+      jit-lock-chunk-size 1000
+      jit-lock-defer-time 0.05)
+
 ;; Files
+(setq-default find-file-visit-truename t)
 (setq create-lockfiles nil
       load-prefer-newer t
       vc-follow-symlinks t)
@@ -402,7 +411,7 @@
 
 (use-package electric
   :defer t
-  :config
+  :init
   (electric-indent-mode)
   ;; Auto-insert matching delimiters
   (electric-pair-mode))
@@ -507,7 +516,7 @@
         save-place-forget-unreadable-files nil))
 
 (use-package smart-tabs-mode
-  :config
+  :init
   (smart-tabs-insinuate 'c++ 'c 'java 'javascript 'python)
   :commands smart-tabs-insinuate)
 
@@ -551,7 +560,7 @@
   :if (eq window-system 'x)
   :ensure nil
   :load-path "vendor/ibus/"
-  :config
+  :init
   (ibus-mode-on)
   :commands ibus-mode-on)
 
@@ -662,11 +671,11 @@
 (use-package dired+
   :defer 1
   :init
+  (diredp-toggle-find-file-reuse-dir 1)
+  :config
   (setq diredp-image-preview-in-tooltip 300
         ;; Remove color and font decoration
-        font-lock-maximum-decoration (quote ((dired-mode) (t . t))))
-  :config
-  (diredp-toggle-find-file-reuse-dir 1))
+        font-lock-maximum-decoration (quote ((dired-mode) (t . t)))))
 
 (use-package dired-toggle
   :bind
@@ -729,7 +738,6 @@
   :init
   (add-hook 'prog-mode-hook 'fic-mode)
   :config
-
   (set-face-attribute 'fic-face nil
                       :weight 'bold
                       :background (face-attribute 'font-lock-comment-face :background)
@@ -948,8 +956,12 @@
   (("C-c f s" . sudo-edit)))
 
 (use-package undo-tree
-  :config
+  :defer t
+  :bind
+  (("C-/" . undo-tree-undo))
+  :init
   (global-undo-tree-mode)
+  :config
   (setq undo-tree-history-directory-alist `((".*" . ,undo-dir))
         undo-tree-auto-save-history t
         undo-tree-visualizer-diff t
@@ -1346,4 +1358,7 @@
    mode-line-modes
    mode-line-misc-info
    mode-line-end-spaces))
+
+(setq debug-on-error nil
+      debug-on-quit nil)
 ;;; init.el ends here
