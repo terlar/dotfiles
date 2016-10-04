@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -eou pipefail
+
+main() {
+	if [[ "$(systemctl --user is-active redshift.service)" = "active" ]]
+	then
+		systemctl --user stop redshift.service
+	fi
+
+	xcalib -invert -alter
+}
+
+main "$@"

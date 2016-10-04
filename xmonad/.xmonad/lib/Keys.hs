@@ -113,7 +113,7 @@ myKeys =
     -- Display management
     , ("M-<F1>", spawn "autorandr --load mobile")
     , ("M-<F2>", spawn "autorandr --change --default mobile")
-    , ("M-<F3>", spawn "xcalib -invert -alter")
+    , ("M-<F3>", spawn "xinvert")
     -- Screenshot
     , ("M-<F11>", spawn "scrot -e 'mv $f ~/pictures/screenshots/'")
     , ("M-S-<F11>", spawn "scrot --multidisp -e 'mv $f ~/pictures/screenshots/'")
