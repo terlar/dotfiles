@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-eval "$("$HOME/.env" | sed 's/^/export /g')"
+export $("$HOME/.env")
 
 # Input Manager
 export GTK_IM_MODULE=ibus
