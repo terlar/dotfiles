@@ -394,7 +394,16 @@
    ("C-c = p" . ediff-patch-file)
    ("C-c = P" . ediff-patch-buffer)
    ("C-c = l" . ediff-regions-linewise)
-   ("C-c = w" . ediff-regions-wordwise))
+   ("C-c = w" . ediff-regions-wordwise)
+   :map ediff-mode-map
+   ("d" . ediff-copy-both-to-C))
+  :preface
+  (defun ediff-copy-both-to-C ()
+    (interactive)
+    (ediff-copy-diff ediff-current-difference nil 'C nil
+                     (concat
+                      (ediff-get-region-contents ediff-current-difference 'A ediff-control-buffer)
+                      (ediff-get-region-contents ediff-current-difference 'B ediff-control-buffer))))
   :init
   (setq-default ediff-window-setup-function 'ediff-setup-windows-plain
                 ediff-split-window-function 'split-window-horizontally
