@@ -951,6 +951,12 @@ KEY must be given in `kbd' notation."
   :bind-keymap
   (("C-c p" . projectile-command-map))
   :init
+  (setq projectile-cache-file
+        (expand-file-name "emacs/projectile.cache"
+                          user-cache-directory)
+        projectile-known-projects-file
+        (expand-file-name "emacs/projectile-bookmarks.eld"
+                          user-cache-directory))
   (projectile-mode)
   :config
   (use-package helm-projectile
@@ -966,13 +972,6 @@ KEY must be given in `kbd' notation."
     (("C-c p p" . projectile-persp-switch-project))
     :init
     (require 'persp-projectile))
-  (setq projectile-enable-caching nil
-        projectile-cache-file
-        (expand-file-name "emacs/projectile.cache"
-                          user-cache-directory)
-        projectile-known-projects-file
-        (expand-file-name "emacs/projectile-bookmarks.eld"
-                          user-cache-directory))
   :diminish
   projectile-mode)
 
