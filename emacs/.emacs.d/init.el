@@ -409,7 +409,10 @@
                 ediff-split-window-function 'split-window-horizontally
                 ediff-merge-split-window-function 'split-window-horizontally)
   (add-hook 'ediff-quit-hook #'winner-undo)
-  :commands winner-undo)
+  :commands
+  ediff-copy-diff
+  ediff-get-region-contents
+  winner-undo)
 
 (use-package eldoc ; Documentation in minibuffer
   :defer t
@@ -931,7 +934,7 @@
   (("C-c p"   . projectile-command-map)
    ("C-c C-p" . projectile-command-map))
   :init
-  (projectile-global-mode)
+  (projectile-mode)
   :config
   (use-package helm-projectile
     :bind
@@ -1015,7 +1018,7 @@
           ("\\`\\?\\?\\'"   . "λ")
           ("projectile-"    . "pt-")
           ("helm-"          . "h-")))
-  (which-key-declare-prefixes
+  (which-key-add-key-based-replacements
     "C-c !" "flycheck"
     "C-c =" "diff"
     "C-c b" "buffers"
