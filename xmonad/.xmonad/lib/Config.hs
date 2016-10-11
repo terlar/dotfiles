@@ -30,11 +30,12 @@ myFont :: String
 myFont = "xft:sans-10"
 
 myBGColor, myFGColor, myHLight, myLLight, myBorderColor :: String
-myBGColor     = "#f5f5f5" -- Background color
-myFGColor     = "#2a2e6e" -- Foreground color
-myHLight      = "#ecf0f1" -- Highlight color
-myLLight      = "#2c3e50" -- Lowlight color
-myBorderColor = "#bdc3c7" -- Border color
+myBGColor        = "#f5f5f5" -- Background color
+myFGColor        = "#2a2e6e" -- Foreground color
+myHLight         = "#ecf0f1" -- Highlight color
+myLLight         = "#2c3e50" -- Lowlight color
+myBorderColor    = "#bdc3c7" -- Border color
+myAttentionColor = "#ef5350" -- Attention color
 
 dmenuConfig :: String
 dmenuConfig =
@@ -64,13 +65,16 @@ myXPConfig = def
 myTabConfig :: Theme
 myTabConfig = def
     { fontName = myFont
-    , activeBorderColor = myBGColor
-    , activeTextColor = myHLight
-    , activeColor = myLLight
-    , inactiveBorderColor = myBGColor
-    , inactiveTextColor = myFGColor
-    , inactiveColor = myBGColor
     , decoHeight = 30
+    , activeBorderColor   = myBGColor
+    , activeTextColor     = myHLight
+    , activeColor         = myLLight
+    , inactiveBorderColor = myBGColor
+    , inactiveTextColor   = myFGColor
+    , inactiveColor       = myBGColor
+    , urgentBorderColor   = myAttentionColor
+    , urgentTextColor     = myHLight
+    , urgentColor         = myAttentionColor
     }
 
 myGSConfig :: (a -> Bool -> X (String, String)) -> GSConfig a
