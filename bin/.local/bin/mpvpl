@@ -6,7 +6,8 @@ main() {
 
 	playlist="${1}"
 	line="${2:-1}"
-	url="$(sed -n "${line}p" "${playlist}")"
+	url=$(sed -E '/^(#|\s*$)/d;s/\s#\s.*//' "${playlist}" \
+		      | sed "${line}q;d")
 
 	mpv "${url}"
 }
