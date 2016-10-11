@@ -3,13 +3,31 @@ set -euo pipefail
 
 main() {
 	local playlist line url
+	playlist="$(readlink -f "${1}")"
 
-	playlist="${1}"
-	line="${2:-1}"
+	local cache_dir next_file
+	cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}/mpvpl"
+	mkdir -p "${cache_dir}"
+
+	next_file="${cache_dir}/${playlist//\//%}"
+
+	if [[ -n "${2:-}" ]]
+	then
+		line="${2}"
+	else
+		if [[ -f "${next_file}" ]]
+		then
+			line="$(cat "${next_file}")"
+		else
+			line="1"
+		fi
+	fi
+
 	url=$(sed -E '/^(#|\s*$)/d;s/\s#\s.*//' "${playlist}" \
 		      | sed "${line}q;d")
 
 	mpv "${url}"
+	echo "$((line + 1))" > $next_file
 }
 
 main "$@"
