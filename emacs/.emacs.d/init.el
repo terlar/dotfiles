@@ -34,11 +34,9 @@
       (getenv "XDG_CACHE_HOME") "~/.cache"))
 
 (defvar backup-dir   (expand-file-name "emacs/backup" user-cache-directory))
-(defvar autosave-dir (expand-file-name "emacs/save" user-cache-directory))
 (defvar undo-dir     (expand-file-name "emacs/undo" user-cache-directory))
 
 (make-directory backup-dir t)
-(make-directory autosave-dir t)
 (make-directory undo-dir t)
 
 ;;; Package base
@@ -94,8 +92,7 @@
       save-interprogram-paste-before-kill t)
 
 ;; Backup
-(setq auto-save-file-name-transforms `((".*" ,autosave-dir t))
-      auto-save-list-file-prefix autosave-dir
+(setq auto-save-default nil
       backup-directory-alist `((".*" . ,backup-dir))
       version-control t
       kept-new-versions 2
@@ -781,12 +778,10 @@ KEY must be given in `kbd' notation."
    flycheck-next-error
    flycheck-previous-error))
 
-(use-package focus-autosave-mode ; Save buffers when focus is lost
+(use-package super-save ; Save buffers when focus is lost
   :init
-  (focus-autosave-mode)
-  :commands focus-autosave-mode
-  :diminish
-  focus-autosave-mode)
+  (super-save-mode +1)
+  :diminish super-save-mode)
 
 (use-package git-messenger
   :bind
