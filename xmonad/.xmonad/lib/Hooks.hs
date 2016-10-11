@@ -76,11 +76,12 @@ myManageHook = composeAll $
 
 myScratchpads :: [NamedScratchpad]
 myScratchpads =
-  [ termNS    "scratchpad" "~"           (customFloating smallRect)
-  , termAppNS "music"      "ncmpcpp"     (customFloating largeRect)
-  , xAppNS    "volume"     "pavucontrol" doCenterFloat
-  , xAppNS    "dictionary" "goldendict"  (customFloating rightRect)
-  , emacsNS   "editor"                   (customFloating largeRect)
+  [ termNS    "scratchpad"  "~"           (customFloating smallRect)
+  , termAppNS "music"       "ncmpcpp"     (customFloating largeRect)
+  , xAppNS    "volume"      "pavucontrol" doCenterFloat
+  , xAppNS    "dictionary"  "goldendict"  (customFloating rightRect)
+  , xAppNS    "colorpicker" "gcolor2"     doCenterFloat
+  , emacsNS   "editor"                    (customFloating largeRect)
   ]
   where
     -- NS types
