@@ -466,7 +466,6 @@ KEY must be given in `kbd' notation."
   (setq flyspell-use-meta-tab nil
         flyspell-issue-welcome-flag nil
         flyspell-issue-message-flag nil)
-  (unbind-key "C-." flyspell-mode-map)
   :diminish (flyspell-mode . " ⓢ"))
 
 (use-package goto-addr ; Make links clickable
@@ -991,12 +990,10 @@ KEY must be given in `kbd' notation."
 (use-package sudo-edit
   :defer t
   :bind
-  (("C-c f s" . sudo-edit)))
+  ("C-c f s" . sudo-edit))
 
 (use-package undo-tree
   :defer t
-  :bind
-  (("C-/" . undo-tree-undo))
   :init
   (global-undo-tree-mode)
   :config
@@ -1058,7 +1055,7 @@ KEY must be given in `kbd' notation."
     "C-c l" "language"
     "C-c p" "projects"
     "C-c s" "search"
-    "C-c t" "toggle"
+    "C-c t" "toggles"
     "C-c w" "windows"
     "C-c x" "text"
     "C-c x a" "align")
