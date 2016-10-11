@@ -137,6 +137,13 @@
 (put 'downcase-region 'disabled nil) ; Let downcasing work
 
 ;;; Keys
+(defun simulate-key-press (key)
+  "Pretend that KEY was pressed.
+KEY must be given in `kbd' notation."
+  `(lambda () (interactive)
+     (setq prefix-arg current-prefix-arg)
+     (setq unread-command-events (listify-key-sequence (read-kbd-macro ,key)))))
+
 (defalias #'yes-or-no-p #'y-or-n-p)
 
 (bind-key "<escape>" #'keyboard-escape-quit)
@@ -732,7 +739,7 @@
   (use-package evil-surround
     :init
     (global-evil-surround-mode))
-  (unbind-key "SPC" evil-normal-state-map)
+  (define-key evil-normal-state-map (kbd "SPC") (simulate-key-press "C-c"))
   ;; Insert state uses Emacs key-map.
   (setq evil-insert-state-map (make-sparse-keymap))
   (define-key evil-insert-state-map (kbd "<escape>") 'evil-normal-state)
@@ -794,16 +801,17 @@
 
 (use-package god-mode ; Ctrl prefix everything
   :bind
-  ("C-." . god-local-mode)
+  (("C-." . god-local-mode))
   :init
   (use-package evil-god-state ; Ctrl prefix everything
     :bind
     (""
      :map evil-normal-state-map
-     ("SPC" . evil-execute-in-god-state))
+     ("C-." . god-local-mode)
+     ("," . evil-execute-in-god-state))
     :config
-    (evil-define-key 'god global-map [escape] 'evil-god-state-bail))
-  :commands evil-execute-in-god-state)
+    (evil-define-key 'god global-map [escape] 'evil-god-state-bail)
+    :commands evil-execute-in-god-state))
 
 (use-package helm ; Completion system
   :bind
