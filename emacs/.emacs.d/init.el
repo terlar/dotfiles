@@ -246,7 +246,17 @@ KEY must be given in `kbd' notation."
   "Determine if BUFFER is useful."
   (not (string-match "^ ?\\*.*\\*\\(<[0-9]+>\\)?$" (buffer-name buffer))))
 
-(push '(buffer-predicate . is-useful-buffer) default-frame-alist)
+(defun is-perspective-buffer (buffer)
+  "Determine if BUFFER belongs to current perspective."
+  (if (and (boundp 'persp-curr) (fboundp 'persp-buffers))
+      (memq buffer (persp-buffers persp-curr))
+    t))
+
+(defun is-visible-buffer (buffer)
+  "Determine if BUFFER should be visible."
+  (and (is-useful-buffer buffer) (is-perspective-buffer buffer)))
+
+(push '(buffer-predicate . is-visible-buffer) default-frame-alist)
 
 ;; Keep buffers opened when leaving an emacs client
 (setq-default server-kill-new-buffers nil)
@@ -929,6 +939,15 @@ KEY must be given in `kbd' notation."
   (global-page-break-lines-mode)
   :diminish page-break-lines-mode)
 
+(use-package perspective
+  :bind
+  (("M-[" . persp-prev)
+   ("M-]" . persp-next))
+  :init
+  (persp-mode)
+  :defines
+  persp-mode)
+
 (use-package projectile
   :defer 5
   :bind-keymap
@@ -944,14 +963,20 @@ KEY must be given in `kbd' notation."
     :config
     (setq projectile-completion-system 'helm
           helm-projectile-fuzzy-match t))
-  (setq projectile-enable-caching nil)
-  (setq projectile-cache-file
+  (use-package persp-projectile
+    :bind
+    (("C-c p p" . projectile-persp-switch-project))
+    :init
+    (require 'persp-projectile))
+  (setq projectile-enable-caching nil
+        projectile-cache-file
         (expand-file-name "emacs/projectile.cache"
-                          user-cache-directory))
-  (setq projectile-known-projects-file
+                          user-cache-directory)
+        projectile-known-projects-file
         (expand-file-name "emacs/projectile-bookmarks.eld"
                           user-cache-directory))
-  (setq projectile-mode-line '(:eval (format " <%s>" (projectile-project-name)))))
+  :diminish
+  projectile-mode)
 
 (use-package stripe-buffer ; Striped directory listing
   :defer 1
