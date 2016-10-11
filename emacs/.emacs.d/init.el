@@ -198,9 +198,6 @@ KEY must be given in `kbd' notation."
 (bind-key "M-g c" #'goto-char)
 (bind-key "M-g l" #'goto-line)
 
-(define-key emacs-lisp-mode-map
-  (kbd "M-.") 'find-function-at-point)
-
 ;; C-c
 (bind-key "C-c <tab>" #'ff-find-other-file) ; Open alternate file
 
@@ -439,7 +436,8 @@ KEY must be given in `kbd' notation."
 
 (use-package etags
   :bind
-  ("M-T" . tags-search)
+  (("C-c s t" . tags-search)
+   ("M-T" . tags-search))
   :config
   (setq tags-revert-without-query t))
 
@@ -767,9 +765,9 @@ KEY must be given in `kbd' notation."
 (use-package flycheck ; Linting and syntax checking
   :defer 5
   :bind
-  ("C-c t f" . flycheck-mode)
-  ("M-n" . flycheck-next-error)
-  ("M-p" . flycheck-previous-error)
+  (("C-c t f" . flycheck-mode)
+   ("M-n" . flycheck-next-error)
+   ("M-p" . flycheck-previous-error))
   :init
   (global-flycheck-mode)
   :config
@@ -801,7 +799,7 @@ KEY must be given in `kbd' notation."
 
 (use-package god-mode ; Ctrl prefix everything
   :bind
-  (("C-." . god-local-mode))
+  ("C-." . god-local-mode)
   :init
   (use-package evil-god-state ; Ctrl prefix everything
     :bind
@@ -939,8 +937,7 @@ KEY must be given in `kbd' notation."
 (use-package projectile
   :defer 5
   :bind-keymap
-  (("C-c p"   . projectile-command-map)
-   ("C-c C-p" . projectile-command-map))
+  (("C-c p" . projectile-command-map))
   :init
   (projectile-mode)
   :config
@@ -1025,19 +1022,27 @@ KEY must be given in `kbd' notation."
         '(("Prefix Command" . "prefix")
           ("\\`\\?\\?\\'"   . "λ")
           ("projectile-"    . "pt-")
-          ("helm-"          . "h-")))
+          ("helm-"          . "h-")
+          ("flycheck-"      . "flyc-")))
   (which-key-add-key-based-replacements
     "C-c !" "flycheck"
     "C-c =" "diff"
+    "C-c @" "outline"
+    "C-c a" "apps"
+    "C-c a w" "web"
     "C-c b" "buffers"
+    "C-c c" "compile"
     "C-c f" "files"
     "C-c g" "git"
     "C-c h" "helm/help"
     "C-c j" "jump"
+    "C-c l" "language"
     "C-c p" "projects"
     "C-c s" "search"
     "C-c t" "toggle"
-    "C-c w" "windows")
+    "C-c w" "windows"
+    "C-c x" "text"
+    "C-c x a" "align")
   (which-key-enable-god-mode-support)
   :commands which-key-enable-god-mode-support
   :diminish which-key-mode)
