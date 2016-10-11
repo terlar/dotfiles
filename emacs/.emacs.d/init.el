@@ -804,14 +804,13 @@ KEY must be given in `kbd' notation."
 
 (use-package god-mode ; Ctrl prefix everything
   :bind
-  ("C-." . god-local-mode)
+  ("C-c SPC" . god-local-mode)
   :init
   (use-package evil-god-state ; Ctrl prefix everything
     :bind
     (""
      :map evil-normal-state-map
-     ("C-." . god-local-mode)
-     ("," . evil-execute-in-god-state))
+     ("C-c SPC" . evil-execute-in-god-state))
     :config
     (evil-define-key 'god global-map [escape] 'evil-god-state-bail)
     :commands evil-execute-in-god-state))
