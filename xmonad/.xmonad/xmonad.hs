@@ -1,11 +1,12 @@
 import           XMonad
 import           XMonad.Hooks.UrgencyHook
-import           XMonad.Util.EZConfig     (additionalKeysP, checkKeymap)
+import           XMonad.Util.EZConfig     (additionalKeysP,
+                                           additionalMouseBindings, checkKeymap)
 
 import           Config
 import           Hooks                    (myEventHook, myLayoutHook, myLogHook,
                                            myManageHook)
-import           Keys                     (myKeys)
+import           Keys                     (myKeys, myMouse)
 import           Topics                   (myTopics)
 
 myConfig = withUrgencyHook NoUrgencyHook $ defaultConfig
@@ -21,6 +22,8 @@ myConfig = withUrgencyHook NoUrgencyHook $ defaultConfig
     , manageHook = myManageHook
     , handleEventHook = myEventHook
     , logHook = myLogHook
-    } `additionalKeysP` myKeys
+    }
+    `additionalKeysP` myKeys
+    `additionalMouseBindings` myMouse
 
 main = xmonad myConfig

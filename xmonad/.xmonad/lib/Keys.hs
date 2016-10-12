@@ -45,7 +45,19 @@ import           Hooks
 import           Topics
 import           Utils
 
-myKeys :: [(String, X ())]
+button6, button7, button8, button9, button10 :: Button
+button6 = 6
+button7 = 7
+button8 = 8
+button9 = 9
+button10 = 10
+
+myMouse :: [((ButtonMask, Button), Window -> X ())]
+myMouse =
+    [ ((0, button8), (\w -> focus w >> windows W.swapUp))
+    , ((0, button9), (\w -> focus w >> windows W.swapDown))
+    ]
+
 myKeys =
     -- Layout
     [ ("M-\\", sendMessage $ Toggle REFLECTX)
