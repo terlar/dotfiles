@@ -31,5 +31,6 @@ bringSomeNamedScratchpad f confs n
                            [] -> return ()
                            _  -> f (windows . W.shiftWin (W.currentTag s)) filterAll
                        _ -> do
-                         return ()
+                         f (windows . W.focusWindow) filterAll
+                         windows W.shiftMaster
     | otherwise = return ()
