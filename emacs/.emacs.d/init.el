@@ -1144,35 +1144,68 @@ KEY must be given in `kbd' notation."
    ("C-c c c" . haskell-compile)
    ("<f5>"    . haskell-compile))
   :init
-  (add-hook 'haskell-mode-hook #'haskell-doc-mode)
-  (add-hook 'haskell-mode-hook #'haskell-decl-scan-mode)
-  (add-hook 'haskell-mode-hook #'haskell-indentation-mode)
-  (setq haskell-tags-on-save t
-        haskell-stylish-on-save t
-        haskell-notify-p t
-        haskell-process-type 'cabal-repl
-        haskell-process-log t
-        haskell-process-auto-import-loaded-modules t
-        haskell-process-suggest-remove-import-lines t)
+  (add-hook 'haskell-mode-hook
+            (lambda ()
+              (haskell-indentation-mode)
+              (setq indent-tabs-mode nil)))
+  (remove-hook 'haskell-mode-hook #'interactive-haskell-mode)
   :config
-  (use-package hindent
-    :init
-    (add-hook 'haskell-mode-hook #'hindent-mode))
-  (use-package ghc)
-  (use-package company-ghc
-    :init
-    (add-to-list 'company-backends 'company-ghc)
-    (setq company-ghc-show-info t))
   (use-package shm
     :init
-    (add-hook 'haskell-mode-hook #'structured-haskell-mode))
+    (add-hook 'haskell-mode-hook #'structured-haskell-mode)
+    (add-hook 'haskell-interactive-mode-hook #'structured-haskell-repl-mode)
+    :config
+    (setq shm-use-hdevtools t
+          shm-use-presentation-mode t
+          shm-auto-insert-skeletons t
+          shm-auto-insert-bangs t)
+    (set-face-background 'shm-current-face "#fafafa")
+    (set-face-background 'shm-quarantine-face "#fff0f0")
+    :commands
+    structured-haskell-mode
+    structured-haskell-repl-mode)
+  (use-package hindent
+    :defer t
+    :init
+    (add-hook 'haskell-mode-hook #'hindent-mode))
   (use-package intero
     :init
     (add-hook 'haskell-mode-hook #'intero-mode)
     :commands intero-mode)
   (use-package flycheck-haskell
+    :commands flycheck-haskell-setup)
+  (use-package company-ghci
     :init
-    (flycheck-haskell-setup)))
+    (add-to-list 'company-backends 'company-ghci))
+
+  (setq haskell-notify-p t
+        haskell-stylish-on-save t
+        haskell-tags-on-save nil
+        haskell-interactive-mode-include-file-name nil
+        haskell-interactive-mode-eval-mode 'haskell-mode
+        haskell-process-suggest-remove-import-lines t
+        haskell-process-auto-import-loaded-modules t
+        haskell-process-log t
+        haskell-process-reload-with-fbytecode nil
+        haskell-process-use-presentation-mode t
+        haskell-process-show-debug-tips nil
+        haskell-process-suggest-hoogle-imports nil
+        haskell-process-suggest-haskell-docs-imports t
+        haskell-process-type 'stack-ghci
+        haskell-process-args-stack-ghci '("--ghc-options=-ferror-spans" "--with-ghc=intero"))
+
+  (setq haskell-complete-module-preferred
+        '("Data.ByteString"
+          "Data.ByteString.Lazy"
+          "Data.Conduit"
+          "Data.Function"
+          "Data.List"
+          "Data.Map"
+          "Data.Maybe"
+          "Data.Monoid"
+          "Data.Text"
+          "Data.Ord"))
+  :diminish interactive-haskell-mode)
 
 (use-package js2-mode
   :mode "\\.js\\'"
