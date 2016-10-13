@@ -599,8 +599,7 @@ KEY must be given in `kbd' notation."
 ;;; Packages
 (use-package ace-window ; Fast window switching
   :bind
-  (("<C-return>" . ace-window)
-   ("C-c w w"    . ace-window)))
+  ("C-c w w" . ace-window))
 
 (use-package adaptive-wrap ; Align wrapped lines
   :defer t
@@ -608,6 +607,8 @@ KEY must be given in `kbd' notation."
 
 (use-package aggressive-indent
   :defer 5
+  :bind
+  ("C-c t i" . aggressive-indent-mode)
   :init
   (global-aggressive-indent-mode t)
   :diminish aggressive-indent-mode)
@@ -917,7 +918,6 @@ KEY must be given in `kbd' notation."
   (use-package magit-gh-pulls
     :init
     (add-hook 'magit-mode-hook #'turn-on-magit-gh-pulls))
-  (unbind-key "<C-return>" magit-file-section-map)
   (setenv "GIT_PAGER" "")
   (setq magit-save-repository-buffers 'dontask
         magit-refs-show-commit-count 'all
