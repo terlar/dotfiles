@@ -17,6 +17,7 @@ vendor/bundle
 Gemfile.local*
 
 # Haskell
+.stack-work
 *.o
 *.hi
 

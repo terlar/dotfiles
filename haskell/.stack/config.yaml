@@ -1,0 +1,7 @@
+templates:
+  params:
+    author-email: terlar@gmail.com
+    author-name: Terje Larsen
+    category: Library
+    copyright: 'Copyright: (c) 2016 Terje Larsen'
+    github-username: terlar
