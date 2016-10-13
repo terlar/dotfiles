@@ -1,0 +1,7 @@
+resolver: lts-7.3
+packages:
+- '.'
+extra-deps:
+- xmonad-contrib-0.12
+flags: {}
+extra-package-dbs: []
