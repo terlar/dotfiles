@@ -1232,6 +1232,14 @@ KEY must be given in `kbd' notation."
 (use-package pkgbuild-mode
   :mode "/PKGBUILD\\'")
 
+(use-package plantuml-mode
+  :mode
+  (("\\.puml\\'" . plantuml-mode)
+   ("\\.plantuml\\'" . plantuml-mode))
+  :init
+  (setq plantuml-java-command "java-headless"
+        plantuml-jar-path "/opt/plantuml/plantuml.jar"))
+
 (use-package puppet-mode
   :mode
   (("\\.pp\\'"    . puppet-mode)

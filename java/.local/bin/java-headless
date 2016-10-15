@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -eo pipefail
+
+main() {
+	java -Djava.awt.headless=true "$@" 2>/dev/null
+}
+
+main "$@"
