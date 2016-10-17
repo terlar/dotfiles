@@ -673,8 +673,12 @@ KEY must be given in `kbd' notation."
   (use-package company-quickhelp
     :init
     (company-quickhelp-mode))
+  (use-package company-emoji
+    :config
+    (add-to-list 'company-backends 'company-emoji))
   (setq company-minimum-prefix-length 2
-        company-idle-delay 0
+        company-echo-delay 0
+        company-idle-delay .3
         company-show-numbers t
         company-require-match 'never
         company-tooltip-align-annotations t
@@ -1132,7 +1136,9 @@ KEY must be given in `kbd' notation."
     (add-hook 'go-mode-hook #'go-eldoc-setup)
     :commands
     go-eldoc-setup)
-  (use-package company-go)
+  (use-package company-go
+    :config
+    (add-to-list 'company-backends 'company-go))
 
   (add-hook 'go-mode-hook #'my-go-mode-hook))
 
@@ -1249,13 +1255,26 @@ KEY must be given in `kbd' notation."
   :mode ("\\.py\\'" . python-mode)
   :interpreter ("python" . python-mode)
   :config
+  (use-package flycheck-pyflakes
+    :config (add-hook 'python-mode-hook #'flycheck-mode))
   (use-package anaconda-mode
     :defer t
     :init
-    (add-hook 'python-mode-hook 'anaconda-mode))
-  (use-package company-anaconda
+    (add-hook 'python-mode-hook 'anaconda-mode)
+    (add-hook 'python-mode-hook 'anaconda-eldoc-mode)
+    :config
+    (use-package company-anaconda
+      :init
+      (add-to-list 'company-backends 'company-anaconda)))
+  (use-package jedi
     :init
-    (add-to-list 'company-backends 'company-anaconda))
+    (add-hook 'python-mode-hook #'jedi:setup)
+    :config
+    (use-package company-jedi
+      :config
+      (add-to-list 'company-backends 'company-jedi))
+    (setq jedi:setup-keys t
+          jedi:complete-on-dot t))
   (defvaralias 'python-indent 'tab-width)
   (setq py-indent-tabs-mode t))
 
@@ -1315,6 +1334,10 @@ KEY must be given in `kbd' notation."
   (use-package inf-ruby
     :init
     (add-hook 'enh-ruby-mode-hook 'inf-ruby-minor-mode)
+    :config
+    (use-package company-inf-ruby
+      :config
+      (add-to-list 'company-backends 'company-inf-ruby))
     :commands inf-ruby)
   (use-package rubocop
     :init
@@ -1337,7 +1360,11 @@ KEY must be given in `kbd' notation."
     (add-hook 'flycheck-mode-hook 'flycheck-rust-setup))
   (use-package racer
     :init
-    (add-hook 'rust-mode-hook 'racer-mode)))
+    (add-hook 'rust-mode-hook 'racer-mode)
+    :config
+    (use-package company-racer
+      :config
+      (add-to-list 'company-backends 'company-racer))))
 
 (use-package sh-script
   :defer t
@@ -1380,12 +1407,14 @@ KEY must be given in `kbd' notation."
    ("\\.handlebars\\'" . web-mode)
    ("\\.djhtml\\'"     . web-mode)
    ("\\.tsx\\'"        . web-mode))
-  :init
+  :config
   (use-package emmet-mode
     :init
     (add-hook 'web-mode-hook 'emmet-mode)
     (setq emmet-indentation 2))
-  :config
+  (use-package company-web
+    :config
+    (add-to-list 'company-backends 'company-web))
   (setq web-mode-css-indent-offset 2
         web-mode-code-indent-offset 2
         web-mode-markup-indent-offset 2)
