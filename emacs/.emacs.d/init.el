@@ -1098,8 +1098,13 @@ KEY must be given in `kbd' notation."
   (add-hook 'elixir-mode-hook #'flycheck-mode)
   :diminish alchemist-mode)
 
+(use-package csv-mode
+  :mode "\\.csv\\'")
+
 (use-package erlang
-  :mode ("\\.erl\\'" . erlang-mode))
+  :mode ("\\.erl\\'" . erlang-mode)
+  :config
+  (use-package edts))
 
 (use-package fish-mode
   :mode ("\\.fish\\'" . fish-mode)
@@ -1131,6 +1136,7 @@ KEY must be given in `kbd' notation."
     ;; godef jump key binding
     (local-set-key (kbd "M-.") 'godef-jump))
   :config
+  (use-package go-errcheck)
   (use-package go-eldoc
     :init
     (add-hook 'go-mode-hook #'go-eldoc-setup)
@@ -1230,6 +1236,7 @@ KEY must be given in `kbd' notation."
    ("\\.markdown\\'"    . markdown-mode))
   :init
   (add-hook 'gfm-mode-hook #'turn-off-auto-fill)
+  :config
   (setq markdown-header-scaling t
         markdown-enable-wiki-links t
         markdown-wiki-link-fontify-missing t)
@@ -1245,6 +1252,8 @@ KEY must be given in `kbd' notation."
   :init
   (setq plantuml-java-command "java-headless"
         plantuml-jar-path "/opt/plantuml/plantuml.jar"))
+
+(use-package protobuf-mode)
 
 (use-package puppet-mode
   :mode
@@ -1289,6 +1298,11 @@ KEY must be given in `kbd' notation."
   :config
   (setq rst-indent-literal-minimized 3
         rst-indent-literal-normal 3)
+
+  (set-face-attribute 'rst-adornment nil
+                      :strike-through "black"
+                      :foreground (face-attribute 'default :background)
+                      :background (face-attribute 'default :background))
 
   ;; Header scaling
   (set-face-attribute 'rst-level-1 nil
@@ -1385,6 +1399,10 @@ KEY must be given in `kbd' notation."
   (("C-c a s" . sql-connect)
    :map sql-mode-map
    ("C-c m p" . sql-set-product)))
+
+(use-package swift-mode
+  :config
+  (with-eval-after-load 'flycheck (add-to-list 'flycheck-checkers 'swift)))
 
 (use-package thrift
   :defer t
