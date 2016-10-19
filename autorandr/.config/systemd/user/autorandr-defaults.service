@@ -1,0 +1,10 @@
+[Unit]
+Description=Default Auto RandR settings
+
+[Service]
+Type=oneshot
+Environment=DEFAULT_PROFILE=mobile
+ExecStart=/usr/bin/autorandr --change --default ${DEFAULT_PROFILE}
+
+[Install]
+WantedBy=graphical.target
