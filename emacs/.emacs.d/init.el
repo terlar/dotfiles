@@ -1435,7 +1435,7 @@ KEY must be given in `kbd' notation."
     (setq emmet-indentation 2))
   (use-package company-web
     :config
-    (add-to-list 'company-backends 'company-web))
+    (add-to-list 'company-backends 'company-web-html))
   (setq web-mode-css-indent-offset 2
         web-mode-code-indent-offset 2
         web-mode-markup-indent-offset 2)
