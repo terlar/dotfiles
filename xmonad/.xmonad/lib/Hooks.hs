@@ -6,12 +6,15 @@ import           XMonad.Actions.Promote          (promote)
 import           XMonad.Actions.ShowText
 
 import           XMonad.Hooks.DynamicLog
-
 import           XMonad.Hooks.FadeInactive
 import           XMonad.Hooks.InsertPosition
 import           XMonad.Hooks.ManageHelpers
+import           XMonad.Hooks.ManageHelpers
+import           XMonad.Hooks.UrgencyHook
 
 import           XMonad.Util.NamedScratchpad
+import           XMonad.Util.NamedWindows
+import           XMonad.Util.Run
 
 import           XMonad.Layout.Accordion
 import           XMonad.Layout.BoringWindows     (boringWindows)
@@ -150,3 +153,14 @@ topRect    = W.RationalRect 0      0      1       (1/3)
 bottomRect = W.RationalRect 0      (2/3)  1       (1/3)
 leftRect   = W.RationalRect 0      0      (1/3)   1
 rightRect  = W.RationalRect (2/3)  0      (1/3)   1
+
+data LibNotifyUrgencyHook = LibNotifyUrgencyHook deriving (Read, Show)
+
+instance UrgencyHook LibNotifyUrgencyHook where
+  urgencyHook LibNotifyUrgencyHook w = do
+    name     <- getName w
+    Just idx <- fmap (W.findTag w) $ gets windowset
+
+    safeSpawn "notify-send" [show name, "workspace " ++ idx]
+
+myUrgencyHook = LibNotifyUrgencyHook

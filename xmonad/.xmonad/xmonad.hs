@@ -5,11 +5,11 @@ import           XMonad.Util.EZConfig     (additionalKeysP,
 
 import           Config
 import           Hooks                    (myEventHook, myLayoutHook, myLogHook,
-                                           myManageHook)
+                                           myManageHook, myUrgencyHook)
 import           Keys                     (myKeys, myMouse)
 import           Topics                   (myTopics)
 
-myConfig = withUrgencyHook NoUrgencyHook $ defaultConfig
+myConfig = defaultConfig
     { modMask = myModMask
     , terminal = myTerm
     , borderWidth = myBorderWidth
@@ -26,4 +26,6 @@ myConfig = withUrgencyHook NoUrgencyHook $ defaultConfig
     `additionalKeysP` myKeys
     `additionalMouseBindings` myMouse
 
-main = xmonad myConfig
+main = xmonad
+  $ withUrgencyHook myUrgencyHook
+  $ myConfig
