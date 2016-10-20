@@ -1494,4 +1494,7 @@ KEY must be given in `kbd' notation."
 
 (setq debug-on-error nil
       debug-on-quit nil)
+
+(setq custom-file (expand-file-name "emacs/custom.el" user-data-directory))
+(load custom-file)
 ;;; init.el ends here
