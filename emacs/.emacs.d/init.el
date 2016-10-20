@@ -855,6 +855,7 @@ KEY must be given in `kbd' notation."
     :config
     (setq helm-swoop-split-window-function #'helm-default-display-buffer)
     :commands helm-default-display-buffer)
+  (use-package helm-systemd)
   (setq helm-M-x-fuzzy-match t
         helm-buffers-fuzzy-matching t
         helm-recentf-fuzzy-match t
@@ -1403,6 +1404,8 @@ KEY must be given in `kbd' notation."
 (use-package swift-mode
   :config
   (with-eval-after-load 'flycheck (add-to-list 'flycheck-checkers 'swift)))
+
+(use-package systemd)
 
 (use-package thrift
   :defer t
