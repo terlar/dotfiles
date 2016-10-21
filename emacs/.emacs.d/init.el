@@ -157,16 +157,26 @@ KEY must be given in `kbd' notation."
 
 (bind-key "C-w" #'kill-region-or-backward-kill-word)
 
-(defun my-tab-width ()
+(defun toggle-tab-width-setting ()
   "Cycle 'tab-width' between values 2, 4, and 8."
   (interactive)
+  (setq indent-tabs-mode t)
   (setq tab-width
         (cond ((eq tab-width 8) 2)
               ((eq tab-width 2) 4)
               (t 8)))
-  (redraw-display))
+  (redraw-display)
+  (message "Set tab-width to %d." tab-width)
+  )
 
-(bind-key "C-=" #'my-tab-width)
+(defun toggle-indent-mode-setting ()
+  "Toggle indenting modes between tabs and spaces."
+  (interactive)
+  (setq indent-tabs-mode (if (eq indent-tabs-mode t) nil t))
+  (message "Indenting using %s." (if (eq indent-tabs-mode t) "tabs" "spaces")))
+
+(bind-key "C-=" #'toggle-tab-width-setting)
+(bind-key "C-+" #'toggle-indent-mode-setting)
 
 ;; M-
 (bind-key "M-W" #'mark-word)
@@ -741,6 +751,9 @@ KEY must be given in `kbd' notation."
       (page-break-lines-mode)))
   :init
   (evil-mode)
+  (add-hook 'after-change-major-mode-hook
+        (function (lambda ()
+                    (setq evil-shift-width tab-width))))
   :config
   (use-package evil-matchit
     :init
