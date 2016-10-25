@@ -1112,6 +1112,8 @@ KEY must be given in `kbd' notation."
   (add-hook 'elixir-mode-hook #'flycheck-mode)
   :diminish alchemist-mode)
 
+(use-package bats-mode)
+
 (use-package csv-mode
   :mode "\\.csv\\'")
 
@@ -1301,6 +1303,10 @@ KEY must be given in `kbd' notation."
   (defvaralias 'python-indent 'tab-width)
   (setq py-indent-tabs-mode t))
 
+(use-package raml-mode
+  :ensure nil
+  :load-path "vendor/raml-mode/")
+
 (use-package rst
   :mode
   (("\\.rst\\'" . rst-mode)
@@ -1407,6 +1413,8 @@ KEY must be given in `kbd' notation."
   (set-face-attribute 'sh-quoted-exec nil
                       :background (face-attribute 'font-lock-builtin-face :background)
                       :foreground (face-attribute 'font-lock-builtin-face :foreground)))
+
+(use-package slim-mode)
 
 (use-package sql
   :bind
