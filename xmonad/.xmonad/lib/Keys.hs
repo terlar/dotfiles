@@ -111,6 +111,7 @@ myKeys =
     , ("M-S-e"                   , bringScratch "editor")
     , ("M-<XF86AudioLowerVolume>", toggleScratch "volume")
     , ("M-<XF86AudioRaiseVolume>", toggleScratch "volume")
+    , ("M-a w"                   , toggleScratch "wifi")
     , ("M-a m"                   , toggleScratch "music")
     , ("M-a c"                   , toggleScratch "colorpicker")
     , ("M-'"                     , toggleScratch "dictionary")

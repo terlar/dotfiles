@@ -81,9 +81,10 @@ myScratchpads :: [NamedScratchpad]
 myScratchpads =
   [ termNS    "scratchpad"  "~"           (customFloating smallRect)
   , termAppNS "music"       "ncmpcpp"     (customFloating largeRect)
-  , xAppNS    "volume"      "pavucontrol" doCenterFloat
-  , xAppNS    "dictionary"  "goldendict"  (customFloating rightRect)
   , xAppNS    "colorpicker" "gcolor2"     doCenterFloat
+  , xAppNS    "dictionary"  "goldendict"  (customFloating rightRect)
+  , xAppNS    "volume"      "pavucontrol" doCenterFloat
+  , xAppNS    "wifi"        "wpa_gui"     doCenterFloat
   , emacsNS   "editor"                    (customFloating largeRect)
   ]
   where
