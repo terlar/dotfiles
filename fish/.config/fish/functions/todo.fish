@@ -25,6 +25,12 @@ function todo --argument cmd
             wc -l "$todo_file" | cut -b 1
         case add new create push append +
             echo $argv >>"$todo_file"
+        case shift prepend ++
+            set -l lines (cat "$todo_file")
+
+            echo $argv >"$todo_file"
+            string split '\n' -- $lines >>"$todo_file"
+            true
         case done finish complete remove rm -
             if test -z "$argv"
                 set argv 1

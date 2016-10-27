@@ -35,6 +35,10 @@ for i in add new create push append +
     complete -f -c todo -n '__fish_todo_needs_command' -a $i -d 'Add a todo'
 end
 
+for i in shift prepend ++
+    complete -f -c todo -n '__fish_todo_needs_command' -a $i -d 'Add a todo'
+end
+
 for i in done finish complete remove rm -
     complete -f -c todo -n '__fish_todo_needs_command' -a $i -d 'Complete a todo'
     complete -f -c todo -n "__fish_todo_using_command $i" -a '(todo list)' -d 'Note'
