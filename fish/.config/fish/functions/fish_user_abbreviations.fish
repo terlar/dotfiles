@@ -104,6 +104,10 @@ function fish_user_abbreviations
         abbr drmi 'docker rmi (docker images -q --filter dangling=true)'
     end
 
+    if type -fq docker-compose
+        abbr dc docker-compose
+    end
+
     if type -q farm
         abbr f 'farm'
         abbr fcd 'farm cd'
