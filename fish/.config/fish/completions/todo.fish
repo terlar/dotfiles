@@ -19,8 +19,8 @@ end
 complete -f -c todo -n '__fish_todo_needs_command' -a 'edit' -d "Edit notes in $EDITOR"
 complete -f -c todo -n '__fish_todo_needs_command' -a 'clear' -d 'Clear all todos'
 
-for i in list ls show all
-    complete -f -c todo -n '__fish_todo_needs_command' -a $i -d 'Show all todos'
+for i in list ls show all grep find
+    complete -f -c todo -n '__fish_todo_needs_command' -a $i -d 'List todos'
 end
 
 for i in next current pop up now

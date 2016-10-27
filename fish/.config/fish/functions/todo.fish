@@ -17,8 +17,12 @@ function todo --argument cmd
             if read_confirm
                 echo -n '' >"$todo_file"
             end
-        case list ls show all
-            cat "$todo_file"
+        case list ls show all grep find
+            if test -z "$argv"
+                cat "$todo_file"
+            else
+                grep "$argv" "$todo_file"
+            end
         case next current pop up now
             head -n1 -- "$todo_file"
         case count size amount
