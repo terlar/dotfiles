@@ -2,29 +2,29 @@ function todo --argument cmd
     set -q todo_file
     or set -U todo_file ~/TODO
 
-    test -f $todo_file
-    or touch $todo_file
+    test -f "$todo_file"
+    or touch "$todo_file"
 
     set -e argv[1]
     test -z "$cmd"
     and set cmd list
 
     switch "$cmd"
-        case list ls show all
-            cat $todo_file
-        case add new create push +
-            echo $argv >>$todo_file
         case edit
-            eval $EDITOR $todo_file
-        case next current pop up
-            head -n1 -- $todo_file
-        case count size amount
-            wc -l $todo_file | cut -b 1
+            eval "$EDITOR" "$todo_file"
         case clear
             echo 'todo: you are about the clear the todo list'
             if read_confirm
-                echo -n '' >$todo_file
+                echo -n '' >"$todo_file"
             end
+        case list ls show all
+            cat "$todo_file"
+        case next current pop up now
+            head -n1 -- "$todo_file"
+        case count size amount
+            wc -l "$todo_file" | cut -b 1
+        case add new create push append +
+            echo $argv >>"$todo_file"
         case done finish complete remove rm -
             if test -z "$argv"
                 set argv 1
@@ -32,7 +32,7 @@ function todo --argument cmd
 
             set -l task
             if string match -qr '^\d$' -- "$argv"
-                set -l lines (cat $todo_file)
+                set -l lines (cat "$todo_file")
                 if not set -q lines[$argv]
                     echo "todo: unknown todo line '$argv'"
                     return 1
@@ -40,9 +40,9 @@ function todo --argument cmd
 
                 set task $lines[$argv]
                 set -e lines[$argv]
-                string split '\n' -- $lines >$todo_file
+                string split '\n' -- $lines >"$todo_file"
             else
-                set -l matches (grep -- "$argv" $todo_file)
+                set -l matches (grep -- "$argv" "$todo_file")
                 if test (count $matches) -gt 1
                     echo "todo: ambiguous match for '$argv'"
                     echo
@@ -51,8 +51,8 @@ function todo --argument cmd
                     return 1
                 end
 
-                set -l lines (grep -v -- "$argv" $todo_file)
-                string split '\n' -- $lines >$todo_file
+                set -l lines (grep -v -- "$argv" "$todo_file")
+                string split '\n' -- $lines >"$todo_file"
                 set task $matches
             end
 

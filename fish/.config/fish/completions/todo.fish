@@ -23,16 +23,16 @@ for i in list ls show all
     complete -f -c todo -n '__fish_todo_needs_command' -a $i -d 'Show all todos'
 end
 
-for i in add new create push +
-    complete -f -c todo -n '__fish_todo_needs_command' -a $i -d 'Add a todo'
-end
-
-for i in next current pop up
+for i in next current pop up now
     complete -f -c todo -n '__fish_todo_needs_command' -a $i -d 'Show next todo'
 end
 
 for i in count size amount
     complete -f -c todo -n '__fish_todo_needs_command' -a $i -d 'Show todo count'
+end
+
+for i in add new create push append +
+    complete -f -c todo -n '__fish_todo_needs_command' -a $i -d 'Add a todo'
 end
 
 for i in done finish complete remove rm -
