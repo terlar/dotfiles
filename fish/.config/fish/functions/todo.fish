@@ -31,10 +31,7 @@ function todo --argument cmd
             echo $argv >>"$todo_file"
         case shift prepend ++
             set -l lines (cat "$todo_file")
-
-            echo $argv >"$todo_file"
-            string split '\n' -- $lines >>"$todo_file"
-            true
+            string join \n -- "$argv" $lines >"$todo_file"
         case done finish complete remove rm -
             if test -z "$argv"
                 set argv 1
