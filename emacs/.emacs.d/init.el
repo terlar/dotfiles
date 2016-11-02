@@ -263,8 +263,8 @@ KEY must be given in `kbd' notation."
 
 (defun is-perspective-buffer (buffer)
   "Determine if BUFFER belongs to current perspective."
-  (if (and (boundp 'persp-curr) (fboundp 'persp-buffers))
-      (memq buffer (persp-buffers persp-curr))
+  (if (fboundp 'persp-buffer-list)
+      (memq buffer (persp-buffer-list))
     t))
 
 (defun is-visible-buffer (buffer)
@@ -960,14 +960,32 @@ KEY must be given in `kbd' notation."
   (global-page-break-lines-mode)
   :diminish page-break-lines-mode)
 
-(use-package perspective
+(use-package persp-mode
   :bind
   (("M-[" . persp-prev)
    ("M-]" . persp-next))
   :init
+  (setq persp-save-dir
+        (expand-file-name "emacs/persp-confs/"
+                          user-cache-directory))
   (persp-mode)
-  :defines
-  persp-mode)
+  :config
+  (defvar after-find-file-hook nil)
+  (advice-add 'find-file :after (lambda (&rest args) (run-hooks 'after-find-file-hook)))
+
+  (def-auto-persp "projectile"
+    :parameters '((dont-save-to-file . t))
+    :hooks '(after-find-file-hook server-visit-hook)
+    :switch 'frame
+    :predicate
+    (lambda (buffer)
+      (when (and (buffer-file-name)
+                 (projectile-project-p))
+        (switch-to-buffer (other-buffer))
+        t))
+    :get-name-expr
+    (lambda ()
+      (projectile-project-name))))
 
 (use-package projectile
   :defer 5
@@ -976,8 +994,8 @@ KEY must be given in `kbd' notation."
   :init
   (setq projectile-cache-file
         (expand-file-name "emacs/projectile.cache"
-                          user-cache-directory)
-        projectile-known-projects-file
+                          user-cache-directory))
+  (setq projectile-known-projects-file
         (expand-file-name "emacs/projectile-bookmarks.eld"
                           user-cache-directory))
   (projectile-mode)
@@ -990,11 +1008,6 @@ KEY must be given in `kbd' notation."
     :config
     (setq projectile-completion-system 'helm
           helm-projectile-fuzzy-match t))
-  (use-package persp-projectile
-    :bind
-    (("C-c p p" . projectile-persp-switch-project))
-    :init
-    (require 'persp-projectile))
   :diminish
   projectile-mode)
 
