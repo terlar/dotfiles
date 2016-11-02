@@ -4,6 +4,8 @@
 	signingkey = 89AF679B037E1D2A
 [include]
 	path = ~/.gitconfig.private
+[init]
+	templatedir = ~/.git-templates
 [github]
 	user = terlar
 [core]
