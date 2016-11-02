@@ -105,9 +105,14 @@
 (when (fboundp #'tool-bar-mode) (tool-bar-mode -1))
 (when (fboundp #'scroll-bar-mode) (scroll-bar-mode -1))
 
+(use-package flatui-theme
+  :defer t)
+(use-package leuven-theme
+  :defer t)
+(use-package color-theme-sanityinc-tomorrow
+  :defer t)
 (use-package twilight-bright-theme
-  :config
-  (load-theme 'twilight-bright t))
+  :defer t)
 
 (set-face-attribute 'default nil
                     :family "Input Mono"
