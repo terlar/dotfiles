@@ -968,6 +968,7 @@ KEY must be given in `kbd' notation."
   (setq persp-save-dir
         (expand-file-name "emacs/persp-confs/"
                           user-cache-directory))
+  (setq persp-autokill-buffer-on-remove 'kill-weak)
   (persp-mode)
   :config
   (defvar after-find-file-hook nil)
@@ -975,17 +976,19 @@ KEY must be given in `kbd' notation."
 
   (def-auto-persp "projectile"
     :parameters '((dont-save-to-file . t))
-    :hooks '(after-find-file-hook server-visit-hook)
+    :hooks '(after-find-file-hook)
     :switch 'frame
     :predicate
     (lambda (buffer)
       (when (and (buffer-file-name)
                  (projectile-project-p))
-        (switch-to-buffer (other-buffer))
         t))
     :get-name-expr
     (lambda ()
-      (projectile-project-name))))
+      (projectile-project-name)))
+
+  (setq persp-add-buffer-on-find-file 'if-not-autopersp)
+  (add-hook 'persp-after-load-state-functions #'(lambda (&rest args) (persp-auto-persps-pickup-buffers)) t))
 
 (use-package projectile
   :defer 5
