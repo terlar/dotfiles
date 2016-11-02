@@ -1121,7 +1121,12 @@ KEY must be given in `kbd' notation."
   :mode "\\.css\\'")
 
 (use-package dockerfile-mode
-  :mode "\\Dockerfile\\'")
+  :init
+  (add-to-list 'aggressive-indent-excluded-modes 'dockerfile-mode)
+  (add-hook 'dockerfile-mode-hook
+            (lambda ()
+              (setq tab-width 2
+                    indent-tabs-mode nil))))
 
 (use-package alchemist
   :mode ("\\.exs?\\'" "mix\\.lock\\'")
@@ -1255,6 +1260,8 @@ KEY must be given in `kbd' notation."
 
 (use-package js2-mode
   :mode "\\.js\\'"
+  :init
+  (defvaralias 'js-indent-level 'tab-width)
   :config
   (setq js2-mode-show-parse-errors nil
         js2-mode-show-strict-warnings nil
