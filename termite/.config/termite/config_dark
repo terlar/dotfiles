@@ -2,8 +2,8 @@
 resize_grip = false
 scroll_on_output = false
 scroll_on_keystroke = true
-audible_bell = false
-visible_bell = false
+audible_bell = true
+visible_bell = true
 mouse_autohide = true
 allow_bold = true
 dynamic_title = true
@@ -20,22 +20,31 @@ cursor_shape = block
 [colors]
 foreground      = #EEEEEE
 foreground_bold = #EEEEEE
+cursor          = #B0BEC5
 background      = #263238
 
+# Black
 color0  = #263238
-color1  = #F44336
-color2  = #4CAF50
-color3  = #FF9800
-color4  = #2196F3
-color5  = #AB47BC
-color6  = #26A69A
-color7  = #B0BEC5
 color8  = #607D8B
+# Red
+color1  = #F44336
 color9  = #EF5350
+# Green
+color2  = #4CAF50
 color10 = #00C853
+# Yellow
+color3  = #FF9800
 color11 = #BCAAA4
+# Blue
+color4  = #2196F3
 color12 = #42A5F5
+# Magenta
+color5  = #AB47BC
 color13 = #BA68C8
+# Cyan
+color6  = #26A69A
 color14 = #4DB6AC
+# White
+color7  = #B0BEC5
 color15 = #EEEEEE
 ### END COLORS
