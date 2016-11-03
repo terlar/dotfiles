@@ -74,31 +74,41 @@ myManageHook = composeAll $
       , "gifview"
       , "mpv"
       , "sxiv"
+      , "xmessage"
       , "zenity"
       ]
 
 myScratchpads :: [NamedScratchpad]
 myScratchpads =
-  [ termNS    "scratchpad"  "~"           (customFloating smallRect)
-  , termAppNS "music"       "ncmpcpp"     (customFloating largeRect)
-  , xAppNS    "colorpicker" "gcolor2"     doCenterFloat
-  , xAppNS    "dictionary"  "goldendict"  (customFloating rightRect)
-  , xAppNS    "volume"      "pavucontrol" doCenterFloat
-  , xAppNS    "wifi"        "wpa_gui"     doCenterFloat
-  , emacsNS   "editor"                    (customFloating largeRect)
+  [ termNS    "scratchpad"  "~"            (customFloating smallRect)
+  , termAppNS "music"       "ncmpcpp"      (customFloating largeRect)
+  , appNS     "colorpicker" "gcolor2"       doCenterFloat
+  , appNS     "dictionary"  "goldendict"   (customFloating rightRect)
+  , pidginNS  "contacts"    "buddy_list"   (customFloating leftRect)
+  , pidginNS  "messages"    "conversation" (customFloating smallRect)
+  , appNS     "volume"      "pavucontrol"   doCenterFloat
+  , appNS     "wifi"        "wpa_gui"       doCenterFloat
+  , emacsNS   "editor"                     (customFloating largeRect)
   ]
   where
-    -- NS types
-    termNS     n d = roleNS n (myTerm ++ " -r " ++ n ++ " -d " ++ d) n
-    termAppNS  n c = roleNS n (myTerm ++ " -r " ++ n ++ " -e '" ++ c ++ "'") n
-    xAppNS     n c = classNS n c c
-    emacsNS    n   = nameNS n ("emacsclient -c -F '((name . \"" ++ n ++ "\"))'")
-    emacsAppNS n c = nameNS n ("emacsclient -c -F '((name . \"" ++ n ++ "\"))' -e '" ++ c ++ "'")
+    -- NS
+    appNS     n c = NS n c (findClass c)
+    termNS    n d = NS n (spawnTerm n d) (findRole n)
+    termAppNS n c = NS n (spawnTermApp n c) (findRole n)
+    pidginNS  n r = NS n "pidgin" (findClassRole "pidgin" r)
+    emacsNS   n   = NS n (spawnEmacs n) (findName n)
 
-    -- Query methods
-    roleNS  n c r  = NS n c (wmRole =? r)
-    classNS n c cl = NS n c (className ~? cl)
-    nameNS  n c    = NS n c (wmName =? n)
+    -- Commands
+    spawnEmacs    n   = "emacsclient -c -F '((name . \"" ++ n ++ "\"))'"
+    spawnEmacsApp n c = spawnEmacs n ++ " -e '(" ++ c ++ ")'"
+    spawnTerm     r d = myTerm ++ " -r " ++ r ++ " -d " ++ d
+    spawnTermApp  r c = myTerm ++ " -r " ++ r ++ " -e '" ++ c ++ "'"
+
+    -- Finders
+    findClass c = className ~? c
+    findName n = wmName =? n
+    findRole r = wmRole =? r
+    findClassRole c r = className ~? c <&&> wmRole =? r
 
 myLayoutHook =
   smartBorders $

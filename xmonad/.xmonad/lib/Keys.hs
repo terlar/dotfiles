@@ -11,6 +11,9 @@ import           XMonad.Prompt.Input
 import           XMonad.Prompt.Shell
 import qualified XMonad.StackSet                    as W
 
+import           XMonad.Actions.CopyWindow          (copyToAll,
+                                                     killAllOtherCopies,
+                                                     wsContainingCopies)
 import           XMonad.Actions.CycleWS
 import           XMonad.Actions.DynamicWorkspaces
 import           XMonad.Actions.FloatKeys
@@ -111,10 +114,12 @@ myKeys =
     , ("M-S-e"                   , bringScratch "editor")
     , ("M-<XF86AudioLowerVolume>", toggleScratch "volume")
     , ("M-<XF86AudioRaiseVolume>", toggleScratch "volume")
-    , ("M-a w"                   , toggleScratch "wifi")
-    , ("M-a m"                   , toggleScratch "music")
+    , ("M-'"                     , toggleScratch "messages")
+    , ("M-S-'"                   , toggleScratch "contacts")
     , ("M-a c"                   , toggleScratch "colorpicker")
-    , ("M-'"                     , toggleScratch "dictionary")
+    , ("M-a d"                   , toggleScratch "dictionary")
+    , ("M-a m"                   , toggleScratch "music")
+    , ("M-a w"                   , toggleScratch "wifi")
     -- Prompt
     , ("M-p", programLauncher)
     , ("M-S-p", shellPrompt myXPConfig)
@@ -211,6 +216,14 @@ myKeys =
     orange = myColor "#9f6225"
     pink   = myColor "#9f2562"
     purple = myColor "#62259f"
+
+-- Toggle global window
+toggleGlobal :: X ()
+toggleGlobal = do
+    ws <- wsContainingCopies
+    if null ws
+        then windows copyToAll
+        else killAllOtherCopies
 
 -- Window manipulation
 moveToSide :: Side -> X ()

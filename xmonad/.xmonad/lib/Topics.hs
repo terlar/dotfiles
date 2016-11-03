@@ -1,9 +1,6 @@
 module Topics where
 
 import           XMonad
-import           XMonad.Actions.CopyWindow        (copyToAll,
-                                                   killAllOtherCopies,
-                                                   wsContainingCopies)
 import           XMonad.Actions.DynamicWorkspaces
 import           XMonad.Actions.TopicSpace
 import           XMonad.Prompt.Workspace
@@ -115,10 +112,3 @@ workspaceExist w = do
 
 workspaceExists :: WorkspaceId -> W.StackSet WorkspaceId l a s sd -> Bool
 workspaceExists w ws = w `elem` map W.tag (W.workspaces ws)
-
-toggleGlobal :: X ()
-toggleGlobal = do
-    ws <- wsContainingCopies
-    if null ws
-        then windows copyToAll
-        else killAllOtherCopies
