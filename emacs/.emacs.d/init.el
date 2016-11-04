@@ -747,19 +747,11 @@ KEY must be given in `kbd' notation."
    :map evil-normal-state-map
    ("<tab>" . next-buffer)
    ("<backtab>" . previous-buffer))
-  :preface
-  (defun my-evil-normal-state-entry-hook ()
-    (whitespace-mode 1)
-    (page-break-lines-mode))
-  (defun my-evil-normal-state-exit-hook ()
-    (when whitespace-mode
-      (whitespace-mode -1)
-      (page-break-lines-mode)))
   :init
   (evil-mode)
   (add-hook 'after-change-major-mode-hook
-        (function (lambda ()
-                    (setq evil-shift-width tab-width))))
+            (function (lambda ()
+                        (setq evil-shift-width tab-width))))
   :config
   (use-package evil-matchit
     :init
@@ -774,14 +766,6 @@ KEY must be given in `kbd' notation."
   (define-key evil-insert-state-map (kbd "<escape>") 'evil-normal-state)
   (setq evil-want-fine-undo 'fine
         evil-auto-indent t)
-
-  ;; Enable whitespace-mode during normal mode for prog-mode.
-  (add-hook 'prog-mode-hook
-            (lambda ()
-              (add-hook 'evil-normal-state-entry-hook
-                        #'my-evil-normal-state-entry-hook nil t)
-              (add-hook 'evil-normal-state-exit-hook
-                        #'my-evil-normal-state-exit-hook nil t)))
   :commands evil-delay)
 
 (use-package fic-mode
