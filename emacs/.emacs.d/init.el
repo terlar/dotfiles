@@ -768,6 +768,7 @@ KEY must be given in `kbd' notation."
     :init
     (global-evil-surround-mode))
   (define-key evil-normal-state-map (kbd "SPC") (simulate-key-press "C-c"))
+  (define-key evil-visual-state-map (kbd "SPC") (simulate-key-press "C-c"))
   ;; Insert state uses Emacs key-map.
   (setq evil-insert-state-map (make-sparse-keymap))
   (define-key evil-insert-state-map (kbd "<escape>") 'evil-normal-state)
