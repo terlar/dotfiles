@@ -915,12 +915,6 @@ KEY must be given in `kbd' notation."
                       :foreground "#AF0000"
                       :background (face-attribute 'linum :background)))
 
-(use-package hungry-delete
-  :defer t
-  :init
-  (global-hungry-delete-mode)
-  :diminish hungry-delete-mode)
-
 (use-package ignoramus ; Ignore files
   :config
   ;; Ignore some additional directories
