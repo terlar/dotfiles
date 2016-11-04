@@ -229,6 +229,7 @@ KEY must be given in `kbd' notation."
 (bind-keys :prefix-map toggle-map
            :prefix "C-c t"
            ("d" . toggle-debug-on-error)
+           ("h" . hl-line-mode)
            ("l" . linum-mode)
            ("r" . ruler-mode)
            ("v" . variable-pitch-mode)) ; Toggle fixed-width/variable-width
@@ -305,7 +306,6 @@ KEY must be given in `kbd' notation."
 (column-number-mode)
 
 ;;; Editing
-
 (setq-default line-spacing 0.2) ; Increase line spacing
 
 ;; Newline at end of file
@@ -509,7 +509,8 @@ KEY must be given in `kbd' notation."
 (use-package hl-line ; Highlight current line
   :defer t
   :init
-  (global-hl-line-mode))
+  (dolist (hook '(text-mode-hook prog-mode-hook))
+    (add-hook hook #'hl-line-mode)))
 
 (use-package image-file
   :defer t
