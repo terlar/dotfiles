@@ -87,10 +87,10 @@ myGSConfig colorizer = (buildDefaultGSConfig colorizer)
 
 myTextConfig :: ShowTextConfig
 myTextConfig = STC
-  { st_font = "xft:sans-72"
-  , st_bg   = "#020202"
-  , st_fg   = "#a9a6af"
-  }
+    { st_font = "xft:sans-72"
+    , st_bg   = "#020202"
+    , st_fg   = "#a9a6af"
+    }
 
 myColor color _ isFg = return $
     if isFg

@@ -62,22 +62,22 @@ myMouse =
     ]
 
 myKeys =
-    -- Layout
-    [ ("M-\\", sendMessage $ Toggle REFLECTX)
+    [ -- Layout
+      ("M-\\", sendMessage $ Toggle REFLECTX)
     , ("M-S-\\", sendMessage $ Toggle REFLECTY)
     , ("M-S--", sendMessage $ IncMasterCols 1)
     , ("M-S-=", sendMessage $ IncMasterCols (-1))
     , ("M-C--", sendMessage $ IncMasterRows 1)
     , ("M-C-=", sendMessage $ IncMasterRows (-1))
     , ("M-t", toggleFloat)
-    -- Dynamic workspaces
+      -- Dynamic workspaces
     , ("M-; n", addWorkspacePrompt myXPConfig)
     , ("M-; r", renameWorkspace myXPConfig)
     , ("M-; k", killAll >> removeWorkspace >> createOrGoto "dashboard")
-    -- Screen navigation
+      -- Screen navigation
     , ("M-S-j", screenGo MD.D False >> bringMouse)
     , ("M-S-k", screenGo MD.U False >> bringMouse)
-    -- Workspace navigation
+      -- Workspace navigation
     , ("M-<Tab>", toggleWS' ["NSP"])
     , ("M-]", moveTo Next nonEmptyWSNoNSP)
     , ("M-[", moveTo Prev nonEmptyWSNoNSP)
@@ -85,7 +85,7 @@ myKeys =
     , ("M-S-[", shiftTo Prev nonEmptyWSNoNSP >> moveTo Prev nonEmptyWSNoNSP)
     , ("M-s", selectWS)
     , ("M-S-s", takeToWS)
-    -- Window navigation
+      -- Window navigation
     , ("M-k", BW.focusUp)
     , ("M-j", BW.focusDown)
     , ("M-m", BW.focusMaster)
@@ -95,19 +95,19 @@ myKeys =
     , ("M-S-u", clearUrgents)
     , ("M-b", BW.markBoring)
     , ("M-S-b", BW.clearBoring)
-    -- Window tagging
+      -- Window tagging
     , ("M-q", tagWindow)
     , ("M-S-q", bringTagged)
-    -- PIP window
+      -- PIP window
     , ("M-x", togglePIPWindow)
     , ("M-S-x", makePIPWindow)
-    -- Sticky global window
+      -- Sticky global window
     , ("M-z", toggleGlobal)
-    -- Grid select
+      -- Grid select
     , ("<XF86LaunchB>", spawnApp)
     , ("<XF86LaunchA>", selectWindow)
     , ("S-<XF86LaunchA>", bringWindow)
-    -- Scratchpads
+      -- Scratchpads
     , ("M-`"                     , toggleScratch "scratchpad")
     , ("M-S-`"                   , resetSPWindows)
     , ("M-e"                     , toggleScratch "editor")
@@ -120,25 +120,25 @@ myKeys =
     , ("M-a d"                   , toggleScratch "dictionary")
     , ("M-a m"                   , toggleScratch "music")
     , ("M-a w"                   , toggleScratch "wifi")
-    -- Prompt
+      -- Prompt
     , ("M-p", programLauncher)
     , ("M-S-p", shellPrompt myXPConfig)
     , ("M-S-8", passPrompt)
     , ("M-c", bigTextPrompt myXPConfig)
-    -- Lock screen
+      -- Lock screen
     , ("M-<Esc>", spawn "lock" )
-    -- Reload XMonad
+      -- Reload XMonad
     , ("M-S-<Esc>", spawn "xmonad --recompile; xmonad --restart")
-    -- Display management
+      -- Display management
     , ("M-<F1>", spawn "autorandr --load mobile")
     , ("M-<F2>", spawn "autorandr --change --default mobile")
     , ("M-<F3>", spawn "xinvert")
-    -- Screenshot
+      -- Screenshot
     , ("M-<F11>", spawn "scrot -e 'mv $f ~/pictures/screenshots/'")
     , ("M-S-<F11>", spawn "scrot --multidisp -e 'mv $f ~/pictures/screenshots/'")
     , ("M-<F12>", spawn "scrot --focused -e 'mv $f ~/pictures/screenshots/'")
     , ("M-S-<F12>", spawn "sleep 0.3; scrot --select -e 'mv $f ~/pictures/screenshots/'")
-    -- Notifications
+      -- Notifications
     , ("M-8", spawn "notify-send -i network -t 4000 Network \"$(ip -4 -o addr show | cut -d' ' -f2,7)\"")
     , ("M-9", spawn "notify-send -i battery -t 2000 Battery \"$(acpi)\"")
     , ("M-0", spawn "notify-send -i dialog-information -t 2000 Date \"$(date '+%F%nW%V %A%n%T')\"")
@@ -193,22 +193,22 @@ myKeys =
 
     -- Reset scratchpads
     resetSPWindows =
-      forM_ myScratchpads $ \scratch ->
-      withWindowSet $ \s ->
-      do
-        sPWindows <- filterM (runQuery $ NS.query scratch) (W.allWindows s)
-        wTrans <- forM sPWindows . runQuery $ NS.hook scratch
-        windows . appEndo . mconcat $ wTrans
+        forM_ myScratchpads $ \scratch ->
+        withWindowSet $ \s ->
+        do
+            sPWindows <- filterM (runQuery $ NS.query scratch) (W.allWindows s)
+            wTrans    <- forM sPWindows . runQuery $ NS.hook scratch
+            windows . appEndo . mconcat $ wTrans
 
     -- Window tagging
     tagWindow   = withFocused (addTag "tagged")
-    bringTagged = withTaggedGlobalP "tagged" shiftHere >>
-      withTaggedGlobal "tagged" (delTag "tagged")
+    bringTagged = withTaggedGlobalP "tagged" shiftHere
+               >> withTaggedGlobal "tagged" (delTag "tagged")
 
     -- Big text
     bigTextPrompt :: XPConfig -> X()
     bigTextPrompt c = inputPrompt c "Text" ?+ \input ->
-      flashText myTextConfig 5 input
+                      flashText myTextConfig 5 input
 
     -- Colors
     blue   = myColor "#25629f"
@@ -222,8 +222,8 @@ toggleGlobal :: X ()
 toggleGlobal = do
     ws <- wsContainingCopies
     if null ws
-        then windows copyToAll
-        else killAllOtherCopies
+    then windows copyToAll
+    else killAllOtherCopies
 
 -- Window manipulation
 moveToSide :: Side -> X ()

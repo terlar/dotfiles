@@ -27,5 +27,5 @@ myConfig = defaultConfig
     `additionalMouseBindings` myMouse
 
 main = xmonad
-  $ withUrgencyHook myUrgencyHook
-  $ myConfig
+     $ withUrgencyHook myUrgencyHook
+     $ myConfig

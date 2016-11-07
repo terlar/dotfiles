@@ -22,42 +22,46 @@ myTopics =
     , "NSP"
     ]
 
+myTopicDirs = M.fromList
+    [ ( "dashboard", "")
+    , ( "note"     , "notes")
+    , ( "code"     , "src")
+    , ( "web"      , "downloads")
+    , ( "music"    , "music")
+    , ( "video"    , "video")
+    , ( "pdf"      , "books")
+    , ( "file"     , "")
+    , ( "speak"    , "")
+    , ( "doc"      , "documents")
+    ]
+
+myTopicActions = M.fromList
+    [ -- Editor
+      ( "note", spawnEditor)
+      -- Terminal
+    , ( "code", spawnTerm)
+      -- Web browser
+    , ( "web", spawn myBrowser)
+      -- Music player
+    , ( "music", runInTerm "-t music" "ncmpcpp")
+      -- Video selection prompt
+    , ( "video", videoSelect)
+      -- PDF selection prompt
+    , ( "pdf", spawn myPDFViewer)
+      -- File manager
+    , ( "file", spawnFile)
+      -- IRC and E-mail
+    , ( "speak", runInTerm "-t chat" "chat" >> runInTerm "-t mail" "mutt")
+      -- Documents
+    , ( "doc", spawn "libreoffice")
+    ]
+
 myTopicConfig :: TopicConfig
 myTopicConfig = def
-    { topicDirs = M.fromList
-        [ ( "dashboard", "")
-        , ( "note"     , "notes")
-        , ( "code"     , "src")
-        , ( "web"      , "downloads")
-        , ( "music"    , "music")
-        , ( "video"    , "video")
-        , ( "pdf"      , "books")
-        , ( "file"     , "")
-        , ( "speak"    , "")
-        , ( "doc"      , "documents")
-        ]
+    { topicDirs = myTopicDirs
     , defaultTopicAction = const spawnTerm
     , defaultTopic = "dashboard"
-    , topicActions = M.fromList
-        -- Editor
-        [ ( "note", spawnEditor)
-        -- Terminal
-        , ( "code", spawnTerm)
-        -- Web browser
-        , ( "web", spawn myBrowser)
-        -- Music player
-        , ( "music", runInTerm "-t music" "ncmpcpp")
-        -- Video selection prompt
-        , ( "video", videoSelect)
-        -- PDF selection prompt
-        , ( "pdf", spawn myPDFViewer)
-        -- File manager
-        , ( "file", spawnFile)
-        -- IRC and E-mail
-        , ( "speak", runInTerm "-t chat" "chat" >> runInTerm "-t mail" "mutt")
-        -- Documents
-        , ( "doc", spawn "libreoffice")
-        ]
+    , topicActions = myTopicActions
     }
 
 spawnEditorIn :: Dir -> X ()
@@ -97,8 +101,8 @@ createOrGoto :: WorkspaceId -> X ()
 createOrGoto w = do
     exists <- workspaceExist w
     if not exists
-        then createGoto w
-        else goto w
+    then createGoto w
+    else goto w
 
 newWorkspace :: WorkspaceId -> X ()
 newWorkspace w = do

@@ -26,7 +26,7 @@ makePIPWindow = withFocused $ \win -> do
 resetPIPWindow :: Window -> X ()
 resetPIPWindow win = do
     mh <- asks (manageHook . config)
-    g <- appEndo <$> userCodeDef (Endo id) (runQuery mh win)
+    g  <- appEndo <$> userCodeDef (Endo id) (runQuery mh win)
     windows g
 
 tagValue :: Query String
@@ -37,13 +37,13 @@ togglePIPWindow = pipWindow togglePIPWindow'
 
 togglePIPWindow' :: Window -> X ()
 togglePIPWindow' win = do
-  wm_state <- getAtom "_NET_WM_STATE"
-  mini <- getAtom "_NET_WM_STATE_HIDDEN"
-  wstate <- fromMaybe [] `fmap` getProp32 wm_state win
-  if fromIntegral mini `elem` wstate then
-    showPIPWindow win
-  else
-    hidePIPWindow win
+    wm_state <- getAtom "_NET_WM_STATE"
+    mini     <- getAtom "_NET_WM_STATE_HIDDEN"
+    wstate   <- fromMaybe [] `fmap` getProp32 wm_state win
+
+    if fromIntegral mini `elem` wstate
+    then showPIPWindow win
+    else hidePIPWindow win
 
 hidePIPWindow :: Window -> X ()
 hidePIPWindow w = do
@@ -52,15 +52,14 @@ hidePIPWindow w = do
 
 showPIPWindow :: Window -> X ()
 showPIPWindow w = do
-  sendMessage (RestoreMinimizedWin w)
-  focus w >> windows W.shiftMaster
+    sendMessage (RestoreMinimizedWin w)
+    focus w >> windows W.shiftMaster
 
 pipWindow :: (Window -> X ()) -> X ()
 pipWindow = withTaggedGlobal "pip"
 
-focusUpPIP :: X ()
-focusUpPIP   = focusUpTagged "pip"
-focusDownPIP :: X ()
+focusUpPIP, focusDownPIP :: X ()
+focusUpPIP = focusUpTagged "pip"
 focusDownPIP = focusDownTagged "pip"
 
 pipManageHook :: Query (Endo WindowSet)

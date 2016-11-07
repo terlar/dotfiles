@@ -13,23 +13,26 @@ infixr 0 ~>
 (~>) :: a -> b -> (a, b)
 (~>) = (,)
 
--- Query operators
+-- Case insensitive haystack includes needle?
+q ~? x = fmap (x `isInfixOfI`) q
+
 isInfixOfI :: String -> String -> Bool
 needle `isInfixOfI` haystack = upper needle `isInfixOf` upper haystack
+
 upper :: String -> String
 upper = map toUpper
 
-q ~? x = fmap (x `isInfixOfI`) q -- haystack includes needle?
-
-videoSelect :: X ()
-videoSelect = spawnSelect myVideoPlayer "Select a video" "$XDG_VIDEOS_DIR"
-
-pictureSelect :: X ()
-pictureSelect = spawnSelect myImageViewer "Select a picture" "$XDG_PICTURES_DIR"
-
+-- Spawn functions
 spawnSelect :: String -> String -> String -> X ()
-spawnSelect cmd title path = spawn $
-    cmd ++ " \"$(zenity --file-selection --title='" ++ title ++ "' --filename=" ++ path ++ "/)\""
+spawnSelect cmd title path =
+    spawn $ cmd ++ " \"$(zenity\
+                   \ --file-selection\
+                   \ --title='" ++ title ++ "'\
+                   \ --filename=" ++ path ++ "/)\""
+
+videoSelect, pictureSelect :: X ()
+videoSelect   = spawnSelect myVideoPlayer "Select a video" "$XDG_VIDEOS_DIR"
+pictureSelect = spawnSelect myImageViewer "Select a picture" "$XDG_PICTURES_DIR"
 
 restartXMonad :: MonadIO m => m ()
 restartXMonad = spawn "xmonad --recompile && xmonad --restart"
@@ -38,4 +41,4 @@ programLauncher :: MonadIO m => m ()
 programLauncher = spawn $ "x=$(yeganesh -x -- " ++ dmenuConfig ++ ") && exec $x"
 
 passPrompt :: MonadIO m => m ()
-passPrompt = spawn $ "x=$(passmenu " ++ dmenuConfig ++ ") && exec $x"
+passPrompt = spawn $ "passmenu " ++ dmenuConfig

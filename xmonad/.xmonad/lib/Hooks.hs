@@ -47,56 +47,57 @@ import           Utils
 
 myLogHook :: X ()
 myLogHook =
-  dynamicLog <+>
-  fadeInactiveLogHook fadeAmount
+    dynamicLog <+>
+    fadeInactiveLogHook fadeAmount
   where
     fadeAmount = 0.9
 
 myManageHook :: ManageHook
 myManageHook = composeAll $
-  [ insertPosition Master Newer
-  , manageHook def
-  , pipManageHook
-  , namedScratchpadManageHook myScratchpads
-  , isDialog     --> doCenterFloat
-  , isFullscreen --> doF W.focusDown <+> doFullFloat
-  ] ++
-  [ appName =? "xfce4-notifyd"       --> doIgnore
-  , title   ~? "hangouts.google.com" --> doIgnore
-  ] ++
-  [ matchAny v --> doCenterFloat | v <- floatApps ]
+    [ insertPosition Master Newer
+    , manageHook def
+    , pipManageHook
+    , namedScratchpadManageHook myScratchpads
+    , isDialog     --> doCenterFloat
+    , isFullscreen --> doF W.focusDown <+> doFullFloat
+    ] ++
+    [ appName =? "xfce4-notifyd"       --> doIgnore
+    , title   ~? "hangouts.google.com" --> doIgnore
+    ] ++
+    [ matchAny v --> doCenterFloat | v <- floatApps ]
   where
     -- Floating apps
     floatApps =
-      [ "feh"
-      , "font-manager"
-      , "gcolor2"
-      , "gifview"
-      , "mpv"
-      , "sxiv"
-      , "xmessage"
-      , "zenity"
-      ]
+        [ "feh"
+        , "font-manager"
+        , "gcolor2"
+        , "gifview"
+        , "mpv"
+        , "sxiv"
+        , "xmessage"
+        , "zenity"
+        ]
 
 myScratchpads :: [NamedScratchpad]
 myScratchpads =
-  [ termNS    "scratchpad"  "~"            (customFloating smallRect)
-  , termAppNS "music"       "ncmpcpp"      (customFloating largeRect)
-  , appNS     "colorpicker" "gcolor2"       doCenterFloat
-  , appNS     "dictionary"  "goldendict"   (customFloating rightRect)
-  , pidginNS  "contacts"    "buddy_list"   (customFloating leftRect)
-  , pidginNS  "messages"    "conversation" (customFloating smallRect)
-  , appNS     "volume"      "pavucontrol"   doCenterFloat
-  , appNS     "wifi"        "wpa_gui"       doCenterFloat
-  , emacsNS   "editor"                     (customFloating largeRect)
-  ]
+    [ termNS    "scratchpad"  "~"            (customFloating smallRect)
+    , termAppNS "music"       "ncmpcpp"      (customFloating largeRect)
+    , appNS     "colorpicker" "gcolor2"       doCenterFloat
+    , appNS     "dictionary"  "goldendict"   (customFloating rightRect)
+    , pidginNS  "contacts"    "buddy_list"   (customFloating leftRect)
+    , pidginNS  "messages"    "conversation" (customFloating smallRect)
+    , appNS     "volume"      "pavucontrol"   doCenterFloat
+    , appNS     "wifi"        "wpa_gui"       doCenterFloat
+    , emacsNS   "editor"                     (customFloating largeRect)
+    ]
   where
     -- NS
-    appNS     n c = NS n c (findClass c)
-    termNS    n d = NS n (spawnTerm n d) (findRole n)
-    termAppNS n c = NS n (spawnTermApp n c) (findRole n)
-    pidginNS  n r = NS n "pidgin" (findClassRole "pidgin" r)
-    emacsNS   n   = NS n (spawnEmacs n) (findName n)
+    appNS      n c = NS n c (findClass c)
+    termNS     n d = NS n (spawnTerm n d) (findRole n)
+    termAppNS  n c = NS n (spawnTermApp n c) (findRole n)
+    pidginNS   n r = NS n "pidgin" (findClassRole "pidgin" r)
+    emacsNS    n   = NS n (spawnEmacs n) (findName n)
+    emacsAppNS n c = NS n (spawnEmacsApp n c) (findName n)
 
     -- Commands
     spawnEmacs    n   = "emacsclient -c -F '((name . \"" ++ n ++ "\"))'"
@@ -111,27 +112,27 @@ myScratchpads =
     findClassRole c r = className ~? c <&&> wmRole =? r
 
 myLayoutHook =
-  smartBorders $
-  minimize $
-  boringWindows $
+    smartBorders $
+    minimize $
+    boringWindows $
 
-  -- Mirror the layout in the X and Y axis.
-  mkToggle (single REFLECTX) $
-  mkToggle (single REFLECTY) $
+    -- Mirror the layout in the X and Y axis.
+    mkToggle (single REFLECTX) $
+    mkToggle (single REFLECTY) $
 
-  onWorkspace "web" (tabs ||| Full ||| dualStack) $
-  onWorkspace "speak" (Full ||| tiled ||| dualStack ||| tabs) $
+    onWorkspace "web" (tabs ||| Full ||| dualStack) $
+    onWorkspace "speak" (Full ||| tiled ||| dualStack ||| tabs) $
 
-  tiled ||| grid ||| tabs ||| dualStack ||| accordionFull ||| magnifiercz' 1.4 triple ||| Full
+    tiled ||| grid ||| tabs ||| dualStack ||| accordionFull ||| magnifiercz' 1.4 triple ||| Full
   where
-    tiled = named "Tiled" (ResizableTall 1 delta (2/3) [])
-    triple = named "Triple" (limitWindows 3 tiled)
-    tabs = named "Tabbed" (tabbed shrinkText myTabConfig)
-    accordion = named "Folded" Accordion
+    tiled         = named "Tiled" (ResizableTall 1 delta (2/3) [])
+    triple        = named "Triple" (limitWindows 3 tiled)
+    tabs          = named "Tabbed" (tabbed shrinkText myTabConfig)
+    accordion     = named "Folded" Accordion
     accordionFull = named "Folded Full" (combineTwo (TwoPane delta (1/2)) Accordion Full)
-    dual = named "Dual" (TwoPane delta (2/3))
-    dualStack = named "Dual Stacked" (combineTwo (StackTile 1 delta (1/2)) Full Full)
-    grid = named "Grid" (GV.SplitGrid GV.L 2 3 (2/3) (16/10) (5/100))
+    dual          = named "Dual" (TwoPane delta (2/3))
+    dualStack     = named "Dual Stacked" (combineTwo (StackTile 1 delta (1/2)) Full Full)
+    grid          = named "Grid" (GV.SplitGrid GV.L 2 3 (2/3) (16/10) (5/100))
     delta = 3/100
 
 myEventHook :: Event -> X All
@@ -140,12 +141,11 @@ myEventHook = floatClickFocusHandler <+> handleTimerEvent
 -- Bring clicked floating window to the front
 floatClickFocusHandler :: Event -> X All
 floatClickFocusHandler ButtonEvent{ev_window = w} = withWindowSet $ \s ->
-  do
-    Control.Monad.when (isFloat w s) (focus w >> promote)
-
-    return (All True)
-    where
-      isFloat win set = M.member win $ W.floating set
+    do
+        Control.Monad.when (isFloat w s) (focus w >> promote)
+        return (All True)
+  where
+    isFloat win set = M.member win $ W.floating set
 floatClickFocusHandler _ = return (All True)
 
 -- Queries
@@ -168,10 +168,9 @@ rightRect  = W.RationalRect (2/3)  0      (1/3)   1
 data LibNotifyUrgencyHook = LibNotifyUrgencyHook deriving (Read, Show)
 
 instance UrgencyHook LibNotifyUrgencyHook where
-  urgencyHook LibNotifyUrgencyHook w = do
-    name     <- getName w
-    Just idx <- fmap (W.findTag w) $ gets windowset
-
-    safeSpawn "notify-send" [show name, "workspace " ++ idx]
+    urgencyHook LibNotifyUrgencyHook w = do
+        name     <- getName w
+        Just idx <- fmap (W.findTag w) $ gets windowset
+        safeSpawn "notify-send" [show name, "workspace " ++ idx]
 
 myUrgencyHook = LibNotifyUrgencyHook
