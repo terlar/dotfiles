@@ -1,2 +1,6 @@
+# Artifacts
+.ts/
+
+# Auto-generated
 termite/.config/termite/config
 qt/.config/Trolltech.conf
