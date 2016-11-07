@@ -1,13 +1,17 @@
 import           XMonad
+import           XMonad.Util.EZConfig      (additionalKeysP,
+                                            additionalMouseBindings,
+                                            checkKeymap)
+
+import           XMonad.Hooks.EwmhDesktops
 import           XMonad.Hooks.UrgencyHook
-import           XMonad.Util.EZConfig     (additionalKeysP,
-                                           additionalMouseBindings, checkKeymap)
 
 import           Config
-import           Hooks                    (myEventHook, myLayoutHook, myLogHook,
-                                           myManageHook, myUrgencyHook)
-import           Keys                     (myKeys, myMouse)
-import           Topics                   (myTopics)
+import           Hooks                     (myEventHook, myLayoutHook,
+                                            myLogHook, myManageHook,
+                                            myUrgencyHook)
+import           Keys                      (myKeys, myMouse)
+import           Topics                    (myTopics)
 
 myConfig = defaultConfig
     { modMask = myModMask
@@ -28,4 +32,5 @@ myConfig = defaultConfig
 
 main = xmonad
      $ withUrgencyHook myUrgencyHook
+     $ ewmh
      $ myConfig

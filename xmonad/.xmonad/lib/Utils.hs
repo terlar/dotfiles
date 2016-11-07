@@ -38,7 +38,7 @@ restartXMonad :: MonadIO m => m ()
 restartXMonad = spawn "xmonad --recompile && xmonad --restart"
 
 programLauncher :: MonadIO m => m ()
-programLauncher = spawn $ "x=$(yeganesh -x -- " ++ dmenuConfig ++ ") && exec $x"
+programLauncher = spawn "rofi -show run"
 
 passPrompt :: MonadIO m => m ()
-passPrompt = spawn $ "passmenu " ++ dmenuConfig
+passPrompt = spawn "autopass"

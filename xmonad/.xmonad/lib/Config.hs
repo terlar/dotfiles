@@ -37,15 +37,6 @@ myLLight         = "#2c3e50" -- Lowlight color
 myBorderColor    = "#bdc3c7" -- Border color
 myAttentionColor = "#ef5350" -- Attention color
 
-dmenuConfig :: String
-dmenuConfig =
-    [ ("-fn", myFont)
-    , ("-nf", myFGColor)
-    , ("-nb", myBGColor)
-    , ("-sf", myHLight)
-    , ("-sb", myLLight)
-    ] >>= \ (opt, val) -> (" " ++ opt ++ " '" ++ val ++ "'")
-
 -- XPConfig - Prompt fields
 myXPConfig :: XPConfig
 myXPConfig = def
