@@ -6,9 +6,6 @@ import           Data.Monoid
 import           Control.Monad
 
 import           XMonad
-import           XMonad.Prompt
-import           XMonad.Prompt.Input
-import           XMonad.Prompt.Shell
 import qualified XMonad.StackSet                    as W
 
 import           XMonad.Actions.CopyWindow          (copyToAll,
@@ -19,8 +16,6 @@ import           XMonad.Actions.DynamicWorkspaces
 import           XMonad.Actions.FloatKeys
 import           XMonad.Actions.GridSelect
 import           XMonad.Actions.Navigation2D
-import           XMonad.Actions.Search
-import           XMonad.Actions.ShowText
 import           XMonad.Actions.TagWindows
 import           XMonad.Actions.Warp
 import           XMonad.Actions.WindowBringer       (bringWindow)
@@ -122,9 +117,8 @@ myKeys =
     , ("M-a w"                   , toggleScratch "wifi")
       -- Prompt
     , ("M-p", programLauncher)
-    , ("M-S-p", shellPrompt myXPConfig)
     , ("M-S-8", passPrompt)
-    , ("M-c", bigTextPrompt myXPConfig)
+    , ("M-/", searchPrompt)
       -- Lock screen
     , ("M-<Esc>", spawn "lock" )
       -- Reload XMonad
@@ -145,7 +139,6 @@ myKeys =
     ]
     ++ [("M-g " ++ k, createOrGoto t) | (k,t) <- spaces]
     ++ [("M-r " ++ k, f) | (k,f) <- utils]
-    ++ [("M-/ " ++ key, promptSearch myXPConfig engine) | (key, engine) <- searches]
     ++ screenKeys ++ windowKeys ++ mediaKeys
   where
     spaces =
@@ -166,14 +159,6 @@ myKeys =
         , ("e", spawnEditor)
         , ("w", spawn myBrowser)
         , ("f", spawnFile)
-        ]
-
-    searches =
-        [ ("g", google)
-        , ("w", wikipedia)
-        , ("d", dictionary)
-        , ("t", thesaurus)
-        , ("y", youtube)
         ]
 
     -- Work space selection
@@ -204,11 +189,6 @@ myKeys =
     tagWindow   = withFocused (addTag "tagged")
     bringTagged = withTaggedGlobalP "tagged" shiftHere
                >> withTaggedGlobal "tagged" (delTag "tagged")
-
-    -- Big text
-    bigTextPrompt :: XPConfig -> X()
-    bigTextPrompt c = inputPrompt c "Text" ?+ \input ->
-                      flashText myTextConfig 5 input
 
     -- Colors
     blue   = myColor "#25629f"

@@ -42,3 +42,6 @@ programLauncher = spawn "rofi -show run"
 
 passPrompt :: MonadIO m => m ()
 passPrompt = spawn "autopass"
+
+searchPrompt :: MonadIO m => m ()
+searchPrompt = spawn "autopass"
