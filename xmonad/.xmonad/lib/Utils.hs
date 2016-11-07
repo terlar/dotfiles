@@ -44,4 +44,4 @@ passPrompt :: MonadIO m => m ()
 passPrompt = spawn "autopass"
 
 searchPrompt :: MonadIO m => m ()
-searchPrompt = spawn "autopass"
+searchPrompt = spawn "rofi-surfraw"
