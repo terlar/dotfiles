@@ -84,8 +84,8 @@ myScratchpads =
     , termAppNS "music"       "ncmpcpp"      (customFloating largeRect)
     , appNS     "colorpicker" "gcolor2"       doCenterFloat
     , appNS     "dictionary"  "goldendict"   (customFloating rightRect)
-    , pidginNS  "contacts"    "buddy_list"   (customFloating leftRect)
-    , pidginNS  "messages"    "conversation" (customFloating smallRect)
+    , pidginNS  "contacts"    "buddy_list"   (customFloating sidebar)
+    , pidginNS  "messages"    "conversation"  doCenterFloat
     , appNS     "volume"      "pavucontrol"   doCenterFloat
     , appNS     "wifi"        "wpa_gui"       doCenterFloat
     , emacsNS   "editor"                     (customFloating largeRect)
@@ -164,6 +164,7 @@ topRect    = W.RationalRect 0      0      1       (1/3)
 bottomRect = W.RationalRect 0      (2/3)  1       (1/3)
 leftRect   = W.RationalRect 0      0      (1/3)   1
 rightRect  = W.RationalRect (2/3)  0      (1/3)   1
+sidebar    = W.RationalRect 0      0      (1/10)  1
 
 data LibNotifyUrgencyHook = LibNotifyUrgencyHook deriving (Read, Show)
 
