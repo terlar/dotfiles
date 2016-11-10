@@ -11,6 +11,10 @@ color = dark green
 path = ~/.local/share/khal/calendars/holidays
 color = dark red
 
+[[team]]
+path = ~/.local/share/khal/calendars/team
+color = dark blue
+
 [[work]]
 path = ~/.local/share/khal/calendars/work
 color = dark blue
