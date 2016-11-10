@@ -3,7 +3,7 @@ Description=PulseAudio Chromecast support
 After=pulseaudio.service
 
 [Service]
-ExecStart=/usr/bin/pulseaudio-dlna
+ExecStart=/usr/bin/pulseaudio-dlna --cover-mode=application --auto-reconnect
 
 [Install]
 WantedBy=default.target
