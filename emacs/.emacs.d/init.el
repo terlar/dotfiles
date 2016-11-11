@@ -1174,75 +1174,88 @@ KEY must be given in `kbd' notation."
   (add-hook 'go-mode-hook 'my-go-mode-hook))
 
 (use-package haskell-mode
-  :mode "\\.l?hs\\'"
+  :defer t
   :bind
   (""
-   :map haskell-mode-map
-   ("C-c c c" . haskell-compile)
-   ("<f5>"    . haskell-compile))
+    :map haskell-mode-map
+    ("C-c c c" . haskell-compile)
+    ("<f5>"    . haskell-compile))
+  :diminish interactive-haskell-mode
+  :preface
+  (defun haskell-setup ()
+    "Setup Haskell mode."
+    (setq indent-tabs-mode nil
+      tab-width 4
+      haskell-indent-spaces 4
+      haskell-indentation-layout-offset 4
+      haskell-indentation-left-offset 4))
   :init
-  (add-hook 'haskell-mode-hook
-            (lambda ()
-              (haskell-indentation-mode)
-              (setq indent-tabs-mode nil)))
-  (remove-hook 'haskell-mode-hook #'interactive-haskell-mode)
+  (add-hook 'haskell-mode-hook 'haskell-setup)
   :config
-  (use-package shm
+  ;; Use interpreter "stack ghci"
+  (setq haskell-process-type 'stack-ghci)
+
+  (setq haskell-notify-p t
+    haskell-stylish-on-save t
+    haskell-tags-on-save nil
+    haskell-interactive-mode-include-file-name nil
+    haskell-interactive-mode-eval-mode 'haskell-mode
+    haskell-process-auto-import-loaded-modules t
+    haskell-process-show-debug-tips nil
+    haskell-process-suggest-haskell-docs-imports t
+    haskell-process-suggest-hoogle-imports nil
+    haskell-process-suggest-remove-import-lines t
+    haskell-process-use-presentation-mode t)
+
+  (remove-hook 'haskell-mode-hook 'interactive-haskell-mode)
+
+  (use-package hi2
+    :diminish (hi2-mode . " ⇥")
     :init
-    (add-hook 'haskell-mode-hook #'structured-haskell-mode)
-    (add-hook 'haskell-interactive-mode-hook #'structured-haskell-repl-mode)
-    :config
-    (setq shm-use-hdevtools t
-          shm-use-presentation-mode t
-          shm-auto-insert-skeletons t
-          shm-auto-insert-bangs t)
-    (set-face-background 'shm-current-face "#fafafa")
-    (set-face-background 'shm-quarantine-face "#fff0f0")
-    :commands
-    structured-haskell-mode
-    structured-haskell-repl-mode)
-  (use-package hindent
-    :defer t
-    :init
-    (add-hook 'haskell-mode-hook #'hindent-mode))
-  (use-package intero
-    :init
-    (add-hook 'haskell-mode-hook #'intero-mode)
-    :commands intero-mode)
-  (use-package flycheck-haskell
-    :commands flycheck-haskell-setup)
+    (defvaralias 'hi2-ifte-offset 'haskell-indentation-left-offset)
+    (defvaralias 'hi2-layout-offset 'haskell-indentation-layout-offset)
+    (defvaralias 'hi2-left-offset 'haskell-indentation-left-offset)
+
+    (setq hi2-show-indentations nil)
+    (add-hook 'haskell-mode-hook 'turn-on-hi2))
+
   (use-package company-ghci
     :init
     (add-to-list 'company-backends 'company-ghci))
 
-  (setq haskell-notify-p t
-        haskell-stylish-on-save t
-        haskell-tags-on-save nil
-        haskell-interactive-mode-include-file-name nil
-        haskell-interactive-mode-eval-mode 'haskell-mode
-        haskell-process-suggest-remove-import-lines t
-        haskell-process-auto-import-loaded-modules t
-        haskell-process-log t
-        haskell-process-reload-with-fbytecode nil
-        haskell-process-use-presentation-mode t
-        haskell-process-show-debug-tips nil
-        haskell-process-suggest-hoogle-imports nil
-        haskell-process-suggest-haskell-docs-imports t
-        haskell-process-type 'stack-ghci
-        haskell-process-args-stack-ghci '("--ghc-options=-ferror-spans" "--with-ghc=intero"))
 
-  (setq haskell-complete-module-preferred
-        '("Data.ByteString"
-          "Data.ByteString.Lazy"
-          "Data.Conduit"
-          "Data.Function"
-          "Data.List"
-          "Data.Map"
-          "Data.Maybe"
-          "Data.Monoid"
-          "Data.Text"
-          "Data.Ord"))
-  :diminish interactive-haskell-mode)
+  (use-package intero
+    :diminish (intero-mode . " λ")
+    :init
+    (add-hook 'haskell-mode-hook 'intero-mode)
+    :config
+    (setq haskell-process-args-stack-ghci '("--ghc-options=-ferror-spans" "--with-ghc=intero")))
+
+  (use-package shm
+    :preface
+    (defun haskell-shm-setup ()
+      "Setup SHM mode."
+      (defvaralias 'shm-indent-spaces 'haskell-indentation-layout-offset)
+      (structured-haskell-mode)
+      (hl-line-mode -1))
+    :init
+    (add-hook 'haskell-mode-hook 'haskell-shm-setup)
+    (add-hook 'haskell-interactive-mode-hook 'structured-haskell-repl-mode)
+    :config
+    (setq shm-auto-insert-bangs t
+      shm-auto-insert-skeletons t
+      shm-indent-point-after-adding-where-clause t
+      shm-use-hdevtools t
+      shm-use-presentation-mode t)
+    (set-face-background 'shm-current-face (face-attribute 'hl-line :background))
+    (set-face-background 'shm-quarantine-face "#fff0f0")
+    :commands
+    structured-haskell-mode
+    structured-haskell-repl-mode)
+
+  (use-package flycheck-haskell
+    :commands flycheck-haskell-setup))
+
 
 (use-package js2-mode
   :mode "\\.js\\'"
