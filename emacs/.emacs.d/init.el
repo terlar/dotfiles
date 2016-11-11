@@ -703,6 +703,11 @@ KEY must be given in `kbd' notation."
     ("C-M-=" . default-text-scale-increase)
     ("C-M--" . default-text-scale-decrease)))
 
+(use-package deft ; Notes managing
+  :config
+  (setq deft-directory "~/notes")
+  (setq deft-extensions '("txt" "tex" "org" "md" "rst")))
+
 (use-package diff-hl
   :init
   (global-diff-hl-mode)
