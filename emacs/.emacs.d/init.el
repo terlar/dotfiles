@@ -305,7 +305,8 @@ KEY must be given in `kbd' notation."
 (use-package autorevert ; Auto-revert buffers for changed files
   :diminish (auto-revert-mode . " ⎌")
   :defer t
-  :disabled t
+  :init
+  (global-auto-revert-mode +1)
   :config
   (setq auto-revert-verbose nil))
 
@@ -512,7 +513,6 @@ KEY must be given in `kbd' notation."
   (setq save-place-forget-unreadable-files nil))
 
 (use-package smart-tabs-mode ; Tabs for indentation, spaces for alignment
-  :disabled t
   :init
   (smart-tabs-insinuate 'c++ 'c 'java 'javascript 'python 'ruby)
   :commands smart-tabs-insinuate)
@@ -615,7 +615,6 @@ KEY must be given in `kbd' notation."
   :defer t
   :bind
   ( :map company-mode-map
-    ("TAB"   . company-indent-or-complete)
     ("<tab>" . company-indent-or-complete)
     :map company-active-map
     ("C-e"       . company-complete-selection)
@@ -698,10 +697,22 @@ KEY must be given in `kbd' notation."
     ([remap mark-sexp]      . easy-mark)))
 
 (use-package editorconfig
+  :diminish (editorconfig-mode . " ⚙")
   :init
-  (add-hook 'prog-mode-hook (editorconfig-mode))
-  (add-hook 'text-mode-hook (editorconfig-mode))
-  :diminish (editorconfig-mode . " ⚙"))
+  (add-hook 'prog-mode-hook (editorconfig-mode 1))
+  (add-hook 'text-mode-hook (editorconfig-mode 1))
+  :config
+  (add-hook 'editorconfig-custom-hooks
+    (lambda (props)
+      "Use ws-butler mode instead of delete-trailing-whitespace."
+      (if (equal (gethash 'trim_trailing_whitespace props) "true")
+        (progn
+          (setq write-file-functions
+            (delete
+              'delete-trailing-whitespace
+              write-file-functions))
+          (ws-butler-mode 1))
+        (ws-butler-mode -1)))))
 
 (use-package evil ; VIM-behavior
   :defer t
@@ -764,9 +775,9 @@ KEY must be given in `kbd' notation."
     flycheck-previous-error))
 
 (use-package super-save ; Save buffers when focus is lost
+  :diminish super-save-mode
   :init
-  (super-save-mode 1)
-  :diminish super-save-mode)
+  (super-save-mode +1))
 
 (use-package git-messenger ; Git commit pop-up
   :bind
@@ -922,10 +933,10 @@ KEY must be given in `kbd' notation."
     (add-to-list 'company-backends 'company-restclient)))
 
 (use-package page-break-lines ; Display page breaks as a horizontal line
+  :diminish page-break-lines-mode
   :defer t
   :init
-  (global-page-break-lines-mode)
-  :diminish page-break-lines-mode)
+  (global-page-break-lines-mode))
 
 (use-package persp-mode ; Workspaces with buffer isolation
   :ensure nil
@@ -1090,6 +1101,10 @@ KEY must be given in `kbd' notation."
 (use-package writeroom-mode ; Distraction-free editing
   :bind
   ("C-c t r" . writeroom-mode))
+
+(use-package ws-butler ; Trim trailing whitespace
+  :init
+  (ws-butler-global-mode +1))
 
 (use-package zoom-window ; Temporary one window
   :bind
