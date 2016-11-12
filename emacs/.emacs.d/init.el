@@ -62,9 +62,10 @@
 ;;; Settings
 
 ;; Encoding
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(set-selection-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
-(setq coding-system-for-read 'utf-8)
-(setq coding-system-for-write 'utf-8)
 
 ;; Reduce noise
 (setq ad-redefinition-action 'accept)
@@ -85,13 +86,6 @@
 (setq create-lockfiles nil)
 (setq find-file-visit-truename t)
 (setq load-prefer-newer t)
-
-(defun save-all ()
-  "Save all files when focus is lost."
-  (interactive)
-  (save-some-buffers t))
-
-(add-hook 'focus-out-hook 'save-all)
 
 ;;; Appearance
 (when (fboundp 'menu-bar-mode) (menu-bar-mode -1))
@@ -223,9 +217,9 @@ KEY must be given in `kbd' notation."
   "Takes ARG and REGION and passes to:
 `kill-region' if the region is active, otherwise `backward-kill-word'."
   (interactive
-   (list (prefix-numeric-value current-prefix-arg) (use-region-p)))
+    (list (prefix-numeric-value current-prefix-arg) (use-region-p)))
   (if region
-      (kill-region (region-beginning) (region-end))
+    (kill-region (region-beginning) (region-end))
     (backward-kill-word arg)))
 
 (bind-key "C-w" 'kill-region-or-backward-kill-word)
@@ -249,33 +243,6 @@ KEY must be given in `kbd' notation."
 
 (bind-key "C-=" 'toggle-tab-width-setting)
 (bind-key "C-+" 'toggle-indent-mode-setting)
-
-;; M-
-(bind-key "M-W" 'mark-word)
-
-(defun mark-line ()
-  "Mark the current line."
-  (interactive)
-  (beginning-of-line)
-  (let ((here (point)))
-    (end-of-line)
-    (set-mark (point))
-    (goto-char here)))
-
-(bind-key "M-L" 'mark-line)
-
-(defun mark-sentence ()
-  "Mark the current sentence."
-  (interactive)
-  (backward-sentence)
-  (mark-end-of-sentence 1))
-
-(bind-key "M-S" 'mark-sentence)
-(bind-key "M-X" 'mark-sexp)
-(bind-key "M-D" 'mark-defun)
-
-(bind-key "M-g c" 'goto-char)
-(bind-key "M-g l" 'goto-line)
 
 ;; C-c
 (bind-key "C-c <tab>" 'ff-find-other-file) ; Open alternate file
@@ -337,7 +304,8 @@ KEY must be given in `kbd' notation."
 
 (use-package autorevert ; Auto-revert buffers for changed files
   :diminish (auto-revert-mode . " ⎌")
-  :ensure nil
+  :defer t
+  :disabled t
   :config
   (setq auto-revert-verbose nil))
 
@@ -408,6 +376,11 @@ KEY must be given in `kbd' notation."
     ("d" . ediff-copy-both-to-C)
     ("j" . ediff-next-difference)
     ("k" . ediff-previous-difference))
+  :init
+  (setq ediff-window-setup-function 'ediff-setup-windows-plain)
+  (setq ediff-split-window-function 'split-window-horizontally)
+  (setq ediff-merge-split-window-function 'split-window-horizontally)
+  (add-hook 'ediff-quit-hook 'winner-undo)
   :preface
   (defun ediff-copy-both-to-C ()
     (interactive)
@@ -415,11 +388,6 @@ KEY must be given in `kbd' notation."
       (concat
         (ediff-get-region-contents ediff-current-difference 'A ediff-control-buffer)
         (ediff-get-region-contents ediff-current-difference 'B ediff-control-buffer))))
-  :init
-  (setq ediff-window-setup-function 'ediff-setup-windows-plain)
-  (setq ediff-split-window-function 'split-window-horizontally)
-  (setq ediff-merge-split-window-function 'split-window-horizontally)
-  (add-hook 'ediff-quit-hook 'winner-undo)
   :commands
   ediff-copy-diff
   ediff-get-region-contents
@@ -431,8 +399,7 @@ KEY must be given in `kbd' notation."
   :init
   (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
   (add-hook 'eval-expression-minibuffer-setup-hook 'eldoc-mode)
-  (add-hook 'lisp-interaction-mode-hook 'eldoc-mode)
-  (add-hook 'python-mode-hook 'eldoc-mode))
+  (add-hook 'lisp-interaction-mode-hook 'eldoc-mode))
 
 (use-package electric
   :defer t
@@ -482,15 +449,15 @@ KEY must be given in `kbd' notation."
   ([remap dabbrev-expand] . hippie-expand)
   :config
   (setq hippie-expand-try-functions-list
-        '(try-expand-dabbrev
-          try-expand-dabbrev-all-buffers
-          try-expand-dabbrev-from-kill
-          try-complete-file-name-partially
-          try-complete-file-name
-          try-expand-all-abbrevs
-          try-expand-list
-          try-complete-lisp-symbol-partially
-          try-complete-lisp-symbol)))
+    '(try-expand-dabbrev
+       try-expand-dabbrev-all-buffers
+       try-expand-dabbrev-from-kill
+       try-complete-file-name-partially
+       try-complete-file-name
+       try-expand-all-abbrevs
+       try-expand-list
+       try-complete-lisp-symbol-partially
+       try-complete-lisp-symbol)))
 
 (use-package hl-line ; Highlight current line
   :defer t
@@ -513,7 +480,7 @@ KEY must be given in `kbd' notation."
 (use-package recentf
   :defer t
   :init
-  (setq recentf-save-file (concat my-cache-directory "recentf"))
+  (defvar recentf-save-file (concat my-cache-directory "recentf"))
   (recentf-mode)
   :config
   (setq recentf-auto-cleanup 300)
@@ -545,8 +512,9 @@ KEY must be given in `kbd' notation."
   (setq save-place-forget-unreadable-files nil))
 
 (use-package smart-tabs-mode ; Tabs for indentation, spaces for alignment
+  :disabled t
   :init
-  (smart-tabs-insinuate 'c++ 'c 'java 'javascript 'python)
+  (smart-tabs-insinuate 'c++ 'c 'java 'javascript 'python 'ruby)
   :commands smart-tabs-insinuate)
 
 (use-package subword ; Recognize camel and snake case
@@ -564,11 +532,13 @@ KEY must be given in `kbd' notation."
   ("C-c a T" . ansi-term))
 
 (use-package whitespace
-  :diminish (whitespace-mode)
+  :diminish (whitespace-mode . " ␠")
+  :defer t
   :bind
   ("C-c t w" . whitespace-mode)
   :config
-  (setq whitespace-line-column 100))
+  (setq whitespace-line-column 100)
+  (setq whitespace-style '(face spaces tabs trailing empty space-mark tab-mark)))
 
 (use-package windmove ; Move between windows
   :bind
@@ -585,13 +555,10 @@ KEY must be given in `kbd' notation."
   (winner-mode))
 
 ;;; Local packages
-(use-package ibus
-  :if (eq window-system 'x)
+(use-package raml-mode
+  :defer t
   :ensure nil
-  :load-path "vendor/ibus/"
-  :init
-  (ibus-mode-on)
-  :commands ibus-mode-on)
+  :load-path "vendor/raml-mode/")
 
 (use-package show-tab-width-mode
   :ensure nil
@@ -659,8 +626,9 @@ KEY must be given in `kbd' notation."
     ("<backtab>" . company-select-previous)
     ("RET"       . nil)
     ("<return>"  . nil)
-    ("ESC"       . company-abort)
     ("<escape>"  . company-abort))
+  :init
+  (global-company-mode)
   :preface
   (defun company-indent-or-complete ()
     "Try to indent before trying to complete."
@@ -668,8 +636,6 @@ KEY must be given in `kbd' notation."
     (if (looking-at "\\_>")
       (company-complete-common-or-cycle)
       (indent-according-to-mode)))
-  :init
-  (global-company-mode)
   :config
   (use-package company-emoji ;; Emoji-word completion
     :config
@@ -708,12 +674,12 @@ KEY must be given in `kbd' notation."
   (setq deft-directory "~/notes")
   (setq deft-extensions '("txt" "tex" "org" "md" "rst")))
 
-(use-package diff-hl
+(use-package diff-hl ; Display diff changes in fringe
   :init
   (global-diff-hl-mode)
   (add-hook 'dired-mode-hook 'diff-hl-dired-mode))
 
-(use-package dired+
+(use-package dired+ ; Dired enhancements
   :defer 1
   :init
   (diredp-toggle-find-file-reuse-dir 1)
@@ -726,10 +692,10 @@ KEY must be given in `kbd' notation."
   :bind
   ("C-c t d" . dired-toggle))
 
-(use-package easy-kill
+(use-package easy-kill ; Copy and select things
   :bind
-  (([remap kill-ring-save] . easy-kill)
-   ([remap mark-sexp]      . easy-mark)))
+  ( ([remap kill-ring-save] . easy-kill)
+    ([remap mark-sexp]      . easy-mark)))
 
 (use-package editorconfig
   :init
@@ -741,87 +707,97 @@ KEY must be given in `kbd' notation."
   :defer t
   :bind
   ( :map evil-normal-state-map
-    ("<tab>" . next-buffer)
+    ("<tab>"     . next-buffer)
     ("<backtab>" . previous-buffer))
   :init
-  (evil-mode)
   (add-hook 'after-change-major-mode-hook
     (lambda ()
       (setq evil-shift-width tab-width)))
+  (evil-mode)
   :config
   (use-package evil-matchit
     :init
     (global-evil-matchit-mode))
+
   (use-package evil-surround
     :init
     (global-evil-surround-mode))
+
+  ;; Map SPC to C-c in non-insert modes
   (define-key evil-normal-state-map (kbd "SPC") (simulate-key-press "C-c"))
   (define-key evil-visual-state-map (kbd "SPC") (simulate-key-press "C-c"))
+
   ;; Insert state uses Emacs key-map.
   (setq evil-insert-state-map (make-sparse-keymap))
   (define-key evil-insert-state-map (kbd "<escape>") 'evil-normal-state)
-  (setq evil-want-fine-undo 'fine
-    evil-auto-indent t)
+
+  (setq evil-auto-indent t)
+  (setq evil-want-fine-undo 'fine)
   :commands evil-delay)
 
-(use-package fic-mode
+(use-package fic-mode ; Highlight TODO inside comments and strings
   :init
   (add-hook 'prog-mode-hook 'fic-mode)
   :config
   (set-face-attribute 'fic-face nil
-                      :weight 'bold
-                      :background (face-attribute 'font-lock-comment-face :background)
-                      :foreground (face-attribute 'font-lock-comment-face :foreground)))
+    :background (face-attribute 'font-lock-string-face :background)
+    :foreground (face-attribute 'font-lock-string-face :foreground)))
 
 (use-package flycheck ; Linting and syntax checking
   :defer 5
   :bind
-  (("C-c t f" . flycheck-mode)
-    ("M-n" . flycheck-next-error)
-    ("M-p" . flycheck-previous-error))
+  ( ("C-c t f" . flycheck-mode)
+    ("M-n"     . flycheck-next-error)
+    ("M-p"     . flycheck-previous-error))
   :init
   (global-flycheck-mode)
   :config
   (use-package helm-flycheck)
+
   (setq-default flycheck-emacs-lisp-load-path 'inherit)
-  (setq flycheck-standard-error-navigation nil
-    flycheck-display-errors-function 'flycheck-display-error-messages-unless-error-list)
+  (setq flycheck-display-errors-function 'flycheck-display-error-messages-unless-error-list)
+  (setq flycheck-standard-error-navigation nil)
   :commands
-  (global-flycheck-mode
+  ( global-flycheck-mode
     flycheck-display-error-messages-unless-error-list
     flycheck-next-error
     flycheck-previous-error))
 
 (use-package super-save ; Save buffers when focus is lost
   :init
-  (super-save-mode +1)
+  (super-save-mode 1)
   :diminish super-save-mode)
 
-(use-package git-messenger
+(use-package git-messenger ; Git commit pop-up
   :bind
   ("C-c g m" . git-messenger:popup-message))
 
-(use-package git-timemachine)
+(use-package git-timemachine ; Step through historic file versions
+  :bind
+  ("C-c g t" . git-timemachine-toggle))
 
-(use-package github-browse-file
+(use-package github-browse-file ; Open file on GitHub
+  :bind
+  ( ("C-c g h s" . github-browse-file)
+    ("C-c g h b" . github-browse-file-blame))
   :commands github-browse-file)
 
 (use-package god-mode ; Ctrl prefix everything
   :bind
   ("C-c SPC" . god-local-mode)
   :init
-  (use-package evil-god-state ; Ctrl prefix everything
+  (use-package evil-god-state
     :bind
-    (""
-     :map evil-normal-state-map
-     ("C-c SPC" . evil-execute-in-god-state))
+    ( :map evil-normal-state-map
+      ("C-c SPC" . evil-execute-in-god-state))
     :config
     (evil-define-key 'god global-map [escape] 'evil-god-state-bail)
     :commands evil-execute-in-god-state))
 
 (use-package helm ; Completion system
+  :diminish helm-mode
   :bind
-  (([remap execute-extended-command] . helm-M-x)
+  ( ([remap execute-extended-command] . helm-M-x)
     ([remap switch-to-buffer]         . helm-mini)
     ([remap list-buffers]             . helm-buffers-list)
     ([remap find-file]                . helm-find-files)
@@ -841,32 +817,42 @@ KEY must be given in `kbd' notation."
     ("A-v"   . helm-previous-page))
   :init
   (helm-mode)
+  (helm-autoresize-mode)
   :config
   (use-package helm-descbinds ; Describe key bindings
     :bind
     ("C-h b" . helm-descbinds)
     :init
     (fset 'describe-bindings 'helm-descbinds))
-  (use-package helm-swoop
+
+  (use-package helm-make
     :bind
-    (("C-c s s" . helm-swoop)
-      ("C-c s S" . helm-multi-swoop)
+    ( ("C-c c c" . helm-make-projectile)
+      ("<f5>"    . helm-make-projectile)))
+
+  (use-package helm-swoop ; Squeezed line navigation
+    :bind
+    ( ("C-c s s"   . helm-swoop)
+      ("C-c s S"   . helm-multi-swoop)
       ("C-c s C-s" . helm-multi-swoop-all))
     :config
     (setq helm-swoop-split-window-function 'helm-default-display-buffer)
     :commands helm-default-display-buffer)
-  (use-package helm-systemd)
-  (setq helm-M-x-fuzzy-match t
-    helm-buffers-fuzzy-matching t
-    helm-recentf-fuzzy-match t
-    helm-imenu-fuzzy-match t
-    helm-ff-file-name-history-use-recentf t
-    helm-ff-search-library-in-sexp t
-    helm-display-header-line nil
-    helm-imenu-execute-action-at-once-if-one nil)
-  (helm-autoresize-mode)
+
+  (use-package helm-systemd
+    :bind
+    ("C-c a d" . helm-systemd))
+
+  (setq helm-M-x-fuzzy-match t)
+  (setq helm-buffers-fuzzy-matching t)
+  (setq helm-display-header-line nil)
+  (setq helm-ff-file-name-history-use-recentf t)
+  (setq helm-ff-search-library-in-sexp t)
+  (setq helm-imenu-execute-action-at-once-if-one nil)
+  (setq helm-imenu-fuzzy-match t)
+  (setq helm-recentf-fuzzy-match t)
   :defines
-  (helm-M-x-fuzzy-match
+  ( helm-M-x-fuzzy-match
     helm-buffers-fuzzy-matching
     helm-recentf-fuzzy-match
     helm-imenu-fuzzy-match
@@ -875,43 +861,39 @@ KEY must be given in `kbd' notation."
     helm-display-header-line
     helm-imenu-execute-action-at-once-if-one)
   :commands
-  (helm-autoresize-mode
+  ( helm-autoresize-mode
     helm-execute-persistent-action
     helm-select-action
-    helm-previous-page)
-  :diminish helm-mode)
+    helm-previous-page))
 
-(use-package helm-make
-  :bind
-  (("C-c c c" . helm-make-projectile)
-   ("<f5>"    . helm-make-projectile)))
-
-(use-package highlight-indent-guides
+(use-package highlight-indent-guides ; Indentation guides
+  :init
+  (add-hook 'emacs-lisp-mode-hook 'highlight-indent-guides-mode)
   :config
   (set-face-foreground 'highlight-indent-guides-character-face
-                       (face-attribute 'fringe :background))
+    (face-attribute 'fringe :background))
+
   (setq highlight-indent-guides-method 'character))
 
-(use-package hlinum
+(use-package hlinum ; Highlight current line number
   :defer t
   :init
   (hlinum-activate)
   :config
   (set-face-attribute 'linum-highlight-face nil
-                      :foreground "#AF0000"
-                      :background (face-attribute 'linum :background)))
+    :foreground "#AF0000"
+    :background (face-attribute 'linum :background)))
 
 (use-package ignoramus ; Ignore files
   :config
   ;; Ignore some additional directories
   (dolist (name '(".vagrant"))
     (add-to-list 'ignoramus-file-basename-exact-names name))
-
   (ignoramus-setup))
 
 (use-package magit
   :bind
-  (("C-c g c" . magit-clone)
+  ( ("C-c g c" . magit-clone)
     ("C-c g s" . magit-status)
     ("C-c g b" . magit-blame)
     ("C-c g l" . magit-log-buffer-file)
@@ -920,13 +902,16 @@ KEY must be given in `kbd' notation."
   (global-magit-file-mode)
   :config
   (use-package evil-magit)
+
   (use-package magit-gh-pulls
     :init
     (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls))
+
   (setenv "GIT_PAGER" "")
-  (setq magit-save-repository-buffers 'dontask
-    magit-refs-show-commit-count 'all
-    magit-log-buffer-file-locked t))
+
+  (setq magit-log-buffer-file-locked t)
+  (setq magit-refs-show-commit-count 'all)
+  (setq magit-save-repository-buffers 'dontask))
 
 (use-package restclient ; REST REPL
   :defer t
@@ -942,9 +927,11 @@ KEY must be given in `kbd' notation."
   (global-page-break-lines-mode)
   :diminish page-break-lines-mode)
 
-(use-package persp-mode
+(use-package persp-mode ; Workspaces with buffer isolation
+  :ensure nil
+  :load-path "vendor/persp-mode-2.9.4/"
   :bind
-  (("M-[" . persp-prev)
+  ( ("M-[" . persp-prev)
     ("M-]" . persp-next))
   :init
   (setq persp-save-dir (concat my-cache-directory "persp-confs/"))
@@ -954,33 +941,37 @@ KEY must be given in `kbd' notation."
     :background (face-attribute 'isearch-fail :background)
     :foreground (face-attribute 'isearch-fail :foreground))
 
+  (setq persp-add-buffer-on-find-file 'if-not-autopersp)
   (setq persp-autokill-buffer-on-remove 'kill-weak)
 
+  (add-hook 'persp-after-load-state-functions
+    (lambda (&rest args) (persp-auto-persps-pickup-buffers)) t)
+
   (defvar after-find-file-hook nil)
-  (advice-add 'find-file :after (lambda (&rest args) (run-hooks 'after-find-file-hook)))
+  (advice-add 'find-file :after
+    (lambda (&rest args) (run-hooks 'after-find-file-hook)))
 
   (def-auto-persp "projectile"
     :parameters '((dont-save-to-file . t))
     :hooks '(after-find-file-hook)
     :switch 'frame
     :predicate
-    (lambda (buffer)
-      (when (and (buffer-file-name)
-              (projectile-project-p))
+    (lambda (_buffer)
+      (when (and (buffer-file-name) (projectile-project-p))
         t))
     :get-name-expr
     (lambda ()
       (projectile-project-name)))
-
-  (setq persp-add-buffer-on-find-file 'if-not-autopersp)
-  (add-hook 'persp-after-load-state-functions
-    '(lambda (&rest args) (persp-auto-persps-pickup-buffers)) t)
   :commands
-  persp-auto-persps-pickup-buffers
-  projectile-project-p
-  projectile-project-name)
+  ( persp-mode
+    def-auto-persp
+    persp-auto-persps-pickup-buffers
+    projectile-project-name
+    projectile-project-p))
+
 
 (use-package projectile
+  :diminish projectile-mode
   :defer 5
   :bind-keymap
   (("C-c p" . projectile-command-map))
@@ -989,18 +980,17 @@ KEY must be given in `kbd' notation."
     (concat my-cache-directory "projectile.cache"))
   (setq projectile-known-projects-file
     (concat my-cache-directory "projectile-bookmarks.eld"))
+
   (projectile-mode)
   :config
   (use-package helm-projectile
     :bind
-    (("C-c s g" . helm-projectile-grep))
+    ("C-c s g" . helm-projectile-grep)
     :init
     (helm-projectile-on)
     :config
-    (setq projectile-completion-system 'helm)
-    (setq helm-projectile-fuzzy-match t))
-  :diminish
-  projectile-mode)
+    (setq helm-projectile-fuzzy-match t)
+    (setq projectile-completion-system 'helm)))
 
 (use-package stripe-buffer ; Striped directory listing
   :defer 1
@@ -1025,48 +1015,55 @@ KEY must be given in `kbd' notation."
   :init
   (setq undo-tree-auto-save-history t)
   (setq undo-tree-history-directory-alist `((".*" . ,undo-directory)))
-  :config
   (global-undo-tree-mode)
+  :config
   (setq undo-tree-visualizer-diff t)
   (setq undo-tree-visualizer-timestamps t))
 
 (use-package visual-fill-column
   :defer t
   :init
-  (setq-default visual-fill-column-width 100
-    visual-fill-column-center-text t)
+  (setq-default visual-fill-column-center-text t)
+  (setq-default visual-fill-column-width 100)
   (add-hook 'text-mode-hook 'visual-fill-column-mode)
   (add-hook 'prog-mode-hook 'visual-fill-column-mode))
 
 (use-package visual-regexp-steroids
   :bind
-  (([remap isearch-backward] . vr/isearch-backward)
-   ([remap isearch-forward]  . vr/isearch-forward)
-   ("C-c s r" . vr/query-repalce)
-   ("C-c s R" . vr/replace)))
+  ( ([remap isearch-backward] . vr/isearch-backward)
+    ([remap isearch-forward]  . vr/isearch-forward)
+    ("C-c s r" . vr/query-repalce)
+    ("C-c s R" . vr/replace))
+  :commands
+  ( vr/replace
+    vr/query-repalce))
 
 (use-package which-key
+  :diminish which-key-mode
   :defer t
   :init
   (which-key-mode)
   :config
-  (setq which-key-idle-delay 0.4
-        which-key-sort-order 'which-key-prefix-then-key-order
-        which-key-key-replacement-alist
-        '(("<\\([[:alnum:]-]+\\)>" . "\\1")
-          ("up"                    . "↑")
-          ("right"                 . "→")
-          ("down"                  . "↓")
-          ("left"                  . "←")
-          ("DEL"                   . "⌫")
-          ("deletechar"            . "⌦")
-          ("RET"                   . "⏎"))
-        which-key-description-replacement-alist
-        '(("Prefix Command" . "prefix")
-          ("\\`\\?\\?\\'"   . "λ")
-          ("projectile-"    . "pt-")
-          ("helm-"          . "h-")
-          ("flycheck-"      . "flyc-")))
+  (setq which-key-idle-delay 0.4)
+  (setq which-key-sort-order 'which-key-prefix-then-key-order)
+
+  (setq which-key-key-replacement-alist
+    '(("<\\([[:alnum:]-]+\\)>" . "\\1")
+       ("up"                    . "↑")
+       ("right"                 . "→")
+       ("down"                  . "↓")
+       ("left"                  . "←")
+       ("DEL"                   . "⌫")
+       ("deletechar"            . "⌦")
+       ("RET"                   . "⏎")))
+
+  (setq which-key-description-replacement-alist
+    '(("Prefix Command" . "prefix")
+       ("\\`\\?\\?\\'"   . "λ")
+       ("projectile-"    . "pt-")
+       ("helm-"          . "h-")
+       ("flycheck-"      . "flyc-")))
+
   (which-key-add-key-based-replacements
     "C-c !" "flycheck"
     "C-c =" "diff"
@@ -1086,17 +1083,9 @@ KEY must be given in `kbd' notation."
     "C-c w" "windows"
     "C-c x" "text"
     "C-c x a" "align")
-  (which-key-enable-god-mode-support)
-  :commands which-key-enable-god-mode-support
-  :diminish which-key-mode)
 
-(use-package whitespace-cleanup-mode ; Cleanup whitespace on save
-  :bind
-  ("C-c t c" . whitespace-cleanup-mode)
-  :init
-  (dolist (hook '(prog-mode-hook text-mode-hook conf-mode-hook))
-    (add-hook hook 'whitespace-cleanup-mode))
-  :diminish (whitespace-cleanup-mode . " Ⓦ"))
+  (which-key-enable-god-mode-support)
+  :commands which-key-enable-god-mode-support)
 
 (use-package writeroom-mode ; Distraction-free editing
   :bind
@@ -1109,125 +1098,118 @@ KEY must be given in `kbd' notation."
   (setq zoom-window-mode-line-color "PaleGoldenrod"))
 
 ;;; Language packages
-(use-package css-mode
-  :mode "\\.css\\'")
+(use-package elixir-mode
+  :defer t
+  :config
+  (use-package alchemist
+    :diminish alchemist-mode
+    :mode ("\\.exs?\\'" "mix\\.lock\\'")
+    :init
+    (add-hook 'elixir-mode-hook 'alchemist-mode)
+    (add-hook 'elixir-mode-hook 'flycheck-mode)))
 
-(use-package dockerfile-mode
-  :init
-  (add-hook 'dockerfile-mode-hook
-    (lambda ()
-      (setq tab-width 2
-        indent-tabs-mode nil))))
-
-(use-package alchemist
-  :mode ("\\.exs?\\'" "mix\\.lock\\'")
-  :init
-  (add-hook 'elixir-mode-hook 'alchemist-mode)
-  (add-hook 'elixir-mode-hook 'flycheck-mode)
-  :diminish alchemist-mode)
-
-(use-package bats-mode)
-
-(use-package csv-mode
-  :mode "\\.csv\\'")
+(use-package bats-mode       :defer t)
+(use-package css-mode        :defer t)
+(use-package csv-mode        :defer t)
+(use-package dockerfile-mode :defer t)
 
 (use-package erlang
-  :mode ("\\.erl\\'" . erlang-mode)
+  :defer t
   :config
   (use-package edts))
 
 (use-package fish-mode
-  :mode ("\\.fish\\'" . fish-mode)
-  :interpreter ("fish" . fish-mode)
+  :defer t
   :init
-  (add-hook 'fish-mode-hook
-    (lambda ()
-      (add-hook 'before-save-hook 'fish_indent-before-save)
-      (setq tab-width 4
-        indent-tabs-mode nil)))
+  (add-hook 'fish-mode-hook 'fish-setup)
+  :preface
+  (defun fish-setup ()
+    "Setup Fish mode."
+    (add-hook 'before-save-hook 'fish_indent-before-save))
   :commands fish-mode)
 
-(use-package gitattributes-mode)
-(use-package gitconfig-mode)
-(use-package gitignore-mode)
+(use-package gitattributes-mode :defer t)
+(use-package gitconfig-mode     :defer t)
+(use-package gitignore-mode     :defer t)
 
 (use-package go-mode
-  :mode "\\.go\\'"
+  :defer t
+  :init
+  (add-hook 'go-mode-hook 'go-setup)
   :preface
-  (defun my-go-mode-hook ()
+  (defun go-setup ()
+    "Setup Go mode."
     ;; Use goimports
     (setq gofmt-command "goimports")
+
     ;; Run gofmt before save
     (add-hook 'before-save-hook 'gofmt-before-save)
+
     ;; Customize compile command to run go build
     (if (not (string-match "go" compile-command))
       (set (make-local-variable 'compile-command)
         "go build -v && go test -v && go vet"))
+
     ;; godef jump key binding
     (local-set-key (kbd "M-.") 'godef-jump))
   :config
   (use-package go-errcheck)
+
   (use-package go-eldoc
     :init
     (add-hook 'go-mode-hook 'go-eldoc-setup)
     :commands
     go-eldoc-setup)
-  (use-package company-go
-    :config
-    (add-to-list 'company-backends 'company-go))
 
-  (add-hook 'go-mode-hook 'my-go-mode-hook))
+  (use-package company-go
+    :after company
+    :init
+    (add-to-list 'company-backends 'company-go)))
 
 (use-package haskell-mode
+  :diminish interactive-haskell-mode
   :defer t
   :bind
-  (""
-    :map haskell-mode-map
+  ( :map haskell-mode-map
     ("C-c c c" . haskell-compile)
     ("<f5>"    . haskell-compile))
-  :diminish interactive-haskell-mode
+  :init
+  (add-hook 'haskell-mode-hook 'haskell-setup)
+  (remove-hook 'haskell-mode-hook 'interactive-haskell-mode)
   :preface
   (defun haskell-setup ()
     "Setup Haskell mode."
-    (setq indent-tabs-mode nil
-      tab-width 4
-      haskell-indent-spaces 4
-      haskell-indentation-layout-offset 4
-      haskell-indentation-left-offset 4))
-  :init
-  (add-hook 'haskell-mode-hook 'haskell-setup)
+    ;; (setq indent-tabs-mode nil)
+    ;; (setq tab-width 4)
+    ;; (setq haskell-indent-spaces 4)
+    ;; (setq haskell-indentation-layout-offset 4)
+    ;; (setq haskell-indentation-left-offset 4))
+    )
   :config
   ;; Use interpreter "stack ghci"
   (setq haskell-process-type 'stack-ghci)
 
-  (setq haskell-notify-p t
-    haskell-stylish-on-save t
-    haskell-tags-on-save nil
-    haskell-interactive-mode-include-file-name nil
-    haskell-interactive-mode-eval-mode 'haskell-mode
-    haskell-process-auto-import-loaded-modules t
-    haskell-process-show-debug-tips nil
-    haskell-process-suggest-haskell-docs-imports t
-    haskell-process-suggest-hoogle-imports nil
-    haskell-process-suggest-remove-import-lines t
-    haskell-process-use-presentation-mode t)
-
-  (remove-hook 'haskell-mode-hook 'interactive-haskell-mode)
+  (setq haskell-interactive-mode-eval-mode 'haskell-mode)
+  (setq haskell-interactive-mode-include-file-name nil)
+  (setq haskell-notify-p t)
+  (setq haskell-process-auto-import-loaded-modules t)
+  (setq haskell-process-show-debug-tips nil)
+  (setq haskell-process-suggest-haskell-docs-imports t)
+  (setq haskell-process-suggest-hoogle-imports nil)
+  (setq haskell-process-suggest-remove-import-lines t)
+  (setq haskell-process-use-presentation-mode t)
+  (setq haskell-stylish-on-save t)
+  (setq haskell-tags-on-save nil)
 
   (use-package hi2
     :diminish (hi2-mode . " ⇥")
     :init
-    (defvaralias 'hi2-ifte-offset 'haskell-indentation-left-offset)
-    (defvaralias 'hi2-layout-offset 'haskell-indentation-layout-offset)
-    (defvaralias 'hi2-left-offset 'haskell-indentation-left-offset)
-
-    (setq hi2-show-indentations nil)
     (add-hook 'haskell-mode-hook 'turn-on-hi2))
 
   (use-package company-ghci
+    :after company
     :init
     (add-to-list 'company-backends 'company-ghci))
-
 
   (use-package intero
     :diminish (intero-mode . " λ")
@@ -1237,23 +1219,23 @@ KEY must be given in `kbd' notation."
     (setq haskell-process-args-stack-ghci '("--ghc-options=-ferror-spans" "--with-ghc=intero")))
 
   (use-package shm
-    :preface
-    (defun haskell-shm-setup ()
-      "Setup SHM mode."
-      (defvaralias 'shm-indent-spaces 'haskell-indentation-layout-offset)
-      (structured-haskell-mode)
-      (hl-line-mode -1))
     :init
     (add-hook 'haskell-mode-hook 'haskell-shm-setup)
     (add-hook 'haskell-interactive-mode-hook 'structured-haskell-repl-mode)
+    :preface
+    (defun haskell-shm-setup ()
+      "Setup SHM mode."
+      (structured-haskell-mode)
+      (hl-line-mode -1))
     :config
-    (setq shm-auto-insert-bangs t
-      shm-auto-insert-skeletons t
-      shm-indent-point-after-adding-where-clause t
-      shm-use-hdevtools t
-      shm-use-presentation-mode t)
     (set-face-background 'shm-current-face (face-attribute 'hl-line :background))
     (set-face-background 'shm-quarantine-face "#fff0f0")
+
+    (setq shm-auto-insert-bangs t)
+    (setq shm-auto-insert-skeletons t)
+    (setq shm-indent-point-after-adding-where-clause t)
+    (setq shm-use-hdevtools t)
+    (setq shm-use-presentation-mode t)
     :commands
     structured-haskell-mode
     structured-haskell-repl-mode)
@@ -1262,49 +1244,64 @@ KEY must be given in `kbd' notation."
     :commands flycheck-haskell-setup))
 
 
-(use-package js2-mode
+(use-package js3-mode
   :mode "\\.js\\'"
   :config
-  (defvaralias 'js-indent-level 'tab-width)
-  (setq js2-mode-show-parse-errors nil
-        js2-mode-show-strict-warnings nil
-        js2-highlight-level 3))
+  (setq js3-auto-indent-p t)
+  (setq js3-enter-indents-newline t)
+  (setq js3-indent-on-enter-key t))
 
 (use-package json-mode
-  :mode "\\.json\\'")
+  :defer t)
 
 (use-package markdown-mode
   :mode
-  (("\\`README\\.md\\'" . gfm-mode)
-    ("\\.md\\'"          . markdown-mode)
-    ("\\.markdown\\'"    . markdown-mode))
+  ( ("\\.md\\'"          . markdown-mode)
+    ("\\.markdown\\'"    . markdown-mode)
+    ("\\`README\\.md\\'" . gfm-mode))
+  :bind
+  ( :map markdown-mode-map
+    ("TAB" . nil)
+    ("<S-iso-lefttab>" . nil)
+    ("<S-tab>" . nil)
+    ("<backtab>" . nil))
   :init
   (add-hook 'gfm-mode-hook 'turn-off-auto-fill)
   :config
-  (setq markdown-header-scaling t
-    markdown-enable-wiki-links t
-    markdown-wiki-link-fontify-missing t)
-  :commands (markdown-mode gfm-mode))
+  ;; Header scaling
+  (set-face-attribute 'markdown-header-face nil
+    :inherit 'variable-pitch)
+  (set-face-attribute 'markdown-header-face-1 nil :height 1.8)
+  (set-face-attribute 'markdown-header-face-2 nil :height 1.4)
+  (set-face-attribute 'markdown-header-face-3 nil :height 1.2)
+  (set-face-attribute 'markdown-header-face-4 nil :height 1.0)
+  (set-face-attribute 'markdown-header-face-5 nil :height 1.0)
+  (set-face-attribute 'markdown-header-face-6 nil :height 1.0)
 
-(use-package pkgbuild-mode
-  :mode "/PKGBUILD\\'")
+  (setq markdown-enable-wiki-links t)
+  (setq markdown-wiki-link-fontify-missing t)
+  :commands
+  markdown-mode
+  gfm-mode)
+
+(use-package pkgbuild-mode :defer t)
 
 (use-package plantuml-mode
-  :mode
-  (("\\.puml\\'" . plantuml-mode)
-   ("\\.plantuml\\'" . plantuml-mode))
-  :init
-  (setq plantuml-java-command "java-headless"
-        plantuml-jar-path "/opt/plantuml/plantuml.jar"))
+  :defer t
+  :config
+  (setq plantuml-java-command "java-headless")
+  (setq plantuml-jar-path "/opt/plantuml/plantuml.jar"))
 
-(use-package protobuf-mode)
+(use-package protobuf-mode :defer t)
 
 (use-package puppet-mode
+  :defer t
   :mode
-  (("\\.pp\\'"    . puppet-mode)
-   ("Puppetfile$" . puppet-mode)))
+  ( ("\\.pp\\'"    . puppet-mode)
+    ("Puppetfile$" . puppet-mode)))
 
 (use-package python-mode
+  :defer t
   :init
   (add-hook 'python-mode-hook 'python-setup)
   :preface
@@ -1313,84 +1310,84 @@ KEY must be given in `kbd' notation."
     (highlight-indent-guides-mode))
   :config
   (use-package anaconda-mode
-    :defer t
     :init
     (add-hook 'python-mode-hook 'anaconda-mode)
     (add-hook 'python-mode-hook 'anaconda-eldoc-mode)
     :config
     (use-package company-anaconda
+      :after company
       :init
-      (add-to-list 'company-backends 'company-anaconda)))
-  (defvaralias 'python-indent 'tab-width)
-  (setq py-indent-tabs-mode t))
-
-(use-package raml-mode
-  :ensure nil
-  :load-path "vendor/raml-mode/")
+      (add-to-list 'company-backends 'company-anaconda))))
 
 (use-package rst
+  :defer t
   :mode
-  (("\\.rst\\'" . rst-mode)
-   ("\\.text$"  . rst-mode))
+  ( ("\\.txt\\'" . rst-mode)
+    ("\\.rst\\'" . rst-mode)
+    ("\\.rest\\'" . rst-mode))
   :bind
-  (""
-   :map rst-mode-map
-   ("M-RET" . rst-insert-list))
+  ( :map rst-mode-map
+    ("M-RET" . rst-insert-list))
   :config
-  (setq rst-indent-literal-minimized 3
-        rst-indent-literal-normal 3)
-
+  ;; Header underline display
   (set-face-attribute 'rst-adornment nil
-                      :strike-through "black"
-                      :foreground (face-attribute 'default :background)
-                      :background (face-attribute 'default :background))
+    :strike-through "black"
+    :foreground (face-attribute 'default :background)
+    :background (face-attribute 'default :background))
 
   ;; Header scaling
   (set-face-attribute 'rst-level-1 nil
-                      :background nil
-                      :inherit 'variable-pitch
-                      :height 1.8)
+    :inherit 'variable-pitch
+    :background nil
+    :height 1.8
+    :weight 'bold)
   (set-face-attribute 'rst-level-2 nil
-                      :background nil
-                      :inherit 'variable-pitch
-                      :height 1.4)
+    :inherit 'variable-pitch
+    :background nil
+    :height 1.4
+    :weight 'bold)
   (set-face-attribute 'rst-level-3 nil
-                      :background nil
-                      :inherit 'variable-pitch
-                      :height 1.2)
+    :inherit 'variable-pitch
+    :background nil
+    :height 1.2
+    :weight 'bold)
   (set-face-attribute 'rst-level-4 nil
-                      :background nil
-                      :inherit 'variable-pitch
-                      :height 1.0)
+    :inherit 'variable-pitch
+    :background nil
+    :height 1.0
+    :weight 'bold)
   (set-face-attribute 'rst-level-5 nil
-                      :background nil
-                      :inherit 'variable-pitch
-                      :height 1.0)
+    :inherit 'variable-pitch
+    :background nil
+    :height 1.0
+    :weight 'bold)
   (set-face-attribute 'rst-level-6 nil
-                      :background nil
-                      :inherit 'variable-pitch
-                      :height 1.0))
+    :inherit 'variable-pitch
+    :background nil
+    :height 1.0
+    :weight 'bold))
 
 (use-package enh-ruby-mode
   :defer t
   :mode
-  (("\\.rb\\'"     . enh-ruby-mode)
-   ("Gemfile$"     . enh-ruby-mode)
-   ("[Rr]akefile$" . enh-ruby-mode))
+  ( ("\\.rb\\'"     . enh-ruby-mode)
+    ("Gemfile$"     . enh-ruby-mode)
+    ("[Rr]akefile$" . enh-ruby-mode)
+    ("\\.rake\\'"   . enh-ruby-mode))
   :interpreter "pry"
   :config
-  (setq enh-ruby-deep-indent-paren nil)
   (use-package yari)
   (use-package robe
+    :diminish robe-mode
     :init
     (add-hook 'enh-ruby-mode-hook 'robe-mode)
-    (add-to-list 'company-backends 'company-robe)
-    :diminish robe-mode)
+    (add-to-list 'company-backends 'company-robe))
   (use-package inf-ruby
     :init
     (add-hook 'enh-ruby-mode-hook 'inf-ruby-minor-mode)
     :config
     (use-package company-inf-ruby
+      :after company
       :config
       (add-to-list 'company-backends 'company-inf-ruby))
     :commands inf-ruby)
@@ -1398,144 +1395,144 @@ KEY must be given in `kbd' notation."
     :init
     (add-hook 'enh-ruby-mode-hook 'rubocop-mode))
   (use-package minitest
+    :diminish minitest-mode
     :init
-    (add-hook 'enh-ruby-mode-hook 'minitest-mode)
-    :diminish minitest-mode)
+    (add-hook 'enh-ruby-mode-hook 'minitest-mode))
   (use-package rspec-mode
+    :diminish rspec-mode
     :init
-    (add-hook 'enh-ruby-mode-hook 'rspec-mode)
-    :diminish rspec-mode))
+    (add-hook 'enh-ruby-mode-hook 'rspec-mode)))
 
 (use-package rust-mode
   :defer t
-  :mode ("\\.rust\\'" . rust-mode)
   :config
-  (use-package flycheck-rust
+  (use-package cargo
     :init
-    (add-hook 'flycheck-mode-hook 'flycheck-rust-setup))
+    (add-hook 'rust-mode-hook 'cargo-minor-mode))
+
   (use-package racer
     :init
     (add-hook 'rust-mode-hook 'racer-mode)
+    (add-hook 'racer-mode-hook 'eldoc-mode)
     :config
     (use-package company-racer
+      :after company
       :config
-      (add-to-list 'company-backends 'company-racer))))
+      (add-to-list 'company-backends 'company-racer)))
+
+  (use-package flycheck-rust
+    :init
+    (add-hook 'flycheck-mode-hook 'flycheck-rust-setup)))
 
 (use-package sh-script
-  :defer t
   :mode
-  (("\\.sh\\'"   . sh-mode)
-   ("\\.zsh\\'"  . sh-mode)
-   ("\\.bash\\'" . sh-mode))
-  :init
-  (defvaralias 'sh-basic-offset 'tab-width)
-  (defvaralias 'sh-indentation 'tab-width)
-  :config
-  (set-face-attribute 'sh-quoted-exec nil
-                      :background (face-attribute 'font-lock-builtin-face :background)
-                      :foreground (face-attribute 'font-lock-builtin-face :foreground)))
+  ( ("\\.sh\\'"   . sh-mode)
+    ("\\.zsh\\'"  . sh-mode)
+    ("\\.bash\\'" . sh-mode)))
 
-(use-package slim-mode)
+(use-package slim-mode
+  :defer t)
 
 (use-package sql
+  :defer t
   :bind
-  (("C-c a s" . sql-connect)
-   :map sql-mode-map
-   ("C-c m p" . sql-set-product)))
+  ( ("C-c a s" . sql-connect)
+    :map sql-mode-map
+    ("C-c m p" . sql-set-product)))
 
 (use-package swift-mode
   :config
   (with-eval-after-load 'flycheck (add-to-list 'flycheck-checkers 'swift)))
 
-(use-package systemd)
+(use-package systemd
+  :defer t
+  :init
+  (add-hook 'systemd-mode-hook
+    (lambda () (run-hooks 'prog-mode-hook))))
 
 (use-package thrift
   :defer t
   :init
   (put 'thrift-indent-level 'safe-local-variable 'integerp)
-  :config
-  (add-hook 'thrift-mode-hook (lambda () (run-hooks 'prog-mode-hook))))
+  (add-hook 'thrift-mode-hook
+    (lambda () (run-hooks 'prog-mode-hook))))
 
 (use-package web-mode
   :mode
-  (("\\.html?\\'"      . web-mode)
-   ("\\.phtml\\'"      . web-mode)
-   ("\\.tpl\\.php\\'"  . web-mode)
-   ("\\.jsp\\'"        . web-mode)
-   ("\\.hbs\\'"        . web-mode)
-   ("\\.as[cp]x\\'"    . web-mode)
-   ("\\.erb\\'"        . web-mode)
-   ("\\.eex\\'"        . web-mode)
-   ("\\.mustache\\'"   . web-mode)
-   ("\\.handlebars\\'" . web-mode)
-   ("\\.djhtml\\'"     . web-mode)
-   ("\\.tsx\\'"        . web-mode))
+  ( ("\\.html?\\'"      . web-mode)
+    ("\\.phtml\\'"      . web-mode)
+    ("\\.tpl\\.php\\'"  . web-mode)
+    ("\\.jsp\\'"        . web-mode)
+    ("\\.hbs\\'"        . web-mode)
+    ("\\.as[cp]x\\'"    . web-mode)
+    ("\\.erb\\'"        . web-mode)
+    ("\\.eex\\'"        . web-mode)
+    ("\\.mustache\\'"   . web-mode)
+    ("\\.handlebars\\'" . web-mode)
+    ("\\.djhtml\\'"     . web-mode)
+    ("\\.tsx\\'"        . web-mode))
   :config
+  (set-face-attribute 'web-mode-current-element-highlight-face nil
+    :foreground "#AF0000"
+    :background nil)
+
   (use-package emmet-mode
     :init
-    (add-hook 'web-mode-hook 'emmet-mode)
-    (setq emmet-indentation 2))
+    (add-hook 'web-mode-hook 'emmet-mode))
+
   (use-package company-web
+    :after company
     :config
     (add-to-list 'company-backends 'company-web-html))
-  (setq web-mode-css-indent-offset 2
-        web-mode-code-indent-offset 2
-        web-mode-markup-indent-offset 2)
-  (setq web-mode-style-padding 0
-        web-mode-script-padding 0
-        web-mode-enable-current-element-highlight t)
 
-  (set-face-attribute 'web-mode-current-element-highlight-face nil
-                      :foreground "#AF0000"
-                      :background nil))
+  (setq web-mode-enable-current-element-highlight t)
+  (setq web-mode-script-padding 0)
+  (setq web-mode-style-padding 0))
+
 
 (use-package yaml-mode
   :mode ("\\.ya?ml\\'" . yaml-mode)
-  :init
-  (add-hook 'yaml-mode-hook
-    (lambda ()
-      (setq tab-width 2
-        indent-tabs-mode nil)))
   :config
   (use-package ansible-doc
-    :defer t
+    :diminish ansible-doc-mode
     :init
-    (add-hook 'yaml-mode-hook 'ansible-doc-mode)
-    :diminish ansible-doc-mode)
+    (add-hook 'yaml-mode-hook 'ansible-doc-mode))
+
   (use-package company-ansible
+    :after company
     :init
     (add-to-list 'company-backends 'company-ansible)))
 
 (use-package company-shell
   :after company
-  :config
-  (setq company-shell-delete-duplicates t)
+  :init
   (add-to-list 'company-backends 'company-shell)
-  (add-to-list 'company-backends 'company-fish-shell))
+  (add-to-list 'company-backends 'company-fish-shell)
+  :config
+  (setq company-shell-delete-duplicates t))
 
 ;;; Modeline
-(setq-default
- mode-line-format
- '("%e"
-   mode-line-front-space
-   tab-width-mode
-   mode-line-mule-info
-   mode-line-client
-   mode-line-modified
-   mode-line-remote
-   mode-line-frame-identification
-   mode-line-buffer-identification
-   " "
-   mode-line-position
-   evil-mode-line-tag
-   (vc-mode vc-mode)
-   " "
-   mode-line-modes
-   mode-line-misc-info
-   mode-line-end-spaces))
+(setq-default mode-line-format
+  '( "%e"
+     mode-line-front-space
+     tab-width-mode
+     mode-line-mule-info
+     mode-line-client
+     mode-line-modified
+     mode-line-remote
+     mode-line-frame-identification
+     mode-line-buffer-identification
+     " "
+     mode-line-position
+     evil-mode-line-tag
+     (vc-mode vc-mode)
+     " "
+     mode-line-modes
+     mode-line-misc-info
+     mode-line-end-spaces))
 
-(setq debug-on-error nil
-      debug-on-quit nil)
+(setq debug-on-error nil)
+(setq debug-on-quit nil)
 
 (setq custom-file (concat my-data-directory "custom.el"))
 (load custom-file)
