@@ -1,12 +1,28 @@
-#!/usr/bin/env bash
-main() {
-	fd=0 # stdin
+#!/usr/bin/env sh
+set -eu
+set -o pipefail
 
-	if [[ -n "$DISPLAY" ]] && [[ -t "${fd}" || -p /dev/stdin ]]
+is_graphical() {
+	[ -n "${DISPLAY}" ]
+}
+
+is_interactive() {
+	fd=0 # stdin
+	[ -t "${fd}" ] || [ -p /dev/stdin ]
+}
+
+has_xdotool() {
+	command -v xdotool >/dev/null 2>&1
+}
+
+main() {
+	if is_interactive && is_graphical
 	then
-		if command -v xdotool >/dev/null 2>&1
+		has_xdotool && xdotool key 'Super+E'
+
+		if [ "$#" -eq 0 ]
 		then
-			xdotool key 'Super+E'
+			return
 		fi
 	fi
 
