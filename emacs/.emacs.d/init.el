@@ -17,6 +17,11 @@
 (setq debug-on-error t)
 (setq debug-on-quit t)
 
+;; Start measuring startup time
+(defconst emacs-start-time (current-time))
+(unless noninteractive
+  (message "Loading %s..." load-file-name))
+
 ;;; Paths
 (eval-and-compile
   (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
@@ -1556,10 +1561,28 @@ KEY must be given in `kbd' notation."
      mode-line-modes
      mode-line-misc-info
      mode-line-end-spaces))
+
+;;; Finish
 
+;; Log startup time when interactive
+(unless noninteractive
+  (let ((elapsed
+          (float-time (time-subtract (current-time) emacs-start-time))))
+    (message "Loading %s...done (%.3fs)" load-file-name elapsed))
+
+  (add-hook 'after-init-hook
+    `(lambda ()
+       (let ((elapsed
+               (float-time (time-subtract (current-time) emacs-start-time))))
+         (message "Loading %s...done (%.3fs) [after-init]"
+           ,load-file-name elapsed)))
+    t))
+
+;; Reset debug mode
 (setq debug-on-error nil)
 (setq debug-on-quit nil)
 
+;; Load dynamic customization
 (setq custom-file (concat my-data-directory "custom.el"))
 (load custom-file)
 ;;; init.el ends here
