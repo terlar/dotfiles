@@ -939,8 +939,6 @@ KEY must be given in `kbd' notation."
   (global-page-break-lines-mode))
 
 (use-package persp-mode ; Workspaces with buffer isolation
-  :ensure nil
-  :load-path "vendor/persp-mode-2.9.4/"
   :bind
   ( ("M-[" . persp-prev)
     ("M-]" . persp-next))
@@ -967,9 +965,9 @@ KEY must be given in `kbd' notation."
     :hooks '(after-find-file-hook)
     :switch 'frame
     :predicate
-    (lambda (_buffer)
-      (when (and (buffer-file-name) (projectile-project-p))
-        t))
+    '((lambda (_buffer)
+        (when (and (buffer-file-name) (projectile-project-p))
+          t)))
     :get-name-expr
     (lambda ()
       (projectile-project-name)))
