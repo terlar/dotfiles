@@ -1131,6 +1131,15 @@ KEY must be given in `kbd' notation."
 (use-package csv-mode        :defer t)
 (use-package dockerfile-mode :defer t)
 
+(use-package ereader ; EPUB Reader
+  :mode ("\\.epub$" . ereader-mode)
+  :init
+  (add-hook 'ereader-mode-hook 'epub-setup)
+  :preface
+  (defun epub-setup ()
+    "Setup Epub mode."
+    (page-break-lines-mode +1)))
+
 (use-package erlang
   :defer t
   :config
