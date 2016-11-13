@@ -119,6 +119,7 @@ myKeys =
     , ("M-p", programLauncher)
     , ("M-S-8", passPrompt)
     , ("M-/", searchPrompt)
+    , ("M-=", calcPrompt)
       -- Lock screen
     , ("M-<Esc>", spawn "lock" )
       -- Reload XMonad
