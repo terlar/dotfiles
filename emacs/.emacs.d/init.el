@@ -355,11 +355,6 @@ KEY must be given in `kbd' notation."
   :defer t
   :init (delete-selection-mode))
 
-(use-package doc-view ; Document viewer
-  :defer t
-  :config
-  (setq doc-view-resolution 300))
-
 (use-package ediff
   :bind
   ( ("C-c = b" . ediff-buffers)
@@ -1309,6 +1304,11 @@ KEY must be given in `kbd' notation."
   :commands
   markdown-mode
   gfm-mode)
+
+(use-package pdf-tools ; PDF support
+  :mode ("\\.pdf\\'" . pdf-view-mode)
+  :commands (pdf-tools-install))
+
 
 (use-package pkgbuild-mode :defer t)
 
