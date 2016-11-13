@@ -1,6 +1,9 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
+set -eu
+set -o pipefail
+
 main() {
-	if [[ -n "$DISPLAY" ]]; then
+	if [ -n "${DISPLAY}" ]; then
 		"${VISUAL}" "$@"
 	else
 		"${EDITOR}" "$@"

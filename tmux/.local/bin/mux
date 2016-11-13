@@ -1,16 +1,9 @@
 #!/usr/bin/env bash
-set -eo pipefail
-
-main() {
-	if [[ $# -eq 0 ]]; then
-		unnamed_session
-	else
-		named_session "$@"
-	fi
-}
+set -e
+set -o pipefail
 
 unnamed_session() {
-	if [[ -z "$TMUX" ]]; then
+	if [[ -z "${TMUX}" ]]; then
 		exec tmux attach || exec tmux new
 	else
 		exec tmux choose-session
@@ -18,7 +11,7 @@ unnamed_session() {
 }
 
 named_session() {
-	declare session_name flags cmd
+	local session_name flags
 	session_name="$1"
 	shift 1
 
@@ -29,23 +22,33 @@ named_session() {
 			-c|-F|-n|-x|-y)
 				flags+=("$1" "$2")
 				shift 2
-			;;
+				;;
 			*)
 				break
-			;;
+				;;
 		esac
 	done
 
-	cmd="$@"
-
-	if [[ -z "$TMUX" ]]; then
-		exec tmux new -A -s "$session_name" ${flags[@]} $cmd
+	if [[ -z "${TMUX}" ]]; then
+		exec tmux new -A -s "${session_name}" \
+		     "${flags[@]}" \
+		     -- "$@"
 	else
-		if ! tmux has-session -t "$session_name" 2>/dev/null; then
-			tmux new -d -s "$session_name" ${flags[@]} $cmd
+		if ! tmux has-session -t "${session_name}" 2>/dev/null; then
+			tmux new -d -s "${session_name}" \
+			     "${flags[@]}" \
+			     -- "$@"
 		fi
 
-		exec tmux switch -t "$session_name"
+		exec tmux switch -t "${session_name}"
+	fi
+}
+
+main() {
+	if [[ "$#" -eq 0 ]]; then
+		unnamed_session
+	else
+		named_session "$@"
 	fi
 }
 
