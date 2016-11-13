@@ -372,23 +372,27 @@ KEY must be given in `kbd' notation."
     ("C-c = p" . ediff-patch-file)
     ("C-c = P" . ediff-patch-buffer)
     ("C-c = l" . ediff-regions-linewise)
-    ("C-c = w" . ediff-regions-wordwise)
-    :map ediff-mode-map
-    ("d" . ediff-copy-both-to-C)
-    ("j" . ediff-next-difference)
-    ("k" . ediff-previous-difference))
+    ("C-c = w" . ediff-regions-wordwise))
   :init
   (setq ediff-window-setup-function 'ediff-setup-windows-plain)
   (setq ediff-split-window-function 'split-window-horizontally)
   (setq ediff-merge-split-window-function 'split-window-horizontally)
   (add-hook 'ediff-quit-hook 'winner-undo)
+  ;; Setting up the mappings through the bind command will leave them
+  ;; behind, breaking all further modes.
+  (add-hook 'ediff-keymap-setup-hook 'add-mappings-to-ediff-mode-map)
   :preface
+  ;; TODO: Check if smerge-keep-all can be sufficient instead.
   (defun ediff-copy-both-to-C ()
     (interactive)
     (ediff-copy-diff ediff-current-difference nil 'C nil
       (concat
         (ediff-get-region-contents ediff-current-difference 'A ediff-control-buffer)
         (ediff-get-region-contents ediff-current-difference 'B ediff-control-buffer))))
+  (defun add-mappings-to-ediff-mode-map ()
+    (define-key ediff-mode-map "d" 'ediff-copy-both-to-C)
+    (define-key ediff-mode-map "j" 'ediff-next-difference)
+    (define-key ediff-mode-map "k" 'ediff-previous-difference))
   :commands
   ediff-copy-diff
   ediff-get-region-contents
