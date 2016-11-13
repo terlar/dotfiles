@@ -186,7 +186,7 @@
 (setq require-final-newline t)
 
 ;; Word wrapping
-(diminish 'auto-fill-function " ▨")
+(diminish 'auto-fill-function " ☰")
 (add-hook 'text-mode-hook 'auto-fill-mode)
 (add-hook 'prog-mode-hook 'auto-fill-mode)
 (setq-default fill-column 72)
@@ -399,7 +399,7 @@ KEY must be given in `kbd' notation."
   winner-undo)
 
 (use-package eldoc ; Documentation in minibuffer
-  :diminish (eldoc-mode . " 👓")
+  :diminish (eldoc-mode)
   :defer t
   :init
   (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
@@ -429,7 +429,7 @@ KEY must be given in `kbd' notation."
   (add-hook 'eww-mode-hook 'buffer-face-mode))
 
 (use-package flyspell ; Spell-checking
-  :diminish (flyspell-mode . " ∼")
+  :diminish (flyspell-mode . " ≁")
   :bind
   ("C-c t s" . flyspell-mode)
   :init
@@ -1105,6 +1105,7 @@ KEY must be given in `kbd' notation."
   ("C-c t r" . writeroom-mode))
 
 (use-package ws-butler ; Trim trailing whitespace
+  :diminish (ws-butler-mode . " ☯")
   :init
   (ws-butler-global-mode +1))
 
