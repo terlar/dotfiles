@@ -982,7 +982,6 @@ KEY must be given in `kbd' notation."
     projectile-project-name
     projectile-project-p))
 
-
 (use-package projectile
   :diminish projectile-mode
   :defer 5
@@ -1033,7 +1032,7 @@ KEY must be given in `kbd' notation."
   (setq undo-tree-visualizer-diff t)
   (setq undo-tree-visualizer-timestamps t))
 
-(use-package visual-fill-column
+(use-package visual-fill-column ; Wrap lines at fill-column
   :defer t
   :init
   (setq-default visual-fill-column-center-text t)
@@ -1061,7 +1060,7 @@ KEY must be given in `kbd' notation."
   (setq which-key-sort-order 'which-key-prefix-then-key-order)
 
   (setq which-key-key-replacement-alist
-    '(("<\\([[:alnum:]-]+\\)>" . "\\1")
+    '( ("<\\([[:alnum:]-]+\\)>" . "\\1")
        ("up"                    . "↑")
        ("right"                 . "→")
        ("down"                  . "↓")
@@ -1071,7 +1070,7 @@ KEY must be given in `kbd' notation."
        ("RET"                   . "⏎")))
 
   (setq which-key-description-replacement-alist
-    '(("Prefix Command" . "prefix")
+    '( ("Prefix Command" . "prefix")
        ("\\`\\?\\?\\'"   . "λ")
        ("projectile-"    . "pt-")
        ("helm-"          . "h-")
