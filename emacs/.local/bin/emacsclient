@@ -3,7 +3,7 @@ set -eu
 set -o pipefail
 
 is_graphical() {
-	[ -n "${DISPLAY}" ]
+	[ -n "${DISPLAY:-}" ]
 }
 
 is_interactive() {
