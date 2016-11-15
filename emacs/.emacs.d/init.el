@@ -1460,7 +1460,11 @@ KEY must be given in `kbd' notation."
   :mode
   ( ("\\.sh\\'"   . sh-mode)
     ("\\.zsh\\'"  . sh-mode)
-    ("\\.bash\\'" . sh-mode)))
+    ("\\.bash\\'" . sh-mode))
+  :config
+  (set-face-attribute 'sh-quoted-exec nil
+    :background (face-attribute 'font-lock-builtin-face :background)
+    :foreground (face-attribute 'font-lock-builtin-face :foreground)))
 
 (use-package slim-mode
   :defer t)
