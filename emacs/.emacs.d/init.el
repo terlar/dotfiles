@@ -627,7 +627,8 @@ KEY must be given in `kbd' notation."
   :init
   (add-hook 'find-file-hook 'bug-reference-github-set-url-format))
 
-(use-package company ; Completion
+;; Completion support
+(use-package company
   :diminish company-mode
   :defer t
   :bind
@@ -1297,216 +1298,276 @@ KEY must be given in `kbd' notation."
 
 (use-package markdown-mode
   :mode
-  ( ("\\.md\\'"          . markdown-mode)
-    ("\\.markdown\\'"    . markdown-mode)
-    ("\\`README\\.md\\'" . gfm-mode))
+  ( ("\\`README\\.md\\'" . gfm-mode)
+    ("\\.md\\'"          . markdown-mode)
+    ("\\.markdown\\'"    . markdown-mode))
+  :commands (markdown-mode gfm-mode)
   :bind
   ( :map markdown-mode-map
-    ("TAB" . nil)
+    ("TAB"             . nil)
     ("<S-iso-lefttab>" . nil)
-    ("<S-tab>" . nil)
-    ("<backtab>" . nil))
-  :init
-  (add-hook 'gfm-mode-hook 'turn-off-auto-fill)
+    ("<S-tab>"         . nil)
+    ("<backtab>"       . nil))
+  :preface
+  (defun my-markdown-setup ()
+    "Setup Markdown mode."
+    (variable-pitch-mode t))
   :config
-  ;; Header scaling
-  (set-face-attribute 'markdown-header-face nil
-    :inherit 'variable-pitch)
-  (set-face-attribute 'markdown-header-face-1 nil :height 1.8)
-  (set-face-attribute 'markdown-header-face-2 nil :height 1.4)
-  (set-face-attribute 'markdown-header-face-3 nil :height 1.2)
-  (set-face-attribute 'markdown-header-face-4 nil :height 1.0)
-  (set-face-attribute 'markdown-header-face-5 nil :height 1.0)
-  (set-face-attribute 'markdown-header-face-6 nil :height 1.0)
+  (progn
+    (setq markdown-enable-wiki-links t)
+    (setq markdown-wiki-link-fontify-missing t)
 
-  (setq markdown-enable-wiki-links t)
-  (setq markdown-wiki-link-fontify-missing t)
-  :commands
-  markdown-mode
-  gfm-mode)
+    (add-hook 'markdown-mode-hook #'my-markdown-setup)
+    (add-hook 'gfm-mode-hook #'turn-off-auto-fill)
 
-(use-package pdf-tools ; PDF support
+    ;; Typography
+    (set-face-attribute 'markdown-pre-face nil :inherit 'fixed-pitch)
+    (set-face-attribute 'markdown-inline-code-face nil :inherit 'fixed-pitch)
+
+    (set-face-attribute 'markdown-header-face-1 nil :height 1.8)
+    (set-face-attribute 'markdown-header-face-2 nil :height 1.4)
+    (set-face-attribute 'markdown-header-face-3 nil :height 1.2)
+    (set-face-attribute 'markdown-header-face-4 nil :height 1.0)
+    (set-face-attribute 'markdown-header-face-5 nil :height 1.0)
+    (set-face-attribute 'markdown-header-face-6 nil :height 1.0)))
+
+;; Support for PDF
+(use-package pdf-tools
+  :if window-system
   :mode ("\\.pdf\\'" . pdf-view-mode)
   :commands (pdf-tools-install))
 
+;; Support for PKGBUILD
+(use-package pkgbuild-mode
+  :mode ("/PKGBUILD\\'" . pkgbuild-mode))
 
-(use-package pkgbuild-mode :defer t)
-
+;; Support for PlantUML
 (use-package plantuml-mode
-  :defer t
+  :mode ("\\.p\\(lant\\)?uml\\'" . plantuml-mode)
   :config
-  (setq plantuml-java-command "java-headless")
-  (setq plantuml-jar-path "/opt/plantuml/plantuml.jar"))
+  (progn
+    (setq plantuml-java-command "java-headless")
+    (setq plantuml-jar-path "/opt/plantuml/plantuml.jar")))
 
-(use-package protobuf-mode :defer t)
+;; Support for Protocol Buffers
+(use-package protobuf-mode
+  :mode ("\\.proto\\'" . protobuf-mode))
 
+;; Support for Puppet
 (use-package puppet-mode
-  :defer t
   :mode
-  ( ("\\.pp\\'"    . puppet-mode)
-    ("Puppetfile$" . puppet-mode)))
+  ( ("\\.pp\\'"      . puppet-mode)
+    ("Puppetfile\\'" . puppet-mode)))
 
-(use-package python-mode
-  :defer t
-  :init
-  (add-hook 'python-mode-hook 'python-setup)
+;; Support for Python
+(use-package python
+  :mode ("\\.py\\'" . python-mode)
+  :interpreter ("python" . python-mode)
   :preface
-  (defun python-setup ()
+  (defun my-python-setup ()
     "Setup Python mode."
     (highlight-indent-guides-mode))
   :config
-  (use-package anaconda-mode
-    :init
-    (add-hook 'python-mode-hook 'anaconda-mode)
-    (add-hook 'python-mode-hook 'anaconda-eldoc-mode)
-    :config
-    (use-package company-anaconda
-      :after company
-      :init
-      (add-to-list 'company-backends 'company-anaconda))))
+  (progn
+    (add-hook 'python-mode-hook #'my-python-setup)
 
+    ;; Code navigation, documentation lookup and completion
+    (use-package anaconda-mode
+      :config
+      (progn
+        (setq anaconda-mode-installation-directory
+          (concat my-data-directory "anaconda-mode"))
+
+        (add-hook 'python-mode-hook 'anaconda-mode)
+        (add-hook 'python-mode-hook 'anaconda-eldoc-mode)
+
+        ;; Completion for anaconda mode
+        (use-package company-anaconda
+          :preface
+          (progn
+            (autoload 'company-mode "company")
+            (defun my-python-company-setup ()
+              (setq-local company-backends '(company-anaconda))
+              (company-mode)))
+          :config
+          (add-hook 'python-mode-hook #'my-python-company-setup))))))
+
+;; Support for ReStructured Text
 (use-package rst
-  :defer t
   :mode
-  ( ("\\.txt\\'" . rst-mode)
-    ("\\.rst\\'" . rst-mode)
+  ( ("\\.txt\\'"  . rst-mode)
+    ("\\.rst\\'"  . rst-mode)
     ("\\.rest\\'" . rst-mode))
   :bind
   ( :map rst-mode-map
     ("M-RET" . rst-insert-list))
+  :preface
+  (defun my-rst-setup ()
+    "Setup ReStructured Text mode."
+    (variable-pitch-mode t))
   :config
-  ;; Header underline display
-  (set-face-attribute 'rst-adornment nil
-    :strike-through "black"
-    :foreground (face-attribute 'default :background)
-    :background (face-attribute 'default :background))
+  (progn
+    (add-hook 'rst-mode-hook #'my-rst-setup)
 
-  ;; Header scaling
-  (set-face-attribute 'rst-level-1 nil
-    :inherit 'variable-pitch
-    :background nil
-    :height 1.8
-    :weight 'bold)
-  (set-face-attribute 'rst-level-2 nil
-    :inherit 'variable-pitch
-    :background nil
-    :height 1.4
-    :weight 'bold)
-  (set-face-attribute 'rst-level-3 nil
-    :inherit 'variable-pitch
-    :background nil
-    :height 1.2
-    :weight 'bold)
-  (set-face-attribute 'rst-level-4 nil
-    :inherit 'variable-pitch
-    :background nil
-    :height 1.0
-    :weight 'bold)
-  (set-face-attribute 'rst-level-5 nil
-    :inherit 'variable-pitch
-    :background nil
-    :height 1.0
-    :weight 'bold)
-  (set-face-attribute 'rst-level-6 nil
-    :inherit 'variable-pitch
-    :background nil
-    :height 1.0
-    :weight 'bold))
+    ;; Header underline display
+    (set-face-attribute 'rst-adornment nil
+      :strike-through "black"
+      :foreground (face-attribute 'default :background)
+      :background (face-attribute 'default :background))
 
+    ;; Typography
+    (set-face-attribute 'rst-literal nil :inherit 'fixed-pitch)
+
+    (set-face-attribute 'rst-level-1 nil
+      :background nil :height 1.8 :weight 'bold)
+    (set-face-attribute 'rst-level-2 nil
+      :background nil :height 1.4 :weight 'bold)
+    (set-face-attribute 'rst-level-3 nil
+      :background nil :height 1.2 :weight 'bold)
+    (set-face-attribute 'rst-level-4 nil
+      :background nil :height 1.0 :weight 'bold)
+    (set-face-attribute 'rst-level-5 nil
+      :background nil :height 1.0 :weight 'bold)
+    (set-face-attribute 'rst-level-6 nil
+      :background nil :height 1.0 :weight 'bold)))
+
+;; Support for Ruby
 (use-package enh-ruby-mode
-  :defer t
   :mode
-  ( ("\\.rb\\'"     . enh-ruby-mode)
-    ("Gemfile$"     . enh-ruby-mode)
-    ("[Rr]akefile$" . enh-ruby-mode)
-    ("\\.rake\\'"   . enh-ruby-mode))
-  :interpreter "pry"
+  ( ("\\.rb\\'"       . enh-ruby-mode)
+    ("\\.ru\\'"       . enh-ruby-mode)
+    ("\\.rake\\'"     . enh-ruby-mode)
+    ("\\.thor\\'"     . enh-ruby-mode)
+    ("\\.gemspec\\'"  . enh-ruby-mode)
+    ("Gemfile\\'"     . enh-ruby-mode)
+    ("Rakefile\\'"    . enh-ruby-mode)
+    ("Vagrantfile\\'" . enh-ruby-mode))
+  :interpreter ("pry" . enh-ruby-mode)
   :config
-  (use-package yari)
-  (use-package robe
-    :diminish robe-mode
-    :init
-    (add-hook 'enh-ruby-mode-hook 'robe-mode)
-    (add-to-list 'company-backends 'company-robe))
-  (use-package inf-ruby
-    :init
-    (add-hook 'enh-ruby-mode-hook 'inf-ruby-minor-mode)
-    :config
-    (use-package company-inf-ruby
-      :after company
-      :config
-      (add-to-list 'company-backends 'company-inf-ruby))
-    :commands inf-ruby)
-  (use-package rubocop
-    :init
-    (add-hook 'enh-ruby-mode-hook 'rubocop-mode))
-  (use-package minitest
-    :diminish minitest-mode
-    :init
-    (add-hook 'enh-ruby-mode-hook 'minitest-mode))
-  (use-package rspec-mode
-    :diminish rspec-mode
-    :init
-    (add-hook 'enh-ruby-mode-hook 'rspec-mode)))
+  (progn
+    ;; Code navigation, documentation lookup and completion
+    (use-package robe
+      :commands (robe-mode robe-start)
+      :preface
+      (progn
+        (autoload 'company-mode "company")
+        (defun my-ruby-setup ()
+          "Setup Ruby mode."
+          (robe-mode)
+          (setq-local company-backends '(company-robe))
+          (company-mode)))
+      :init
+      (add-hook 'enh-ruby-mode-hook #'my-ruby-setup))
 
+    ;; REPL buffer
+    (use-package inf-ruby
+      :commands (inf-ruby)
+      :config
+      (progn
+        (setq inf-ruby-default-implementation "pry")
+        (add-hook 'enh-ruby-mode-hook #'inf-ruby-minor-mode)
+        (add-hook 'compilation-filter-hook #'inf-ruby-auto-enter)
+        (add-hook 'after-init-hook #'inf-ruby-switch-setup)
+
+        (use-package company-inf-ruby
+          :commands (company-inf-ruby)
+          :preface
+          (progn
+            (autoload 'company-mode "company")
+            (defun my-ruby-repl-company-setup ()
+              (setq-local company-backends '(company-inf-ruby))
+              (company-mode)))
+          :config
+          (add-hook 'enh-ruby-mode-hook #'my-ruby-repl-company-setup))))
+
+    (use-package ruby-test-mode
+      :commands (ruby-test-run-at-point ruby-test-run))
+
+    (use-package rubocop
+      :diminish (rubocop-mode)
+      :config
+      (add-hook 'enh-ruby-mode-hook #'rubocop-mode))))
+
+;; Support for Rust
 (use-package rust-mode
-  :defer t
+  :mode ("\\.rs\\'" . rust-mode)
   :config
-  (use-package cargo
-    :init
-    (add-hook 'rust-mode-hook 'cargo-minor-mode))
+  (progn
+    (setq rust-format-on-save (executable-find "rustfmt"))
 
-  (use-package racer
-    :init
-    (add-hook 'rust-mode-hook 'racer-mode)
-    (add-hook 'racer-mode-hook 'eldoc-mode)
-    :config
-    (use-package company-racer
-      :after company
+    ;; Flycheck support for Rust
+    (use-package flycheck-rust
+      :commands (flycheck-rust-setup)
+      :init
+      (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
+
+    ;; Racer support (completion, definition lookup, describe function/type)
+    (use-package racer
+      :defer t
+      :defines (racer-rust-src-path)
+      :commands (racer-mode racer-describe racer-find-definition)
+      :init
+      (progn
+        (add-hook 'racer-mode-hook #'eldoc-mode)
+        (add-hook 'rust-mode-hook #'racer-mode))
       :config
-      (add-to-list 'company-backends 'company-racer)))
+      (progn
+        (unless (getenv "RUST_SRC_PATH")
+          (setenv "RUST_SRC_PATH" racer-rust-src-path))
 
-  (use-package flycheck-rust
-    :init
-    (add-hook 'flycheck-mode-hook 'flycheck-rust-setup)))
+        (with-eval-after-load 'rust-mode
+          (evil-define-key 'normal rust-mode-map (kbd "K") #'racer-describe)
+          (evil-define-key 'normal rust-mode-map (kbd "M-.") #'racer-find-definition))))
 
+    ;; Perform cargo tasks within Rust projects
+    (use-package cargo
+      :defer t
+      :config
+      (add-hook 'rust-mode-hook #'cargo-minor-mode))))
+
+
+;; Support for POSIX-based shell scripts
 (use-package sh-script
   :mode
   ( ("\\.sh\\'"   . sh-mode)
     ("\\.zsh\\'"  . sh-mode)
     ("\\.bash\\'" . sh-mode))
   :config
-  (set-face-attribute 'sh-quoted-exec nil
-    :background (face-attribute 'font-lock-builtin-face :background)
-    :foreground (face-attribute 'font-lock-builtin-face :foreground)))
+  (progn
+    ;; Use regular indentation for line-continuation
+    (setq sh-indent-after-continuation 'always)
 
+    (set-face-attribute 'sh-quoted-exec nil
+      :background (face-attribute 'font-lock-builtin-face :background)
+      :foreground (face-attribute 'font-lock-builtin-face :foreground))))
+
+;; Support for slim templates
 (use-package slim-mode
-  :defer t)
+  :mode ("\\.slim\\'" . slim-mode))
 
+;; Support for SQL
 (use-package sql
-  :defer t
+  :mode ("\\.sql\\'" . sql-mode)
   :bind
   ( ("C-c a s" . sql-connect)
     :map sql-mode-map
     ("C-c m p" . sql-set-product)))
 
-(use-package swift-mode
-  :config
-  (with-eval-after-load 'flycheck (add-to-list 'flycheck-checkers 'swift)))
-
+;; Support for systemd files
 (use-package systemd
   :defer t
-  :init
+  :config
   (add-hook 'systemd-mode-hook
     (lambda () (run-hooks 'prog-mode-hook))))
 
+;; Support for thrift files
 (use-package thrift
-  :defer t
-  :init
-  (put 'thrift-indent-level 'safe-local-variable 'integerp)
+  :mode ("\\.thrift\\'" . thrift-mode)
+  :config
   (add-hook 'thrift-mode-hook
     (lambda () (run-hooks 'prog-mode-hook))))
 
+;; Support for web-related files
 (use-package web-mode
   :mode
   ( ("\\.html?\\'"      . web-mode)
@@ -1522,44 +1583,74 @@ KEY must be given in `kbd' notation."
     ("\\.djhtml\\'"     . web-mode)
     ("\\.tsx\\'"        . web-mode))
   :config
-  (set-face-attribute 'web-mode-current-element-highlight-face nil
-    :foreground "#AF0000"
-    :background nil)
+  (progn
+    (setq web-mode-enable-current-element-highlight t)
 
-  (use-package emmet-mode
-    :init
-    (add-hook 'web-mode-hook 'emmet-mode))
+    ;; No padding for nested sections inside HTML
+    (add-hook 'editorconfig-custom-hooks
+      (lambda (props)
+        (setq web-mode-block-padding 0)
+        (setq web-mode-script-padding 0)
+        (setq web-mode-style-padding 0)))
 
-  (use-package company-web
-    :after company
-    :config
-    (add-to-list 'company-backends 'company-web-html))
+    ;; Zen Coding support
+    (use-package emmet-mode
+      :defer t
+      :commands (emmet-mode)
+      :init
+      (add-hook 'web-mode-hook #'emmet-mode))
 
-  (setq web-mode-enable-current-element-highlight t)
-  (setq web-mode-script-padding 0)
-  (setq web-mode-style-padding 0))
+    ;; Completion for web mode
+    (use-package company-web
+      :preface
+      (progn
+        (autoload 'company-mode "company")
+        (defun my-web-company-setup ()
+          (setq-local company-backends '(company-web-html))
+          (company-mode)))
+      :config
+      (add-hook 'web-mode-hook #'my-web-company-setup))))
 
-
+;; Support for YAML files
 (use-package yaml-mode
-  :mode ("\\.ya?ml\\'" . yaml-mode)
+  :mode ("\\.\\(e?ya?\\|ra\\)ml\\'" . yaml-mode)
   :config
+  ;; Documentation lookup for Ansible,
+  ;; this can be issued by `C-c ?'
   (use-package ansible-doc
-    :diminish ansible-doc-mode
-    :init
-    (add-hook 'yaml-mode-hook 'ansible-doc-mode))
+    :diminish (ansible-doc-mode)
+    :commands (ansible-doc-mode)
+    :config
+    (add-hook 'yaml-mode-hook #'ansible-doc-mode))
 
+  ;; Completion for Ansible keywords
   (use-package company-ansible
-    :after company
-    :init
-    (add-to-list 'company-backends 'company-ansible)))
+    :preface
+    (progn
+      (autoload 'company-mode "company")
+      (defun my-yaml-company-setup ()
+        (setq-local company-backends '(company-ansible))
+        (company-mode)))
+    :config
+    (add-hook 'yaml-mode-hook #'my-yaml-company-setup)))
 
+;; Completion for shell functions and executable files in PATH
 (use-package company-shell
-  :after company
-  :init
-  (add-to-list 'company-backends 'company-shell)
-  (add-to-list 'company-backends 'company-fish-shell)
+  :after sh-script
+  :preface
+  (progn
+    (autoload 'company-mode "company")
+    (defun my-sh-company-setup ()
+      (setq-local company-backends '(company-shell))
+      (company-mode))
+    (defun my-fish-company-setup ()
+      (setq-local company-backends '(company-fish-shell))
+      (company-mode)))
   :config
-  (setq company-shell-delete-duplicates t))
+  (progn
+    (setq company-shell-delete-duplicates t)
+    (add-hook 'sh-mode-hook #'my-sh-company-setup)
+    (add-hook 'fish-mode-hook #'my-fish-company-setup)))
 
 ;;; Modeline
 (setq-default mode-line-format
