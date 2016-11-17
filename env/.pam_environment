@@ -3,14 +3,17 @@ LANG   DEFAULT=en_US.UTF-8
 LC_ALL DEFAULT=${LANG}
 
 # Paths
-HOME      DEFAULT=/home/@{PAM_USER} OVERRIDE=${HOME}
-GOPATH    DEFAULT=${HOME}/go
-PATH      DEFAULT=${HOME}/.local/bin\
+HOME          DEFAULT=/home/@{PAM_USER} OVERRIDE=${HOME}
+GOPATH        DEFAULT=${HOME}/go
+RUST_SRC_PATH DEFAULT=/usr/src/rust/src
+RUBY_PATH     DEFAULT=${HOME}/.rubies/ruby-2.3.1
+PATH          DEFAULT=${HOME}/.local/bin\
 :/usr/local/sbin\
 :/usr/local/bin\
 :/usr/bin:/bin\
 :${GOPATH}/bin\
-:${HOME}/.cabal/bin\
+:${HOME}/.cargo/bin\
+:${RUBY_PATH}/bin\
 :/usr/bin/core_perl
 XBMC_HOME DEFAULT=/usr/share/plexhometheater
 VAGRANT_DOCKER_CACHE DEFAULT=${HOME}/.docker-cache
