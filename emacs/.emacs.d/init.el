@@ -1286,16 +1286,32 @@ KEY must be given in `kbd' notation."
     :commands flycheck-haskell-setup))
 
 
-(use-package js3-mode
+;; Suppor for JavaScript
+(use-package js2-mode
   :mode "\\.js\\'"
   :config
-  (setq js3-auto-indent-p t)
-  (setq js3-enter-indents-newline t)
-  (setq js3-indent-on-enter-key t))
+  (progn
+    ;; JavaScript code analyzer
+    (use-package tern
+      :config
+      (add-hook 'js2-mode-hook #'tern-mode)
 
+      ;; Completion for Tern
+      (use-package company-tern
+        :preface
+        (progn
+          (autoload 'company-mode "company")
+          (defun my-js-company-setup ()
+            (setq-local company-backends '(company-tern))
+            (company-mode)))
+        :config
+        (add-hook 'tern-mode-hook #'my-js-company-setup)))))
+
+;; Support for JSON
 (use-package json-mode
-  :defer t)
+  :mode ("\\.json\\'" . json-mode))
 
+;; Support for Markdown
 (use-package markdown-mode
   :mode
   ( ("\\`README\\.md\\'" . gfm-mode)
