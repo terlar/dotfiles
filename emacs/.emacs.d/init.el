@@ -598,11 +598,13 @@ KEY must be given in `kbd' notation."
   :bind
   ("C-c t i" . aggressive-indent-mode)
   :init
-  (global-aggressive-indent-mode 1)
+  (global-aggressive-indent-mode)
   :config
+  ;; Disabled modes
   (add-to-list 'aggressive-indent-excluded-modes 'dockerfile-mode)
-  (add-to-list 'aggressive-indent-protected-commands 'evil-undo-pop)
-  (add-to-list 'aggressive-indent-protected-commands 'ws-butler-clean-region))
+  ;; Disabled commands
+  (dolist (command '(evil-undo-pop ws-butler-clean-region))
+    (add-to-list 'aggressive-indent-protected-commands command)))
 
 (use-package anzu ; Position/matches count for search
   :diminish anzu-mode
@@ -715,7 +717,9 @@ KEY must be given in `kbd' notation."
     ([remap mark-sexp]      . easy-mark)))
 
 (use-package editorconfig
+  :if (executable-find "editorconfig")
   :diminish (editorconfig-mode . " ⚙")
+  :mode ("\\.editorconfig\\'" . conf-unix-mode)
   :init
   (add-hook 'prog-mode-hook (editorconfig-mode 1))
   (add-hook 'text-mode-hook (editorconfig-mode 1))
@@ -1293,19 +1297,23 @@ KEY must be given in `kbd' notation."
   (progn
     ;; JavaScript code analyzer
     (use-package tern
-      :config
-      (add-hook 'js2-mode-hook #'tern-mode)
+      :defer t
+      :commands (tern-mode)
+      :init
+      (add-hook 'js2-mode-hook #'tern-mode))
 
-      ;; Completion for Tern
-      (use-package company-tern
-        :preface
-        (progn
-          (autoload 'company-mode "company")
-          (defun my-js-company-setup ()
-            (setq-local company-backends '(company-tern))
-            (company-mode)))
-        :config
-        (add-hook 'tern-mode-hook #'my-js-company-setup)))))
+    ;; Completion for Tern
+    (use-package company-tern
+      :after tern
+      :commands (company-tern)
+      :preface
+      (progn
+        (autoload 'company-mode "company")
+        (defun my-js-company-setup ()
+          (setq-local company-backends '(company-tern))
+          (company-mode)))
+      :config
+      (add-hook 'tern-mode-hook #'my-js-company-setup))))
 
 ;; Support for JSON
 (use-package json-mode
@@ -1389,24 +1397,29 @@ KEY must be given in `kbd' notation."
 
     ;; Code navigation, documentation lookup and completion
     (use-package anaconda-mode
+      :defer t
+      :commands (anaconda-mode anaconda-eldoc-mode)
+      :init
+      (progn
+        (add-hook 'python-mode-hook 'anaconda-mode)
+        (add-hook 'python-mode-hook 'anaconda-eldoc-mode))
       :config
       (progn
         (setq anaconda-mode-installation-directory
-          (concat my-data-directory "anaconda-mode"))
+          (concat my-data-directory "anaconda-mode"))))
 
-        (add-hook 'python-mode-hook 'anaconda-mode)
-        (add-hook 'python-mode-hook 'anaconda-eldoc-mode)
-
-        ;; Completion for anaconda mode
-        (use-package company-anaconda
-          :preface
-          (progn
-            (autoload 'company-mode "company")
-            (defun my-python-company-setup ()
-              (setq-local company-backends '(company-anaconda))
-              (company-mode)))
-          :config
-          (add-hook 'python-mode-hook #'my-python-company-setup))))))
+    ;; Completion for anaconda mode
+    (use-package company-anaconda
+      :after anaconda-mode
+      :commands (company-anaconda)
+      :preface
+      (progn
+        (autoload 'company-mode "company")
+        (defun my-python-company-setup ()
+          (setq-local company-backends '(company-anaconda))
+          (company-mode)))
+      :init
+      (add-hook 'python-mode-hook #'my-python-company-setup))))
 
 ;; Support for ReStructured Text
 (use-package rst
@@ -1463,7 +1476,8 @@ KEY must be given in `kbd' notation."
   (progn
     ;; Code navigation, documentation lookup and completion
     (use-package robe
-      :commands (robe-mode robe-start)
+      :defer t
+      :commands (robe-mode robe-start company-robe)
       :preface
       (progn
         (autoload 'company-mode "company")
@@ -1477,13 +1491,13 @@ KEY must be given in `kbd' notation."
 
     ;; REPL buffer
     (use-package inf-ruby
-      :commands (inf-ruby)
+      :defer t
+      :commands (inf-ruby inf-ruby-auto-enter)
       :config
       (progn
         (setq inf-ruby-default-implementation "pry")
         (add-hook 'enh-ruby-mode-hook #'inf-ruby-minor-mode)
         (add-hook 'compilation-filter-hook #'inf-ruby-auto-enter)
-        (add-hook 'after-init-hook #'inf-ruby-switch-setup)
 
         (use-package company-inf-ruby
           :commands (company-inf-ruby)
@@ -1501,6 +1515,7 @@ KEY must be given in `kbd' notation."
 
     (use-package rubocop
       :diminish (rubocop-mode)
+      :commands (rubocop-mode)
       :config
       (add-hook 'enh-ruby-mode-hook #'rubocop-mode))))
 
@@ -1553,6 +1568,7 @@ KEY must be given in `kbd' notation."
     ;; Use regular indentation for line-continuation
     (setq sh-indent-after-continuation 'always)
 
+    ;; Typography
     (set-face-attribute 'sh-quoted-exec nil
       :background (face-attribute 'font-lock-builtin-face :background)
       :foreground (face-attribute 'font-lock-builtin-face :foreground))))
@@ -1564,6 +1580,7 @@ KEY must be given in `kbd' notation."
 ;; Support for SQL
 (use-package sql
   :mode ("\\.sql\\'" . sql-mode)
+  :commands (sql-connect sql-set-product)
   :bind
   ( ("C-c a s" . sql-connect)
     :map sql-mode-map
@@ -1618,6 +1635,7 @@ KEY must be given in `kbd' notation."
 
     ;; Completion for web mode
     (use-package company-web
+      :commands (company-web-html)
       :preface
       (progn
         (autoload 'company-mode "company")
@@ -1641,6 +1659,7 @@ KEY must be given in `kbd' notation."
 
   ;; Completion for Ansible keywords
   (use-package company-ansible
+    :commands (company-ansible)
     :preface
     (progn
       (autoload 'company-mode "company")
@@ -1653,6 +1672,7 @@ KEY must be given in `kbd' notation."
 ;; Completion for shell functions and executable files in PATH
 (use-package company-shell
   :after sh-script
+  :commands (company-shell company-fish-shell)
   :preface
   (progn
     (autoload 'company-mode "company")
