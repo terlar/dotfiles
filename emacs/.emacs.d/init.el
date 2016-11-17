@@ -348,6 +348,16 @@ KEY must be given in `kbd' notation."
   ;; Skip warnings and info messages
   (setq compilation-skip-threshold 2)
 
+  (add-hook 'compilation-finish-functions
+    (lambda (buf str)
+      (switch-to-buffer-other-window "*compilation*")
+      (read-only-mode)
+      (goto-char (point-max))
+      (local-set-key (kbd "q")
+        (lambda ()
+          (interactive)
+          (quit-restore-window)))))
+
   ;; Filter ANSI escape codes in compilation-mode output
   (require 'ansi-color)
   (add-hook 'compilation-filter-hook
