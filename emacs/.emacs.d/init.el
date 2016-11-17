@@ -600,7 +600,9 @@ KEY must be given in `kbd' notation."
   :init
   (global-aggressive-indent-mode 1)
   :config
-  (add-to-list 'aggressive-indent-excluded-modes 'dockerfile-mode))
+  (add-to-list 'aggressive-indent-excluded-modes 'dockerfile-mode)
+  (add-to-list 'aggressive-indent-protected-commands 'evil-undo-pop)
+  (add-to-list 'aggressive-indent-protected-commands 'ws-butler-clean-region))
 
 (use-package anzu ; Position/matches count for search
   :diminish anzu-mode
@@ -1116,8 +1118,10 @@ KEY must be given in `kbd' notation."
 
 (use-package ws-butler ; Trim trailing whitespace
   :diminish (ws-butler-mode . " ☯")
-  :init
-  (ws-butler-global-mode +1))
+  :commands (ws-butler-global-mode)
+  :defer 1
+  :config
+  (ws-butler-global-mode))
 
 (use-package zoom-window ; Temporary one window
   :bind
