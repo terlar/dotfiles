@@ -410,7 +410,7 @@ KEY must be given in `kbd' notation."
   winner-undo)
 
 (use-package eldoc ; Documentation in minibuffer
-  :diminish (eldoc-mode)
+  :diminish (eldoc-mode . " ℹ")
   :defer t
   :init
   (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
