@@ -22,6 +22,11 @@ indent_size = 4
 indent_style = spaces
 indent_size = 4
 
+# PKGBUILD
+[**/PKGBUILD]
+indent_style = spaces
+indent_size = 2
+
 # Python
 [**/*.py]
 indent_style = spaces
