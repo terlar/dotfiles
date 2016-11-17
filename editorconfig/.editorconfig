@@ -18,7 +18,7 @@ indent_style = spaces
 indent_size = 4
 
 # Haskell
-[**/*.hs]
+[**/*.{hs,cabal}]
 indent_style = spaces
 indent_size = 4
 
