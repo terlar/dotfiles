@@ -1212,82 +1212,140 @@ KEY must be given in `kbd' notation."
     :init
     (add-to-list 'company-backends 'company-go)))
 
+;; Support for Haskell
 (use-package haskell-mode
   :diminish interactive-haskell-mode
-  :defer t
+  :mode ("\\.hs\\'" . haskell-mode)
   :bind
   ( :map haskell-mode-map
     ("C-c c c" . haskell-compile)
     ("<f5>"    . haskell-compile))
   :init
-  (add-hook 'haskell-mode-hook 'haskell-setup)
   (remove-hook 'haskell-mode-hook 'interactive-haskell-mode)
-  :preface
-  (defun haskell-setup ()
-    "Setup Haskell mode."
-    ;; (setq indent-tabs-mode nil)
-    ;; (setq tab-width 4)
-    ;; (setq haskell-indent-spaces 4)
-    ;; (setq haskell-indentation-layout-offset 4)
-    ;; (setq haskell-indentation-left-offset 4))
-    )
   :config
-  ;; Use interpreter "stack ghci"
-  (setq haskell-process-type 'stack-ghci)
+  (progn
+    ;; Use interpreter "stack ghci"
+    (setq haskell-process-type 'stack-ghci)
 
-  (setq haskell-interactive-mode-eval-mode 'haskell-mode)
-  (setq haskell-interactive-mode-include-file-name nil)
-  (setq haskell-notify-p t)
-  (setq haskell-process-auto-import-loaded-modules t)
-  (setq haskell-process-show-debug-tips nil)
-  (setq haskell-process-suggest-haskell-docs-imports t)
-  (setq haskell-process-suggest-hoogle-imports nil)
-  (setq haskell-process-suggest-remove-import-lines t)
-  (setq haskell-process-use-presentation-mode t)
-  (setq haskell-stylish-on-save t)
-  (setq haskell-tags-on-save nil)
+    ;; Fancy symbols
+    (setq haskell-font-lock-symbols t)
 
-  (use-package hi2
-    :diminish (hi2-mode . " ⇥")
-    :init
-    (add-hook 'haskell-mode-hook 'turn-on-hi2))
+    (setq haskell-interactive-mode-eval-mode 'haskell-mode)
+    (setq haskell-interactive-mode-include-file-name nil)
+    (setq haskell-notify-p t)
+    (setq haskell-process-auto-import-loaded-modules t)
+    (setq haskell-process-show-debug-tips nil)
+    (setq haskell-process-suggest-haskell-docs-imports t)
+    (setq haskell-process-suggest-hoogle-imports nil)
+    (setq haskell-process-suggest-remove-import-lines t)
+    (setq haskell-process-use-presentation-mode t)
+    (setq haskell-stylish-on-save t)
+    (setq haskell-tags-on-save nil)
 
-  (use-package company-ghci
-    :after company
-    :init
-    (add-to-list 'company-backends 'company-ghci))
+    ;; Smart indentation
+    (use-package hi2
+      :diminish (hi2-mode . " ⇥")
+      :defer t
+      :commands (turn-on-hi2 hi2-mode)
+      :init
+      (add-hook 'haskell-mode-hook #'turn-on-hi2)
+      :config
+      ;; Unbind RET binding since the shm mode binding is preferred.
+      (eval-after-load "hi2"
+        '(define-key hi2-mode-map [?\r] nil))
 
-  (use-package intero
-    :diminish (intero-mode . " λ")
-    :init
-    (add-hook 'haskell-mode-hook 'intero-mode)
-    :config
-    (setq haskell-process-args-stack-ghci '("--ghc-options=-ferror-spans" "--with-ghc=intero")))
+      (add-to-list 'editorconfig-indentation-alist
+        '(haskell-mode hi2-layout-offset hi2-left-offset hi2-ifte-offset))
 
-  (use-package shm
-    :init
-    (add-hook 'haskell-mode-hook 'haskell-shm-setup)
-    (add-hook 'haskell-interactive-mode-hook 'structured-haskell-repl-mode)
-    :preface
-    (defun haskell-shm-setup ()
-      "Setup SHM mode."
-      (structured-haskell-mode)
-      (hl-line-mode -1))
-    :config
-    (set-face-background 'shm-current-face (face-attribute 'hl-line :background))
-    (set-face-background 'shm-quarantine-face "#fff0f0")
+      (add-hook 'editorconfig-custom-hooks
+        (lambda (props)
+          "Use half indentation space for keyword `where'."
+          (let ((indent_size (gethash 'indent_size props)))
+            (setq-default hi2-where-pre-offset
+              (/ (string-to-number (if indent_size indent_size "4"))
+                2))
+            (setq-default hi2-where-post-offset
+              (/ (string-to-number (if indent_size indent_size "4"))
+                2))))))
 
-    (setq shm-auto-insert-bangs t)
-    (setq shm-auto-insert-skeletons t)
-    (setq shm-indent-point-after-adding-where-clause t)
-    (setq shm-use-hdevtools t)
-    (setq shm-use-presentation-mode t)
-    :commands
-    structured-haskell-mode
-    structured-haskell-repl-mode)
+    ;; Interactive development for Haskell
+    ;; (completions, type checking, jump to definition, type selection,
+    ;; suggestions)
+    (use-package intero
+      :diminish (intero-mode . " λ")
+      :defer t
+      :commands (intero-mode company-intero)
+      :preface
+      (progn
+        (autoload 'company-mode "company")
+        (defun my-haskell-company-setup ()
+          (setq-local company-backends '(company-intero))
+          (company-mode)))
+      :init
+      (progn
+        (add-hook 'haskell-mode-hook #'intero-mode)
+        (add-hook 'haskell-mode-hook #'my-haskell-company-setup))
+      :config
+      (setq haskell-process-args-stack-ghci
+        '("--ghc-options=-ferror-spans" "--with-ghc=intero")))
 
-  (use-package flycheck-haskell
-    :commands flycheck-haskell-setup))
+    ;; Structured editing operations
+    (use-package shm
+      :defer t
+      :commands ( structured-haskell-mode structured-haskell-repl-mode
+                  shm/newline-indent evil-insert-state)
+      :functions (evil-maybe-remove-spaces)
+      :preface
+      (progn
+        (defun haskell-shm-setup ()
+          "Setup SHM mode."
+          (structured-haskell-mode)
+          (hl-line-mode -1)
+          (haskell-indentation-mode -1))
+
+        (autoload 'evil-insert-state "evil")
+        (autoload 'evil-maybe-remove-spaces "evil")
+        (defun evil-shm/open-above (count)
+          "Insert a new line above point and switch to Insert state.
+The insertion will be repeated COUNT times."
+          (interactive "p")
+          (back-to-indentation)
+          (save-excursion (shm/newline-indent))
+          (setq evil-insert-count count
+            evil-insert-lines t
+            evil-insert-vcount nil)
+          (evil-insert-state 1)
+          (add-hook 'post-command-hook #'evil-maybe-remove-spaces))
+
+        (defun evil-shm/open-below (count)
+          "Insert a new line below point and switch to Insert state.
+The insertion will be repeated COUNT times."
+          (interactive "p")
+          (goto-char (line-end-position))
+          (shm/newline-indent)
+          (setq evil-insert-count count
+            evil-insert-lines t
+            evil-insert-vcount nil)
+          (evil-insert-state 1)
+          (add-hook 'post-command-hook #'evil-maybe-remove-spaces)))
+      :init
+      (progn
+        (add-hook 'haskell-mode-hook #'haskell-shm-setup)
+        (add-hook 'haskell-interactive-mode-hook #'structured-haskell-repl-mode))
+      :config
+      (progn
+        (setq shm-auto-insert-bangs t)
+        (setq shm-auto-insert-skeletons t)
+        (setq shm-indent-point-after-adding-where-clause t)
+        (setq shm-use-hdevtools t)
+        (setq shm-use-presentation-mode t)
+
+        (evil-define-key 'normal shm-map
+          (kbd "O") #'evil-shm/open-above
+          (kbd "o") #'evil-shm/open-below)
+
+        (set-face-background 'shm-current-face (face-attribute 'hl-line :background))
+        (set-face-background 'shm-quarantine-face "#fff0f0")))))
 
 
 ;; Suppor for JavaScript
