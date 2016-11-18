@@ -778,6 +778,8 @@ KEY must be given in `kbd' notation."
 
 (use-package flycheck ; Linting and syntax checking
   :defer 5
+  :functions (flycheck-display-error-messages-unless-error-list)
+  :commands (flycheck)
   :bind
   ( ("C-c t f" . flycheck-mode)
     ("M-n"     . flycheck-next-error)
@@ -785,16 +787,17 @@ KEY must be given in `kbd' notation."
   :init
   (global-flycheck-mode)
   :config
-  (use-package helm-flycheck)
-
   (setq-default flycheck-emacs-lisp-load-path 'inherit)
-  (setq flycheck-display-errors-function 'flycheck-display-error-messages-unless-error-list)
+  (setq flycheck-display-errors-function #'flycheck-display-error-messages-unless-error-list)
   (setq flycheck-standard-error-navigation nil)
-  :commands
-  ( global-flycheck-mode
-    flycheck-display-error-messages-unless-error-list
-    flycheck-next-error
-    flycheck-previous-error))
+
+  (use-package flycheck-pos-tip
+    :after flycheck
+    :commands (flycheck-pos-tip-mode)
+    :config
+    (flycheck-pos-tip-mode))
+
+  (use-package helm-flycheck))
 
 (use-package super-save ; Save buffers when focus is lost
   :diminish super-save-mode
