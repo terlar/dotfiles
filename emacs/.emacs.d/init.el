@@ -1178,39 +1178,57 @@ KEY must be given in `kbd' notation."
 (use-package gitconfig-mode     :defer t)
 (use-package gitignore-mode     :defer t)
 
+;; Support for Go
 (use-package go-mode
-  :defer t
-  :init
-  (add-hook 'go-mode-hook 'go-setup)
+  :mode ("\\.go\\'" . go-mode)
+  :functions (godef-jump)
+  :bind
+  ( :map go-mode-map
+    ("M-." . godef-jump)
+    ("M-*" . pop-tag-mark))
   :preface
-  (defun go-setup ()
+  (defun my-go-mode-hook ()
     "Setup Go mode."
-    ;; Use goimports
+    ;; Use goimports instead of gofmt
     (setq gofmt-command "goimports")
 
     ;; Run gofmt before save
-    (add-hook 'before-save-hook 'gofmt-before-save)
+    (add-hook 'before-save-hook #'gofmt-before-save)
 
     ;; Customize compile command to run go build
     (if (not (string-match "go" compile-command))
       (set (make-local-variable 'compile-command)
-        "go build -v && go test -v && go vet"))
-
-    ;; godef jump key binding
-    (local-set-key (kbd "M-.") 'godef-jump))
+        "go build -v && go test -v && go vet")))
   :config
-  (use-package go-errcheck)
+  (progn
+    (evil-define-key 'normal go-mode-map (kbd "K") #'godoc-at-point)
 
-  (use-package go-eldoc
-    :init
-    (add-hook 'go-mode-hook 'go-eldoc-setup)
-    :commands
-    go-eldoc-setup)
+    (add-hook 'go-mode-hook #'my-go-mode-hook)
 
-  (use-package company-go
-    :after company
-    :init
-    (add-to-list 'company-backends 'company-go)))
+    ;; Completion support
+    (use-package company-go
+      :after go-mode
+      :preface
+      (progn
+        (autoload 'company-mode "company")
+        (defun my-go-company-setup ()
+          (setq-local company-backends '(company-go))
+          (company-mode)))
+      :config
+      (progn
+        (setq company-go-show-annotation t)
+        (add-hook 'go-mode-hook #'my-go-company-setup)))
+
+    ;; Documentation support
+    (use-package go-eldoc
+      :after go-mode
+      :init
+      (add-hook 'go-mode-hook #'go-eldoc-setup))
+
+    ;; Check for unchecked errors
+    (use-package go-errcheck
+      :after go-mode
+      :commands (go-errcheck))))
 
 ;; Support for Haskell
 (use-package haskell-mode
