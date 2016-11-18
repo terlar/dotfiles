@@ -1274,7 +1274,7 @@ KEY must be given in `kbd' notation."
     (use-package intero
       :diminish (intero-mode . " λ")
       :defer t
-      :commands (intero-mode company-intero)
+      :commands (intero-mode)
       :preface
       (progn
         (autoload 'company-mode "company")
@@ -1303,8 +1303,10 @@ KEY must be given in `kbd' notation."
           (hl-line-mode -1)
           (haskell-indentation-mode -1))
 
-        (autoload 'evil-insert-state "evil")
-        (autoload 'evil-maybe-remove-spaces "evil")
+        (autoload 'evil-define-key "evil-core")
+        (autoload 'evil-insert-state "evil-core")
+        (autoload 'evil-maybe-remove-spaces "evil-core")
+
         (defun evil-shm/open-above (count)
           "Insert a new line above point and switch to Insert state.
 The insertion will be repeated COUNT times."
@@ -1469,7 +1471,6 @@ The insertion will be repeated COUNT times."
     ;; Completion for anaconda mode
     (use-package company-anaconda
       :after anaconda-mode
-      :commands (company-anaconda)
       :preface
       (progn
         (autoload 'company-mode "company")
@@ -1535,7 +1536,7 @@ The insertion will be repeated COUNT times."
     ;; Code navigation, documentation lookup and completion
     (use-package robe
       :defer t
-      :commands (robe-mode robe-start company-robe)
+      :commands (robe-mode robe-start)
       :preface
       (progn
         (autoload 'company-mode "company")
@@ -1558,7 +1559,6 @@ The insertion will be repeated COUNT times."
         (add-hook 'compilation-filter-hook #'inf-ruby-auto-enter)
 
         (use-package company-inf-ruby
-          :commands (company-inf-ruby)
           :preface
           (progn
             (autoload 'company-mode "company")
@@ -1693,7 +1693,6 @@ The insertion will be repeated COUNT times."
 
     ;; Completion for web mode
     (use-package company-web
-      :commands (company-web-html)
       :preface
       (progn
         (autoload 'company-mode "company")
@@ -1717,7 +1716,6 @@ The insertion will be repeated COUNT times."
 
   ;; Completion for Ansible keywords
   (use-package company-ansible
-    :commands (company-ansible)
     :preface
     (progn
       (autoload 'company-mode "company")
@@ -1730,7 +1728,6 @@ The insertion will be repeated COUNT times."
 ;; Completion for shell functions and executable files in PATH
 (use-package company-shell
   :after sh-script
-  :commands (company-shell company-fish-shell)
   :preface
   (progn
     (autoload 'company-mode "company")
