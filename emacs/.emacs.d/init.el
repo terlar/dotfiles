@@ -1165,14 +1165,15 @@ KEY must be given in `kbd' notation."
   (use-package edts))
 
 (use-package fish-mode
-  :defer t
-  :init
-  (add-hook 'fish-mode-hook 'fish-setup)
+  :mode ( ("\\.fish\\'"           . fish-mode)
+          ("/fish_funced\\..*\\'" . fish-mode))
+  :commands (fish-mode)
   :preface
-  (defun fish-setup ()
+  (defun my-fish-mode-hook ()
     "Setup Fish mode."
-    (add-hook 'before-save-hook 'fish_indent-before-save))
-  :commands fish-mode)
+    (add-hook 'before-save-hook #'fish_indent-before-save))
+  :config
+  (add-hook 'fish-mode-hook #'my-fish-mode-hook))
 
 (use-package gitattributes-mode :defer t)
 (use-package gitconfig-mode     :defer t)
