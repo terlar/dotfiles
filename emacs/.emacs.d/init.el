@@ -1225,10 +1225,24 @@ KEY must be given in `kbd' notation."
       :init
       (add-hook 'go-mode-hook #'go-eldoc-setup))
 
+    ;; Ask questions about Go source code
+    (use-package go-guru
+      :bind
+      ( :map go-mode-map
+        ("C-c f d" . go-guru-definition)
+        ("C-c f r" . go-guru-referrers)
+        ("C-c f s" . go-guru-callstack)
+        ("C-c f i" . go-guru-implements))
+      :init
+      (add-hook 'go-mode-hook #'go-guru-hl-identifier-mode))
+
     ;; Check for unchecked errors
     (use-package go-errcheck
       :after go-mode
-      :commands (go-errcheck))))
+      :commands (go-errcheck))
+
+    ;; Test runner
+    (use-package gotest)))
 
 ;; Support for Haskell
 (use-package haskell-mode
