@@ -1138,34 +1138,75 @@ KEY must be given in `kbd' notation."
   (setq zoom-window-mode-line-color "PaleGoldenrod"))
 
 ;;; Language packages
-(use-package elixir-mode
-  :defer t
-  :config
-  (use-package alchemist
-    :diminish alchemist-mode
-    :mode ("\\.exs?\\'" "mix\\.lock\\'")
-    :init
-    (add-hook 'elixir-mode-hook 'alchemist-mode)
-    (add-hook 'elixir-mode-hook 'flycheck-mode)))
+(use-package bats-mode
+  :mode ("\\.bats\\'" . bats-mode))
 
-(use-package bats-mode       :defer t)
-(use-package css-mode        :defer t)
-(use-package csv-mode        :defer t)
-(use-package dockerfile-mode :defer t)
+(use-package css-mode
+  :mode ("\\.css\\'" . css-mode))
+
+(use-package csv-mode
+  :mode ("\\.csv\\'" . csv-mode))
+
+(use-package dockerfile-mode
+  :mode ("Dockerfile.*\\'" . dockerfile-mode))
+
+(use-package elixir-mode
+  :mode ( ("\\.ex\\'"      . elixir-mode)
+          ("\\.exs\\'"     . elixir-mode)
+          ("mix\\.lock\\'" . elixir-mode))
+  :config
+  (progn
+    (use-package alchemist
+      :diminish (alchemist-mode)
+      :init
+      (add-hook 'elixir-mode-hook #'alchemist-mode))
+
+    (use-package flycheck-credo
+      :config
+      (flycheck-credo-setup))))
 
 (use-package ereader ; EPUB Reader
+  :if window-system
   :mode ("\\.epub$" . ereader-mode)
   :init
-  (add-hook 'ereader-mode-hook 'epub-setup)
+  (add-hook 'ereader-mode-hook #'my-epub-mode-hook)
   :preface
-  (defun epub-setup ()
+  (defun my-epub-mode-hook ()
     "Setup Epub mode."
     (page-break-lines-mode +1)))
 
 (use-package erlang
-  :defer t
+  :mode ( ("\\.erl\\'" . erlang-mode)
+          ("\\.hrl\\'" . erlang-mode)
+          ("\\.xrl\\'" . erlang-mode))
   :config
-  (use-package edts))
+  (use-package distel
+    :defer t
+    :ensure nil
+    :load-path "/usr/share/distel/elisp/"
+    :commands (erlang-extended-mode)
+    :init
+    (add-hook 'erlang-mode-hook #'erlang-extended-mode)
+    :config
+    (progn
+      (defvar inferior-erlang-prompt-timeout t)
+      ;; default node name to emacs@localhost
+      (setq inferior-erlang-machine-options '("-sname" "emacs"))
+      (setq erl-nodename-cache
+        (make-symbol
+          (concat
+            "emacs@"
+            (car (split-string (shell-command-to-string "hostname"))))))))
+  (use-package company-distel
+    :after distel
+    :preface
+    (progn
+      (autoload 'company-mode "company")
+      (defun my-erlang-company-setup ()
+        (setq-local company-backends '(company-distel))
+        (company-mode)))
+    :config
+    (add-hook 'erlang-mode-hook #'my-erlang-company-setup)))
 
 (use-package fish-mode
   :mode ( ("\\.fish\\'"           . fish-mode)
