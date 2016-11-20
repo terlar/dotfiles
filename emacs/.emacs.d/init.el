@@ -851,11 +851,6 @@ KEY must be given in `kbd' notation."
     ;; Helm navigation
     (use-package helm-flycheck)))
 
-;; Save buffers when focus is lost
-(use-package super-save
-  :diminish (super-save-mode)
-  :init (super-save-mode))
-
 ;; Git commit popup
 (use-package git-messenger
   :bind ("C-c g m" . git-messenger:popup-message))
@@ -1096,6 +1091,11 @@ KEY must be given in `kbd' notation."
 (use-package sudo-edit
   :defer t
   :bind ("C-c f s" . sudo-edit))
+
+;; Save buffers when focus is lost
+(use-package super-save
+  :diminish (super-save-mode)
+  :init (super-save-mode))
 
 ;; Tree based undo history
 (use-package undo-tree
