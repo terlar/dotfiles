@@ -1910,39 +1910,39 @@ The insertion will be repeated COUNT times."
 
 ;;; Modeline
 (setq-default mode-line-format
-  '( "%e"
-     mode-line-front-space
-     tab-width-mode
-     mode-line-mule-info
-     mode-line-client
-     mode-line-modified
-     mode-line-remote
-     mode-line-frame-identification
-     mode-line-buffer-identification
-     " "
-     mode-line-position
-     evil-mode-line-tag
-     (vc-mode vc-mode)
-     " "
-     mode-line-modes
-     mode-line-misc-info
-     mode-line-end-spaces))
+              '("%e"
+                mode-line-front-space
+                tab-width-mode
+                mode-line-mule-info
+                mode-line-client
+                mode-line-modified
+                mode-line-remote
+                mode-line-frame-identification
+                mode-line-buffer-identification
+                " "
+                mode-line-position
+                evil-mode-line-tag
+                (vc-mode vc-mode)
+                " "
+                mode-line-modes
+                mode-line-misc-info
+                mode-line-end-spaces))
 
 ;;; Finish
 
 ;; Log startup time when interactive
 (unless noninteractive
   (let ((elapsed
-          (float-time (time-subtract (current-time) emacs-start-time))))
+         (float-time (time-subtract (current-time) emacs-start-time))))
     (message "Loading %s...done (%.3fs)" load-file-name elapsed))
 
   (add-hook 'after-init-hook
-    `(lambda ()
-       (let ((elapsed
-               (float-time (time-subtract (current-time) emacs-start-time))))
-         (message "Loading %s...done (%.3fs) [after-init]"
-           ,load-file-name elapsed)))
-    t))
+            `(lambda ()
+               (let ((elapsed
+                      (float-time (time-subtract (current-time) emacs-start-time))))
+                 (message "Loading %s...done (%.3fs) [after-init]"
+                          ,load-file-name elapsed)))
+            t))
 
 ;; Reset debug mode
 (setq debug-on-error nil)
