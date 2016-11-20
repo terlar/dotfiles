@@ -1727,9 +1727,18 @@ The insertion will be repeated COUNT times."
               (company-mode)))
           :config (add-hook 'enh-ruby-mode-hook #'my-ruby-repl-company-hook))))
 
+    ;; Auto-insert end keyword
+    (use-package ruby-end
+      :config
+      (progn
+        (setq ruby-end-insert-newline nil)
+        (add-hook 'enh-ruby-mode-hook #'ruby-end-mode)))
+
+    ;; Test runner
     (use-package ruby-test-mode
       :commands (ruby-test-run-at-point ruby-test-run))
 
+    ;; Rubocop integration
     (use-package rubocop
       :diminish (rubocop-mode)
       :commands (rubocop-mode)
