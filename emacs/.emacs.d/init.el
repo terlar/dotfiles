@@ -646,18 +646,20 @@ KEY must be given in `kbd' notation."
 
 (use-package aggressive-indent
   :diminish (aggressive-indent-mode)
-  :commands (aggressive-indent-mode)
+  :commands (global-aggressive-indent-mode)
   :bind ("C-c t i" . aggressive-indent-mode)
   :defer 5
-  :init (global-aggressive-indent-mode)
   :config
   (progn
     ;; Disabled modes
-    (add-to-list 'aggressive-indent-excluded-modes 'dockerfile-mode)
+    (dolist (mode '(diff-auto-refine-mode dockerfile-mode))
+      (add-to-list 'aggressive-indent-excluded-modes mode))
 
     ;; Disabled commands
     (dolist (command '(evil-undo-pop ws-butler-clean-region))
-      (add-to-list 'aggressive-indent-protected-commands command))))
+      (add-to-list 'aggressive-indent-protected-commands command))
+
+    (global-aggressive-indent-mode +1)))
 
 ;; Position/matches count for search
 (use-package anzu
@@ -686,6 +688,7 @@ KEY must be given in `kbd' notation."
 ;; Completion system
 (use-package company
   :diminish (company-mode)
+  :commands (global-company-mode)
   :functions (company-complete-common-or-cycle)
   :preface
   (defun company-indent-or-complete ()
@@ -1172,6 +1175,7 @@ KEY must be given in `kbd' notation."
              ("flycheck-"      . "flyc-")))
 
     (which-key-add-key-based-replacements
+      "M-s h" "highlight"
       "C-c !" "flycheck"
       "C-c =" "diff"
       "C-c @" "outline"
