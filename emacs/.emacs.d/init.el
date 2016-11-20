@@ -478,6 +478,13 @@ KEY must be given in `kbd' notation."
     (add-hook 'prog-mode-hook 'goto-address-prog-mode)
     (add-hook 'text-mode-hook 'goto-address-mode)))
 
+;; Code folding
+(use-package hideshow
+  :diminish (hs-minor-mode)
+  :defer t
+  :init
+  (add-hook 'prog-mode-hook #'hs-minor-mode))
+
 ;; Expansion and completion (of lines and blocks)
 ;; Can be used through the binding `M-/'
 (use-package hippie-exp
@@ -506,14 +513,6 @@ KEY must be given in `kbd' notation."
   :if window-system
   :defer t
   :init (auto-image-file-mode))
-
-;; Navigate outlines in buffers
-(use-package outline
-  :diminish (outline-minor-mode)
-  :defer t
-  :init
-  (dolist (hook '(text-mode-hook prog-mode-hook))
-    (add-hook hook 'outline-minor-mode)))
 
 ;; Track files recently opened
 (use-package recentf
