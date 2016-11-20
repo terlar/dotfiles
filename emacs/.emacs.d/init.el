@@ -578,6 +578,12 @@ KEY must be given in `kbd' notation."
 (use-package term
   :bind ("C-c a T" . ansi-term))
 
+;; Show time
+(use-package time
+  :bind
+  (("C-c a i" . emacs-init-time)
+   ("C-c a C" . display-time-world)))
+
 ;; Display white-space characters
 (use-package whitespace
   :diminish (whitespace-mode . " ␠")
