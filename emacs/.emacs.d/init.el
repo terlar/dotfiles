@@ -822,8 +822,9 @@ KEY must be given in `kbd' notation."
 (use-package fic-mode
   :init (add-hook 'prog-mode-hook #'fic-mode)
   :config
-  (set-face-foreground 'fic-face
-                       (face-attribute 'font-lock-string-face :foreground)))
+  (dolist (face '(fic-face fic-author-face))
+    (set-face-background face (face-attribute 'font-lock-string-face :background))
+    (set-face-foreground face (face-attribute 'font-lock-string-face :foreground))))
 
 ;; Linting and syntax checking
 (use-package flycheck
