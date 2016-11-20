@@ -713,7 +713,23 @@ KEY must be given in `kbd' notation."
    ("<return>"  . nil)
    ("<escape>"  . company-abort))
   :defer t
-  :init (global-company-mode)
+  :preface
+  (progn
+    (defvar-local company-whitespace-mode-on-p nil)
+
+    (defun company-turn-off-whitespace (&rest ignore)
+      (when (boundp 'whitespace-mode)
+        (setq company-whitespace-mode-on-p whitespace-mode)
+        (when whitespace-mode (whitespace-mode -1))))
+
+    (defun company-maybe-turn-on-whitespace (&rest ignore)
+      (when company-whitespace-mode-on-p (whitespace-mode 1))))
+  :init
+  (progn
+    (add-hook 'company-completion-started-hook 'company-turn-off-whitespace)
+    (add-hook 'company-completion-finished-hook 'company-maybe-turn-on-whitespace)
+    (add-hook 'company-completion-cancelled-hook 'company-maybe-turn-on-whitespace)
+    (global-company-mode))
   :config
   (progn
     (setq company-echo-delay 0)
