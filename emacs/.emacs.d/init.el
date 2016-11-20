@@ -568,12 +568,6 @@ KEY must be given in `kbd' notation."
     (setq save-place-file (concat my-cache-directory "places"))
     (setq save-place-forget-unreadable-files nil)))
 
-;; Tabs for indentation, spaces for alignment
-(use-package smart-tabs-mode
-  :functions (smart-tabs-insinuate)
-  :init
-  (smart-tabs-insinuate 'c++ 'c 'java 'javascript 'python 'ruby))
-
 ;; Recognize camel and snake case
 ;;
 ;; This changes the behavior of word-detection, as each part is now
