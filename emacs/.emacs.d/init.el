@@ -830,8 +830,23 @@ KEY must be given in `kbd' notation."
     (evil-define-key 'god global-map [escape] 'evil-god-state-bail)
     :commands evil-execute-in-god-state))
 
-(use-package helm ; Completion system
-  :diminish helm-mode
+;; Completion system
+(use-package helm
+  :diminish (helm-mode)
+  :defines
+  ( helm-M-x-fuzzy-match
+    helm-buffers-fuzzy-matching
+    helm-recentf-fuzzy-match
+    helm-imenu-fuzzy-match
+    helm-ff-file-name-history-use-recentf
+    helm-ff-search-library-in-sexp
+    helm-display-header-line
+    helm-imenu-execute-action-at-once-if-one)
+  :commands
+  ( helm-autoresize-mode
+    helm-execute-persistent-action
+    helm-select-action
+    helm-previous-page)
   :bind
   ( ([remap execute-extended-command] . helm-M-x)
     ([remap switch-to-buffer]         . helm-mini)
@@ -852,57 +867,47 @@ KEY must be given in `kbd' notation."
     ("C-z"   . helm-select-action)
     ("A-v"   . helm-previous-page))
   :init
-  (helm-mode)
-  (helm-autoresize-mode)
+  (progn
+    (helm-mode)
+    (helm-autoresize-mode))
   :config
-  (use-package helm-descbinds ; Describe key bindings
-    :bind
-    ("C-h b" . helm-descbinds)
-    :init
-    (fset 'describe-bindings 'helm-descbinds))
+  (progn
+    (setq helm-M-x-fuzzy-match t)
+    (setq helm-buffers-fuzzy-matching t)
+    (setq helm-display-header-line nil)
+    (setq helm-ff-file-name-history-use-recentf t)
+    (setq helm-ff-search-library-in-sexp t)
+    (setq helm-imenu-execute-action-at-once-if-one nil)
+    (setq helm-imenu-fuzzy-match t)
+    (setq helm-recentf-fuzzy-match t)
 
-  (use-package helm-make
-    :bind
-    ( ("C-c c c" . helm-make-projectile)
-      ("<f5>"    . helm-make-projectile)))
+    ;; Describe key bindings
+    (use-package helm-descbinds
+      :bind
+      ("C-h b" . helm-descbinds)
+      :init
+      (fset 'describe-bindings 'helm-descbinds))
 
-  (use-package helm-swoop ; Squeezed line navigation
-    :bind
-    ( ("C-c s s"   . helm-swoop)
-      ("C-c s S"   . helm-multi-swoop)
-      ("C-c s C-s" . helm-multi-swoop-all))
-    :config
-    (setq helm-swoop-split-window-function 'helm-default-display-buffer)
-    :commands helm-default-display-buffer)
+    (use-package helm-make
+      :bind
+      ( ("C-c c c" . helm-make-projectile)
+        ("<f5>"    . helm-make-projectile)))
 
-  (use-package helm-systemd
-    :bind
-    ("C-c a d" . helm-systemd))
+    (use-package helm-swoop ; Squeezed line navigation
+      :bind
+      ( ("C-c s s"   . helm-swoop)
+        ("C-c s S"   . helm-multi-swoop)
+        ("C-c s C-s" . helm-multi-swoop-all))
+      :config
+      (setq helm-swoop-split-window-function 'helm-default-display-buffer)
+      :commands helm-default-display-buffer)
 
-  (setq helm-M-x-fuzzy-match t)
-  (setq helm-buffers-fuzzy-matching t)
-  (setq helm-display-header-line nil)
-  (setq helm-ff-file-name-history-use-recentf t)
-  (setq helm-ff-search-library-in-sexp t)
-  (setq helm-imenu-execute-action-at-once-if-one nil)
-  (setq helm-imenu-fuzzy-match t)
-  (setq helm-recentf-fuzzy-match t)
-  :defines
-  ( helm-M-x-fuzzy-match
-    helm-buffers-fuzzy-matching
-    helm-recentf-fuzzy-match
-    helm-imenu-fuzzy-match
-    helm-ff-file-name-history-use-recentf
-    helm-ff-search-library-in-sexp
-    helm-display-header-line
-    helm-imenu-execute-action-at-once-if-one)
-  :commands
-  ( helm-autoresize-mode
-    helm-execute-persistent-action
-    helm-select-action
-    helm-previous-page))
+    (use-package helm-systemd
+      :bind
+      ("C-c a d" . helm-systemd))))
 
-(use-package highlight-indent-guides ; Indentation guides
+;; Indentation guides
+(use-package highlight-indent-guides
   :init
   (add-hook 'emacs-lisp-mode-hook 'highlight-indent-guides-mode)
   :config
@@ -911,7 +916,8 @@ KEY must be given in `kbd' notation."
 
   (setq highlight-indent-guides-method 'character))
 
-(use-package hlinum ; Highlight current line number
+;; Highlight current line number
+(use-package hlinum
   :defer t
   :init
   (hlinum-activate)
@@ -920,13 +926,16 @@ KEY must be given in `kbd' notation."
     :foreground "#AF0000"
     :background (face-attribute 'linum :background)))
 
-(use-package ignoramus ; Ignore files
+;; Ignore files
+(use-package ignoramus
   :config
-  ;; Ignore some additional directories
-  (dolist (name '(".vagrant"))
-    (add-to-list 'ignoramus-file-basename-exact-names name))
-  (ignoramus-setup))
+  (progn
+    ;; Ignore some additional directories
+    (dolist (name '("node_modules" "vendor"))
+      (add-to-list 'ignoramus-file-basename-exact-names name))
+    (ignoramus-setup)))
 
+;; Git tools
 (use-package magit
   :bind
   ( ("C-c g c" . magit-clone)
@@ -937,85 +946,104 @@ KEY must be given in `kbd' notation."
   :init
   (global-magit-file-mode)
   :config
-  (use-package evil-magit)
+  (progn
+    (setenv "GIT_PAGER" "")
 
-  (use-package magit-gh-pulls
-    :init
-    (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls))
+    (setq magit-log-buffer-file-locked t)
+    (setq magit-refs-show-commit-count 'all)
+    (setq magit-save-repository-buffers 'dontask)
 
-  (setenv "GIT_PAGER" "")
+    (use-package evil-magit)
+    (use-package magit-gh-pulls
+      :init
+      (add-hook 'magit-mode-hook #'turn-on-magit-gh-pulls))))
 
-  (setq magit-log-buffer-file-locked t)
-  (setq magit-refs-show-commit-count 'all)
-  (setq magit-save-repository-buffers 'dontask))
 
-(use-package restclient ; REST REPL
+;; REST REPL
+(use-package restclient
   :defer t
   :config
   (use-package company-restclient
-    :after company
+    :preface
+    (progn
+      (autoload 'company-mode "company")
+      (defun my-restclient-company-setup ()
+        (setq-local company-backends '(company-restclient))
+        (company-mode)))
     :config
-    (add-to-list 'company-backends 'company-restclient)))
+    (add-hook 'restclient-mode-hook #'my-restclient-company-setup)))
 
-(use-package page-break-lines ; Display page breaks as a horizontal line
-  :diminish page-break-lines-mode
+;; Display page breaks as a horizontal line
+(use-package page-break-lines
+  :diminish (page-break-lines-mode)
   :defer t
   :init
   (global-page-break-lines-mode))
 
-(use-package persp-mode ; Workspaces with buffer isolation
-  :bind
-  ( ("M-[" . persp-prev)
-    ("M-]" . persp-next))
-  :init
-  (setq persp-save-dir (concat my-cache-directory "persp-confs/"))
-  (persp-mode)
-  :config
-  (set-face-attribute 'persp-face-lighter-buffer-not-in-persp nil
-    :background (face-attribute 'isearch-fail :background)
-    :foreground (face-attribute 'isearch-fail :foreground))
-
-  (setq persp-add-buffer-on-find-file 'if-not-autopersp)
-  (setq persp-autokill-buffer-on-remove 'kill-weak)
-
-  (add-hook 'persp-after-load-state-functions
-    (lambda (&rest args) (persp-auto-persps-pickup-buffers)) t)
-
-  (defvar after-find-file-hook nil)
-  (advice-add 'find-file :after
-    (lambda (&rest args) (run-hooks 'after-find-file-hook)))
-
-  (def-auto-persp "projectile"
-    :parameters '((dont-save-to-file . t))
-    :hooks '(after-find-file-hook)
-    :switch 'frame
-    :predicate
-    '((lambda (_buffer)
-        (when (and (buffer-file-name) (projectile-project-p))
-          t)))
-    :get-name-expr
-    (lambda ()
-      (projectile-project-name)))
+;; Workspaces with buffer isolation
+(use-package persp-mode
   :commands
   ( persp-mode
+    persp-switch persp-prev persp-next
     def-auto-persp
     persp-auto-persps-pickup-buffers
-    projectile-project-name
-    projectile-project-p))
+    projectile-project-name projectile-project-p)
+  :bind
+  ( ("C-c o" . persp-switch)
+    ("M-["   . persp-prev)
+    ("M-]"   . persp-next))
+  :init
+  (progn
+    (setq persp-save-dir (concat my-cache-directory "persp-confs/"))
+    (persp-mode))
+  :config
+  (progn
+    (setq persp-add-buffer-on-find-file 'if-not-autopersp)
+    (setq persp-autokill-buffer-on-remove 'kill-weak)
 
+    (add-hook 'persp-after-load-state-functions
+      (lambda (&rest args) (persp-auto-persps-pickup-buffers)) t)
+
+    (set-face-attribute 'persp-face-lighter-buffer-not-in-persp nil
+      :background (face-attribute 'isearch-fail :background)
+      :foreground (face-attribute 'isearch-fail :foreground))
+
+    (defvar after-find-file-hook nil)
+    (advice-add 'find-file :after
+      (lambda (&rest args) (run-hooks 'after-find-file-hook)))
+
+    (def-auto-persp "projectile"
+      :parameters '((dont-save-to-file . t))
+      :hooks '(after-find-file-hook)
+      :switch 'frame
+      :predicate
+      '((lambda (_buffer)
+          (when (and (buffer-file-name) (projectile-project-p))
+            t)))
+      :get-name-expr
+      (lambda ()
+        (projectile-project-name)))))
+
+;; Project interaction and navigation
 (use-package projectile
-  :diminish projectile-mode
+  :diminish (projectile-mode)
   :defer 5
   :bind-keymap
-  (("C-c p" . projectile-command-map))
+  ("C-c p" . projectile-command-map)
   :init
-  (setq projectile-cache-file
-    (concat my-cache-directory "projectile.cache"))
-  (setq projectile-known-projects-file
-    (concat my-cache-directory "projectile-bookmarks.eld"))
-
-  (projectile-mode)
+  (progn
+    (setq projectile-cache-file
+      (concat my-cache-directory "projectile.cache"))
+    (setq projectile-known-projects-file
+      (concat my-cache-directory "projectile-bookmarks.eld"))
+    (projectile-mode))
   :config
+  (add-to-list 'projectile-globally-ignored-directories ".cache")
+  (add-to-list 'projectile-globally-ignored-directories "node_modules")
+  (add-to-list 'projectile-globally-ignored-directories "tmp")
+  (add-to-list 'projectile-globally-ignored-directories "vendor")
+
+  ;; Completion system
   (use-package helm-projectile
     :bind
     ("C-c s g" . helm-projectile-grep)
@@ -1025,131 +1053,145 @@ KEY must be given in `kbd' notation."
     (setq helm-projectile-fuzzy-match t)
     (setq projectile-completion-system 'helm)))
 
-(use-package stripe-buffer ; Striped directory listing
+;; Striped directory listing
+(use-package stripe-buffer
   :defer 1
   :init
   (add-hook 'dired-mode-hook 'stripe-listify-buffer)
   :config
   (set-face-attribute 'stripe-highlight nil
-    :background (face-attribute 'font-lock-comment-face :background))
-  (set-face-attribute 'stripe-hl-line nil
-    :foreground (face-attribute 'default :foreground)
-    :background (face-attribute 'hl-line :background)))
+    :background (face-attribute 'fringe :background)))
 
+;; Utilities for opening files with sudo
 (use-package sudo-edit
   :defer t
   :bind
   ("C-c f s" . sudo-edit))
 
+;; Tree based undo history
 (use-package undo-tree
-  :diminish undo-tree-mode
+  :diminish (undo-tree-mode)
   :bind
   ("C-c u" . undo-tree-visualize)
   :init
-  (setq undo-tree-auto-save-history t)
-  (setq undo-tree-history-directory-alist `((".*" . ,undo-directory)))
-  (global-undo-tree-mode)
+  (progn
+    (setq undo-tree-auto-save-history t)
+    (setq undo-tree-history-directory-alist `((".*" . ,undo-directory)))
+    (global-undo-tree-mode))
   :config
-  (setq undo-tree-visualizer-diff t)
-  (setq undo-tree-visualizer-timestamps t))
+  (progn
+    (setq undo-tree-visualizer-diff t)
+    (setq undo-tree-visualizer-timestamps t)))
 
-(use-package visual-fill-column ; Wrap lines at fill-column
+;; Wrap lines at fill-column
+(use-package visual-fill-column
   :defer t
   :init
-  (setq-default visual-fill-column-center-text t)
-  (setq-default visual-fill-column-width 100)
-  (add-hook 'text-mode-hook 'visual-fill-column-mode)
-  (add-hook 'prog-mode-hook 'visual-fill-column-mode))
+  (progn
+    (setq-default visual-fill-column-center-text t)
+    (setq-default visual-fill-column-width 100)
+    (add-hook 'text-mode-hook 'visual-fill-column-mode)
+    (add-hook 'prog-mode-hook 'visual-fill-column-mode)))
 
+;; Use of modern regexp engines
 (use-package visual-regexp-steroids
+  :commands (vr/replace vr/query-repalce)
   :bind
   ( ([remap isearch-backward] . vr/isearch-backward)
     ([remap isearch-forward]  . vr/isearch-forward)
     ("C-c s r" . vr/query-repalce)
-    ("C-c s R" . vr/replace))
-  :commands
-  ( vr/replace
-    vr/query-repalce))
+    ("C-c s R" . vr/replace)))
 
+;; Interactive key descriptions
 (use-package which-key
-  :diminish which-key-mode
+  :diminish (which-key-mode)
   :defer t
+  :commands (which-key-enable-god-mode-support)
   :init
   (which-key-mode)
   :config
-  (setq which-key-idle-delay 0.4)
-  (setq which-key-sort-order 'which-key-prefix-then-key-order)
+  (progn
+    (setq which-key-idle-delay 0.4)
+    (setq which-key-sort-order 'which-key-prefix-then-key-order)
 
-  (setq which-key-key-replacement-alist
-    '( ("<\\([[:alnum:]-]+\\)>" . "\\1")
-       ("up"                    . "↑")
-       ("right"                 . "→")
-       ("down"                  . "↓")
-       ("left"                  . "←")
-       ("DEL"                   . "⌫")
-       ("deletechar"            . "⌦")
-       ("RET"                   . "⏎")))
+    (setq which-key-key-replacement-alist
+      '( ("<\\([[:alnum:]-]+\\)>" . "\\1")
+         ("up"                    . "↑")
+         ("right"                 . "→")
+         ("down"                  . "↓")
+         ("left"                  . "←")
+         ("DEL"                   . "⌫")
+         ("deletechar"            . "⌦")
+         ("RET"                   . "⏎")))
 
-  (setq which-key-description-replacement-alist
-    '( ("Prefix Command" . "prefix")
-       ("\\`\\?\\?\\'"   . "λ")
-       ("projectile-"    . "pt-")
-       ("helm-"          . "h-")
-       ("flycheck-"      . "flyc-")))
+    (setq which-key-description-replacement-alist
+      '( ("Prefix Command" . "prefix")
+         ("\\`\\?\\?\\'"   . "λ")
+         ("projectile-"    . "pt-")
+         ("helm-"          . "h-")
+         ("flycheck-"      . "flyc-")))
 
-  (which-key-add-key-based-replacements
-    "C-c !" "flycheck"
-    "C-c =" "diff"
-    "C-c @" "outline"
-    "C-c a" "apps"
-    "C-c a w" "web"
-    "C-c b" "buffers"
-    "C-c c" "compile"
-    "C-c f" "files"
-    "C-c g" "git"
-    "C-c h" "helm/help"
-    "C-c j" "jump"
-    "C-c l" "language"
-    "C-c p" "projects"
-    "C-c s" "search"
-    "C-c t" "toggles"
-    "C-c w" "windows"
-    "C-c x" "text"
-    "C-c x a" "align")
+    (which-key-add-key-based-replacements
+      "C-c !" "flycheck"
+      "C-c =" "diff"
+      "C-c @" "outline"
+      "C-c a" "apps"
+      "C-c a w" "web"
+      "C-c b" "buffers"
+      "C-c c" "compile"
+      "C-c f" "files"
+      "C-c g" "git"
+      "C-c h" "helm/help"
+      "C-c j" "jump"
+      "C-c l" "language"
+      "C-c p" "projects"
+      "C-c s" "search"
+      "C-c t" "toggles"
+      "C-c w" "windows"
+      "C-c x" "text"
+      "C-c x a" "align")
 
-  (which-key-enable-god-mode-support)
-  :commands which-key-enable-god-mode-support)
+    (which-key-enable-god-mode-support)))
 
-(use-package writeroom-mode ; Distraction-free editing
+;; Distraction-free editing
+(use-package writeroom-mode
   :bind
   ("C-c t r" . writeroom-mode))
 
-(use-package ws-butler ; Trim trailing whitespace
+;; Trim trailing white-space
+(use-package ws-butler
   :diminish (ws-butler-mode . " ☯")
   :commands (ws-butler-global-mode)
   :defer 1
   :config
   (ws-butler-global-mode))
 
-(use-package zoom-window ; Temporary one window
+;; Temporary one window
+(use-package zoom-window
   :bind
   ("C-c w z" . zoom-window-zoom)
   :config
   (setq zoom-window-mode-line-color "PaleGoldenrod"))
 
 ;;; Language packages
+
+;; Support for Bats
 (use-package bats-mode
   :mode ("\\.bats\\'" . bats-mode))
 
+;; Support for CSS
 (use-package css-mode
   :mode ("\\.css\\'" . css-mode))
 
+;; Support for CSV
 (use-package csv-mode
   :mode ("\\.csv\\'" . csv-mode))
 
+;; Support for Dockerfiles
 (use-package dockerfile-mode
   :mode ("Dockerfile.*\\'" . dockerfile-mode))
 
+;; Support for Elixir
 (use-package elixir-mode
   :mode ( ("\\.ex\\'"      . elixir-mode)
           ("\\.exs\\'"     . elixir-mode)
@@ -1165,7 +1207,8 @@ KEY must be given in `kbd' notation."
       :config
       (flycheck-credo-setup))))
 
-(use-package ereader ; EPUB Reader
+;; EPUB Reader
+(use-package ereader
   :if window-system
   :mode ("\\.epub$" . ereader-mode)
   :init
@@ -1175,6 +1218,7 @@ KEY must be given in `kbd' notation."
     "Setup Epub mode."
     (page-break-lines-mode +1)))
 
+;; Support for Erlang
 (use-package erlang
   :mode ( ("\\.erl\\'" . erlang-mode)
           ("\\.hrl\\'" . erlang-mode)
@@ -1208,6 +1252,7 @@ KEY must be given in `kbd' notation."
     :config
     (add-hook 'erlang-mode-hook #'my-erlang-company-setup)))
 
+;; Support for Fish
 (use-package fish-mode
   :mode ( ("\\.fish\\'"           . fish-mode)
           ("/fish_funced\\..*\\'" . fish-mode))
