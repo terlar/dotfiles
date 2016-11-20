@@ -1908,6 +1908,41 @@ The insertion will be repeated COUNT times."
     (add-hook 'sh-mode-hook #'my-sh-company-hook)
     (add-hook 'fish-mode-hook #'my-fish-company-hook)))
 
+;;; YCMD - Completion, Documentation and Linting
+(use-package ycmd
+  :if (getenv "YCMD_PATH")
+  :defines
+  (ycmd-server-command
+   ycmd-extra-conf-handler
+   ycmd-max-num-identifier-candidates)
+  :commands (ycmd-mode ycmd-eldoc-setup)
+  :init
+  (dolist (hook '(c-mode-hook c++-mode-hook))
+    (add-hook hook #'ycmd-mode))
+  :config
+  (progn
+    (setq ycmd-extra-conf-handler 'load)
+    (setq ycmd-max-num-identifier-candidates 30)
+
+    (setq ycmd-server-command (list "python2" (getenv "YCMD_PATH")))
+    (setq-default ycmd-global-config (concat user-emacs-directory
+                                             "ycm_extra_conf.py"))
+
+    (require 'ycmd-eldoc)
+    (add-hook 'ycmd-mode-hook #'ycmd-eldoc-setup)))
+
+(use-package company-ycmd
+  :commands (company-ycmd-setup)
+  :after ycmd
+  :defer t
+  :init (add-hook 'ycmd-mode-hook #'company-ycmd-setup))
+
+(use-package flycheck-ycmd
+  :commands (flycheck-ycmd-setup)
+  :after ycmd
+  :defer t
+  :init (add-hook 'ycmd-mode-hook #'flycheck-ycmd-setup))
+
 ;;; Modeline
 (setq-default mode-line-format
               '("%e"

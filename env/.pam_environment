@@ -7,6 +7,7 @@ HOME          DEFAULT=/home/@{PAM_USER} OVERRIDE=${HOME}
 GOPATH        DEFAULT=${HOME}/go
 RUST_SRC_PATH DEFAULT=/usr/src/rust/src
 RUBY_PATH     DEFAULT=${HOME}/.rubies/ruby-2.3.1
+
 PATH          DEFAULT=${HOME}/.local/bin\
 :/usr/local/sbin\
 :/usr/local/bin\
@@ -15,8 +16,9 @@ PATH          DEFAULT=${HOME}/.local/bin\
 :${HOME}/.cargo/bin\
 :${RUBY_PATH}/bin\
 :/usr/bin/core_perl
+
 XBMC_HOME DEFAULT=/usr/share/plexhometheater
-VAGRANT_DOCKER_CACHE DEFAULT=${HOME}/.docker-cache
+YCMD_PATH DEFAULT=/usr/share/vim/vimfiles/third_party/ycmd/ycmd
 
 # Tools
 VISUAL    DEFAULT=emacsclient
