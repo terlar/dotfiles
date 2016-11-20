@@ -10,7 +10,6 @@ insert_final_newline = true
 # Emacs Lisp
 [**/*.el]
 indent_style = spaces
-indent_size = 2
 
 # Erlang
 [**/*.erl]
