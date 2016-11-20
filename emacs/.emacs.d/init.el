@@ -91,6 +91,7 @@
 (setq create-lockfiles nil)
 (setq find-file-visit-truename t)
 (setq load-prefer-newer t)
+(setq initial-major-mode 'rst-mode)
 
 ;;; Appearance
 (when (fboundp 'menu-bar-mode) (menu-bar-mode -1))
