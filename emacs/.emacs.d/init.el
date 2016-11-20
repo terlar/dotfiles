@@ -183,6 +183,9 @@
 ;; Show line and column number in the mode line
 (column-number-mode)
 (line-number-mode)
+
+;; Auto-executable scripts
+(add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p)
 
 ;;; Editing
 ;; Increase line spacing
