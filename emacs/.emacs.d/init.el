@@ -1705,6 +1705,9 @@ The insertion will be repeated COUNT times."
   :interpreter ("pry" . enh-ruby-mode)
   :config
   (progn
+    ;; Don't indent the parenthesis or bracket based on the previous line.
+    (setq ruby-deep-indent-paren nil)
+
     ;; Code navigation, documentation lookup and completion
     (use-package robe
       :commands (robe-mode robe-start)
