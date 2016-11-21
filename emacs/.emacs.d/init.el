@@ -1679,17 +1679,17 @@ The insertion will be repeated COUNT times."
     (set-face-attribute 'rst-literal nil :inherit 'fixed-pitch)
 
     (set-face-attribute 'rst-level-1 nil
-                        :background nil :height 1.8 :weight 'bold)
+                        :background 'unspecified :weight 'bold :height 1.8)
     (set-face-attribute 'rst-level-2 nil
-                        :background nil :height 1.4 :weight 'bold)
+                        :background 'unspecified :weight 'bold :height 1.4)
     (set-face-attribute 'rst-level-3 nil
-                        :background nil :height 1.2 :weight 'bold)
+                        :background 'unspecified :weight 'bold :height 1.2)
     (set-face-attribute 'rst-level-4 nil
-                        :background nil :height 1.0 :weight 'bold)
+                        :background 'unspecified :weight 'bold :height 1.0)
     (set-face-attribute 'rst-level-5 nil
-                        :background nil :height 1.0 :weight 'bold)
+                        :background 'unspecified :weight 'bold :height 1.0)
     (set-face-attribute 'rst-level-6 nil
-                        :background nil :height 1.0 :weight 'bold)))
+                        :background 'unspecified :weight 'bold :height 1.0)))
 
 ;; Support for Ruby
 (use-package enh-ruby-mode
