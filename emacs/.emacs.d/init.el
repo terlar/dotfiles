@@ -1593,7 +1593,7 @@ The insertion will be repeated COUNT times."
 (use-package pdf-tools
   :if window-system
   :mode ("\\.pdf\\'" . pdf-view-mode)
-  :commands (pdf-tools-install))
+  :commands (pdf-view-mode pdf-tools-install))
 
 ;; Support for PKGBUILD
 (use-package pkgbuild-mode
