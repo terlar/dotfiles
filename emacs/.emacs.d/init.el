@@ -1706,7 +1706,7 @@ The insertion will be repeated COUNT times."
   :config
   (progn
     ;; Don't indent the parenthesis or bracket based on the previous line.
-    (setq ruby-deep-indent-paren nil)
+    (setq enh-ruby-deep-indent-paren nil)
 
     ;; Code navigation, documentation lookup and completion
     (use-package robe
