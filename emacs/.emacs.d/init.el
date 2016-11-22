@@ -1733,16 +1733,7 @@ The insertion will be repeated COUNT times."
       (progn
         (setq inf-ruby-default-implementation "pry")
         (add-hook 'enh-ruby-mode-hook #'inf-ruby-minor-mode)
-        (add-hook 'compilation-filter-hook #'inf-ruby-auto-enter)
-
-        (use-package company-inf-ruby
-          :preface
-          (progn
-            (autoload 'company-mode "company")
-            (defun my-ruby-repl-company-hook ()
-              (setq-local company-backends '(company-inf-ruby))
-              (company-mode)))
-          :config (add-hook 'enh-ruby-mode-hook #'my-ruby-repl-company-hook))))
+        (add-hook 'compilation-filter-hook #'inf-ruby-auto-enter)))
 
     ;; Auto-insert end keyword
     (use-package ruby-end
