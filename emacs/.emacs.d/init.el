@@ -1719,7 +1719,8 @@ The insertion will be repeated COUNT times."
         (defun my-ruby-mode-hook ()
           "Setup Ruby mode."
           (robe-mode)
-          (setq-local company-backends '(company-robe))
+          (make-local-variable 'company-backends)
+          (add-to-list 'company-backends '(company-robe))
           (company-mode)))
       :defer t
       :init (add-hook 'enh-ruby-mode-hook #'my-ruby-mode-hook))
