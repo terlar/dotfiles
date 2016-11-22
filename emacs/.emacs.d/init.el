@@ -782,7 +782,8 @@ KEY must be given in `kbd' notation."
   :init
   (progn
     (global-diff-hl-mode)
-    (add-hook 'dired-mode-hook #'diff-hl-dired-mode)))
+    (add-hook 'dired-mode-hook #'diff-hl-dired-mode)
+    (add-hook 'magit-post-refresh-hook #'diff-hl-magit-post-refresh)))
 
 ;; Dired enhancements
 (use-package dired+
