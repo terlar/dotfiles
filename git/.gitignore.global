@@ -1,26 +1,21 @@
 # Development
-.vagrant/
-crane.json
-
-# Code
-/tmp/
+tmp/
 tags
-Session.vim
 TODO
 
-# Eclipse
-.buildpath
-.project
-
 # Bundler
-vendor/bundle
+.bundle/
+vendor/bundle/
 Gemfile.local*
 
+# Eclipse
+.buildpath/
+.project/
+
 # Haskell
-.stack-work
+.stack-work/
 *.o
 *.hi
 
-.rake_tasks
-.pow*
-.pt
+# Vagrant
+.vagrant/
