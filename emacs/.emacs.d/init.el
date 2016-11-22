@@ -778,6 +778,8 @@ KEY must be given in `kbd' notation."
 
 ;; Display change diff in fringe with colors
 (use-package diff-hl
+  :commands (global-diff-hl-mode diff-hl-dired-mode)
+  :functions (diff-hl-magit-post-refresh)
   :defer t
   :init
   (progn
@@ -1170,7 +1172,7 @@ KEY must be given in `kbd' notation."
     (setq which-key-idle-delay 0.4)
     (setq which-key-sort-order 'which-key-prefix-then-key-order)
 
-    (setq which-key-key-replacement-alist
+    (setq which-key-replacement-alist
           '( ("<\\([[:alnum:]-]+\\)>" . "\\1")
              ("up"                    . "↑")
              ("right"                 . "→")
@@ -1180,7 +1182,7 @@ KEY must be given in `kbd' notation."
              ("deletechar"            . "⌦")
              ("RET"                   . "⏎")))
 
-    (setq which-key-description-replacement-alist
+    (setq which-key-replacement-alist
           '( ("Prefix Command" . "prefix")
              ("\\`\\?\\?\\'"   . "λ")
              ("projectile-"    . "pt-")
@@ -1737,6 +1739,7 @@ The insertion will be repeated COUNT times."
 
     ;; Auto-insert end keyword
     (use-package ruby-end
+      :commands (ruby-end-mode)
       :config
       (progn
         (setq ruby-end-insert-newline nil)
