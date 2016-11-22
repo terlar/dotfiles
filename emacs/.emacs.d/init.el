@@ -1094,19 +1094,20 @@ KEY must be given in `kbd' notation."
           (concat my-cache-directory "projectile-bookmarks.eld"))
     (projectile-mode))
   :config
-  (add-to-list 'projectile-globally-ignored-directories ".cache")
-  (add-to-list 'projectile-globally-ignored-directories "node_modules")
-  (add-to-list 'projectile-globally-ignored-directories "tmp")
-  (add-to-list 'projectile-globally-ignored-directories "vendor")
+  (progn
+    (add-to-list 'projectile-globally-ignored-directories ".cache")
+    (add-to-list 'projectile-globally-ignored-directories "node_modules")
+    (add-to-list 'projectile-globally-ignored-directories "tmp")
+    (add-to-list 'projectile-globally-ignored-directories "vendor")
 
-  ;; Completion system
-  (use-package helm-projectile
-    :bind ("C-c s g" . helm-projectile-grep)
-    :init (helm-projectile-on)
-    :config
-    (progn
-      (setq helm-projectile-fuzzy-match t)
-      (setq projectile-completion-system 'helm))))
+    ;; Completion system
+    (use-package helm-projectile
+      :bind ("C-c s g" . helm-projectile-grep)
+      :init (helm-projectile-on)
+      :config
+      (progn
+        (setq helm-projectile-fuzzy-match t)
+        (setq projectile-completion-system 'helm)))))
 
 ;; Striped directory listing
 (use-package stripe-buffer
