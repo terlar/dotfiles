@@ -7,7 +7,6 @@ Type=forking
 Environment=LANG=zh_CN.UTF-8
 ExecStart=/usr/bin/emacs --daemon
 ExecStop=/usr/bin/emacsclient -c --eval "(kill-emacs)"
-Restart=always
 
 [Install]
 WantedBy=default.target
