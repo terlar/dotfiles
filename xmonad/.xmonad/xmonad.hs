@@ -1,3 +1,4 @@
+import           Data.Default              (def)
 import           XMonad
 import           XMonad.Util.EZConfig      (additionalKeysP,
                                             additionalMouseBindings,
@@ -13,7 +14,7 @@ import           Hooks                     (myEventHook, myLayoutHook,
 import           Keys                      (myKeys, myMouse)
 import           Topics                    (myTopics)
 
-myConfig = defaultConfig
+myConfig = def
     { modMask = myModMask
     , terminal = myTerm
     , borderWidth = myBorderWidth
