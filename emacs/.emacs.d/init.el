@@ -1914,15 +1914,26 @@ The insertion will be repeated COUNT times."
 
 ;; Completion for shell functions and executable files in PATH
 (use-package company-shell
-  :after sh-script
   :preface
   (progn
     (autoload 'company-mode "company")
     (defun my-sh-company-hook ()
-      (setq-local company-backends '(company-shell))
+      (setq-local company-backends '((company-shell company-files)))
       (company-mode))
     (defun my-fish-company-hook ()
-      (setq-local company-backends '(company-fish-shell))
+      (autoload 'company-keywords "company")
+
+      ;; Setup fish keywords
+      (when (bound-and-true-p company-keywords-alist)
+        (add-to-list 'company-keywords-alist
+                     (cons 'fish-mode (append fish-builtins
+                                              fish-keywords))))
+
+      ;; Setup backends
+      (setq-local company-backends '((company-keywords
+                                      company-files
+                                      company-shell
+                                      company-fish-shell)))
       (company-mode)))
   :config
   (progn
