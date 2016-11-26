@@ -1611,7 +1611,14 @@ The insertion will be repeated COUNT times."
   :config
   (progn
     (setq plantuml-java-command "java-headless")
-    (setq plantuml-jar-path "/opt/plantuml/plantuml.jar")))
+    (setq plantuml-jar-path "/opt/plantuml/plantuml.jar")
+
+    ;; Flycheck support for PlantUML
+    (use-package flycheck-plantuml
+      :commands (flycheck-plantuml-setup)
+      :init
+      (with-eval-after-load 'flycheck
+        (flycheck-plantuml-setup)))))
 
 ;; Support for Protocol Buffers
 (use-package protobuf-mode
