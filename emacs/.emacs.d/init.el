@@ -1271,7 +1271,9 @@ KEY must be given in `kbd' notation."
       :init (add-hook 'elixir-mode-hook #'alchemist-mode))
 
     (use-package flycheck-credo
-      :config (flycheck-credo-setup))))
+      :config
+      (with-eval-after-load 'flycheck
+        (flycheck-credo-setup)))))
 
 ;; EPUB Reader
 (use-package ereader
@@ -1765,7 +1767,9 @@ The insertion will be repeated COUNT times."
     ;; Flycheck support for Rust
     (use-package flycheck-rust
       :commands (flycheck-rust-setup)
-      :init (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
+      :init
+      (with-eval-after-load 'flycheck
+        (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)))
 
     ;; Racer support (completion, definition lookup, describe function/type)
     (use-package racer
@@ -1952,7 +1956,9 @@ The insertion will be repeated COUNT times."
   :commands (flycheck-ycmd-setup)
   :after ycmd
   :defer t
-  :init (add-hook 'ycmd-mode-hook #'flycheck-ycmd-setup))
+  :init
+  (with-eval-after-load 'flycheck
+    (add-hook 'ycmd-mode-hook #'flycheck-ycmd-setup)))
 
 ;;; Modeline
 (setq-default mode-line-format
