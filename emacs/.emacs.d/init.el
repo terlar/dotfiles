@@ -1727,11 +1727,21 @@ The insertion will be repeated COUNT times."
       :preface
       (progn
         (autoload 'company-mode "company")
+        (autoload 'company-keywords "company")
         (defun my-ruby-mode-hook ()
           "Setup Ruby mode."
           (robe-mode)
-          (make-local-variable 'company-backends)
-          (add-to-list 'company-backends '(company-robe))
+
+          ;; Setup ruby keywords
+          (when (bound-and-true-p company-keywords-alist)
+            (add-to-list 'company-keywords-alist
+                         (cons 'enh-ruby-mode
+                               (cdr (assq 'ruby-mode company-keywords-alist)))))
+
+          ;; Setup completion backends
+          (setq-local company-backends '((company-keywords
+                                          company-files
+                                          company-robe)))
           (company-mode)))
       :defer t
       :init (add-hook 'enh-ruby-mode-hook #'my-ruby-mode-hook))
