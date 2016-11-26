@@ -2,7 +2,6 @@ module Hooks where
 
 import           XMonad                          hiding ((|||))
 
-import           XMonad.Actions.Promote          (promote)
 import           XMonad.Actions.ShowText
 
 import           XMonad.Hooks.DynamicLog
@@ -136,17 +135,7 @@ myLayoutHook =
     delta = 3/100
 
 myEventHook :: Event -> X All
-myEventHook = floatClickFocusHandler <+> handleTimerEvent
-
--- Bring clicked floating window to the front
-floatClickFocusHandler :: Event -> X All
-floatClickFocusHandler ButtonEvent{ev_window = w} = withWindowSet $ \s ->
-    do
-        Control.Monad.when (isFloat w s) (focus w >> promote)
-        return (All True)
-  where
-    isFloat win set = M.member win $ W.floating set
-floatClickFocusHandler _ = return (All True)
+myEventHook = handleTimerEvent
 
 -- Queries
 matchAny :: String -> Query Bool
