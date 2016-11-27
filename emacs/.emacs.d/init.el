@@ -1732,12 +1732,6 @@ The insertion will be repeated COUNT times."
           "Setup Ruby mode."
           (robe-mode)
 
-          ;; Setup ruby keywords
-          (when (bound-and-true-p company-keywords-alist)
-            (add-to-list 'company-keywords-alist
-                         (cons 'enh-ruby-mode
-                               (cdr (assq 'ruby-mode company-keywords-alist)))))
-
           ;; Setup completion backends
           (setq-local company-backends '((company-keywords
                                           company-files
