@@ -1,48 +1,66 @@
 #!/usr/bin/env bash
+set -e
+set -o pipefail
+
+# Setup one vagrant SSH cache-file per folder, in case we have different
+# Vagrant instances running.
 readonly SSH_CONFIG_CACHE="/tmp/vagrant-ssh-config-${PWD//\//%}"
 
 cache_ssh_config() {
-	vagrant ssh-config > "$SSH_CONFIG_CACHE"
+	vagrant ssh-config > "${SSH_CONFIG_CACHE}"
 }
 
 run() {
-	if [[ ! -f "$SSH_CONFIG_CACHE" ]]; then
+	if [[ ! -f "${SSH_CONFIG_CACHE}" ]]; then
 		cache_ssh_config
 	fi
 
-	local cmd=''
+	local cmd
 	# Escape white-space to retain proper arguments
 	for i in "$@"; do
 		cmd+=${i// /'\ '}' '
 	done
 
+	# Trap SIGINT to make sure Ctrl+C doesn't act as a failure.
+	# Execute the command in the context of /vagrant.
+	# Run the command in a login shell.
 	cmd="trap true SIGINT; cd /vagrant; bash -l -c '${cmd}'"
 
-	ssh -t -t -q -F $SSH_CONFIG_CACHE default -- $cmd
+	# shellcheck disable=SC2029
+	# -t -t Force TTY allocation (to run interactive screen-like commands)
+	# -q Suppress warning and diagnostic messages
+	# -F Read vagrant SSH config from cache file
+	ssh -t -t -q -F "${SSH_CONFIG_CACHE}" default -- "${cmd}"
+}
+
+print_error() {
+	local msg="$1"
+	local command="${0##*/}"
+	>&2 echo "${command}: error: ${msg}"
 }
 
 main() {
 	if [[ ! -f "${PWD}/Vagrantfile" ]]; then
-		echo 'Error: No Vagrantfile in current directory'
+		print_error "no Vagrantfile in current directory"
 		exit 1
 	fi
 
-	run "$@"
-	local exit_code=$?
+	local exit_code=0
+	run "$@" || exit_code="$?"
 
-	if [[ $exit_code -eq 255 ]]; then
+	if [[ "${exit_code}" -eq 255 ]]; then
 		echo
-		echo 'Error: Could not connect to vagrant'
-		rm "$SSH_CONFIG_CACHE"
+		print_error "could not connect to vagrant"
+		rm "${SSH_CONFIG_CACHE}"
 
-		read -n 1 -p "Do you want to start vagrant and retry? [y/N] " choice
+		read -r -n 1 -p "Do you want to start vagrant and retry? [y/N] " choice
 		echo
-		case $choice in
+		case "${choice}" in
 			[Yy]*) vagrant up && run "$@" ;;
-			*)     exit $exit_code        ;;
+			*)     exit "${exit_code}"    ;;
 		esac
 	else
-		exit $exit_code
+		exit "${exit_code}"
 	fi
 }
 
