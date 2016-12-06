@@ -834,6 +834,9 @@ KEY must be given in `kbd' notation."
     (setq evil-auto-indent t)
     (setq evil-want-fine-undo 'fine)
 
+    ;; evil-want-Y-yank-to-eol must be set via customize to have an effect
+    (customize-set-variable 'evil-want-Y-yank-to-eol t)
+
     ;; Insert state uses Emacs key-map.
     (setq evil-insert-state-map (make-sparse-keymap))
     (define-key evil-insert-state-map (kbd "<escape>") #'evil-normal-state)
