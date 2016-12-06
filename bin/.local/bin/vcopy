@@ -10,29 +10,44 @@ cache_ssh_config() {
 	vagrant ssh-config > "${SSH_CONFIG_CACHE}"
 }
 
-run() {
+copy() {
 	if [[ ! -f "${SSH_CONFIG_CACHE}" ]]
 	then
 		cache_ssh_config
 	fi
 
-	local cmd
-	# Escape white-space to retain proper arguments
-	for i in "$@"
-	do
-		cmd+=${i// /'\ '}' '
-	done
+	local local_source=1
+	local source="${1:?missing source}"
+	local destination="${2:?missing destination}"
 
-	# Trap SIGINT to make sure Ctrl+C doesn't act as a failure.
-	# Execute the command in the context of /vagrant.
-	# Run the command in a login shell.
-	cmd="trap true SIGINT; cd /vagrant; bash -l -c '${cmd}'"
+	if [[ ! -e "${source}" ]]
+	then
+		local_source=0
+		source="default:${source}"
+	fi
 
-	# shellcheck disable=SC2029
-	# -t -t Force TTY allocation (to run interactive screen-like commands)
-	# -q Suppress warning and diagnostic messages
-	# -F Read vagrant SSH config from cache file
-	ssh -t -t -q -F "${SSH_CONFIG_CACHE}" default -- "${cmd}"
+	if [[ "${local_source}" = 1 ]] || [[ ! -e "${destination}" ]]
+	then
+		destination="default:${destination}"
+	fi
+
+	print_info "${source} => ${destination}"
+	scp -q -F "${SSH_CONFIG_CACHE}" "${source}" "${destination}"
+}
+
+vagrant_running() {
+	if [[ ! -f "${SSH_CONFIG_CACHE}" ]]
+	then
+		cache_ssh_config
+	fi
+
+	ssh -q -F "${SSH_CONFIG_CACHE}" default true
+}
+
+print_info() {
+	local msg="$1"
+	local command="${0##*/}"
+	echo "${command}: ${msg}"
 }
 
 print_error() {
@@ -48,11 +63,10 @@ main() {
 		exit 1
 	fi
 
-	local exit_code=0
-	run "$@" || exit_code="$?"
-
-	if [[ "${exit_code}" -eq 255 ]]
+	if vagrant_running
 	then
+		copy "$@"
+	else
 		echo
 		print_error "could not connect to vagrant"
 		rm "${SSH_CONFIG_CACHE}"
@@ -61,14 +75,12 @@ main() {
 		echo
 		case "${choice}" in
 			[Yy]*)
-				vagrant up && run "$@"
+				vagrant up && copy "$@"
 				;;
 			*)
-				exit "${exit_code}"
+				exit 1
 				;;
 		esac
-	else
-		exit "${exit_code}"
 	fi
 }
 
