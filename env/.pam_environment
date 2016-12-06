@@ -6,7 +6,7 @@ LC_ALL DEFAULT=${LANG}
 HOME          DEFAULT=/home/@{PAM_USER} OVERRIDE=${HOME}
 GOPATH        DEFAULT=${HOME}/go
 RUST_SRC_PATH DEFAULT=/usr/src/rust/src
-RUBY_PATH     DEFAULT=${HOME}/.rubies/ruby-2.3.1
+RUBY_PATH     DEFAULT=${HOME}/.rubies/ruby-2.3.3
 
 PATH          DEFAULT=${HOME}/.local/bin\
 :/usr/local/sbin\
