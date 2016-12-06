@@ -17,5 +17,8 @@ Gemfile.local*
 *.o
 *.hi
 
+# Ruby
+.rake_tasks
+
 # Vagrant
 .vagrant/
