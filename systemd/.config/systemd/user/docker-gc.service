@@ -1,0 +1,13 @@
+[Unit]
+Description=Docker Garbage Collection
+Documentation=https://github.com/spotify/docker-gc
+
+[Service]
+Type=oneshot
+ExecStartPre=/usr/bin/docker pull spotify/docker-gc
+ExecStart=/usr/bin/docker run \
+  --rm \
+  --name docker-gc \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v /etc:/etc \
+  spotify/docker-gc

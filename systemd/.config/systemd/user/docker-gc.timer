@@ -1,0 +1,10 @@
+[Unit]
+Description=Docker Garbage Collection Timer
+
+[Timer]
+Unit=docker-gc.service
+OnBootSec=10min
+OnUnitActiveSec=1h
+
+[Install]
+WantedBy=timers.target
