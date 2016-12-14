@@ -1,55 +1,68 @@
 #!/usr/bin/env bash
+set -e
+set -o pipefail
+
 has_cmd() {
-	local cmd="$@"
-	if command -v $cmd >/dev/null; then
+	if command -v "$*" >/dev/null
+	then
 		return 0
 	else
 		return 1
 	fi
 }
 
-main() {
-	local no_browser
+pandoc_opts() {
+	local opts=()
 
-	while true ; do
+	local css_file="${HOME}/.local/share/pandoc/css/default.css"
+	[[ -e "${css_file}" ]] && opts+=(-c "${css_file}")
+
+	opts+=(-s)
+	echo "${opts[@]}"
+}
+
+main() {
+	local browser_cmd="${BROWSER}"
+
+	while true
+	do
 		case "$1" in
 			-n)
-				no_browser=1
+				browser_cmd="cat"
 				shift 1
-			;;
+				;;
 			*)
 				break
-			;;
+				;;
 		esac
 	done
 
-	local file="$*"
 	local cmd
+	local file="$*"
+	local opts=()
 
 	case "$file" in
 		*.rst)
-			has_cmd rst2html && cmd=rst2html
-			has_cmd rst2html2 && cmd=rst2html2
-			has_cmd pandoc && cmd='pandoc -s'
+			has_cmd rst2html  && cmd="rst2html"
+			has_cmd rst2html2 && cmd="rst2html2"
+			has_cmd pandoc    && cmd="pandoc" opts=($(pandoc_opts))
 			;;
 		*.md)
-			has_cmd marked && cmd='marked'
-			has_cmd pandoc && cmd='pandoc -s'
+			has_cmd marked && cmd="marked"
+			has_cmd pandoc && cmd="pandoc" opts=($(pandoc_opts))
 			;;
 		*.html)
-			cmd='cat'
+			cmd="cat"
 			;;
 	esac
 
-	if [[ -z "$cmd" ]]; then
-		cmd='awk 1 ORS="<br>"'
+	if [[ -z "${cmd}" ]]
+	then
+		cmd="awk"
+		opts=(1 ORS="<br>")
 	fi
 
-	if [[ "$no_browser" = 1 ]] ; then
-		eval $cmd "'$file'"
-	else
-		eval $cmd "'$file'" | browser
-	fi
+	"${cmd}" "${opts[@]}" "${file}" | "${browser_cmd}"
 }
 
 main "$@"
