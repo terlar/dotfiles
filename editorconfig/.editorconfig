@@ -41,6 +41,11 @@ indent_size = 2
 indent_style = spaces
 indent_size = 4
 
+# Slim template
+[**/*.slim]
+indent_style = spaces
+indent_size = 2
+
 # YAML files
 [**/*.yml]
 indent_style = spaces
