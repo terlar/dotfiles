@@ -257,7 +257,7 @@ KEY must be given in `kbd' notation."
 (bind-key "C-+" 'toggle-indent-mode-setting)
 
 ;; C-c
-(bind-key "C-c <tab>" 'ff-find-other-file) ; Open alternate file
+(bind-key "C-c TAB" 'ff-find-other-file) ; Open alternate file
 
 (defun delete-current-line ()
   "Delete the current line."
@@ -1175,22 +1175,28 @@ KEY must be given in `kbd' notation."
     (setq which-key-idle-delay 0.4)
     (setq which-key-sort-order 'which-key-prefix-then-key-order)
 
-    (setq which-key-replacement-alist
-          '( ("<\\([[:alnum:]-]+\\)>" . "\\1")
-             ("up"                    . "↑")
-             ("right"                 . "→")
-             ("down"                  . "↓")
-             ("left"                  . "←")
-             ("DEL"                   . "⌫")
-             ("deletechar"            . "⌦")
-             ("RET"                   . "⏎")))
+    (push '(("<\\([[:alnum:]-]+\\)>" . nil) . ("\\1" . nil))
+          which-key-replacement-alist)
+    (push '(("\\`\\?\\?\\'" . nil) . ("λ" . nil))
+          which-key-replacement-alist)
 
-    (setq which-key-replacement-alist
-          '( ("Prefix Command" . "prefix")
-             ("\\`\\?\\?\\'"   . "λ")
-             ("projectile-"    . "pt-")
-             ("helm-"          . "h-")
-             ("flycheck-"      . "flyc-")))
+    (push '(("<up>" . nil) . ("↑" . nil)) which-key-replacement-alist)
+    (push '(("<right>" . nil) . ("→" . nil)) which-key-replacement-alist)
+    (push '(("<down>" . nil) . ("↓" . nil)) which-key-replacement-alist)
+    (push '(("<left>" . nil) . ("←" . nil)) which-key-replacement-alist)
+
+    (add-to-list 'which-key-replacement-alist '(("SPC" . nil) . ("␣" . nil)))
+    (add-to-list 'which-key-replacement-alist '(("TAB" . nil) . ("↹" . nil)))
+    (add-to-list 'which-key-replacement-alist '(("RET" . nil) . ("⏎" . nil)))
+    (add-to-list 'which-key-replacement-alist '(("DEL" . nil) . ("⌫" . nil)))
+    (add-to-list 'which-key-replacement-alist '(("deletechar" . nil) . ("⌦" . nil)))
+
+    (add-to-list 'which-key-replacement-alist
+                 '((nil . "projectile-") . (nil . "pt-")))
+    (add-to-list 'which-key-replacement-alist
+                 '((nil . "helm-") . (nil . "h-")))
+    (add-to-list 'which-key-replacement-alist
+                 '((nil . "flycheck-") . (nil . "flyc-")))
 
     (which-key-add-key-based-replacements
       "M-s h" "highlight"
