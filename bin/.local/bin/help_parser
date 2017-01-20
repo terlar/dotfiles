@@ -13,6 +13,10 @@ class FishOutput:
         self.path = path
         self.dict = dict
 
+    def escape(self, data):
+        rx = re.compile('(["$])')
+        return rx.sub('\\\\\\1', data)
+
     def build(self):
         l = []
 
@@ -50,7 +54,7 @@ class FishOutput:
                         cmd,
                         no_cmd_func,
                         subcmd['name'],
-                        subcmd['desc']
+                        self.escape(subcmd['desc'])
                     ))
 
                 for opt in value['options']:
@@ -58,14 +62,14 @@ class FishOutput:
                         l.append('complete -c {} -s "{}" -d "{}"'.format(
                             cmd,
                             opt['short'],
-                            opt['desc']
+                            self.escape(opt['desc'])
                         ))
 
                     if opt['long'] is not None:
                         l.append('complete -c {} -l "{}" -d "{}"'.format(
                             cmd,
                             opt['long'],
-                            opt['desc']
+                            self.escape(opt['desc'])
                         ))
             else:
                 for opt in value['options']:
@@ -75,7 +79,7 @@ class FishOutput:
                             use_cmd_func,
                             path[1],
                             opt['short'],
-                            opt['desc']
+                            self.escape(opt['desc'])
                         ))
 
                     if opt['long'] is not None:
@@ -84,7 +88,7 @@ class FishOutput:
                             use_cmd_func,
                             path[1],
                             opt['long'],
-                            opt['desc']
+                            self.escape(opt['desc'])
                         ))
                 continue
 
@@ -93,22 +97,22 @@ class FishOutput:
 
 class HelpParser:
     USAGE_START = re.compile(r'(?i)usage:')
-    OPT_START = re.compile(r'(?i).*options:')
-    CMD_START_TMPL = r'(?i)(commands:|{})$'
+    OPT_START = re.compile(r'.*(?i)(options|flags):$')
+    CMD_START_TMPL = r'.*(?i)(commands|{}).*:$'
     DESC_LINE = re.compile(r'^\s+(?P<desc>.*$)')
     SECTION_END = re.compile(r'^\s*$')
 
     OPT_LINE_TMPL = r'''
         ^\s*
         (
-            (-(?P<short>\w)      # short option
-            |                    # or
-            --(?P<long>[\w_-]+)) # long option
-            (,?\s)?              # separated by comma and space
-        )*                       # occuring in any order or times
-        ((?P<param>[A-Z]+)\s)?   # parameter
-        \s*                      # spacing
-        (?P<desc>.*)$            # description
+            (-(?P<short>\w)        # short option
+            |                      # or
+            --(?P<long>[\w_-]+))   # long option
+            (,?\s)?                # separated by comma and space
+        )*                         # occuring in any order or times
+        ((?P<param>[A-Za-z]+)\s)?  # parameter
+        \s*                        # spacing
+        (?P<desc>.*)$              # description
     '''
     OPT_LINE = re.compile(OPT_LINE_TMPL, re.VERBOSE)
     CMD_LINE = re.compile(r'^\s*(?P<name>[\w_-]+)\s*(?P<desc>.*)$')
@@ -152,7 +156,7 @@ class HelpParser:
 
         sub_cmd_path = self.cmd_path + [cmd]
         output = subprocess.check_output(
-            self.help_pattern.format(''.join(self.cmd_path), cmd),
+            self.help_pattern.format(' '.join(self.cmd_path), cmd),
             universal_newlines=True,
             shell=True)
 
