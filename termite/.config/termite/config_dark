@@ -10,7 +10,8 @@ dynamic_title = true
 urgent_on_bell = true
 clickable_url = true
 font = monospace 14
-scrollback_lines = 10000
+# Infinite scrollback
+scrollback_lines = -1
 search_wrap = true
 
 cursor_blink = system
