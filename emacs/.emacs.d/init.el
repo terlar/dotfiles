@@ -1062,8 +1062,12 @@ KEY must be given in `kbd' notation."
     (persp-mode))
   :config
   (progn
+    ;; Automatically add all free buffers to the current perspective.
+    (setq persp-add-buffer-on-after-change-major-mode 'free)
     (setq persp-add-buffer-on-find-file 'if-not-autopersp)
     (setq persp-autokill-buffer-on-remove 'kill-weak)
+    ;; Prevent loading of existing perspectives when opening new frames.
+    (setq persp-emacsclient-init-frame-behaviour-override nil)
 
     (add-hook 'persp-after-load-state-functions
               (lambda (&rest args) (persp-auto-persps-pickup-buffers)) t)
