@@ -1791,6 +1791,11 @@ The insertion will be repeated COUNT times."
         (setq ruby-end-insert-newline nil)
         (add-hook 'enh-ruby-mode-hook #'ruby-end-mode)))
 
+    ;; Toggle strings and symbols
+    (use-package ruby-tools
+      :config
+      (add-hook 'enh-ruby-mode-hook #'ruby-tools-mode))
+
     ;; Test runner
     (use-package ruby-test-mode
       :commands (ruby-test-run-at-point ruby-test-run))
