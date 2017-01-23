@@ -1021,6 +1021,9 @@ KEY must be given in `kbd' notation."
     (use-package magit-gh-pulls
       :init (add-hook 'magit-mode-hook #'turn-on-magit-gh-pulls))))
 
+;; Mode icons
+(use-package mode-icons
+  :init (mode-icons-mode))
 
 ;; REST REPL
 (use-package restclient
