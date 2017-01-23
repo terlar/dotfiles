@@ -109,6 +109,13 @@ function fish_user_abbreviations
         abbr dc docker-compose
     end
 
+    if type -fq kubectl
+        abbr kb kubectl
+        abbr kbg 'kubectl get'
+        abbr kbd 'kubectl describe'
+        abbr kbl 'kubectl logs'
+    end
+
     if type -q farm
         abbr f 'farm'
         abbr fcd 'farm cd'
