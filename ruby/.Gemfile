@@ -6,12 +6,13 @@ group :tools do
 end
 
 group :development do
-  gem 'rack'                # Web server
+  gem 'awesome_print'       # Improved inspect output
+  gem 'fastri'              # RI alternative
+  gem 'gem-man'             # Man for gems
   gem 'pry'                 # Interactive shell
   gem 'pry-byebug'          # Debugger
-  gem 'awesome_print'       # Improved output
-  gem 'rubocop'             # Code formatter
+  gem 'rack'                # Web server
+  gem 'rcodetools'          # Code manipulation tools
+  gem 'rubocop'             # Code analyzer
   gem 'seeing_is_believing' # Code evaluation
-  gem 'fastri'
-  gem 'rcodetools'
 end

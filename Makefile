@@ -39,6 +39,11 @@ update-submodules: ## Update all submodules
 xmonad: ## Compile and restart xmonad
 xmonad: $(TS)/.xmonad
 
+.PHONY: gems
+gems: ## Install system ruby gems
+	gem install bundler
+	bundle install --system --gemfile ruby/.Gemfile
+
 .PHONY: help
 help: ## Describe tasks
 	$(info Tasks:)
