@@ -1368,6 +1368,10 @@ KEY must be given in `kbd' notation."
     (add-hook 'before-save-hook #'fish_indent-before-save))
   :config (add-hook 'fish-mode-hook #'my-fish-mode-hook))
 
+;; Support for F#
+(use-package fsharp-mode
+  :mode "\\.fs[x]\\'")
+
 (use-package gitattributes-mode :defer t)
 (use-package gitconfig-mode     :defer t)
 (use-package gitignore-mode     :defer t)
