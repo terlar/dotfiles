@@ -525,7 +525,6 @@ KEY must be given in `kbd' notation."
 
 ;; Display images
 (use-package image-file
-  :if window-system
   :defer t
   :init (auto-image-file-mode))
 
@@ -1284,9 +1283,32 @@ KEY must be given in `kbd' notation."
       (with-eval-after-load 'flycheck
         (flycheck-credo-setup)))))
 
+;; Support for Elm
+(use-package elm-mode
+  :mode ("\\.elm\\'" . elm-mode)
+  :commands (elm-mode)
+  :preface
+  (progn
+    (autoload 'company-mode "company")
+    (defun my-elm-company-hook ()
+      (setq-local company-backends '(company-elm))
+      (company-mode)))
+  :config
+  (progn
+    (setq elm-tags-on-save t)
+    (setq elm-format-on-save t)
+
+    (add-hook 'elm-mode-hook #'my-elm-company-hook)
+
+    ;; Flycheck support for elm
+    (use-package flycheck-elm
+      :commands (flycheck-elm-setup)
+      :init
+      (with-eval-after-load 'flycheck
+        (add-hook 'elm-mode-hook #'flycheck-elm-setup)))))
+
 ;; EPUB Reader
 (use-package ereader
-  :if window-system
   :mode ("\\.epub$" . ereader-mode)
   :init (add-hook 'ereader-mode-hook #'my-epub-mode-hook)
   :preface
@@ -1606,7 +1628,6 @@ The insertion will be repeated COUNT times."
 
 ;; Support for PDF
 (use-package pdf-tools
-  :if window-system
   :mode ("\\.pdf\\'" . pdf-view-mode)
   :commands (pdf-view-mode pdf-tools-install))
 
