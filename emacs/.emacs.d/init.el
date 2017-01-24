@@ -616,6 +616,24 @@ KEY must be given in `kbd' notation."
   :load-path "vendor/raml-mode/"
   :defer t)
 
+;; Rotate text
+(use-package rotate-text
+  :ensure nil
+  :load-path "vendor/rotate-text/"
+  :commands (rotate-text rotate-text-backward)
+  :bind
+  (("C-c <" . rotate-text-backward)
+   ("C-c >" . rotate-text))
+  :defer t
+  :init
+  (progn
+    (with-eval-after-load 'evil
+      (evil-define-key 'normal prog-mode-map
+        (kbd "-") #'rotate-text
+        (kbd "_") #'rotate-text-backward)))
+  :config
+  (add-to-list 'rotate-text-words '("assert" "refute")))
+
 ;; Show tab width configuration in mode-line
 (use-package show-tab-width-mode
   :ensure nil
