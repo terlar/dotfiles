@@ -3,6 +3,7 @@ Description=OfflineIMAP IMAP/Maildir Synchronization
 Documentation=man:offlineimap
 
 [Service]
+EnvironmentFile=%h/.local/share/offlineimap/env
 Type=oneshot
 ExecStart=/usr/bin/offlineimap -o -u syslog
 TimeoutStopSec=3

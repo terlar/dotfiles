@@ -3,6 +3,7 @@ Description=Vdirsyncer Contact/Calendar Synchronization
 Documentation=man:vdirsyncer
 
 [Service]
+EnvironmentFile=%h/.local/share/vdirsyncer/env
 Type=oneshot
 ExecStart=/usr/bin/vdirsyncer sync
 # Update khal caching DB
