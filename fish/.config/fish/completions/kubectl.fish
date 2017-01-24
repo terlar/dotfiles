@@ -60,7 +60,25 @@ end
 
 function __kubectl_pods
     set namespace (string replace -r '^kubectl .*(-n |--namespace[= ]?)([^ ]*) .*$' '$2' -- $argv)
-    kubectl get pods --namespace "$namespace" -o name ^/dev/null
+    kubectl get pods --namespace "$namespace" -o name ^/dev/null | string replace 'pod/' ''
+end
+
+function __kubectl_containers
+    set namespace (string replace -r '^kubectl .*(-n |--namespace[= ]?)([^ ]*) .*$' '$2' -- $argv)
+    set pod
+
+    for i in (__kubectl_pods $argv)
+        if string match -q "*$i*" -- $argv
+            set pod $i
+            break
+        end
+    end
+
+    if test -z "$pod"
+        return
+    end
+
+    kubectl get --namespace "$namespace" pods "$pod" -o 'jsonpath={.spec.containers[*].name}' | string split ' '
 end
 
 function __kubectl_namespaces
@@ -843,10 +861,12 @@ complete -c kubectl -f -n "__kubectl_using_option n namespace" -a "(__kubectl_na
 
 # Get
 complete -c kubectl -n "__kubectl_using_command get" -a "(__kubectl_resource_types)" -d "Resource Type"
+complete -c kubectl -n "__kubectl_using_command get" -a "(__kubectl_pods (commandline -c))" -d "Pod"
 
 # Describe
 complete -c kubectl -n "__kubectl_using_command describe" -a "(__kubectl_resource_types)" -d "Resource Type"
 complete -c kubectl -n "__kubectl_using_command describe" -a "(__kubectl_pods (commandline -c))" -d "Pod"
 
 # Logs
-complete -c kubectl -n "__kubectl_using_command logs" -a "(__kubectl_pods (commandline -c))" -d "Pod"
+complete -f -c kubectl -n "__kubectl_using_command logs" -a "(__kubectl_pods (commandline -c))" -d "Pod"
+complete -f -c kubectl -n "__kubectl_using_command logs" -a "(__kubectl_containers (commandline -c))" -d "Container"
