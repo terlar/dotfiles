@@ -27,6 +27,16 @@ function __kubectl_using_option --argument short --argument long
     return 1
 end
 
+function __kubectl_no_pod
+    set cmd (commandline -pc)
+    for i in (__kubectl_pods $cmd)
+        if string match -q "*$i*" -- $cmd
+            return 1
+        end
+    end
+    return 0
+end
+
 function __kubectl_resource_types
     echo clusters
     echo componentstatuses
@@ -868,5 +878,5 @@ complete -c kubectl -n "__kubectl_using_command describe" -a "(__kubectl_resourc
 complete -c kubectl -n "__kubectl_using_command describe" -a "(__kubectl_pods (commandline -c))" -d "Pod"
 
 # Logs
-complete -f -c kubectl -n "__kubectl_using_command logs" -a "(__kubectl_pods (commandline -c))" -d "Pod"
+complete -f -c kubectl -n "__kubectl_using_command logs; and __kubectl_no_pod" -a "(__kubectl_pods (commandline -c))" -d "Pod"
 complete -f -c kubectl -n "__kubectl_using_command logs" -a "(__kubectl_containers (commandline -c))" -d "Container"
