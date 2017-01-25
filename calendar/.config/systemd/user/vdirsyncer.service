@@ -7,7 +7,7 @@ EnvironmentFile=%h/.local/share/vdirsyncer/env
 Type=oneshot
 ExecStart=/usr/bin/vdirsyncer sync
 # Update khal caching DB
-ExecStopPost=/usr/bin/sh -c 'khal >/dev/null'
+ExecStopPost=/usr/bin/sh -c 'khal 2&1>/dev/null'
 
 [Install]
 WantedBy=default.target

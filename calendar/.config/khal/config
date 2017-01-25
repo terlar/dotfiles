@@ -40,8 +40,7 @@ firstweekday = 0
 theme = light
 
 [default]
-default_command = calendar
 default_calendar = personal
-show_all_days = False
-days = 2
+default_command = calendar
 highlight_event_days = True
+show_all_days = False
