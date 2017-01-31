@@ -1,10 +1,6 @@
 #!/usr/bin/env bash
 agenda() {
-	khal agenda --days 1 | \
-		sed -E -e 's|^([0-9]+:[0-9]+-[0-9]+:[0-9]+): (.*)|\1 \2|' \
-			-e 'tx' \
-			-e 'd' \
-			-e ':x'
+	khal list today tomorrow | tail -n +2
 }
 
 is_within_notify_time() {
@@ -13,7 +9,7 @@ is_within_notify_time() {
 
 	now_ts=$(date '+%s')
 	event_ts=$(date -d "$time" '+%s')
-	alert_ts=$(( $event_ts - $range ))
+	alert_ts=$(( event_ts - range ))
 
 	[[ "$now_ts" -lt "$event_ts" ]] && [[ "$now_ts" -gt "$alert_ts" ]]
 }
@@ -23,7 +19,7 @@ get_time_remaining() {
 
 	now_ts=$(date '+%s')
 	event_ts=$(date -d "$time" '+%s')
-	remaining=$(($event_ts - $now_ts))
+	remaining=$((event_ts - now_ts))
 
 	humanize_seconds "$remaining"
 }
@@ -32,26 +28,25 @@ humanize_seconds() {
 	local time="$1"
 	local h m s
 
-	(( h=${time} / 3600 ))
-	(( m=(${time} % 3600) / 60 ))
-	(( s=${time} % 60 ))
+	(( h=time / 3600 ))
+	(( m=(time % 3600) / 60 ))
+	(( s=time % 60 ))
 
-	if [[ "$h" > 0 ]]; then
+	if [[ "$h" -gt 0 ]]; then
 		echo -n "${m} hours"
-	elif [[ "$m" > 0 ]]; then
+	elif [[ "$m" -gt 0 ]]; then
 		echo -n "${m} minutes"
-	elif [[ "$s" > 0 ]]; then
+	elif [[ "$s" -gt 0 ]]; then
 		echo -n "${s} seconds"
 	fi
 }
 
 main() {
-	local time start_time end_time message
+	local time start_time message
 
-	agenda | while read event; do
+	agenda | while read -r event; do
 		time=$(echo "$event" | cut -d ' ' -f 1)
 		start_time=$(echo "$time" | cut -d '-' -f 1)
-		end_time=$(echo "$time" | cut -d '-' -f 2)
 		message=$(echo "$event" | cut -d ' ' -f 2-)
 
 		is_within_notify_time "$start_time" 900 || continue
