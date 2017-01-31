@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 agenda() {
-	khal list today tomorrow | tail -n +2
+	khal list today tomorrow \
+		| grep '^[0-9][0-9]:[0-9][0-9]-[0-9][0-9]:[0-9][0-9] '
 }
 
 is_within_notify_time() {
