@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+set -eu
+set -o pipefail
+
+generate_token() {
+	stdbuf -o 0 oauth2.py \
+		--generate_oauth2_token \
+		--client_id="${CLIENT_ID}" \
+		--client_secret="${CLIENT_SECRET}"
+	return 0
+}
+
+main() {
+	local account="${1?account was not provided}"
+	local username="${2?username was not provided}"
+	local token_file="${HOME}/.offlineimap/google-token-${account}.json"
+	local data refresh_token access_token
+
+	if ! printenv CLIENT_ID CLIENT_SECRET >/dev/null
+	then
+		echo -n "Sourcing offlineimap ENV..."
+		# shellcheck source=/dev/null
+		source ~/.local/share/offlineimap/env
+		echo "DONE!"
+	fi
+
+	exec 5>&1
+	data="$(generate_token | tee /dev/fd/5)"
+	refresh_token=$(echo "${data}" | grep -oP "Refresh Token: \K.*")
+	access_token=$(echo "${data}" | grep -oP "Access Token: \K.*")
+
+	echo -n "Writing token file..."
+	printf '{"username": "%s", "access_token": "%s", "refresh_token": "%s"}' \
+		"${username}" "${access_token}" "${refresh_token}" \
+		> "${token_file}"
+	echo "DONE!"
+}
+
+main "$@"
