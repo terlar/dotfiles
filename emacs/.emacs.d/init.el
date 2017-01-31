@@ -1041,7 +1041,9 @@ KEY must be given in `kbd' notation."
 
 ;; Mode icons
 (use-package mode-icons
-  :init (mode-icons-mode))
+  :init (mode-icons-mode)
+  :config
+  (add-to-list 'mode-icons '("\\`EnhRuby\\'" "ruby" xpm)))
 
 ;; REST REPL
 (use-package restclient
