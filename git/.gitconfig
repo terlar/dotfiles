@@ -77,6 +77,8 @@
 	default = simple
 [pull]
 	rebase = true
+[commit]
+	gpgsign = true
 [rebase]
 	# Support fixup and squash commits
 	autoSquash = true
