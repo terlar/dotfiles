@@ -838,7 +838,7 @@ KEY must be given in `kbd' notation."
 
 ;; VIM-behavior
 (use-package evil
-  :commands (evil-mode evil-normal-state evil-delay)
+  :commands (evil-mode evil-normal-state evil-delay evil-define-key)
   :bind
   (:map
    evil-normal-state-map
@@ -926,7 +926,9 @@ KEY must be given in `kbd' notation."
     (:map
      evil-normal-state-map
      ("C-c SPC" . evil-execute-in-god-state))
-    :config (evil-define-key 'god global-map [escape] 'evil-god-state-bail)))
+    :config
+    (with-eval-after-load 'evil
+      (evil-define-key 'god global-map [escape] 'evil-god-state-bail))))
 
 ;; Completion system
 (use-package helm
@@ -1420,7 +1422,8 @@ KEY must be given in `kbd' notation."
              "go build -v && go test -v && go vet")))
   :config
   (progn
-    (evil-define-key 'normal go-mode-map (kbd "K") #'godoc-at-point)
+    (with-eval-after-load 'evil
+      (evil-define-key 'normal go-mode-map (kbd "K") #'godoc-at-point))
 
     (add-hook 'go-mode-hook #'my-go-mode-hook)
 
@@ -1545,7 +1548,6 @@ KEY must be given in `kbd' notation."
           (hl-line-mode -1)
           (haskell-indentation-mode -1))
 
-        (autoload 'evil-define-key "evil-core")
         (autoload 'evil-insert-state "evil-core")
         (autoload 'evil-maybe-remove-spaces "evil-core")
 
@@ -1585,9 +1587,10 @@ The insertion will be repeated COUNT times."
         (setq shm-use-hdevtools t)
         (setq shm-use-presentation-mode t)
 
-        (evil-define-key 'normal shm-map
-          (kbd "O") #'evil-shm/open-above
-          (kbd "o") #'evil-shm/open-below)
+        (with-eval-after-load 'evil
+          (evil-define-key 'normal shm-map
+            (kbd "O") #'evil-shm/open-above
+            (kbd "o") #'evil-shm/open-below))
 
         (set-face-background 'shm-current-face (face-attribute 'hl-line :background))
         (set-face-background 'shm-quarantine-face "#fff0f0")))))
