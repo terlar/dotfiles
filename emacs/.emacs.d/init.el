@@ -1043,9 +1043,7 @@ KEY must be given in `kbd' notation."
 
 ;; Mode icons
 (use-package mode-icons
-  :init (mode-icons-mode)
-  :config
-  (add-to-list 'mode-icons '("\\`EnhRuby\\'" "ruby" xpm)))
+  :init (mode-icons-mode))
 
 ;; REST REPL
 (use-package restclient
@@ -2051,7 +2049,7 @@ The insertion will be repeated COUNT times."
   (with-eval-after-load 'flycheck
     (add-hook 'ycmd-mode-hook #'flycheck-ycmd-setup)))
 
-;;; Modeline
+;;; Mode-line
 (setq-default mode-line-format
               '("%e"
                 mode-line-front-space
