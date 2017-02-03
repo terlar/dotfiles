@@ -15,4 +15,5 @@ group :development do
   gem 'rcodetools'          # Code manipulation tools
   gem 'rubocop'             # Code analyzer
   gem 'seeing_is_believing' # Code evaluation
+  gem 'slim'                # Slim template language
 end
