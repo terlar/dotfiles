@@ -9,7 +9,7 @@ main() {
 		local httpauth="-httpauth=${username}:${password}"
 	fi
 
-	ngrok -subdomain="$subdomain""$httpauth" "$port"
+	ngrok http -subdomain="$subdomain""$httpauth" "$port"
 }
 
 main "$@"
