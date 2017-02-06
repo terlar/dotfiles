@@ -3,7 +3,7 @@ Description=Mopidy music server
 After=pulseaudio.service
 
 [Service]
-ExecStart=/usr/bin/mopidy
+ExecStart=/usr/bin/mopidy --config %h/.config/mopidy/mopidy.conf:%h/.config/mopidy/secrets.conf
 
 [Install]
 WantedBy=default.target

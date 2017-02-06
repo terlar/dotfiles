@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -eu
+set -o pipefail
+
+main() {
+	systemctl --no-block --user start mopidy.service
+	electron-open http://localhost:6680/iris
+}
+
+main "$@"
