@@ -1,3 +1,3 @@
 function mul
-    = (string join '*' $argv)
+    = (string join '*' -- $argv)
 end

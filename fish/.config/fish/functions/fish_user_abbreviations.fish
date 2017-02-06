@@ -8,8 +8,10 @@ function fish_user_abbreviations
     abbr e editor
     abbr week "date '+%V'"
 
-    abbr '*' 'mul'
-    abbr '/' 'div'
+    abbr -- '+' 'add'
+    abbr -- '-' 'sub'
+    abbr -- '*' 'mul'
+    abbr -- '/' 'div'
 
     if type -fq ag
         abbr gg 'ag'
