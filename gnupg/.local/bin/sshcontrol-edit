@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -eu
+set -o pipefail
+
+main() {
+	local gpghome
+	gpghome="$(gpgconf --list-dirs homedir)"
+	editor "${gpghome}/sshcontrol"
+}
+
+main "$@"
