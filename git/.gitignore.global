@@ -17,6 +17,9 @@ Gemfile.local*
 *.o
 *.hi
 
+# JavaScript
+.tern-port
+
 # Ruby
 .rake_tasks
 
