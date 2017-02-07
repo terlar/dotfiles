@@ -412,6 +412,7 @@ complete -c kubectl -l user -d 'The name of the kubeconfig user to use'
 complete -c kubectl -l username -d 'Username for basic authentication to the API server'
 complete -c kubectl -s v -l v -d 'Log level for V logs'
 complete -c kubectl -l vmodule -d 'List of settings for file-filtered logging'
+complete -c kubectl -s h -l help -d 'Show more information about a given command'
 
 #
 # Basic Commands (Beginner):
