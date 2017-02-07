@@ -493,7 +493,6 @@ complete -c kubectl -f -n '__kubectl_using_command expose; and not __kubectl_see
 
 complete -c kubectl -f -n '__kubectl_using_command expose pod' -a '(__kubectl_pods_completion)'
 
-# Generate completions for resource sub-commands
 for resource in service replicationcontroller deployment replicaset
     __kubectl_complete_resource_subcommand expose $resource
 end
@@ -575,7 +574,6 @@ complete -c kubectl -f -n '__kubectl_using_command set image; and not __kubectl_
 
 complete -c kubectl -f -n '__kubectl_using_command set image pod' -a '(__kubectl_pods_completion)'
 
-# Generate completions for resource sub-commands
 for resource in daemonset deployment job replicaset replicationcontroller
     __kubectl_complete_resource_subcommand set image $resource
 end
@@ -624,6 +622,14 @@ complete -c kubectl -n '__kubectl_using_command set resources' -l requests -d 'T
 #
 
 ## get
+complete -c kubectl -f -n '__kubectl_using_command get; and not __kubectl_using_resource_type' -a '(__kubectl_resource_types)' -d 'Resource Type'
+
+for resource in (__kubectl_resource_types)
+    __kubectl_complete_resource_subcommand get $resource
+end
+
+complete -c kubectl -f -n '__kubectl_using_command get; and not __kubectl_using_resource_type' -a '(__kubectl_prefixed_resource_completions)'
+
 complete -c kubectl -f -n '__kubectl_using_command get' -l all-namespaces -d 'List the requested object(s) across all namespaces'
 complete -c kubectl -f -n '__kubectl_using_command get' -l export -d 'Strip cluster-specific info'
 complete -c kubectl -f -n '__kubectl_using_command get' -s f -l filename -d 'Filename, directory, or URL to files'
@@ -644,15 +650,6 @@ complete -c kubectl -n '__kubectl_using_command get' -l sort-by -d 'Sort list ty
 complete -c kubectl -n '__kubectl_using_command get' -s w -l watch -d 'Watch for changes after listing/getting'
 complete -c kubectl -n '__kubectl_using_command get' -l watch-only -d 'Watch for changes to the requested object(s)'
 
-complete -c kubectl -f -n '__kubectl_using_command get; and not __kubectl_using_resource_type' -a '(__kubectl_resource_types)' -d 'Resource Type'
-
-# Generate completions for all resource sub-commands
-for resource in (__kubectl_resource_types)
-    __kubectl_complete_resource_subcommand get $resource
-end
-
-complete -c kubectl -f -n '__kubectl_using_command get; and not __kubectl_using_resource_type' -a '(__kubectl_prefixed_resource_completions)'
-
 ## explain
 complete -c kubectl -f -n '__kubectl_using_command explain; and not __kubectl_using_resource_type' -a '(__kubectl_resource_types)' -d 'Resource Type'
 
@@ -662,6 +659,9 @@ complete -c kubectl -f -n '__kubectl_using_command explain' -l include-extended-
 complete -c kubectl -f -n '__kubectl_using_command explain' -l recursive -d 'Print the fields of fields'
 
 ## edit
+complete -c kubectl -f -n '__kubectl_using_command edit; and not __kubectl_using_resource_prefix' -a '(__kubectl_resource_prefixes)/' -d 'Resource Type'
+complete -c kubectl -f -n '__kubectl_using_command edit' -a '(__kubectl_prefixed_resource_completions)'
+
 complete -c kubectl -n '__kubectl_using_command edit' -s f -l filename -d 'Filename, directory, or URL to files'
 complete -c kubectl -f -n '__kubectl_using_command edit; and __kubectl_using_option -f --filename' -s R -l recursive -d 'Process the directory used in -f, --filename recursively'
 complete -c kubectl -f -n '__kubectl_using_command edit' -l include-extended-apis -d 'Include definitions of new APIs [default true]'
@@ -674,10 +674,13 @@ complete -c kubectl -f -n '__kubectl_using_command edit' -l schema-cache-dir -d 
 complete -c kubectl -f -n '__kubectl_using_command edit' -l validate -d 'Use a schema to validate the input before sending'
 complete -c kubectl -f -n '__kubectl_using_command edit' -l windows-line-endings -d 'Use Windows line-endings'
 
-complete -c kubectl -f -n '__kubectl_using_command edit; and not __kubectl_using_resource_prefix' -a '(__kubectl_resource_prefixes)/' -d 'Resource Type'
-complete -c kubectl -f -n '__kubectl_using_command edit' -a '(__kubectl_prefixed_resource_completions)'
-
 ## delete
+complete -c kubectl -f -n '__kubectl_using_command delete; and not __kubectl_using_resource_type' -a '(__kubectl_resource_types)' -d 'Resource Type'
+
+for resource in (__kubectl_resource_types)
+    __kubectl_complete_resource_subcommand delete $resource
+end
+
 complete -c kubectl -n '__kubectl_using_command delete' -l all -d 'Select all the specified resources'
 complete -c kubectl -n '__kubectl_using_command delete' -l cascade -d 'Cascade the deletion [default true]'
 complete -c kubectl -n '__kubectl_using_command delete' -s f -l filename -d 'Filename, directory, or URL to files'
@@ -692,7 +695,7 @@ complete -c kubectl -f -n '__kubectl_using_command delete; and __kubectl_using_o
 complete -c kubectl -n '__kubectl_using_command delete' -s l -l selector -d 'Selector (label query) to filter on'
 complete -c kubectl -n '__kubectl_using_command delete' -l timeout -d 'Length of time to wait before giving up on a delete'
 
-complete -c kubectl -f -n '__kubectl_using_command delete; and not __kubectl_using_resource_type' -a '(__kubectl_resource_types)' -d 'Resource Type'
+# Deploy Commands:
 
 # Generate completions for all resource sub-commands
 for resource in (__kubectl_resource_types)
