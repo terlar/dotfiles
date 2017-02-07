@@ -380,6 +380,12 @@ function __kubectl_subcommands -a cmd
             printf '%s\tResource Type\n' pod replicationcontroller deployment daemonset job replicaset
         case 'set resources'
             printf '%s\tResource Type\n' replicationcontroller deployment daemonset job replicaset
+        case rollout
+            echo history\t'View rollout history'
+            echo pause\t'Mark the provided resource as paused'
+            echo resume\t'Resume a paused resource'
+            echo status\t'Show the status of the rollout'
+            echo undo\t'Undo a previous rollout'
     end
 end
 
@@ -697,12 +703,78 @@ complete -c kubectl -n '__kubectl_using_command delete' -l timeout -d 'Length of
 
 # Deploy Commands:
 
-# Generate completions for all resource sub-commands
-for resource in (__kubectl_resource_types)
-    __kubectl_complete_resource_subcommand delete $resource
+## rollout
+complete -c kubectl -f -n '__kubectl_using_command rollout; and not __kubectl_seen_any_subcommand_from rollout' -a '(__kubectl_subcommands rollout)'
+
+### rollout history
+complete -c kubectl -f -n '__kubectl_using_command rollout history; and not __kubectl_using_resource_type' -a 'deployment' -d 'Resource Type'
+
+for resource in deployment
+    __kubectl_complete_resource_subcommand rollout history $resource
 end
 
-# Deploy Commands:
+complete -c kubectl -f -n '__kubectl_using_command rollout history; and not __kubectl_using_resource_type; and not __kubectl_using_resource_prefix' -a 'deployment/' -d 'Deployment...'
+complete -c kubectl -f -n '__kubectl_using_command rollout history; and not __kubectl_using_resource_type' -a '(__kubectl_prefixed_resource_completions)'
+
+complete -c kubectl -n '__kubectl_using_command rollout history' -s f -l filename -d 'Filename, directory, or URL to files'
+complete -c kubectl -f -n '__kubectl_using_command rollout history; and __kubectl_using_option -f --filename' -s R -l recursive -d 'Process the directory used in -f, --filename recursively'
+complete -c kubectl -n '__kubectl_using_command rollout history' -l revision -d 'See the details of the revision specified'
+
+## rollout pause
+complete -c kubectl -f -n '__kubectl_using_command rollout pause; and not __kubectl_using_resource_type' -a 'deployment' -d 'Resource Type'
+
+for resource in deployment
+    __kubectl_complete_resource_subcommand rollout pause $resource
+end
+
+complete -c kubectl -f -n '__kubectl_using_command rollout pause; and not __kubectl_using_resource_type; and not __kubectl_using_resource_prefix' -a 'deployment/' -d 'Deployment...'
+complete -c kubectl -f -n '__kubectl_using_command rollout pause; and not __kubectl_using_resource_type' -a '(__kubectl_prefixed_resource_completions)'
+
+complete -c kubectl -n '__kubectl_using_command rollout pause' -s f -l filename -d 'Filename, directory, or URL to files'
+complete -c kubectl -f -n '__kubectl_using_command rollout pause; and __kubectl_using_option -f --filename' -s R -l recursive -d 'Process the directory used in -f, --filename recursively'
+
+### rollout resume
+complete -c kubectl -f -n '__kubectl_using_command rollout resume; and not __kubectl_using_resource_type' -a 'deployment' -d 'Resource Type'
+
+for resource in deployment
+    __kubectl_complete_resource_subcommand rollout resume $resource
+end
+
+complete -c kubectl -f -n '__kubectl_using_command rollout resume; and not __kubectl_using_resource_type; and not __kubectl_using_resource_prefix' -a 'deployment/' -d 'Deployment...'
+complete -c kubectl -f -n '__kubectl_using_command rollout resume; and not __kubectl_using_resource_type' -a '(__kubectl_prefixed_resource_completions)'
+
+complete -c kubectl -n '__kubectl_using_command rollout resume' -s f -l filename -d 'Filename, directory, or URL to files'
+complete -c kubectl -f -n '__kubectl_using_command rollout resume; and __kubectl_using_option -f --filename' -s R -l recursive -d 'Process the directory used in -f, --filename recursively'
+
+### rollout status
+complete -c kubectl -f -n '__kubectl_using_command rollout status; and not __kubectl_using_resource_type' -a 'deployment' -d 'Resource Type'
+
+for resource in deployment
+    __kubectl_complete_resource_subcommand rollout status $resource
+end
+
+complete -c kubectl -f -n '__kubectl_using_command rollout status; and not __kubectl_using_resource_type; and not __kubectl_using_resource_prefix' -a 'deployment/' -d 'Deployment...'
+complete -c kubectl -f -n '__kubectl_using_command rollout status; and not __kubectl_using_resource_type' -a '(__kubectl_prefixed_resource_completions)'
+
+complete -c kubectl -n '__kubectl_using_command rollout status' -s f -l filename -d 'Filename, directory, or URL to files'
+complete -c kubectl -f -n '__kubectl_using_command rollout status; and __kubectl_using_option -f --filename' -s R -l recursive -d 'Process the directory used in -f, --filename recursively'
+complete -c kubectl -n '__kubectl_using_command rollout status' -l revision -d 'Pin to a specific revision for showing its status'
+complete -c kubectl -n '__kubectl_using_command rollout status' -s w -l watch -d "Watch the status of the rollout until done"
+
+### rollout undo
+complete -c kubectl -f -n '__kubectl_using_command rollout undo; and not __kubectl_using_resource_type' -a 'deployment' -d 'Resource Type'
+
+for resource in deployment
+    __kubectl_complete_resource_subcommand rollout undo $resource
+end
+
+complete -c kubectl -f -n '__kubectl_using_command rollout undo; and not __kubectl_using_resource_type; and not __kubectl_using_resource_prefix' -a 'deployment/' -d 'Deployment...'
+complete -c kubectl -f -n '__kubectl_using_command rollout undo; and not __kubectl_using_resource_type' -a '(__kubectl_prefixed_resource_completions)'
+
+complete -c kubectl -n '__kubectl_using_command rollout undo' -l dry-run -d 'Only print the object that would be sent'
+complete -c kubectl -n '__kubectl_using_command rollout undo' -s f -l filename -d 'Filename, directory, or URL to files'
+complete -c kubectl -f -n '__kubectl_using_command rollout undo; and __kubectl_using_option -f --filename' -s R -l recursive -d 'Process the directory used in -f, --filename recursively'
+complete -c kubectl -n '__kubectl_using_command rollout undo' -l to-revision -d 'The revision to rollback to'
 
 # Cluster Management Commands:
 
