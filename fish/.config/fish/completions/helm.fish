@@ -90,6 +90,30 @@ function __helm_subcommands -a cmd
     end
 end
 
+function __helm_releases
+    helm ls --short
+end
+
+function __helm_release_revisions
+    set -l cmd (commandline -poc)
+
+    for pair in (helm list | awk 'NR >= 2 { print $1" "$2 }')
+        echo $pair | read -l release revision
+
+        if test $release = $cmd[-1]
+            seq 1 $revision
+        end
+    end
+end
+
+function __helm_repositories
+    helm repo list | awk 'NR >= 2 { print $1 }'
+end
+
+function __helm_charts
+    helm search | awk 'NR >= 2 && !/^local\// { print $1 }'
+end
+
 #
 # Global Flags
 #
@@ -109,7 +133,9 @@ complete -c helm -f -n 'not __helm_seen_any_subcommand_from ""' -a '(__helm_subc
 # helm create NAME [flags]
 complete -c helm -f -n '__helm_using_command create' -s p -l starter -d 'The named Helm starter scaffold'
 
-# helm delete [flags] RELEASE_NAME [...]
+# helm delete [flags] RELEASE [...]
+complete -c helm -f -n '__helm_using_command delete' -a '(__helm_releases)' -d 'Release'
+
 complete -c helm -f -n '__helm_using_command delete' -l dry-run -d 'Simulate a delete'
 complete -c helm -f -n '__helm_using_command delete' -l no-hooks -d 'Prevent hooks from running during deletion'
 complete -c helm -f -n '__helm_using_command delete' -l purge -d 'Remove the release from the store'
@@ -121,14 +147,13 @@ complete -c helm -f -n '__helm_using_command dependency; and not __helm_seen_any
 complete -c helm -f -n '__helm_using_command dependency build' -l keyring -d 'Keyring containing public keys'
 complete -c helm -f -n '__helm_using_command dependency build' -l verify -d 'Verify the packages against signatures'
 
-# helm dependency list [flags] CHART
-# TODO: Complete CHART
-
 # helm dependency update [flags] CHART
 complete -c helm -f -n '__helm_using_command dependency update' -l keyring -d 'Keyring containing public keys'
 complete -c helm -f -n '__helm_using_command dependency update' -l verify -d 'Verify the packages against signatures'
 
 # helm fetch [flags] [chart URL | repo/chartname] [...]
+complete -c helm -f -n '__helm_using_command fetch; and not __fish_seen_subcommand_from (__helm_charts)' -a '(__helm_charts)' -d 'Chart'
+
 complete -c helm -f -n '__helm_using_command fetch' -s d -l destination -d 'Location to write the chart'
 complete -c helm -f -n '__helm_using_command fetch' -l keyring -d 'Keyring containing public keys'
 complete -c helm -f -n '__helm_using_command fetch' -l prov -d 'Fetch the provenance file'
@@ -140,13 +165,17 @@ complete -c helm -f -n '__helm_using_command fetch' -l version -d 'Specific vers
 # helm get [command]
 complete -c helm -f -n '__helm_using_command get; and not __helm_seen_any_subcommand_from get' -a '(__helm_subcommands get)'
 
-# helm get [flags] RELEASE_NAME
+# helm get [flags] RELEASE
+complete -c helm -f -n '__helm_using_command get' -a '(__helm_releases)' -d 'Release'
+
 complete -c helm -f -n '__helm_using_command get' -l revision -d 'Get the named release with revision'
 
-# helm get values [flags] RELEASE_NAME
+# helm get values [flags] RELEASE
 complete -c helm -f -n '__helm_using_command get values' -s a -l all -d 'Dump all (computed) values'
 
-# helm history [flags] RELEASE_NAME
+# helm history [flags] RELEASE
+complete -c helm -f -n '__helm_using_command history' -a '(__helm_releases)' -d 'Release'
+
 complete -c helm -f -n '__helm_using_command history' -l max -d 'Maximum number of revision to include in history'
 
 # helm init [flags]
@@ -159,11 +188,15 @@ complete -c helm -f -n '__helm_using_command init' -s i -l tiller-image -d 'Over
 complete -c helm -f -n '__helm_using_command inspect; and not __helm_seen_any_subcommand_from inspect' -a '(__helm_subcommands inspect)'
 
 # helm inspect [CHART] [flags]
+complete -c helm -n '__helm_using_command inspect; and not __fish_seen_subcommand_from (__helm_charts)' -a '(__helm_charts)' -d 'Chart'
+
 complete -c helm -f -n '__helm_using_command inspect' -l keyring -d 'Keyring containing public verification keys'
 complete -c helm -f -n '__helm_using_command inspect' -l verify -d 'Verify the provenance data for this chart'
 complete -c helm -f -n '__helm_using_command inspect' -l version -d 'Version of the chart'
 
 # helm install [CHART] [flags]
+complete -c helm -n '__helm_using_command install; and not __fish_seen_subcommand_from (__helm_charts)' -a '(__helm_charts)' -d 'Chart'
+
 complete -c helm -f -n '__helm_using_command install' -l dry-run -d 'Simulate an install'
 complete -c helm -f -n '__helm_using_command install' -l keyring -d 'Keyring containing public verification keys'
 complete -c helm -f -n '__helm_using_command install' -s n -l name -d 'Release name'
@@ -191,7 +224,9 @@ complete -c helm -f -n '__helm_using_command list' -s o -l offset -d 'Next relea
 complete -c helm -f -n '__helm_using_command list' -s r -l reverse -d 'Reverse the sort order'
 complete -c helm -f -n '__helm_using_command list' -s q -l short -d 'Output short listing format'
 
-# helm package [flags] [CHART_PATH] [...]
+# helm package [flags] [CHART] [...]
+complete -c helm -n '__helm_using_command install; and not __fish_seen_subcommand_from (__helm_charts)' -a '(__helm_charts)' -d 'Chart'
+
 complete -c helm -f -n '__helm_using_command package' -l key -d 'Name of the key to use when signing'
 complete -c helm -f -n '__helm_using_command package' -l keyring -d 'Keyring containing public keys'
 complete -c helm -f -n '__helm_using_command package' -l save -d 'Save packaged chart to local chart repository'
@@ -208,9 +243,12 @@ complete -c helm -f -n '__helm_using_command repo index' -l merge -d 'Merge the 
 complete -c helm -f -n '__helm_using_command repo index' -l url -d 'URL of chart repository'
 
 # helm repo remove [flags] [NAME]
-# TODO: Complete NAME
+complete -c helm -f -n '__helm_using_command repo remove' -a '(__helm_repositories)' -d 'Repository'
 
-# helm rollback [RELEASE] [flags]
+# helm rollback [RELEASE] [REVISION] [flags]
+complete -c helm -f -n '__helm_using_command rollback; and not __fish_seen_subcommand_from (__helm_releases)' -a '(__helm_releases)' -d 'Release'
+complete -c helm -f -n '__helm_using_command rollback' -a '(__helm_release_revisions)' -d 'Revision'
+
 complete -c helm -f -n '__helm_using_command rollback' -l dry-run -d 'Simulate a rollback'
 complete -c helm -f -n '__helm_using_command rollback' -l no-hooks -d 'Prevent hooks from running during rollback'
 
@@ -222,10 +260,15 @@ complete -c helm -f -n '__helm_using_command search' -s l -l versions -d 'Show t
 complete -c helm -f -n '__helm_using_command serve' -l address -d 'Address to listen on'
 complete -c helm -f -n '__helm_using_command serve' -l repo-path -d 'Path from which to serve charts'
 
-# helm status [flags] RELEASE_NAME
+# helm status [flags] RELEASE
+complete -c helm -f -n '__helm_using_command status' -a '(__helm_releases)' -d 'Release'
+
 complete -c helm -f -n '__helm_using_command status' -l revision -d 'Display the status of the named release with revision'
 
 # helm upgrade [RELEASE] [CHART] [flags]
+complete -c helm -f -n '__helm_using_command upgrade; and not __fish_seen_subcommand_from (__helm_releases)' -a '(__helm_releases)' -d 'Release'
+complete -c helm -n '__helm_using_command upgrade; and __fish_seen_subcommand_from (__helm_releases); and not __fish_seen_subcommand_from (__helm_charts)' -a '(__helm_charts)' -d 'Chart'
+
 complete -c helm -f -n '__helm_using_command upgrade' -l dry-run -d 'Simulate an upgrade'
 complete -c helm -f -n '__helm_using_command upgrade' -s i -l install -d "Run an install if the release don't exists"
 complete -c helm -f -n '__helm_using_command upgrade' -l keyring -d 'Keyring containing public keys'
