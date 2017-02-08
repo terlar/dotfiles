@@ -1,25 +1,22 @@
 #!/usr/bin/env bash
-set -eo pipefail
+set -eu
+set -o pipefail
+
+is_new_session() {
+	! tmux has-session -t "${1}" 2>/dev/null
+}
 
 main() {
 	local session_name=monitoring
 
-	if [ -z "$TMUX" ]; then
-		mux $session_name -c $HOME monitor
-	else
-		declare new
-		if ! tmux has-session -t $session_name 2>/dev/null; then
-			new=1
-		fi
-
-		mux $session_name -c $HOME
-		if [ -n "$new" ]; then
-			tmux new-window -t $session_name -n processes 'top'
-			tmux new-window -t $session_name -n systemd 'journalctl -f'
-			tmux new-window -t $session_name -n kernel 'dmesg -w --human'
-			tmux kill-window -t "$session_name":1
-		fi
+	if is_new_session "${session_name}"
+	then
+		mux "${session_name}" -d -c "${HOME}" -n kernel 'dmesg -w --human'
+		tmux new-window -t "${session_name}" -n process 'top'
+		tmux new-window -t "${session_name}" -n systemd 'journalctl -f'
 	fi
+
+	mux "${session_name}"
 }
 
 main "$@"
