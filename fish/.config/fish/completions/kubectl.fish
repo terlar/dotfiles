@@ -299,13 +299,7 @@ function __kubectl_output_formats
 end
 
 function __kubectl_seen_any_subcommand_from -a cmd
-    for subcmd in (__kubectl_subcommands $cmd | string replace -r '\t.*$' '')
-        if __fish_seen_subcommand_from $subcmd
-            return 0
-        end
-    end
-
-    return 1
+    __fish_seen_subcommand_from (__kubectl_subcommands $cmd | string replace -r '\t.*$' '')
 end
 
 function __kubectl_subcommands -a cmd
