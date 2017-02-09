@@ -265,6 +265,13 @@ function __kubectl_prefixed_resource_completions
     end
 end
 
+# Dynamic completions that expand more and more the deeper you
+# go. Always completing one extra level of fields.
+#
+# Examples:
+#
+# - `resource.` completes `resource.x` and `resource.x.y`
+# - `resource.x.` completes `resource.x.y` and `resource.x.y.z`
 function __kubectl_explain_field_completions
     set -l cmd (commandline -po)
 
@@ -420,7 +427,7 @@ complete -c kubectl -s h -l help -d 'Show more information about a given command
 
 complete -c kubectl -f -n 'not __kubectl_seen_any_subcommand_from ""' -a '(__kubectl_subcommands "")'
 
-## create
+# kubectl create -f FILENAME [options]
 complete -c kubectl -f -n '__kubectl_using_command create; and not __kubectl_seen_any_subcommand_from create' -a '(__kubectl_subcommands create)'
 
 complete -c kubectl -f -n '__kubectl_using_command create' -l dry-run -d 'Only print the object that would be sent'
@@ -442,53 +449,59 @@ complete -c kubectl -f -n '__kubectl_using_command create' -l show-labels -d 'Wh
 complete -c kubectl -f -n '__kubectl_using_command create' -l sort-by -d 'Sort list types using this field specification'
 complete -c kubectl -f -n '__kubectl_using_command create' -l validate -d 'Use a schema to validate the input before sending it [default true]'
 
-### create configmap
+# kubectl create configmap NAME [--from-file=[key=]source] [--from-literal=key1=value1] [--dry-run] [options]
 complete -c kubectl -f -n '__kubectl_using_command create configmap' -l from-file -d 'File or directory to find config files, with optional key prefix'
 complete -c kubectl -f -n '__kubectl_using_command create configmap' -l from-literal -d 'Specify a key and literal value to insert in configmap'
 complete -c kubectl -f -n '__kubectl_using_command create configmap' -l generator -d 'The name of the API generator to use'
 
-### create deployment
+# kubectl create deployment NAME --image=image [--dry-run] [options]
 complete -c kubectl -f -n '__kubectl_using_command create deployment' -l generator -d 'The name of the API generator to use'
 complete -c kubectl -f -n '__kubectl_using_command create deployment' -l image -d 'Image name to run'
 
-### create namespace
+# kubectl create namespace NAME [--dry-run] [options]
 complete -c kubectl -f -n '__kubectl_using_command create namespace' -l generator -d 'The name of the API generator to use'
 
-### create quota
+# kubectl create quota NAME [--hard=key1=value1,key2=value2] [--scopes=Scope1,Scope2] [--dry-run=bool] [options]
 complete -c kubectl -f -n '__kubectl_using_command create quota' -l generator -d 'The name of the API generator to use'
 complete -c kubectl -f -n '__kubectl_using_command create quota' -l hard -d 'A comma-delimited set of resource=quantity pairs'
 complete -c kubectl -f -n '__kubectl_using_command create quota' -l scopes -d 'A comma-delimited set of quota scopes'
 
-### create secret
+# kubectl create secret [options]
 complete -c kubectl -f -n '__kubectl_using_command create secret; and not __kubectl_seen_any_subcommand_from "create secret"' -a '(__kubectl_subcommands "create secret")'
 
 complete -c kubectl -f -n '__kubectl_using_command create secret' -l generator -d 'The name of the API generator to use'
 
+# kubectl create secret docker-registry NAME --docker-username=user --docker-password=password --docker-email=email [--docker-server=string] [--from-literal=key1=value1] [--dry-run] [options]
 complete -c kubectl -f -n '__kubectl_using_command create secret docker-registry' -l docker-email -d 'Email for Docker registry'
 complete -c kubectl -f -n '__kubectl_using_command create secret docker-registry' -l docker-password -d 'Password for Docker registry authentication'
 complete -c kubectl -f -n '__kubectl_using_command create secret docker-registry' -l docker-server -d 'Server location for Docker registry'
 complete -c kubectl -f -n '__kubectl_using_command create secret docker-registry' -l docker-username -d 'Username for Docker registry authentication'
 
+# kubectl create secret generic NAME [--type=string] [--from-file=[key=]source] [--from-literal=key1=value1] [--dry-run] [options]
 complete -c kubectl -f -n '__kubectl_using_command create secret generic' -l from-file -d 'File or directory to find config files, with optional key prefix'
 complete -c kubectl -f -n '__kubectl_using_command create secret generic' -l from-literal -d 'Specify a key and literal value to insert in configmap'
 complete -c kubectl -f -n '__kubectl_using_command create secret generic' -l type -d 'The type of secret to create'
 
+# kubectl create secret tls NAME --cert=path/to/cert/file --key=path/to/key/file [--dry-run] [options]
 complete -c kubectl -f -n '__kubectl_using_command create secret tls' -l cert -d 'Path to PEM encoded public key certificate'
 complete -c kubectl -f -n '__kubectl_using_command create secret tls' -l key -d 'Path to private key associated with given certificate'
 
-### create service
+# kubectl create service [options]
 complete -c kubectl -f -n '__kubectl_using_command create service; and not __kubectl_seen_any_subcommand_from "create service"' -a '(__kubectl_subcommands "create service")'
 
 complete -c kubectl -f -n '__kubectl_using_command create service' -l generator -d 'The name of the API generator to use'
 complete -c kubectl -f -n '__kubectl_using_command create service' -l tcp -d 'Port pairs can be specified as "<port>:<targetPort>"'
 
+# kubectl create service clusterip NAME [--tcp=<port>:<targetPort>] [--dry-run] [options]
 complete -c kubectl -f -n '__kubectl_using_command create service clusterip' -l clusterip -d 'Assign your own ClusterIP or set to "None" for a "headless" service'
+
+# kubectl create service nodeport NAME [--tcp=port:targetPort] [--dry-run] [options]
 complete -c kubectl -f -n '__kubectl_using_command create service nodeport' -l node-port -d 'Port used to expose the service on each node in a cluster'
 
-### create serviceaccount
+# kubectl create serviceaccount NAME [--dry-run] [options]
 complete -c kubectl -f -n '__kubectl_using_command create serviceaccount' -l generator -d 'The name of the API generator to use'
 
-## expose
+# kubectl expose (-f FILENAME | TYPE NAME) [--port=port] [--protocol=TCP|UDP] [--target-port=number-or-name] [--name=name] [--external-ip=external-ip-of-service] [--type=type] [options]
 complete -c kubectl -f -n '__kubectl_using_command expose; and not __kubectl_seen_any_subcommand_from expose' -a '(__kubectl_subcommands expose)'
 
 complete -c kubectl -f -n '__kubectl_using_command expose pod' -a '(__kubectl_pods_completion)'
@@ -528,7 +541,7 @@ complete -c kubectl -f -n '__kubectl_using_command expose' -l sort-by -d 'Sort l
 complete -c kubectl -f -n '__kubectl_using_command expose' -l type -d 'Type for this service'
 complete -c kubectl -f -n '__kubectl_using_command expose; and __kubectl_using_option --type' -a 'ClusterIP NodePort LoadBalancer' -d 'Type'
 
-## run
+# kubectl run NAME --image=image [--env="key=value"] [--port=port] [--replicas=replicas] [--dry-run=bool] [--overrides=inline-json] [--command] -- [COMMAND] [args...] [options]
 complete -c kubectl -f -n '__kubectl_using_command run' -l attach -d 'Wait for the Pod to start running'
 complete -c kubectl -f -n '__kubectl_using_command run' -l command -d 'Use extra arguments as the command field in the container'
 complete -c kubectl -f -n '__kubectl_using_command run' -l dry-run -d 'Only print the object that would be sent'
@@ -566,10 +579,10 @@ complete -c kubectl -f -n '__kubectl_using_command run' -l sort-by -d 'Sort list
 complete -c kubectl -f -n '__kubectl_using_command run' -s i -l stdin -d 'Keep stdin open on the container(s) in the pod'
 complete -c kubectl -f -n '__kubectl_using_command run' -s t -l tty -d 'Allocated a TTY for each container in the pod'
 
-## set
+# kubectl set SUBCOMMAND [options]
 complete -c kubectl -f -n '__kubectl_using_command set; and not __kubectl_seen_any_subcommand_from set' -a '(__kubectl_subcommands set)'
 
-### set image
+#  kubectl set image (-f FILENAME | TYPE NAME) CONTAINER_NAME_1=CONTAINER_IMAGE_1 ... CONTAINER_NAME_N=CONTAINER_IMAGE_N [options]
 complete -c kubectl -f -n '__kubectl_using_command set image; and not __kubectl_seen_any_subcommand_from "set image"' -a '(__kubectl_subcommands "set image")'
 
 complete -c kubectl -f -n '__kubectl_using_command set image pod' -a '(__kubectl_pods_completion)'
@@ -595,7 +608,7 @@ complete -c kubectl -f -n '__kubectl_using_command set image' -s a -l show-all -
 complete -c kubectl -f -n '__kubectl_using_command set image' -l show-labels -d 'Show all labels as the last column'
 complete -c kubectl -f -n '__kubectl_using_command set image' -l sort-by -d 'Sort list types using this field specification'
 
-### set resources
+# kubectl set resources (-f FILENAME | TYPE NAME)  ([--limits=LIMITS & --requests=REQUESTS] [options]
 complete -c kubectl -f -n '__kubectl_using_command set resources; and not __kubectl_seen_any_subcommand_from "set resources"' -a '(__kubectl_subcommands "set resources")'
 
 for resource in replicationcontroller deployment daemonset job replicaset
@@ -621,7 +634,7 @@ complete -c kubectl -n '__kubectl_using_command set resources' -l requests -d 'T
 # Basic Commands (Intermediate):
 #
 
-## get
+# kubectl get [(-o|--output=)json|yaml|wide|custom-columns=...|custom-columns-file=...|go-template=...|go-template-file=...|jsonpath=...|jsonpath-file=...] (TYPE [NAME | -l label] | TYPE/NAME ...) [flags] [options]
 complete -c kubectl -f -n '__kubectl_using_command get; and not __kubectl_using_resource_type' -a '(__kubectl_resource_types)' -d 'Resource Type'
 
 for resource in (__kubectl_resource_types)
@@ -650,7 +663,7 @@ complete -c kubectl -n '__kubectl_using_command get' -l sort-by -d 'Sort list ty
 complete -c kubectl -n '__kubectl_using_command get' -s w -l watch -d 'Watch for changes after listing/getting'
 complete -c kubectl -n '__kubectl_using_command get' -l watch-only -d 'Watch for changes to the requested object(s)'
 
-## explain
+# kubectl explain RESOURCE [options]
 complete -c kubectl -f -n '__kubectl_using_command explain; and not __kubectl_using_resource_type' -a '(__kubectl_resource_types)' -d 'Resource Type'
 
 complete -c kubectl -f -n '__kubectl_using_command explain' -a '(__kubectl_explain_field_completions)'
@@ -658,7 +671,7 @@ complete -c kubectl -f -n '__kubectl_using_command explain' -a '(__kubectl_expla
 complete -c kubectl -f -n '__kubectl_using_command explain' -l include-extended-apis -d 'Include definitions of new APIs [default true]'
 complete -c kubectl -f -n '__kubectl_using_command explain' -l recursive -d 'Print the fields of fields'
 
-## edit
+# kubectl edit (RESOURCE/NAME | -f FILENAME) [options]
 complete -c kubectl -f -n '__kubectl_using_command edit; and not __kubectl_using_resource_prefix' -a '(__kubectl_resource_prefixes)/' -d 'Resource Type'
 complete -c kubectl -f -n '__kubectl_using_command edit' -a '(__kubectl_prefixed_resource_completions)'
 
@@ -674,7 +687,7 @@ complete -c kubectl -f -n '__kubectl_using_command edit' -l schema-cache-dir -d 
 complete -c kubectl -f -n '__kubectl_using_command edit' -l validate -d 'Use a schema to validate the input before sending'
 complete -c kubectl -f -n '__kubectl_using_command edit' -l windows-line-endings -d 'Use Windows line-endings'
 
-## delete
+# kubectl delete ([-f FILENAME] | TYPE [(NAME | -l label | --all)]) [options]
 complete -c kubectl -f -n '__kubectl_using_command delete; and not __kubectl_using_resource_type' -a '(__kubectl_resource_types)' -d 'Resource Type'
 
 for resource in (__kubectl_resource_types)
@@ -697,10 +710,10 @@ complete -c kubectl -n '__kubectl_using_command delete' -l timeout -d 'Length of
 
 # Deploy Commands:
 
-## rollout
+# kubectl rollout SUBCOMMAND [options]
 complete -c kubectl -f -n '__kubectl_using_command rollout; and not __kubectl_seen_any_subcommand_from rollout' -a '(__kubectl_subcommands rollout)'
 
-### rollout history
+# kubectl rollout history (TYPE NAME | TYPE/NAME) [flags] [options]
 complete -c kubectl -f -n '__kubectl_using_command rollout history; and not __kubectl_using_resource_type' -a 'deployment' -d 'Resource Type'
 
 for resource in deployment
@@ -714,7 +727,7 @@ complete -c kubectl -n '__kubectl_using_command rollout history' -s f -l filenam
 complete -c kubectl -f -n '__kubectl_using_command rollout history; and __kubectl_using_option -f --filename' -s R -l recursive -d 'Process the directory used in -f, --filename recursively'
 complete -c kubectl -n '__kubectl_using_command rollout history' -l revision -d 'See the details of the revision specified'
 
-## rollout pause
+# kubectl rollout pause RESOURCE [options]
 complete -c kubectl -f -n '__kubectl_using_command rollout pause; and not __kubectl_using_resource_type' -a 'deployment' -d 'Resource Type'
 
 for resource in deployment
@@ -727,7 +740,7 @@ complete -c kubectl -f -n '__kubectl_using_command rollout pause; and not __kube
 complete -c kubectl -n '__kubectl_using_command rollout pause' -s f -l filename -d 'Filename, directory, or URL to files'
 complete -c kubectl -f -n '__kubectl_using_command rollout pause; and __kubectl_using_option -f --filename' -s R -l recursive -d 'Process the directory used in -f, --filename recursively'
 
-### rollout resume
+# kubectl rollout resume RESOURCE [options]
 complete -c kubectl -f -n '__kubectl_using_command rollout resume; and not __kubectl_using_resource_type' -a 'deployment' -d 'Resource Type'
 
 for resource in deployment
@@ -740,7 +753,7 @@ complete -c kubectl -f -n '__kubectl_using_command rollout resume; and not __kub
 complete -c kubectl -n '__kubectl_using_command rollout resume' -s f -l filename -d 'Filename, directory, or URL to files'
 complete -c kubectl -f -n '__kubectl_using_command rollout resume; and __kubectl_using_option -f --filename' -s R -l recursive -d 'Process the directory used in -f, --filename recursively'
 
-### rollout status
+# kubectl rollout status (TYPE NAME | TYPE/NAME) [flags] [options]
 complete -c kubectl -f -n '__kubectl_using_command rollout status; and not __kubectl_using_resource_type' -a 'deployment' -d 'Resource Type'
 
 for resource in deployment
@@ -755,7 +768,7 @@ complete -c kubectl -f -n '__kubectl_using_command rollout status; and __kubectl
 complete -c kubectl -n '__kubectl_using_command rollout status' -l revision -d 'Pin to a specific revision for showing its status'
 complete -c kubectl -n '__kubectl_using_command rollout status' -s w -l watch -d "Watch the status of the rollout until done"
 
-### rollout undo
+# kubectl rollout undo (TYPE NAME | TYPE/NAME) [flags] [options]
 complete -c kubectl -f -n '__kubectl_using_command rollout undo; and not __kubectl_using_resource_type' -a 'deployment' -d 'Resource Type'
 
 for resource in deployment
