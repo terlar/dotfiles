@@ -770,26 +770,24 @@ complete -c kubectl -n '__kubectl_using_command rollout undo' -s f -l filename -
 complete -c kubectl -f -n '__kubectl_using_command rollout undo; and __kubectl_using_option -f --filename' -s R -l recursive -d 'Process the directory used in -f, --filename recursively'
 complete -c kubectl -n '__kubectl_using_command rollout undo' -l to-revision -d 'The revision to rollback to'
 
+# TODO: Add more commands
+
 # Cluster Management Commands:
+
+# TODO: Add commands
 
 # Troubleshooting and Debugging Commands:
 
+# TODO: Add commands
+
 # Advanced Commands:
+
+# TODO: Add commands
 
 # Settings Commands:
 
+# TODO: Add commands
+
 # Other Commands:
 
-# Attach
-complete -c kubectl -n '__kubectl_using_command attach' -a '(__kubectl_pods_completion)'
-
-# Exec
-complete -c kubectl -n '__kubectl_using_command exec' -a '(__kubectl_pods_completion)'
-
-# Describe
-complete -c kubectl -n '__kubectl_using_command describe' -a '(__kubectl_resource_types)' -d 'Resource Type'
-complete -c kubectl -n '__kubectl_using_command describe' -a '(__kubectl_pods_completion)'
-
-# Logs
-complete -f -c kubectl -n '__kubectl_using_command logs; and __kubectl_no_pod' -a '(__kubectl_pods_completion)'
-complete -f -c kubectl -n '__kubectl_using_command logs' -a '(__kubectl_containers (commandline -c))' -d "Container"
+# TODO: Add commands
