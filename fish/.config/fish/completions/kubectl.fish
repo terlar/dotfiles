@@ -51,13 +51,7 @@ function __kubectl_using_go_template_format
 end
 
 function __kubectl_using_resource_type
-    for rt in (__kubectl_resource_types)
-        if __fish_seen_subcommand_from $rt
-            return 0
-        end
-    end
-
-    return 1
+    __fish_seen_subcommand_from (__kubectl_resource_types)
 end
 
 function __kubectl_using_resource_prefix
@@ -67,13 +61,7 @@ function __kubectl_using_resource_prefix
 end
 
 function __kubectl_no_pod
-    set -l cmd (commandline -pc)
-    for i in (__kubectl_pods --no-prefix pods)
-        if string match -q "*$i*" -- $cmd
-            return 1
-        end
-    end
-    return 0
+    not __fish_seen_subcommand_from (__kubectl_pods --no-prefix pods)
 end
 
 function __kubectl_resource_types
