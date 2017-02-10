@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -eu
+set -o pipefail
+
+function main() {
+	 local port="${1?port was not provided}"
+	 ! netstat -tuplen 2>/dev/null | grep ":${port}"
+}
+
+main "$@"
