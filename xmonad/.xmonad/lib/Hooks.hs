@@ -60,8 +60,9 @@ myManageHook = composeAll $
     , isDialog     --> doCenterFloat
     , isFullscreen --> doF W.focusDown <+> doFullFloat
     ] ++
-    [ appName =? "xfce4-notifyd"       --> doIgnore
-    , title   ~? "hangouts.google.com" --> doIgnore
+    [ className ~? "slack"               --> doShift "speak"
+    , appName   =? "xfce4-notifyd"       --> doIgnore
+    , title     ~? "hangouts.google.com" --> doIgnore
     ] ++
     [ matchAny v --> doCenterFloat | v <- floatApps ]
   where
