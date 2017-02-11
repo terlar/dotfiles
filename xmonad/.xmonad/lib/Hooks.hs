@@ -80,15 +80,16 @@ myManageHook = composeAll $
 
 myScratchpads :: [NamedScratchpad]
 myScratchpads =
-    [ termNS    "scratchpad"  "~"            (customFloating smallRect)
-    , termAppNS "music"       "ncmpcpp"      (customFloating largeRect)
-    , appNS     "colorpicker" "gcolor2"       doCenterFloat
-    , appNS     "dictionary"  "goldendict"   (customFloating rightRect)
-    , pidginNS  "contacts"    "buddy_list"   (customFloating sidebar)
-    , pidginNS  "messages"    "conversation"  doCenterFloat
-    , appNS     "volume"      "pavucontrol"   doCenterFloat
-    , appNS     "wifi"        "wpa_gui"       doCenterFloat
-    , emacsNS   "editor"                     (customFloating largeRect)
+    [ termNS    "scratchpad"  "~"              (customFloating smallRect)
+    , termAppNS "music"       "ncmpcpp"        (customFloating largeRect)
+    , appNS     "colorpicker" "gcolor2"         doCenterFloat
+    , appNS     "dictionary"  "goldendict"     (customFloating rightRect)
+    , pidginNS  "contacts"    "buddy_list"     (customFloating sidebar)
+    , pidginNS  "messages"    "conversation"    doCenterFloat
+    , appNS     "volume"      "pavucontrol"     doCenterFloat
+    , appNS     "wifi"        "wpa_gui"         doCenterFloat
+    , termAppNS "bluetooth"   "bluetoothctl -a" doCenterFloat
+    , emacsNS   "editor"                        (customFloating largeRect)
     ]
   where
     -- NS

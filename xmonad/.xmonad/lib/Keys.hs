@@ -111,6 +111,7 @@ myKeys =
     , ("M-<XF86AudioRaiseVolume>", toggleScratch "volume")
     , ("M-'"                     , toggleScratch "messages")
     , ("M-S-'"                   , toggleScratch "contacts")
+    , ("M-a b"                   , toggleScratch "bluetooth")
     , ("M-a c"                   , toggleScratch "colorpicker")
     , ("M-a d"                   , toggleScratch "dictionary")
     , ("M-a m"                   , toggleScratch "music")
