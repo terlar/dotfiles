@@ -3,5 +3,6 @@ packages:
 - '.'
 extra-deps:
 - xmonad-contrib-0.12
+- X11-xft-0.3.1
 flags: {}
 extra-package-dbs: []
