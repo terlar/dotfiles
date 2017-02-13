@@ -73,6 +73,7 @@ myManageHook = composeAll $
         , "gcolor2"
         , "gifview"
         , "mpv"
+        , "pinentry"
         , "sxiv"
         , "xmessage"
         , "zenity"
