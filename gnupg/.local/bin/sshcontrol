@@ -1,0 +1,106 @@
+#!/usr/bin/env bash
+set -eu
+set -o pipefail
+
+GPGHOME="$(gpgconf --list-dirs homedir)"
+SSHCONTROL_FILE="${GPGHOME}/sshcontrol"
+
+key_files() {
+	grep -laoe ':comment.*$' "${GPGHOME}/private-keys-v1.d"/*
+}
+
+keygrip_from_file() {
+	local file="${1##*/}"
+	echo "${file%.key}"
+}
+
+list_keys() {
+	for file in $(key_files)
+	do
+		keygrip_from_file "${file}"
+	done
+}
+
+key_data() {
+	for file in $(key_files)
+	do
+		local state keygrip description
+
+		keygrip="$(keygrip_from_file "${file}")"
+		description="$(strings	-a "${file}" | sed -nE 's/^.*:comment[0-9]+:(.+)\)\)$/\1/p')"
+		state="$(ssh_state "${keygrip}")"
+
+		echo "${state};${keygrip};${description}"
+	done
+}
+
+describe_keys() {
+	key_data | sort -i -t ';' -k3 | tr ';' '\t'
+}
+
+ssh_state() {
+	if ssh_enabled "${1}"
+	then
+		echo '*'
+	else
+		echo '!'
+	fi
+}
+
+ssh_present() {
+	grep -q "${1}" "${SSHCONTROL_FILE}"
+}
+
+ssh_add() {
+	echo "${1} 0" >> "${SSHCONTROL_FILE}"
+}
+
+ssh_delete() {
+	echo "=> Remove key ${keygrip} in sshcontrol"
+	sed -i "/${keygrip}/d" "${SSHCONTROL_FILE}"
+
+	echo "=> Remove ${GPGHOME}/private-keys-v1.d/${keygrip}"
+	rm "${GPGHOME}/private-keys-v1.d/${keygrip}"
+}
+
+ssh_enabled() {
+	grep -q "^${1}" "${SSHCONTROL_FILE}"
+}
+
+ssh_toggle() {
+	if ssh_enabled "${1}"
+	then
+		echo "=> Disable key ${keygrip} in sshcontrol"
+		sed -i "/${keygrip}/s/^/!/g" "${SSHCONTROL_FILE}"
+	else
+		echo "=> Enable key ${keygrip} in sshcontrol"
+		sed -i "/${keygrip}/s/^[#!]//g" "${SSHCONTROL_FILE}"
+	fi
+}
+
+main() {
+	case "${1:-}" in
+		delete)
+			local keygrip="${2?keygrip was not provided}"
+			ssh_delete "${keygrip}"
+			;;
+		toggle)
+			local keygrip="${2?keygrip was not provided}"
+			if ssh_present "${keygrip}"
+			then
+				ssh_toggle "${keygrip}"
+			else
+				echo "=> Adding key ${keygrip} to sshcontrol"
+				ssh_add "${keygrip}"
+			fi
+			;;
+		list)
+			list_keys
+			;;
+		*)
+			describe_keys
+			;;
+	esac
+}
+
+main "$@"
