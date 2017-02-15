@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+set -eu
+set -o pipefail
+
+gen_entries() {
+	echo 0 Exit
+	sshcontrol describe
+}
+
+main() {
+	# Call menu
+	sel="$(gen_entries | rofi -dmenu -p "Toggle SSH-key: " -a 0 -no-custom | awk '{print $2}')"
+
+	# Call command
+	case "${sel}" in
+		Exit) true;;
+		*) sshcontrol toggle "${sel}";;
+	esac
+}
+
+main "$@"

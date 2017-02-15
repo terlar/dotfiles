@@ -5,6 +5,19 @@ set -o pipefail
 GPGHOME="$(gpgconf --list-dirs homedir)"
 SSHCONTROL_FILE="${GPGHOME}/sshcontrol"
 
+usage() {
+	echo "Usage: $(basename "${0}") [COMMAND]"
+	echo
+	echo 'Available Commands:'
+	echo '  delete      Delete SSH key from sshcontrol and private keys'
+	echo '  toggle      Toggle SSH key in sshcontrol'
+	echo '  list        Show available private keys'
+	echo '  describe    Describe SSH keys'
+	echo
+	echo 'Flags:'
+	echo '  -h --help   Show usage help'
+}
+
 key_files() {
 	grep -laoe ':comment.*$' "${GPGHOME}/private-keys-v1.d"/*
 }
@@ -27,15 +40,15 @@ key_data() {
 		local state keygrip description
 
 		keygrip="$(keygrip_from_file "${file}")"
-		description="$(strings	-a "${file}" | sed -nE 's/^.*:comment[0-9]+:(.+)\)\)$/\1/p')"
+		description="$(strings -a "${file}" | sed -nE 's/^.*:comment[0-9]+:(.+)\)\)$/\1/p')"
 		state="$(ssh_state "${keygrip}")"
 
-		echo "${state};${keygrip};${description}"
+		echo "${state} ${keygrip} ${description}"
 	done
 }
 
 describe_keys() {
-	key_data | sort -i -t ';' -k3 | tr ';' '\t'
+	key_data | sort -i -k3
 }
 
 ssh_state() {
@@ -52,6 +65,12 @@ ssh_present() {
 }
 
 ssh_add() {
+	if [[ ! -f "${GPGHOME}/private-keys-v1.d/${1}.key" ]]
+	then
+		echo "!! no matching private key for \`${1}'" 1>&2
+		return 1
+	fi
+
 	echo "${1} 0" >> "${SSHCONTROL_FILE}"
 }
 
@@ -97,8 +116,15 @@ main() {
 		list)
 			list_keys
 			;;
-		*)
+		""|describe)
 			describe_keys
+			;;
+		-h|--help)
+			usage
+			;;
+		*)
+			usage
+			return 1
 			;;
 	esac
 }
