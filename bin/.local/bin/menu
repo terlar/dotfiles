@@ -3,12 +3,12 @@ set -eu
 set -o pipefail
 
 is_graphical() {
-        [ -n "${DISPLAY:-}" ]
+        [[ -n "${DISPLAY:-}" ]]
 }
 
 is_interactive() {
         fd=0 # stdin
-        [ -t "${fd}" ] || [ -p /dev/stdin ]
+        [[ -t "${fd}" || -p /dev/stdin ]]
 }
 
 main() {
@@ -20,7 +20,7 @@ main() {
 		echo "unknown command \`${menu_cmd}'" 1>&2
 	fi
 
-	if is_interactive && ! is_graphical
+	if is_interactive || ! is_graphical
 	then
 		sel="$("${menu_cmd}" | fzf)"
 		"${menu_cmd}" "${sel}"
