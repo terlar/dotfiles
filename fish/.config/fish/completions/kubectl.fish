@@ -3,14 +3,17 @@
 # deployment, maintenance, and scaling of applications.
 # See: https://kubernetes.io
 
+#
+# Condition functions
+#
 function __kubectl_using_command
     set -l cmd (commandline -poc)
-    set -l found
 
     test (count $cmd) -gt (count $argv)
     or return 1
-
     set -e cmd[1]
+
+    set -l found
 
     for i in $argv
         contains -- $i $cmd
@@ -20,11 +23,21 @@ function __kubectl_using_command
     test "$argv" = "$found"
 end
 
+function __kubectl_using_resource_prefix
+    set -l prefixes (__kubectl_resource_prefixes | string join '|')
+    string match -qr -- "^($prefixes)/" (commandline -pt)
+end
+
+function __kubectl_seen_any_subcommand_from -a cmd
+    __fish_seen_subcommand_from (__kubectl_subcommands $cmd | string match -r -- '^\S+')
+end
+
 function __kubectl_seen_option_value -a option
-    set -l cmd (commandline -p)
+    # remove option
     set -e argv[1]
-    set -l query
+
     set -l values '('(string join '|' $argv)')'
+    set -l query
 
     switch $option
         case '--*'
@@ -33,7 +46,7 @@ function __kubectl_seen_option_value -a option
             set query $option' ?'$values
     end
 
-    string match -qr -- $query $cmd
+    string match -qr -- $query (commandline -p)
 end
 
 function __kubectl_seen_output_with_go_template
@@ -41,26 +54,23 @@ function __kubectl_seen_output_with_go_template
     or __kubectl_seen_option_value -o go-template go-template-file
 end
 
-function __kubectl_using_resource_type
-    __fish_seen_subcommand_from (__kubectl_resource_types)
+function __kubectl_seen_resource_type
+    __fish_seen_subcommand_from (__kubectl_resource_types; __kubectl_resource_prefixes)
 end
 
-function __kubectl_using_resource_prefix
-    set -l cmd (commandline -po)
-    set -l prefixes (__kubectl_resource_prefixes | string join '|')
-    string match -qr '^('$prefixes')/' -- $cmd[-1]
-end
-
-function __kubectl_no_pod
-    not __fish_seen_subcommand_from (__kubectl_pods --no-prefix pods)
-end
-
+#
+# List functions
+#
 function __kubectl_clusters
     kubectl config get-clusters | tail -n +2
 end
 
 function __kubectl_contexts
     kubectl config get-contexts -o name
+end
+
+function __kubectl_namespaces
+    kubectl get namespace -o name | string trim -l -c 'namespace/'
 end
 
 function __kubectl_resource_types
@@ -125,6 +135,56 @@ function __kubectl_resource_prefixes
     echo thirdpartyresource
 end
 
+function __kubectl_output_formats
+    echo json
+    echo yaml
+    echo wide
+    echo name
+    echo custom-columns=
+    echo custom-columns-file=
+    echo go-template=
+    echo go-template-file=
+    echo jsonpath=
+    echo jsonpath-file=
+end
+
+function __kubectl_resources
+    __kubectl_prefixed_resources $argv | string replace -r '^\S*/' ''
+end
+
+function __kubectl_prefixed_resources
+    set -l opts (__kubectl_shared_options)
+
+    for resource in $argv
+        kubectl $opts get $resource -o name ^/dev/null
+    end
+end
+
+function __kubectl_containers
+    set -l pod
+
+    for i in (__kubectl_resources pods)
+        if string match -q "*$i*" -- $argv
+            set pod $i
+            break
+        end
+    end
+
+    if test -z $pod
+        return
+    end
+
+    kubectl (__kubectl_shared_options) get pods $pod -o 'jsonpath={.spec.containers[*].name}' | string split ' '
+end
+
+#
+# Helper functions
+#
+function __kubectl_shared_options
+    set -l cmd (commandline -p)
+    string match -r -- '-n ?\S+|--namespace[= ]?\S+' $cmd | string split ' '
+end
+
 function __kubectl_resource_type_description -a type
     switch $type
         case clusters cluster
@@ -186,70 +246,20 @@ function __kubectl_resource_type_description -a type
     end
 end
 
-function __kubectl_resources
-    set -l prefix 1
-
-    for i in $argv
-        switch $i
-            case '--no-prefix'
-                set -e prefix
-                set idx (contains -i -- --no-prefix $argv)
-                set -e argv[$idx]
-        end
-    end
-
-    set -l cmd (commandline -pc)
-    set -l namespace (string replace -r '^kubectl .*(-n |--namespace[= ]?)([^ ]*) .*$' '$2' -- $cmd)
-
-    for resource in $argv
-        if set -lq prefix
-            kubectl get $resource -n $namespace -o name ^/dev/null
-        else
-            kubectl get $resource -n $namespace -o name ^/dev/null | string replace -r '.*/' ''
-        end
-    end
-end
-
-function __kubectl_containers
-    set -l namespace (string replace -r '^kubectl .*(-n |--namespace[= ]?)([^ ]*) .*$' '$2' -- $argv)
-    set -l pod
-
-    for i in (__kubectl_resources --no-prefix pods)
-        if string match -q "*$i*" -- $argv
-            set pod $i
-            break
-        end
-    end
-
-    if test -z $pod
-        return
-    end
-
-    kubectl get -n $namespace pods $pod -o 'jsonpath={.spec.containers[*].name}' | string split ' '
-end
-
-function __kubectl_pods_completion
-    set -l cmd (commandline -pc)
-    set -l namespace (string replace -r '^kubectl .*(-n |--namespace[= ]?)([^ ]*) .*$' '$2' -- $cmd)
-
-    kubectl get pods -n $namespace ^/dev/null | tail -n +2 | awk '{print $1"\tPod "$2" "$3}'
-end
-
-function __kubectl_complete_resource_subcommand
-    set -l resource $argv[-1]
-    set -l arguments "(__kubectl_resources $resource | string replace -r '^.*/' '')"
-    set -l description (__kubectl_resource_type_description $resource)
-    complete -c kubectl -n "__kubectl_using_command $argv" -f -a $arguments -d $description
-end
-
+#
+# Completion functions
+#
 function __kubectl_prefixed_resource_completions
-    set -l cmd (commandline -po)
+    set -l matches (string match -r -- '^(\S+)/' (commandline -pt))
 
-    if string match -qr '[a-zA-Z]+/.*$' -- $cmd[-1]
-        set -l type (string replace -r '([a-zA-Z]+)/.*$' '$1' -- $cmd[-1])
-        set -l description (__kubectl_resource_type_description $type)
-        printf "%s\t$description\n" (__kubectl_resources $type)
+    if set -q matches[2]
+        set -l description (__kubectl_resource_type_description $matches[2])
+        printf "%s\t$description\n" (__kubectl_prefixed_resources $matches[2])
     end
+end
+
+function __kubectl_pod_completions
+    kubectl (__kubectl_shared_options) get --no-headers pods ^/dev/null | string replace -r '^(\S+)\s+(\S+)\s+(\S+).*$' '$1\tPod: $2 $3'
 end
 
 # Dynamic completions that expand more and more the deeper you
@@ -260,40 +270,30 @@ end
 # - `resource.` completes `resource.x` and `resource.x.y`
 # - `resource.x.` completes `resource.x.y` and `resource.x.y.z`
 function __kubectl_explain_field_completions
-    set -l cmd (commandline -po)
+    set -l token (commandline -pt)
 
-    string match -qr '[a-zA-Z\.]+\.' -- $cmd[-1]
+    string match -qr -- '^[\w\.]+\.' $token
     or return
 
-    set -l root (string replace -r '([a-zA-Z]+(\.[a-zA-Z])*)\.[a-zA-Z]*$' '$1' -- $cmd[-1])
+    set -l root (string replace -r '(\w+(\.\w)*)\.\w*$' '$1' -- $token)
     set -l section
 
-    for f in (kubectl explain --recursive $root ^/dev/null | sed -n -E '/FIELDS:/,/^[A-Z]*:/ s/^   ([ ]*)([a-zA-Z]+).*$/\1\2/p')
+    for f in (kubectl explain --recursive $root ^/dev/null | sed -n -E '/FIELDS:/,/^\u*:/ s/^   ([ ]*)(\w+).*$/\1\2/p')
         switch $f
             case ' *'
                 echo "$root.$section."(string trim $f)
             case '*'
                 set section $f
-                echo "$root.$f"
+                echo $root.$f
         end
     end
 end
 
-function __kubectl_output_formats
-    echo json
-    echo yaml
-    echo wide
-    echo name
-    echo custom-columns=
-    echo custom-columns-file=
-    echo go-template=
-    echo go-template-file=
-    echo jsonpath=
-    echo jsonpath-file=
-end
-
-function __kubectl_seen_any_subcommand_from -a cmd
-    __fish_seen_subcommand_from (__kubectl_subcommands $cmd | string replace -r '\t.*$' '')
+function __kubectl_complete_resource_subcommand
+    set -l resource $argv[-1]
+    set -l arguments "(__kubectl_resources $resource)"
+    set -l description (__kubectl_resource_type_description $resource)
+    complete -c kubectl -n "__kubectl_using_command $argv" -f -a $arguments -d $description
 end
 
 function __kubectl_subcommands -a cmd
@@ -395,7 +395,7 @@ complete -c kubectl -l log-dir -r -d 'Write log files in this directory'
 complete -c kubectl -l log-flush-frequency -x -d 'Maximum number of seconds between log flushes'
 complete -c kubectl -l logtostderr -f -a 'true false' -d 'Log to standard error instead of files [default true]'
 complete -c kubectl -l match-server-version -f -a 'true false' -d 'Require server version to match client version'
-complete -c kubectl -s n -l namespace -x -a '(__kubectl_resources --no-prefix namespaces)' -d 'Namespace'
+complete -c kubectl -s n -l namespace -x -a '(__kubectl_namespaces)' -d 'Namespace'
 complete -c kubectl -l password -x -d 'Password for basic authentication to the API server'
 complete -c kubectl -l request-timeout -x -d 'Timeout for a single server request'
 complete -c kubectl -s s -l server -x -d 'The address and port of the Kubernetes API server'
@@ -493,7 +493,7 @@ complete -c kubectl -n '__kubectl_using_command create serviceaccount' -l genera
 # kubectl expose (-f FILENAME | TYPE NAME) [--port=port] [--protocol=TCP|UDP] [--target-port=number-or-name] [--name=name] [--external-ip=external-ip-of-service] [--type=type] [options]
 complete -c kubectl -n '__kubectl_using_command expose; and not __kubectl_seen_any_subcommand_from expose' -f -a '(__kubectl_subcommands expose)'
 
-complete -c kubectl -n '__kubectl_using_command expose pod' -f -a '(__kubectl_pods_completion)'
+complete -c kubectl -n '__kubectl_using_command expose pod' -f -a '(__kubectl_pod_completions)'
 
 for resource in service replicationcontroller deployment replicaset
     __kubectl_complete_resource_subcommand expose $resource
@@ -536,8 +536,8 @@ complete -c kubectl -n '__kubectl_using_command run' -l command -f -a 'true fals
 complete -c kubectl -n '__kubectl_using_command run' -l dry-run -f -a 'true false' -d 'Only print the object that would be sent'
 complete -c kubectl -n '__kubectl_using_command run' -l env -x -d 'Environment variables to set in the container'
 complete -c kubectl -n '__kubectl_using_command run' -l expose -f -a 'true false' -d 'A public, external service is created for the container(s) which are run'
-complete -c kubectl -n '__kubectl_using_command run; and __kubectl_using_option --expose' -l service-generator -d 'The name of the generator to use for creating a service'
-complete -c kubectl -n '__kubectl_using_command run; and __kubectl_using_option --expose' -l service-overrides -d 'An inline JSON override for the generated service object'
+complete -c kubectl -n '__kubectl_using_command run; and __fish_seen_subcommand_from --expose' -l service-generator -d 'The name of the generator to use for creating a service'
+complete -c kubectl -n '__kubectl_using_command run; and __fish_seen_subcommand_from --expose' -l service-overrides -d 'An inline JSON override for the generated service object'
 complete -c kubectl -n '__kubectl_using_command run' -l generator -x -d 'The name of the API generator to use'
 complete -c kubectl -n '__kubectl_using_command run' -l hostport -x -d 'The host port mapping for the container port'
 complete -c kubectl -n '__kubectl_using_command run' -l image -x -d 'The image for the container to run'
@@ -574,7 +574,7 @@ complete -c kubectl -n '__kubectl_using_command set; and not __kubectl_seen_any_
 #  kubectl set image (-f FILENAME | TYPE NAME) CONTAINER_NAME_1=CONTAINER_IMAGE_1 ... CONTAINER_NAME_N=CONTAINER_IMAGE_N [options]
 complete -c kubectl -n '__kubectl_using_command set image; and not __kubectl_seen_any_subcommand_from "set image"' -f -a '(__kubectl_subcommands "set image")'
 
-complete -c kubectl -n '__kubectl_using_command set image pod' -f -a '(__kubectl_pods_completion)'
+complete -c kubectl -n '__kubectl_using_command set image pod' -f -a '(__kubectl_pod_completions)'
 
 for resource in daemonset deployment job replicaset replicationcontroller
     __kubectl_complete_resource_subcommand set image $resource
@@ -631,13 +631,13 @@ complete -c kubectl -n '__kubectl_using_command set resources' -l requests -x -d
 #
 
 # kubectl get [(-o|--output=)json|yaml|wide|custom-columns=...|custom-columns-file=...|go-template=...|go-template-file=...|jsonpath=...|jsonpath-file=...] (TYPE [NAME | -l label] | TYPE/NAME ...) [flags] [options]
-complete -c kubectl -n '__kubectl_using_command get; and not __kubectl_using_resource_type' -f -a '(__kubectl_resource_types)' -d 'Resource Type'
+complete -c kubectl -n '__kubectl_using_command get; and not __kubectl_seen_resource_type' -f -a '(__kubectl_resource_types)' -d 'Resource Type'
 
 for resource in (__kubectl_resource_types)
     __kubectl_complete_resource_subcommand get $resource
 end
 
-complete -c kubectl -n '__kubectl_using_command get; and not __kubectl_using_resource_type' -f -a '(__kubectl_prefixed_resource_completions)'
+complete -c kubectl -n '__kubectl_using_command get; and not __kubectl_seen_resource_type' -f -a '(__kubectl_prefixed_resource_completions)'
 
 complete -c kubectl -n '__kubectl_using_command get' -l all-namespaces -f -a 'true false' -d 'List the requested object(s) across all namespaces'
 complete -c kubectl -n '__kubectl_using_command get' -l export -f -a 'true false' -d 'Strip cluster-specific info'
@@ -663,7 +663,7 @@ complete -c kubectl -n '__kubectl_using_command get' -s w -l watch -f -a 'true f
 complete -c kubectl -n '__kubectl_using_command get' -l watch-only -f -a 'true false' -d 'Watch for changes to the requested object(s)'
 
 # kubectl explain RESOURCE [options]
-complete -c kubectl -n '__kubectl_using_command explain; and not __kubectl_using_resource_type' -f -a '(__kubectl_resource_types)' -d 'Resource Type'
+complete -c kubectl -n '__kubectl_using_command explain; and not __kubectl_seen_resource_type' -f -a '(__kubectl_resource_types)' -d 'Resource Type'
 
 complete -c kubectl -n '__kubectl_using_command explain' -f -a '(__kubectl_explain_field_completions)'
 
@@ -687,7 +687,7 @@ complete -c kubectl -n '__kubectl_using_command edit' -l validate -f -a 'true fa
 complete -c kubectl -n '__kubectl_using_command edit' -l windows-line-endings -f -a 'true false' -d 'Use Windows line-endings'
 
 # kubectl delete ([-f FILENAME] | TYPE [(NAME | -l label | --all)]) [options]
-complete -c kubectl -n '__kubectl_using_command delete; and not __kubectl_using_resource_type' -f -a '(__kubectl_resource_types)' -d 'Resource Type'
+complete -c kubectl -n '__kubectl_using_command delete; and not __kubectl_seen_resource_type' -f -a '(__kubectl_resource_types)' -d 'Resource Type'
 
 for resource in (__kubectl_resource_types)
     __kubectl_complete_resource_subcommand delete $resource
@@ -714,14 +714,14 @@ complete -c kubectl -n '__kubectl_using_command delete' -l timeout -x -d 'Length
 complete -c kubectl -n '__kubectl_using_command rollout; and not __kubectl_seen_any_subcommand_from rollout' -f -a '(__kubectl_subcommands rollout)'
 
 # kubectl rollout history (TYPE NAME | TYPE/NAME) [flags] [options]
-complete -c kubectl -n '__kubectl_using_command rollout history; and not __kubectl_using_resource_type' -f -a 'deployment' -d 'Resource Type'
+complete -c kubectl -n '__kubectl_using_command rollout history; and not __kubectl_seen_resource_type' -f -a 'deployment' -d 'Resource Type'
 
 for resource in deployment
     __kubectl_complete_resource_subcommand rollout history $resource
 end
 
-complete -c kubectl -n '__kubectl_using_command rollout history; and not __kubectl_using_resource_type; and not __kubectl_using_resource_prefix' -f -a 'deployment/' -d 'Deployment...'
-complete -c kubectl -n '__kubectl_using_command rollout history; and not __kubectl_using_resource_type' -f -a '(__kubectl_prefixed_resource_completions)'
+complete -c kubectl -n '__kubectl_using_command rollout history; and not __kubectl_seen_resource_type; and not __kubectl_using_resource_prefix' -f -a 'deployment/' -d 'Deployment...'
+complete -c kubectl -n '__kubectl_using_command rollout history; and not __kubectl_seen_resource_type' -f -a '(__kubectl_prefixed_resource_completions)'
 
 complete -c kubectl -n '__kubectl_using_command rollout history' -s f -l filename -r -d 'Filename, directory, or URL to files'
 complete -c kubectl -n '__kubectl_using_command rollout history; and __fish_seen_subcommand_from -f --filename' -s R -l recursive -f -a 'true false' -d 'Process the directory recursively'
@@ -729,40 +729,40 @@ complete -c kubectl -n '__kubectl_using_command rollout history; and __fish_seen
 complete -c kubectl -n '__kubectl_using_command rollout history' -l revision -x -d 'See the details of the revision specified'
 
 # kubectl rollout pause RESOURCE [options]
-complete -c kubectl -n '__kubectl_using_command rollout pause; and not __kubectl_using_resource_type' -f -a 'deployment' -d 'Resource Type'
+complete -c kubectl -n '__kubectl_using_command rollout pause; and not __kubectl_seen_resource_type' -f -a 'deployment' -d 'Resource Type'
 
 for resource in deployment
     __kubectl_complete_resource_subcommand rollout pause $resource
 end
 
-complete -c kubectl -n '__kubectl_using_command rollout pause; and not __kubectl_using_resource_type; and not __kubectl_using_resource_prefix' -f -a 'deployment/' -d 'Deployment...'
-complete -c kubectl -n '__kubectl_using_command rollout pause; and not __kubectl_using_resource_type' -f -a '(__kubectl_prefixed_resource_completions)'
+complete -c kubectl -n '__kubectl_using_command rollout pause; and not __kubectl_seen_resource_type; and not __kubectl_using_resource_prefix' -f -a 'deployment/' -d 'Deployment...'
+complete -c kubectl -n '__kubectl_using_command rollout pause; and not __kubectl_seen_resource_type' -f -a '(__kubectl_prefixed_resource_completions)'
 
 complete -c kubectl -n '__kubectl_using_command rollout pause' -s f -l filename -r -d 'Filename, directory, or URL to files'
 complete -c kubectl -n '__kubectl_using_command rollout pause; and __fish_seen_subcommand_from -f --filename' -s R -l recursive -f -a 'true false' -d 'Process the directory recursively'
 
 # kubectl rollout resume RESOURCE [options]
-complete -c kubectl -n '__kubectl_using_command rollout resume; and not __kubectl_using_resource_type' -f -a 'deployment' -d 'Resource Type'
+complete -c kubectl -n '__kubectl_using_command rollout resume; and not __kubectl_seen_resource_type' -f -a 'deployment' -d 'Resource Type'
 
 for resource in deployment
     __kubectl_complete_resource_subcommand rollout resume $resource
 end
 
-complete -c kubectl -n '__kubectl_using_command rollout resume; and not __kubectl_using_resource_type; and not __kubectl_using_resource_prefix' -f -a 'deployment/' -d 'Deployment...'
-complete -c kubectl -n '__kubectl_using_command rollout resume; and not __kubectl_using_resource_type' -f -a '(__kubectl_prefixed_resource_completions)'
+complete -c kubectl -n '__kubectl_using_command rollout resume; and not __kubectl_seen_resource_type; and not __kubectl_using_resource_prefix' -f -a 'deployment/' -d 'Deployment...'
+complete -c kubectl -n '__kubectl_using_command rollout resume; and not __kubectl_seen_resource_type' -f -a '(__kubectl_prefixed_resource_completions)'
 
 complete -c kubectl -n '__kubectl_using_command rollout resume' -s f -l filename -r -d 'Filename, directory, or URL to files'
 complete -c kubectl -n '__kubectl_using_command rollout resume; and __fish_seen_subcommand_from -f --filename' -s R -l recursive -f -a 'true false' -d 'Process the directory recursively'
 
 # kubectl rollout status (TYPE NAME | TYPE/NAME) [flags] [options]
-complete -c kubectl -n '__kubectl_using_command rollout status; and not __kubectl_using_resource_type' -f -a 'deployment' -d 'Resource Type'
+complete -c kubectl -n '__kubectl_using_command rollout status; and not __kubectl_seen_resource_type' -f -a 'deployment' -d 'Resource Type'
 
 for resource in deployment
     __kubectl_complete_resource_subcommand rollout status $resource
 end
 
-complete -c kubectl -n '__kubectl_using_command rollout status; and not __kubectl_using_resource_type; and not __kubectl_using_resource_prefix' -f -a 'deployment/' -d 'Deployment...'
-complete -c kubectl -n '__kubectl_using_command rollout status; and not __kubectl_using_resource_type' -f -a '(__kubectl_prefixed_resource_completions)'
+complete -c kubectl -n '__kubectl_using_command rollout status; and not __kubectl_seen_resource_type; and not __kubectl_using_resource_prefix' -f -a 'deployment/' -d 'Deployment...'
+complete -c kubectl -n '__kubectl_using_command rollout status; and not __kubectl_seen_resource_type' -f -a '(__kubectl_prefixed_resource_completions)'
 
 complete -c kubectl -n '__kubectl_using_command rollout status' -s f -l filename -r -d 'Filename, directory, or URL to files'
 complete -c kubectl -n '__kubectl_using_command rollout status; and __fish_seen_subcommand_from -f --filename' -s R -l recursive -f -a 'true false' -d 'Process the directory recursively'
@@ -771,14 +771,14 @@ complete -c kubectl -n '__kubectl_using_command rollout status' -l revision -x -
 complete -c kubectl -n '__kubectl_using_command rollout status' -s w -l watch -f -a 'true false' -d "Watch the status of the rollout until done"
 
 # kubectl rollout undo (TYPE NAME | TYPE/NAME) [flags] [options]
-complete -c kubectl -n '__kubectl_using_command rollout undo; and not __kubectl_using_resource_type' -f -a 'deployment' -d 'Resource Type'
+complete -c kubectl -n '__kubectl_using_command rollout undo; and not __kubectl_seen_resource_type' -f -a 'deployment' -d 'Resource Type'
 
 for resource in deployment
     __kubectl_complete_resource_subcommand rollout undo $resource
 end
 
-complete -c kubectl -n '__kubectl_using_command rollout undo; and not __kubectl_using_resource_type; and not __kubectl_using_resource_prefix' -f -a 'deployment/' -d 'Deployment...'
-complete -c kubectl -n '__kubectl_using_command rollout undo; and not __kubectl_using_resource_type' -f -a '(__kubectl_prefixed_resource_completions)'
+complete -c kubectl -n '__kubectl_using_command rollout undo; and not __kubectl_seen_resource_type; and not __kubectl_using_resource_prefix' -f -a 'deployment/' -d 'Deployment...'
+complete -c kubectl -n '__kubectl_using_command rollout undo; and not __kubectl_seen_resource_type' -f -a '(__kubectl_prefixed_resource_completions)'
 
 complete -c kubectl -n '__kubectl_using_command rollout undo' -l dry-run -f -a 'true false' -d 'Only print the object that would be sent'
 
