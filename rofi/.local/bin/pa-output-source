@@ -3,41 +3,24 @@ set -eu
 set -o pipefail
 
 gen_entries() {
-	local -n entries="${1}"
-
-	for (( i=0; i < ${#entries[@]}; i++ ))
-	do
-		echo "${i}" "${entries[i]}"
-	done
+	echo cancel
+	pactl list short sinks | awk '{ print $1" "$2 }'
 }
 
 main() {
+	local prompt='pulseaudio output sink'
 	local sel
-	mapfile -t sinks < <(pactl list short sinks | awk '{ print $1" "$2 }')
-
-	local -i idx=0
-	local titles=()
-	local commands=()
-
-	titles[$idx]="Cancel"
-	commands[$idx]="true"
-	idx+=1
-
-	for (( i=0; i < ${#sinks[@]}; i++ ))
-	do
-		read -r id description <<< "${sinks[i]}"
-		# shellcheck disable=SC2034
-		titles[$idx]="${description}"
-		commands[$idx]="pactl set-default-sink ${id}"
-		idx+=1
-	done
 
 	# Call menu
-	sel="$(gen_entries titles | rofi -dmenu -p "PulseAudio output sink:" -a 0 -no-custom  | awk '{print $1}')"
+	sel="$(gen_entries \
+		| rofi -dmenu -p "${prompt}:" -a 0 -no-custom \
+		| awk '{print $1}')"
 
 	# Call command
-	# shellcheck disable=SC2091
-	$(${commands[$sel]})
+	case "${sel}" in
+		cancel) true;;
+		*) pactl set-default-sink "${sel}";;
+	esac
 }
 
 main "$@"
