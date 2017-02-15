@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+set -eu
+set -o pipefail
+
+gen_sinks() {
+	pactl list short sinks | awk '{ print $1" "$2 }'
+}
+
+main() {
+	if [[ -z "$@" ]]
+	then
+		echo cancel; gen_sinks
+	else
+		case "${1}" in
+			*cancel*)
+				true
+				;;
+			*)
+				local sink
+				sink="$(echo "$1" | cut -d' ' -f1)"
+				pactl set-default-sink "${sink}" >/dev/null
+				;;
+		esac
+	fi
+}
+
+main "$@"

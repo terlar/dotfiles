@@ -1,6 +1,6 @@
 ! General
 ! ------------------------------------------------------------------------------
-rofi.modi: window,run,ssh
+rofi.modi: window,run,pa-output:pa-output-source-menu,sshkey:sshcontrol-menu,ssh
 
 ! Typography
 ! ------------------------------------------------------------------------------

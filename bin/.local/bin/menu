@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+set -eu
+set -o pipefail
+
+is_graphical() {
+        [ -n "${DISPLAY:-}" ]
+}
+
+is_interactive() {
+        fd=0 # stdin
+        [ -t "${fd}" ] || [ -p /dev/stdin ]
+}
+
+main() {
+	local sel
+	local menu_cmd="${1?menu command was not provided}"
+
+	if ! type "$menu_cmd" &>/dev/null
+	then
+		echo "unknown command \`${menu_cmd}'" 1>&2
+	fi
+
+	if is_interactive && ! is_graphical
+	then
+		sel="$("${menu_cmd}" | fzf)"
+		"${menu_cmd}" "${sel}"
+	else
+		rofi -modi "${menu_cmd}:${menu_cmd}" -show "${menu_cmd}"
+	fi
+}
+
+main "$@"

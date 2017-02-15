@@ -2,25 +2,26 @@
 set -eu
 set -o pipefail
 
-gen_entries() {
-	echo c cancel
+gen_private_keys() {
 	sshcontrol describe
 }
 
 main() {
-	local prompt='toggle ssh key'
-	local sel
-
-	# Call menu
-	sel="$(gen_entries \
-		| rofi -dmenu -p "${prompt}:" -a 0 -no-custom \
-		| awk '{print $2}')"
-
-	# Call command
-	case "${sel}" in
-		cancel) true;;
-		*) sshcontrol toggle "${sel}";;
-	esac
+	if [[ -z "$@" ]]
+	then
+		echo cancel; gen_private_keys
+	else
+		case "${1}" in
+			*cancel*)
+				true
+				;;
+			*)
+				local key
+				key="$(echo "$1" | cut -d' ' -f2)"
+				sshcontrol toggle "${key}" >/dev/null
+				;;
+		esac
+	fi
 }
 
 main "$@"
