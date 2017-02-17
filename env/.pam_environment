@@ -28,6 +28,10 @@ BROWSER   DEFAULT=browser
 PAGER     DEFAULT=most
 MANPAGER  DEFAULT=most
 
+# FZF
+FZF_DEFAULT_COMMAND DEFAULT="rg --files --no-ignore --hidden --follow --glob '!.git/*'"
+FZF_DEFAULT_OPTS    DEFAULT="--reverse --border"
+
 # XDG
 XDG_DESKTOP_DIR   DEFAULT=${HOME}
 XDG_DOCUMENTS_DIR DEFAULT=${HOME}/documents
