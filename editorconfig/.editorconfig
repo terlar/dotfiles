@@ -31,6 +31,11 @@ indent_size = 4
 indent_style = spaces
 indent_size = 4
 
+# Java
+[**/*.java]
+indent_style = spaces
+indent_size = 4
+
 # JavaScript
 [**/*.{js,json}]
 indent_style = spaces
