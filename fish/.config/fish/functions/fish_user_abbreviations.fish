@@ -1,6 +1,7 @@
 function fish_user_abbreviations
     set -U fish_user_abbreviations
 
+    abbr @ 'head'
     abbr tf 'tail -f'
     abbr l 'ls -a'
     abbr l. 'ls -d .*'
