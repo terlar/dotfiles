@@ -12,7 +12,6 @@ is_interactive() {
 }
 
 main() {
-	local sel
 	local menu_cmd="${1?menu command was not provided}"
 
 	if ! type "$menu_cmd" &>/dev/null
@@ -22,8 +21,13 @@ main() {
 
 	if is_interactive || ! is_graphical
 	then
-		sel="$("${menu_cmd}" | fzf)"
-		"${menu_cmd}" "${sel}"
+		local sel=""
+
+		while :
+		do
+			sel="$("${menu_cmd}" "${sel}" | fzf -0; true)"
+			[[ -n "${sel}" ]] || break
+		done
 	else
 		rofi -modi "${menu_cmd}:${menu_cmd}" -show "${menu_cmd}"
 	fi
