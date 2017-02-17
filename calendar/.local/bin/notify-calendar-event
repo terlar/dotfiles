@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 agenda() {
-	khal list today tomorrow \
+	khal list now tomorrow \
 		| grep '^[0-9][0-9]:[0-9][0-9]-[0-9][0-9]:[0-9][0-9] '
 }
 
@@ -33,11 +33,14 @@ humanize_seconds() {
 	(( m=(time % 3600) / 60 ))
 	(( s=time % 60 ))
 
-	if [[ "$h" -gt 0 ]]; then
+	if [[ "$h" -gt 0 ]]
+	then
 		echo -n "${m} hours"
-	elif [[ "$m" -gt 0 ]]; then
+	elif [[ "$m" -gt 0 ]]
+	then
 		echo -n "${m} minutes"
-	elif [[ "$s" -gt 0 ]]; then
+	elif [[ "$s" -gt 0 ]]
+	then
 		echo -n "${s} seconds"
 	fi
 }
@@ -45,7 +48,8 @@ humanize_seconds() {
 main() {
 	local time start_time message
 
-	agenda | while read -r event; do
+	agenda | while read -r event
+	do
 		time=$(echo "$event" | cut -d ' ' -f 1)
 		start_time=$(echo "$time" | cut -d '-' -f 1)
 		message=$(echo "$event" | cut -d ' ' -f 2-)
