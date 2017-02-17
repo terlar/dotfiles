@@ -1,6 +1,6 @@
 ! General
 ! ------------------------------------------------------------------------------
-rofi.modi: window,run,pa-output:pa-output-source-menu,sshkey:sshcontrol-menu,ssh
+rofi.modi: window,run,systemd:systemd-menu,systemd-user:systemd-user-menu,pa-output:pa-output-source-menu,sshkey:sshcontrol-menu
 
 ! Typography
 ! ------------------------------------------------------------------------------

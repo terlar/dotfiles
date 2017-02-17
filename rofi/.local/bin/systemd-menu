@@ -1,0 +1,115 @@
+#!/usr/bin/env bash
+set -eu
+set -o pipefail
+
+notify_info() {
+	notify-send -i info 'systemd' "$*"
+}
+
+notify_stop() {
+	notify-send -i stop 'systemd' "$*"
+}
+
+status() {
+	local service="$1"
+	if systemctl status "${service}" &>/dev/null
+	then
+		notify_info "$(systemctl --no-pager status "${service}")"
+	else
+		notify_stop "$(systemctl --no-pager status "${service}")"
+	fi
+}
+
+unit_file_state() {
+	systemctl show "$1" --property UnitFileState --value
+}
+
+gen_services() {
+	systemctl list-unit-files \
+		--no-pager --no-legend \
+		-t service
+}
+
+gen_timers() {
+	systemctl list-unit-files \
+		--no-pager --no-legend \
+		-t timer
+}
+
+gen_service_menu() {
+	local service state
+	service="$1"
+	state="$(unit_file_state "${service}")"
+
+	if [[ "${state}" != "static" ]]
+	then
+		echo "start ${service}"
+		echo "stop ${service}"
+		echo "restart ${service}"
+	fi
+
+	echo "status ${service}"
+	echo "enable ${service}"
+	echo "disable ${service}"
+}
+
+main() {
+	if [[ -z "$@" ]]
+	then
+		echo daemon-reload
+		echo services
+		echo timers
+		echo cancel
+	else
+		local cmd=($1)
+		case "${cmd[0]}" in
+			cancel)
+				return
+				;;
+			daemon-reload)
+				coproc systemctl daemon-reload & >/dev/null 2>&1
+				exec 1>&-
+				notify 'daemon-reload'
+				;;
+			services)
+				gen_services
+				;;
+			timers)
+				gen_timers
+				;;
+			start|stop|restart)
+				coproc {
+					systemctl "${cmd[@]}"
+					status "${cmd[1]}"
+				}
+				exec 1>&-
+				;;
+			status)
+				status "${cmd[1]}"
+				;;
+			enable)
+				local service="${cmd[1]}"
+				coproc {
+					systemctl enable "${service}"
+					systemctl start "${service}"
+					status "${service}"
+				}
+				exec 1>&-
+				;;
+			disable)
+				local service="${cmd[1]}"
+				coproc {
+					systemctl disable "${service}"
+					systemctl stop "${service}"
+					status "${service}"
+				}
+				exec 1>&-
+				;;
+			*.service)
+				gen_service_menu "${cmd[0]}"
+				;;
+		esac
+	fi
+}
+
+main "$@"
