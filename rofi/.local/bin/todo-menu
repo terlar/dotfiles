@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+set -eu
+set -o pipefail
+
+notify_done() {
+	notify-send -i gtk-apply 'todo' "$*"
+}
+
+gen_todos() {
+	fish -c 'todo list'
+}
+
+gen_todo_menu() {
+	echo
+}
+
+main() {
+	if [[ -z "$@" ]]
+	then
+		echo cancel
+		echo +
+		echo edit
+		gen_todos
+	else
+		local cmd=($1)
+		case "${cmd[0]}" in
+			cancel)
+				return
+				;;
+			'+')
+				unset 'cmd[0]'
+				coproc fish -c "todo add ${cmd[*]}" & >/dev/null 2>&1
+				exec 1>&-
+				;;
+			edit)
+				coproc fish -c 'todo edit &' >/dev/null 2>&1
+				exec 1>&-
+				;;
+			*)
+				local result
+				result="$(fish -c "todo done ${cmd[*]}")"
+				notify_done "${result}"
+				;;
+		esac
+	fi
+}
+
+main "$@"

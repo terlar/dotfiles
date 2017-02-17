@@ -63,7 +63,9 @@ function todo --argument cmd
                 set task $matches
             end
 
-            set_color green
+            if status is-interactive
+                set_color green
+            end
             echo "✓ $task"
     end
 end
