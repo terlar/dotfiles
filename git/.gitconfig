@@ -117,3 +117,5 @@
 [ghq "import"]
 	starred = github-list-starred
 	user = getgithubrepos
+[http "https://gopkg.in"]
+	followRedirects = true
