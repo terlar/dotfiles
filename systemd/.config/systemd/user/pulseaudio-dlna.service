@@ -1,6 +1,5 @@
 [Unit]
 Description=PulseAudio Chromecast support
-After=pulseaudio.service
 
 [Service]
 ExecStart=/usr/bin/pulseaudio-dlna --port 9999 --cover-mode=application --auto-reconnect
