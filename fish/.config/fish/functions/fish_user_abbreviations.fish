@@ -8,6 +8,7 @@ function fish_user_abbreviations
     abbr m mux
     abbr e editor
     abbr week "date '+%V'"
+    abbr time "time -p"
 
     # Math
     abbr -- '+' 'add'
