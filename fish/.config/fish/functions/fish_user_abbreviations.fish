@@ -9,33 +9,37 @@ function fish_user_abbreviations
     abbr e editor
     abbr week "date '+%V'"
 
+    # Math
     abbr -- '+' 'add'
     abbr -- '-' 'sub'
     abbr -- '*' 'mul'
     abbr -- '/' 'div'
 
-    if type -fq ag
-        abbr gg 'ag'
-
+    if type -fq tree
+        abbr tree 'tree -a'
     end
 
     if type -fq rg
-        abbr ag 'rg'
-        abbr gg 'rg'
+        abbr ag 'rg --hidden'
+        abbr gg 'rg --hidden'
+        abbr rg 'rg --hidden'
     end
 
     if type -fq systemctl
         abbr j 'journalctl --since=today'
         abbr je 'journalctl --since=today --priority=0..3'
-        abbr jb 'journalctl -b'
-        abbr jf 'journalctl -f'
-        abbr ju 'journalctl -u'
+        abbr jb 'journalctl --boot'
+        abbr jf 'journalctl --follow'
+        abbr ju 'journalctl --unit'
         abbr juu 'journalctl --user-unit'
 
         abbr sc 'systemctl'
-        abbr scu 'systemctl --user'
         abbr scs 'systemctl status'
         abbr scl 'systemctl list-units'
+
+        abbr scu 'systemctl --user'
+        abbr scus 'systemctl --user status'
+        abbr scul 'systemctl --user list-units'
 
         abbr reboot 'systemctl reboot'
         abbr poweroff 'systemctl poweroff'
@@ -92,17 +96,14 @@ function fish_user_abbreviations
         abbr ccat pygmentize
     end
 
-    if type -fq bundle
-        abbr b bundle
-        abbr be 'bundle exec'
-    end
-
     if type -fq docker
         abbr d docker
         abbr dim 'docker images'
+
         abbr dp 'docker ps'
         abbr dpa 'docker ps -a'
         abbr dpq 'docker ps -q'
+
         abbr drmc 'docker rm -v (docker ps -qa --filter status=exited)'
         abbr drmca 'docker rm -fv (docker ps -qa)'
         abbr drmi 'docker rmi (docker images -q --filter dangling=true)'
