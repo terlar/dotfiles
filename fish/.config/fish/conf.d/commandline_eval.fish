@@ -4,7 +4,9 @@ function __commandline_eval_kb -e fish_user_key_bindings
 end
 
 function __commandline_eval_token
-    set -l tokens (eval string escape -- (commandline -ct))
+    # Use fish -c to be able to suppress syntax errors in eval.
+    set -l token (commandline -ct)
+    set -l tokens (fish -c "eval string escape -- $token" ^/dev/null)
     set -q tokens[1]
     or return
 
