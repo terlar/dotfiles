@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+set -eu
+set -o pipefail
+
+has_cmd() {
+	if command -v "$*" &>/dev/null
+	then
+		return 0
+	else
+		return 1
+	fi
+}
+
+main() {
+	local cmd cmd_path
+	cmd="${1?command was not provided}"
+
+	if ! has_cmd "${cmd}"
+	then
+		echo "unknown command \`${cmd}'" 1>&2
+	fi
+
+	cmd_path="$(which "${cmd}")"
+	cat "${cmd_path}"
+}
+
+main "$@"
