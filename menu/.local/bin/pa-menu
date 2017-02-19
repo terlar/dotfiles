@@ -20,7 +20,7 @@ gen_input_devices() {
 get_sink_inputs() {
 	pacmd list-sink-inputs | awk '
 		$1 == "index:" { idx = $2 }
-		$1 == "application.name" { print idx "> " $3 }
+		$1 == "application.name" { print idx "@ " $3 }
 	' | tr -d '"'
 }
 
@@ -46,10 +46,10 @@ main() {
 			input)
 				gen_input_devices
 				;;
-			*'>'*)
+			*@*)
 				local input sink_id
-				input="$(echo "${cmd[0]}" | cut -d'>' -f1)"
-				sink_id="$(echo "${cmd[0]}" | cut -d'>' -f2)"
+				input="$(echo "${cmd[0]}" | cut -d'@' -f1)"
+				sink_id="$(echo "${cmd[0]}" | cut -d'@' -f2)"
 
 				if [[ -z "${sink_id}" ]]
 				then
