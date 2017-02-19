@@ -24,6 +24,12 @@ unit_file_state() {
 	systemctl show "$1" --property UnitFileState --value
 }
 
+gen_main_menu() {
+	echo daemon-reload
+	echo services
+	echo timers
+}
+
 gen_services() {
 	systemctl list-unit-files \
 		--no-pager --no-legend \
@@ -56,16 +62,10 @@ gen_service_menu() {
 main() {
 	if [[ -z "$@" ]]
 	then
-		echo daemon-reload
-		echo services
-		echo timers
-		echo cancel
+		gen_main_menu
 	else
 		local cmd=($1)
 		case "${cmd[0]}" in
-			cancel)
-				return
-				;;
 			daemon-reload)
 				coproc systemctl daemon-reload & >/dev/null 2>&1
 				exec 1>&-

@@ -9,18 +9,12 @@ gen_private_keys() {
 main() {
 	if [[ -z "$@" ]]
 	then
-		echo cancel; gen_private_keys
+		gen_private_keys
 	else
-		case "${1}" in
-			*cancel*)
-				true
-				;;
-			*)
-				local key
-				key="$(echo "$1" | cut -d' ' -f2)"
-				sshcontrol toggle "${key}" >/dev/null
-				;;
-		esac
+		local key
+		key="$(echo "$1" | cut -d' ' -f2)"
+		sshcontrol toggle "${key}" >/dev/null
+		gen_private_keys
 	fi
 }
 

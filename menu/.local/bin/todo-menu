@@ -10,23 +10,15 @@ gen_todos() {
 	fish -c 'todo list'
 }
 
-gen_todo_menu() {
-	echo
-}
-
 main() {
 	if [[ -z "$@" ]]
 	then
-		echo cancel
-		echo +
 		echo edit
+		echo +
 		gen_todos
 	else
 		local cmd=($1)
 		case "${cmd[0]}" in
-			cancel)
-				return
-				;;
 			'+')
 				unset 'cmd[0]'
 				coproc fish -c "todo add ${cmd[*]}" & >/dev/null 2>&1

@@ -1,0 +1,83 @@
+#!/usr/bin/env bash
+set -eu
+set -o pipefail
+
+notify() {
+	notify-send -i sound pulseaudio "$*"
+}
+
+gen_output_devices() {
+	local prefix="${1:-out:}"
+	pactl list short sinks \
+		| awk -v prefix="${prefix}" '{ print prefix $1 " " $2 }'
+}
+
+gen_input_devices() {
+	pactl list short sources \
+		| awk -v prefix='in:' '{ print prefix $1 " " $2 }'
+}
+
+get_sink_inputs() {
+	pacmd list-sink-inputs | awk '
+		$1 == "index:" { idx = $2 }
+		$1 == "application.name" { print idx "> " $3 }
+	' | tr -d '"'
+}
+
+gen_main_menu() {
+	echo playback
+	echo output
+	echo input
+}
+
+main() {
+	if [[ -z "$@" ]]
+	then
+		gen_main_menu
+	else
+		local cmd=($1)
+		case "${cmd[0]}" in
+			playback)
+				get_sink_inputs
+				;;
+			output)
+				gen_output_devices
+				;;
+			input)
+				gen_input_devices
+				;;
+			*'>'*)
+				local input sink_id
+				input="$(echo "${cmd[0]}" | cut -d'>' -f1)"
+				sink_id="$(echo "${cmd[0]}" | cut -d'>' -f2)"
+
+				if [[ -z "${sink_id}" ]]
+				then
+					gen_output_devices "${cmd[0]}"
+				else
+					local sink_name="${cmd[1]}"
+					notify "Moved sink input ${input} to:\n${sink_name}"
+					pactl move-sink-input "${input}" "${sink_id}" >/dev/null
+				fi
+				;;
+			move:*)
+				;;
+			out:*)
+				local id name
+				id="$(echo "${cmd[0]}" | cut -d':' -f2)"
+				name="${cmd[1]}"
+				notify "Default output:\n${name}"
+				pactl set-default-sink "${id}" >/dev/null
+				;;
+			in:*)
+				local id name
+				id="$(echo "${cmd[0]}" | cut -d':' -f2)"
+				name="${cmd[1]}"
+				notify "Default input:\n${name}"
+				pactl set-default-source "${id}" >/dev/null
+				;;
+		esac
+	fi
+}
+
+main "$@"
