@@ -39,7 +39,8 @@ main() {
 
 	if use_rofi
 	then
-		rofi -modi "${menu_cmd}:${menu_cmd}" -show "${menu_cmd}"
+		local modi="$(echo "$*" | sed -r 's/(\S+)/\1:\1/g; s/\s/,/g')"
+		rofi -modi "${modi}" -show "${menu_cmd}"
 	else
 		local sel=""
 
