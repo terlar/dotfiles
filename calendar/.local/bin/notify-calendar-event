@@ -1,28 +1,26 @@
 #!/usr/bin/env bash
+set -eu
+set -o pipefail
+
 agenda() {
-	khal list now tomorrow \
+	local date="$1"
+	local end_time
+
+	end_time="$(date -d "${date}" '+%H:%M')"
+
+	khal list --notstarted now "${end_time}" \
 		| grep '^[0-9][0-9]:[0-9][0-9]-[0-9][0-9]:[0-9][0-9] '
 }
 
-is_within_notify_time() {
+remaining_time() {
 	local time="$1"
-	local range="$2"
+	local now_ts event_ts remaining
 
-	now_ts=$(date '+%s')
-	event_ts=$(date -d "$time" '+%s')
-	alert_ts=$(( event_ts - range ))
+	now_ts="$(date '+%s')"
+	event_ts="$(date -d "${time}" '+%s')"
+	remaining="$(( event_ts - now_ts ))"
 
-	[[ "$now_ts" -lt "$event_ts" ]] && [[ "$now_ts" -gt "$alert_ts" ]]
-}
-
-get_time_remaining() {
-	local time="$1"
-
-	now_ts=$(date '+%s')
-	event_ts=$(date -d "$time" '+%s')
-	remaining=$((event_ts - now_ts))
-
-	humanize_seconds "$remaining"
+	humanize_seconds "${remaining}"
 }
 
 humanize_seconds() {
@@ -46,21 +44,19 @@ humanize_seconds() {
 }
 
 main() {
+	local notify_time="${1:-+30min}"
 	local time start_time message
 
-	agenda | while read -r event
+	agenda "${notify_time}" | while read -r event
 	do
-		time=$(echo "$event" | cut -d ' ' -f 1)
-		start_time=$(echo "$time" | cut -d '-' -f 1)
-		message=$(echo "$event" | cut -d ' ' -f 2-)
-
-		is_within_notify_time "$start_time" 900 || continue
-
-		remaining=$(get_time_remaining "$start_time")
+		time="$(echo "${event}" | cut -d ' ' -f 1)"
+		start_time="$(echo "${time}" | cut -d '-' -f 1)"
+		message="$(echo "${event}" | cut -d ' ' -f 2-)"
+		remaining="$(remaining_time "${start_time}")"
 
 		notify-send -i appointment-soon \
-			"$message" \
-			"$time\nin ${remaining}"
+			"${message}" \
+			"${time}\nin ${remaining}"
 	done
 }
 
