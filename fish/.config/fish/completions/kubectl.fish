@@ -161,10 +161,11 @@ function __kubectl_prefixed_resources
 end
 
 function __kubectl_containers
+    set -l cmd (commandline -poc)
     set -l pod
 
     for i in (__kubectl_resources pods)
-        if string match -q "*$i*" -- $argv
+        if contains -- $i $cmd
             set pod $i
             break
         end
@@ -374,6 +375,14 @@ function __kubectl_subcommands -a cmd
             echo resume\t'Resume a paused resource'
             echo status\t'Show the status of the rollout'
             echo undo\t'Undo a previous rollout'
+        case certificate
+            echo approve\t'Approve a certificate signing request'
+            echo deny\t'Deny a certificate signing request'
+        case cluster-info
+            echo dump\t'Dump lots of relevant info for debugging and diagnosis'
+        case top
+            echo node\t'Display resource usage of nodes'
+            echo pod\t'Display resource usage of pods'
     end
 end
 
@@ -393,15 +402,15 @@ complete -c kubectl -l kubeconfig -r -d 'Path to the kubeconfig file to use for 
 complete -c kubectl -l log-backtrace-at -r -d 'Emit a stack trace when logging hits line file:N'
 complete -c kubectl -l log-dir -r -d 'Write log files in this directory'
 complete -c kubectl -l log-flush-frequency -x -d 'Maximum number of seconds between log flushes'
-complete -c kubectl -l logtostderr -f -a 'true false' -d 'Log to standard error instead of files [default true]'
+complete -c kubectl -l logtostderr -f -a 'true false' -d 'Log to standard error instead of files'
 complete -c kubectl -l match-server-version -f -a 'true false' -d 'Require server version to match client version'
 complete -c kubectl -s n -l namespace -x -a '(__kubectl_namespaces)' -d 'Namespace'
 complete -c kubectl -l password -x -d 'Password for basic authentication to the API server'
 complete -c kubectl -l request-timeout -x -d 'Timeout for a single server request'
-complete -c kubectl -s s -l server -x -d 'The address and port of the Kubernetes API server'
+complete -c kubectl -s s -l server -x -d 'Address and port of the Kubernetes API server'
 complete -c kubectl -l stderrthreshold -x -d 'Logs at or above this threshold go to stderr'
 complete -c kubectl -l token -x -d 'Bearer token for authentication to the API server'
-complete -c kubectl -l user -x -d 'The name of the kubeconfig user'
+complete -c kubectl -l user -x -d 'Name of the kubeconfig user'
 complete -c kubectl -l username -x -d 'Username for basic authentication to the API server'
 complete -c kubectl -s v -l v -x -a '0 1 2 3 4 5' -d 'Log level for V logs'
 complete -c kubectl -l vmodule -x -d 'List of settings for file-filtered logging'
@@ -423,15 +432,15 @@ complete -c kubectl -n '__kubectl_using_command create; and __kubectl_seen_optio
 complete -c kubectl -n '__kubectl_using_command create' -s f -l filename -r -d 'Filename, directory, or URL to files'
 complete -c kubectl -n '__kubectl_using_command create; and __fish_seen_subcommand_from -f --filename' -s R -l recursive -f -a 'true false' -d 'Process the directory recursively'
 
-complete -c kubectl -n '__kubectl_using_command create' -l include-extended-apis -f -a 'true false' -d 'Include definitions of new APIs [default true]'
+complete -c kubectl -n '__kubectl_using_command create' -l include-extended-apis -f -a 'true false' -d 'Include definitions of new APIs'
 complete -c kubectl -n '__kubectl_using_command create' -l no-headers -f -a 'true false' -d "Don't print headers"
 
 complete -c kubectl -n '__kubectl_using_command create' -s o -l output -x -a '(__kubectl_output_formats)' -d 'Output format'
 complete -c kubectl -n '__kubectl_using_command create; and __kubectl_seen_output_with_go_template' -l template -r -d 'Template string or path to template file'
-
 complete -c kubectl -n '__kubectl_using_command create' -l output-version -x -d 'Format object with the given group version'
+
 complete -c kubectl -n '__kubectl_using_command create' -l record -f -a 'true false' -d 'Record current kubectl command in the resource annotation'
-complete -c kubectl -n '__kubectl_using_command create' -l save-config -f -a 'true false' -d 'The config of current object will be saved in its annotation'
+complete -c kubectl -n '__kubectl_using_command create' -l save-config -f -a 'true false' -d 'Config of current object will be saved in its annotation'
 complete -c kubectl -n '__kubectl_using_command create' -l schema-cache-dir -r -d 'Load/store cached API schemas in this directory'
 complete -c kubectl -n '__kubectl_using_command create' -s a -l show-all -f -a 'true false' -d 'When printing, show all resources'
 complete -c kubectl -n '__kubectl_using_command create' -l show-labels -f -a 'true false' -d 'When printing, show all labels as the last column'
@@ -441,24 +450,24 @@ complete -c kubectl -n '__kubectl_using_command create' -l validate -f -a 'true 
 # kubectl create configmap NAME [--from-file=[key=]source] [--from-literal=key1=value1] [--dry-run] [options]
 complete -c kubectl -n '__kubectl_using_command create configmap' -l from-file -r -d 'File or directory to find config files, with optional key prefix'
 complete -c kubectl -n '__kubectl_using_command create configmap' -l from-literal -x -d 'Specify a key and literal value to insert in configmap'
-complete -c kubectl -n '__kubectl_using_command create configmap' -l generator -x -d 'The name of the API generator to use'
+complete -c kubectl -n '__kubectl_using_command create configmap' -l generator -x -d 'Name of the API generator to use'
 
 # kubectl create deployment NAME --image=image [--dry-run] [options]
-complete -c kubectl -n '__kubectl_using_command create deployment' -l generator -x -d 'The name of the API generator to use'
+complete -c kubectl -n '__kubectl_using_command create deployment' -l generator -x -d 'Name of the API generator to use'
 complete -c kubectl -n '__kubectl_using_command create deployment' -l image -x -d 'Image name to run'
 
 # kubectl create namespace NAME [--dry-run] [options]
-complete -c kubectl -n '__kubectl_using_command create namespace' -l generator -x -d 'The name of the API generator to use'
+complete -c kubectl -n '__kubectl_using_command create namespace' -l generator -x -d 'Name of the API generator to use'
 
 # kubectl create quota NAME [--hard=key1=value1,key2=value2] [--scopes=Scope1,Scope2] [--dry-run=bool] [options]
-complete -c kubectl -n '__kubectl_using_command create quota' -l generator -x -d 'The name of the API generator to use'
+complete -c kubectl -n '__kubectl_using_command create quota' -l generator -x -d 'Name of the API generator to use'
 complete -c kubectl -n '__kubectl_using_command create quota' -l hard -x -d 'A comma-delimited set of resource=quantity pairs'
 complete -c kubectl -n '__kubectl_using_command create quota' -l scopes -x -d 'A comma-delimited set of quota scopes'
 
 # kubectl create secret [options]
 complete -c kubectl -n '__kubectl_using_command create secret; and not __kubectl_seen_any_subcommand_from "create secret"' -f -a '(__kubectl_subcommands "create secret")'
 
-complete -c kubectl -n '__kubectl_using_command create secret' -l generator -x -d 'The name of the API generator to use'
+complete -c kubectl -n '__kubectl_using_command create secret' -l generator -x -d 'Name of the API generator to use'
 
 # kubectl create secret docker-registry NAME --docker-username=user --docker-password=password --docker-email=email [--docker-server=string] [--from-literal=key1=value1] [--dry-run] [options]
 complete -c kubectl -n '__kubectl_using_command create secret docker-registry' -l docker-email -x -d 'Email for Docker registry'
@@ -469,7 +478,7 @@ complete -c kubectl -n '__kubectl_using_command create secret docker-registry' -
 # kubectl create secret generic NAME [--type=string] [--from-file=[key=]source] [--from-literal=key1=value1] [--dry-run] [options]
 complete -c kubectl -n '__kubectl_using_command create secret generic' -l from-file -r -d 'File or directory to find config files, with optional key prefix'
 complete -c kubectl -n '__kubectl_using_command create secret generic' -l from-literal -x -d 'Specify a key and literal value to insert in configmap'
-complete -c kubectl -n '__kubectl_using_command create secret generic' -l type -x -d 'The type of secret to create'
+complete -c kubectl -n '__kubectl_using_command create secret generic' -l type -x -d 'Type of secret to create'
 
 # kubectl create secret tls NAME --cert=path/to/cert/file --key=path/to/key/file [--dry-run] [options]
 complete -c kubectl -n '__kubectl_using_command create secret tls' -l cert -r -d 'Path to PEM encoded public key certificate'
@@ -478,7 +487,7 @@ complete -c kubectl -n '__kubectl_using_command create secret tls' -l key -r -d 
 # kubectl create service [options]
 complete -c kubectl -n '__kubectl_using_command create service; and not __kubectl_seen_any_subcommand_from "create service"' -f -a '(__kubectl_subcommands "create service")'
 
-complete -c kubectl -n '__kubectl_using_command create service' -l generator -x -d 'The name of the API generator to use'
+complete -c kubectl -n '__kubectl_using_command create service' -l generator -x -d 'Name of the API generator to use'
 complete -c kubectl -n '__kubectl_using_command create service' -l tcp -x -d 'Port pairs can be specified as "<port>:<targetPort>"'
 
 # kubectl create service clusterip NAME [--tcp=<port>:<targetPort>] [--dry-run] [options]
@@ -488,7 +497,7 @@ complete -c kubectl -n '__kubectl_using_command create service clusterip' -l clu
 complete -c kubectl -n '__kubectl_using_command create service nodeport' -l node-port -x -d 'Port used to expose the service on each node in a cluster'
 
 # kubectl create serviceaccount NAME [--dry-run] [options]
-complete -c kubectl -n '__kubectl_using_command create serviceaccount' -l generator -x -d 'The name of the API generator to use'
+complete -c kubectl -n '__kubectl_using_command create serviceaccount' -l generator -x -d 'Name of the API generator to use'
 
 # kubectl expose (-f FILENAME | TYPE NAME) [--port=port] [--protocol=TCP|UDP] [--target-port=number-or-name] [--name=name] [--external-ip=external-ip-of-service] [--type=type] [options]
 complete -c kubectl -n '__kubectl_using_command expose; and not __kubectl_seen_any_subcommand_from expose' -f -a '(__kubectl_subcommands expose)'
@@ -508,21 +517,21 @@ complete -c kubectl -n '__kubectl_using_command expose' -l external-ip -x -d 'Ad
 complete -c kubectl -n '__kubectl_using_command expose' -s f -l filename -r -d 'Filename, directory, or URL to files'
 complete -c kubectl -n '__kubectl_using_command expose; and __fish_seen_subcommand_from -f --filename' -s R -l recursive -f -a 'true false' -d 'Process the directory recursively'
 
-complete -c kubectl -n '__kubectl_using_command expose' -l generator -x -d 'The name of the API generator to use'
+complete -c kubectl -n '__kubectl_using_command expose' -l generator -x -d 'Name of the API generator to use'
 complete -c kubectl -n '__kubectl_using_command expose' -s l -l labels -x -d 'Labels to apply to the service created by this call'
 complete -c kubectl -n '__kubectl_using_command expose' -l load-balancer-ip -x -d 'IP to assign to the Load Balancer'
-complete -c kubectl -n '__kubectl_using_command expose' -l name -x -d 'The name for the newly created object'
+complete -c kubectl -n '__kubectl_using_command expose' -l name -x -d 'Name for the newly created object'
 complete -c kubectl -n '__kubectl_using_command expose' -l no-headers -f -a 'true false' -d "Don't print headers"
 
 complete -c kubectl -n '__kubectl_using_command expose' -s o -l output -x -a '(__kubectl_output_formats)' -d 'Output format'
 complete -c kubectl -n '__kubectl_using_command expose; and __kubectl_seen_output_with_go_template' -l template -r -d 'Template string or path to template file'
-
 complete -c kubectl -n '__kubectl_using_command expose' -l output-version -x -d 'Format object with the given group version'
+
 complete -c kubectl -n '__kubectl_using_command expose' -l overrides -x -d 'An inline JSON override for the generated object'
-complete -c kubectl -n '__kubectl_using_command expose' -l port -x -d 'The port that the service should serve on'
+complete -c kubectl -n '__kubectl_using_command expose' -l port -x -d 'Port that the service should serve on'
 complete -c kubectl -n '__kubectl_using_command expose' -l protocol -x -a 'TCP UDP' -d 'Network Protocol'
 complete -c kubectl -n '__kubectl_using_command expose' -l record -f -a 'true false' -d 'Record current kubectl command in the resource annotation'
-complete -c kubectl -n '__kubectl_using_command expose' -l save-config -f -a 'true false' -d 'The config of current object will be saved in its annotation'
+complete -c kubectl -n '__kubectl_using_command expose' -l save-config -f -a 'true false' -d 'Config of current object will be saved in its annotation'
 complete -c kubectl -n '__kubectl_using_command expose' -l selector -x -d 'A label selector to use for this service'
 complete -c kubectl -n '__kubectl_using_command expose' -l session-affinity -x -a 'None ClientIP' -d 'Session Affinity'
 complete -c kubectl -n '__kubectl_using_command expose' -s a -l show-all -f -a 'true false' -d 'Show all resources'
@@ -536,31 +545,31 @@ complete -c kubectl -n '__kubectl_using_command run' -l command -f -a 'true fals
 complete -c kubectl -n '__kubectl_using_command run' -l dry-run -f -a 'true false' -d 'Only print the object that would be sent'
 complete -c kubectl -n '__kubectl_using_command run' -l env -x -d 'Environment variables to set in the container'
 complete -c kubectl -n '__kubectl_using_command run' -l expose -f -a 'true false' -d 'A public, external service is created for the container(s) which are run'
-complete -c kubectl -n '__kubectl_using_command run; and __fish_seen_subcommand_from --expose' -l service-generator -d 'The name of the generator to use for creating a service'
+complete -c kubectl -n '__kubectl_using_command run; and __fish_seen_subcommand_from --expose' -l service-generator -d 'Name of the generator to use for creating a service'
 complete -c kubectl -n '__kubectl_using_command run; and __fish_seen_subcommand_from --expose' -l service-overrides -d 'An inline JSON override for the generated service object'
-complete -c kubectl -n '__kubectl_using_command run' -l generator -x -d 'The name of the API generator to use'
-complete -c kubectl -n '__kubectl_using_command run' -l hostport -x -d 'The host port mapping for the container port'
-complete -c kubectl -n '__kubectl_using_command run' -l image -x -d 'The image for the container to run'
-complete -c kubectl -n '__kubectl_using_command run' -l image-pull-policy -x -d 'The image pull policy for the container'
-complete -c kubectl -n '__kubectl_using_command run' -l include-extended-apis -f -a 'true false' -d 'Include definitions of new APIs [default true]'
+complete -c kubectl -n '__kubectl_using_command run' -l generator -x -d 'Name of the API generator to use'
+complete -c kubectl -n '__kubectl_using_command run' -l hostport -x -d 'Host port mapping for the container port'
+complete -c kubectl -n '__kubectl_using_command run' -l image -x -d 'Image for the container to run'
+complete -c kubectl -n '__kubectl_using_command run' -l image-pull-policy -x -d 'Image pull policy for the container'
+complete -c kubectl -n '__kubectl_using_command run' -l include-extended-apis -f -a 'true false' -d 'Include definitions of new APIs'
 complete -c kubectl -n '__kubectl_using_command run' -s l -l labels -x -d 'Labels to apply to the pod(s)'
 complete -c kubectl -n '__kubectl_using_command run' -l leave-stdin-open -f -a 'true false' -d 'Leave stdin open after the first attach completes'
-complete -c kubectl -n '__kubectl_using_command run' -l limits -x -d 'The resource requirement limits for this container'
+complete -c kubectl -n '__kubectl_using_command run' -l limits -x -d 'Resource requirement limits for this container'
 complete -c kubectl -n '__kubectl_using_command run' -l no-headers -f -a 'true false' -d "Don't print headers"
 
 complete -c kubectl -n '__kubectl_using_command run' -s o -l output -x -a '(__kubectl_output_formats)' -d 'Output format'
 complete -c kubectl -n '__kubectl_using_command run; and __kubectl_seen_output_with_go_template' -l template -r -d 'Template string or path to template file'
-
 complete -c kubectl -n '__kubectl_using_command run' -l output-version -x -d 'Format object with the given group version'
+
 complete -c kubectl -n '__kubectl_using_command run' -l overrides -x -d 'An inline JSON override for the generated object'
-complete -c kubectl -n '__kubectl_using_command run' -l port -x -d 'The port that this container exposes'
+complete -c kubectl -n '__kubectl_using_command run' -l port -x -d 'Port that this container exposes'
 complete -c kubectl -n '__kubectl_using_command run' -l quiet -f -a 'true false' -d 'Suppress prompt messages'
 complete -c kubectl -n '__kubectl_using_command run' -l record -f -a 'true false' -d 'Record current kubectl command in the resource annotation'
 complete -c kubectl -n '__kubectl_using_command run' -s r -l replicas -x -d 'Number of replicas to create for this container'
-complete -c kubectl -n '__kubectl_using_command run' -l requests -x -d 'The resource requirement requests for this container'
+complete -c kubectl -n '__kubectl_using_command run' -l requests -x -d 'Resource requirement requests for this container'
 complete -c kubectl -n '__kubectl_using_command run' -l restart -x -a 'Always OnFailure Never' -d 'Restart Policy'
 complete -c kubectl -n '__kubectl_using_command run' -l rm -f -a 'true false' -d 'Delete resources created in this command for attached containers'
-complete -c kubectl -n '__kubectl_using_command run' -l save-config -f -a 'true false' -d 'The config of current object will be saved in its annotation'
+complete -c kubectl -n '__kubectl_using_command run' -l save-config -f -a 'true false' -d 'Config of current object will be saved in its annotation'
 complete -c kubectl -n '__kubectl_using_command run' -l schedule -x -d 'A schedule in the Cron format the job should be run with'
 complete -c kubectl -n '__kubectl_using_command run' -s a -l show-all -f -a 'true false' -d 'Show all resources'
 complete -c kubectl -n '__kubectl_using_command run' -l show-labels -f -a 'true false' -d 'Show all labels as the last column'
@@ -593,8 +602,8 @@ complete -c kubectl -n '__kubectl_using_command set image' -l no-headers -f -a '
 
 complete -c kubectl -n '__kubectl_using_command set image' -s o -l output -x -a '(__kubectl_output_formats)' -d 'Output format'
 complete -c kubectl -n '__kubectl_using_command set image; and __kubectl_seen_output_with_go_template' -l template -r -d 'Template string or path to template file'
-
 complete -c kubectl -n '__kubectl_using_command set image' -l output-version -x -d 'Format object with the given group version'
+
 complete -c kubectl -n '__kubectl_using_command set image' -l record -f -a 'true false' -d 'Record current kubectl command in the resource annotation'
 complete -c kubectl -n '__kubectl_using_command set image' -s l -l selector -x -d 'Selector (label query) to filter on'
 complete -c kubectl -n '__kubectl_using_command set image' -s a -l show-all -f -a 'true false' -d 'Show all resources'
@@ -609,35 +618,34 @@ for resource in replicationcontroller deployment daemonset job replicaset
 end
 
 complete -c kubectl -n '__kubectl_using_command set resources' -l all -f -a 'true false' -d 'Select all resources in the namespace of the specified resource types'
-complete -c kubectl -n '__kubectl_using_command set resources' -s c -l containers -x -d 'The names of containers in the selected pod templates to change'
+complete -c kubectl -n '__kubectl_using_command set resources' -s c -l containers -x -d 'Names of containers in the selected pod templates to change'
 complete -c kubectl -n '__kubectl_using_command set resources' -l dry-run -f -a 'true false' -d 'Only print the object that would be sent'
 
 complete -c kubectl -n '__kubectl_using_command set resources' -s f -l filename -r -d 'Filename, directory, or URL to files'
 complete -c kubectl -n '__kubectl_using_command set resources; and __fish_seen_subcommand_from -f --filename' -s R -l recursive -f -a 'true false' -d 'Process the directory recursively'
 
-complete -c kubectl -n '__kubectl_using_command set resources' -l limits -x -d 'The resource requirement requests for this container'
+complete -c kubectl -n '__kubectl_using_command set resources' -l limits -x -d 'Resource requirement requests for this container'
 complete -c kubectl -n '__kubectl_using_command set resources' -l local -f -a 'true false' -d 'Set resources will NOT contact api-server but run locally'
 complete -c kubectl -n '__kubectl_using_command set resources' -l no-headers -f -a 'true false' -d "Don't print headers"
 
 complete -c kubectl -n '__kubectl_using_command set resources' -s o -l output -x -a '(__kubectl_output_formats)' -d 'Output format'
 complete -c kubectl -n '__kubectl_using_command set resources; and __kubectl_seen_output_with_go_template' -l template -r -d 'Template string or path to template file'
-
 complete -c kubectl -n '__kubectl_using_command set resources' -l output-version -x -d 'Format object with the given group version'
+
 complete -c kubectl -n '__kubectl_using_command set resources' -l record -f -a 'true false' -d 'Record current kubectl command in the resource annotation'
-complete -c kubectl -n '__kubectl_using_command set resources' -l requests -x -d 'The resource requirement requests for this container'
+complete -c kubectl -n '__kubectl_using_command set resources' -l requests -x -d 'Resource requirement requests for this container'
 
 #
 # Basic Commands (Intermediate):
 #
 
 # kubectl get [(-o|--output=)json|yaml|wide|custom-columns=...|custom-columns-file=...|go-template=...|go-template-file=...|jsonpath=...|jsonpath-file=...] (TYPE [NAME | -l label] | TYPE/NAME ...) [flags] [options]
+complete -c kubectl -n '__kubectl_using_command get; and not __kubectl_seen_resource_type' -f -a '(__kubectl_prefixed_resource_completions)'
 complete -c kubectl -n '__kubectl_using_command get; and not __kubectl_seen_resource_type' -f -a '(__kubectl_resource_types)' -d 'Resource Type'
 
 for resource in (__kubectl_resource_types)
     __kubectl_complete_resource_subcommand get $resource
 end
-
-complete -c kubectl -n '__kubectl_using_command get; and not __kubectl_seen_resource_type' -f -a '(__kubectl_prefixed_resource_completions)'
 
 complete -c kubectl -n '__kubectl_using_command get' -l all-namespaces -f -a 'true false' -d 'List the requested object(s) across all namespaces'
 complete -c kubectl -n '__kubectl_using_command get' -l export -f -a 'true false' -d 'Strip cluster-specific info'
@@ -645,14 +653,14 @@ complete -c kubectl -n '__kubectl_using_command get' -l export -f -a 'true false
 complete -c kubectl -n '__kubectl_using_command get' -s f -l filename -r -d 'Filename, directory, or URL to files'
 complete -c kubectl -n '__kubectl_using_command get; and __fish_seen_subcommand_from -f --filename' -s R -l recursive -f -a 'true false' -d 'Process the directory recursively'
 
-complete -c kubectl -n '__kubectl_using_command get' -l include-extended-apis -f -a 'true false' -d 'Include definitions of new APIs [default true]'
+complete -c kubectl -n '__kubectl_using_command get' -l include-extended-apis -f -a 'true false' -d 'Include definitions of new APIs'
 complete -c kubectl -n '__kubectl_using_command get' -s L -l label-columns -x -d 'List of labels to be presented as columns'
 complete -c kubectl -n '__kubectl_using_command get' -l no-headers -f -a 'true false' -d "Don't print headers"
 
 complete -c kubectl -n '__kubectl_using_command get' -s o -l output -x -a '(__kubectl_output_formats)' -d 'Output format'
 complete -c kubectl -n '__kubectl_using_command get; and __kubectl_seen_output_with_go_template' -l template -r -d 'Template string or path to template file'
-
 complete -c kubectl -n '__kubectl_using_command get' -l output-version -x -d 'Format object with the given group version'
+
 complete -c kubectl -n '__kubectl_using_command get' -l raw -x -d 'Raw URI to request from the server'
 complete -c kubectl -n '__kubectl_using_command get' -s l -l selector -x -d 'Selector (label query) to filter on'
 complete -c kubectl -n '__kubectl_using_command get' -s a -l show-all -f -a 'true false' -d 'Show all resources'
@@ -677,11 +685,13 @@ complete -c kubectl -n '__kubectl_using_command edit' -f -a '(__kubectl_prefixed
 complete -c kubectl -n '__kubectl_using_command edit' -s f -l filename -r -d 'Filename, directory, or URL to files'
 complete -c kubectl -n '__kubectl_using_command edit; and __fish_seen_subcommand_from -f --filename' -s R -l recursive -f -a 'true false' -d 'Process the directory recursively'
 
-complete -c kubectl -n '__kubectl_using_command edit' -l include-extended-apis -f -a 'true false' -d 'Include definitions of new APIs [default true]'
+complete -c kubectl -n '__kubectl_using_command edit' -l include-extended-apis -f -a 'true false' -d 'Include definitions of new APIs'
+
 complete -c kubectl -n '__kubectl_using_command edit' -s o -l output -x -a 'yaml json' -d 'Output format'
 complete -c kubectl -n '__kubectl_using_command edit' -l output-version -x -d 'Format object with the given group version'
+
 complete -c kubectl -n '__kubectl_using_command edit' -l record -f -a 'true false' -d 'Record current kubectl command in the resource annotation'
-complete -c kubectl -n '__kubectl_using_command edit' -l save-config -f -a 'true false' -d 'The config of current object will be saved in its annotation'
+complete -c kubectl -n '__kubectl_using_command edit' -l save-config -f -a 'true false' -d 'Config of current object will be saved in its annotation'
 complete -c kubectl -n '__kubectl_using_command edit' -l schema-cache-dir -r -d 'Load/store cached API schemas in this directory'
 complete -c kubectl -n '__kubectl_using_command edit' -l validate -f -a 'true false' -d 'Use a schema to validate the input before sending'
 complete -c kubectl -n '__kubectl_using_command edit' -l windows-line-endings -f -a 'true false' -d 'Use Windows line-endings'
@@ -708,7 +718,9 @@ complete -c kubectl -n '__kubectl_using_command delete' -s o -l output -x -a '(_
 complete -c kubectl -n '__kubectl_using_command delete' -s l -l selector -x -d 'Selector (label query) to filter on'
 complete -c kubectl -n '__kubectl_using_command delete' -l timeout -x -d 'Length of time to wait before giving up on a delete'
 
+#
 # Deploy Commands:
+#
 
 # kubectl rollout SUBCOMMAND [options]
 complete -c kubectl -n '__kubectl_using_command rollout; and not __kubectl_seen_any_subcommand_from rollout' -f -a '(__kubectl_subcommands rollout)'
@@ -785,26 +797,218 @@ complete -c kubectl -n '__kubectl_using_command rollout undo' -l dry-run -f -a '
 complete -c kubectl -n '__kubectl_using_command rollout undo' -s f -l filename -r -d 'Filename, directory, or URL to files'
 complete -c kubectl -n '__kubectl_using_command rollout undo; and __fish_seen_subcommand_from -f --filename' -s R -l recursive -f -a 'true false' -d 'Process the directory recursively'
 
-complete -c kubectl -n '__kubectl_using_command rollout undo' -l to-revision -x -d 'The revision to rollback to'
+complete -c kubectl -n '__kubectl_using_command rollout undo' -l to-revision -x -d 'Revision to rollback to'
 
-# TODO: Add more commands
+# kubectl rolling-update OLD_CONTROLLER_NAME ([NEW_CONTROLLER_NAME] --image=NEW_CONTAINER_IMAGE | -f NEW_CONTROLLER_SPEC) [options]
+# TODO: Complete controller name?
 
+complete -c kubectl -n '__kubectl_using_command rolling-update' -l allow-missing-template-keys -f -a 'true false' -d 'Ignore errors in templates when a key is missing'
+complete -c kubectl -n '__kubectl_using_command rolling-update' -l dry-run -f -a 'true false' -d 'Only print the object that would be sent'
+complete -c kubectl -n '__kubectl_using_command rolling-update' -s f -l filename -r -d 'Filename or URL to file for replication controller'
+
+complete -c kubectl -n '__kubectl_using_command rolling-update' -l image -x -d 'Image to use for upgrading the replication controller'
+complete -c kubectl -n '__kubectl_using_command rolling-update; and __fish_seen_subcommand_from --image' -l container -x -d 'Container name which will have its image upgraded'
+complete -c kubectl -n '__kubectl_using_command rolling-update; and __fish_seen_subcommand_from --image' -l deployment-label-key -x -d 'Key to use to differentiate between two different controllers'
+complete -c kubectl -n '__kubectl_using_command rolling-update; and __fish_seen_subcommand_from --image' -l image-pull-policy -x -d 'Explicit policy for when to pull container images'
+
+complete -c kubectl -n '__kubectl_using_command rolling-update' -l include-extended-apis -f -a 'true false' -d 'Include definitions of new APIs'
+complete -c kubectl -n '__kubectl_using_command rolling-update' -l no-headers -f -a 'true false' -d "Don't print headers"
+
+complete -c kubectl -n '__kubectl_using_command rolling-update' -s o -l output -x -a '(__kubectl_output_formats)' -d 'Output format'
+complete -c kubectl -n '__kubectl_using_command rolling-update; and __kubectl_seen_output_with_go_template' -l template -r -d 'Template string or path to template file'
+complete -c kubectl -n '__kubectl_using_command rolling-update' -l output-version -x -d 'Format object with the given group version'
+
+complete -c kubectl -n '__kubectl_using_command rolling-update' -l poll-interval -x -d 'Time delay between polling'
+complete -c kubectl -n '__kubectl_using_command rolling-update' -l rollback -f -a 'true false' -d 'Abort an existing rollout that is partially rolled out'
+complete -c kubectl -n '__kubectl_using_command rolling-update' -l schema-cache-dir -r -d 'Load/store cached API schemas in this directory'
+complete -c kubectl -n '__kubectl_using_command rolling-update' -s a -l show-all -f -a 'true false' -d 'When printing, show all resources'
+complete -c kubectl -n '__kubectl_using_command rolling-update' -l show-labels -f -a 'true false' -d 'When printing, show all labels as the last column'
+complete -c kubectl -n '__kubectl_using_command rolling-update' -l sort-by -x -d 'Sort list types using this field specification'
+complete -c kubectl -n '__kubectl_using_command rolling-update' -l timeout -x -d 'Length of time to wait before giving up'
+complete -c kubectl -n '__kubectl_using_command rolling-update' -l update-period -x -d 'Time to wait between updating pods'
+complete -c kubectl -n '__kubectl_using_command rolling-update' -l validate -f -a 'true false' -d 'Use a schema to validate the input before sending it'
+
+# kubectl scale [--resource-version=version] [--current-replicas=count] --replicas=COUNT (-f FILENAME | TYPE/NAME) [options]
+complete -c kubectl -n '__kubectl_using_command scale; and not __kubectl_using_resource_prefix' -f -a 'deployment/ replicaset/ replicationcontroller/ job/' -d 'Resource Type'
+complete -c kubectl -n '__kubectl_using_command scale' -f -a '(__kubectl_prefixed_resource_completions)'
+
+complete -c kubectl -n '__kubectl_using_command scale' -l current-replicas -x -d 'Precondition for current size'
+
+complete -c kubectl -n '__kubectl_using_command scale' -s f -l filename -r -d 'Filename, directory, or URL to files'
+complete -c kubectl -n '__kubectl_using_command scale; and __fish_seen_subcommand_from -f --filename' -s R -l recursive -f -a 'true false' -d 'Process the directory recursively'
+
+complete -c kubectl -n '__kubectl_using_command scale' -l include-extended-apis -f -a 'true false' -d 'Include definitions of new APIs'
+complete -c kubectl -n '__kubectl_using_command scale' -s o -l output -x -a 'name' -d 'Output format'
+complete -c kubectl -n '__kubectl_using_command scale' -l record -f -a 'true false' -d 'Record current kubectl command in the resource annotation'
+complete -c kubectl -n '__kubectl_using_command scale' -l replicas -x -d 'New desired number of replicas'
+complete -c kubectl -n '__kubectl_using_command scale' -l resource-version -x -d 'Precondition for resource version'
+complete -c kubectl -n '__kubectl_using_command scale' -l timeout -x -d 'Length of time to wait before giving up'
+
+# kubectl autoscale (-f FILENAME | TYPE NAME | TYPE/NAME) [--min=MINPODS] --max=MAXPODS [--cpu-percent=CPU] [flags] [options]
+complete -c kubectl -n '__kubectl_using_command autoscale' -f -a '(__kubectl_prefixed_resource_completions)'
+complete -c kubectl -n '__kubectl_using_command autoscale; and not __kubectl_seen_resource_type' -f -a 'deployment replicaset replicationcontroller' -d 'Resource Type'
+
+for resource in deployment replicaset replicationcontroller
+    __kubectl_complete_resource_subcommand autoscale $resource
+end
+
+complete -c kubectl -n '__kubectl_using_command autoscale' -l allow-missing-template-keys -f -a 'true false' -d 'Ignore errors in templates when a key is missing'
+complete -c kubectl -n '__kubectl_using_command autoscale' -l cpu-percent -x -d 'Target average CPU utilization'
+complete -c kubectl -n '__kubectl_using_command autoscale' -l dry-run -f -a 'true false' -d 'Only print the object that would be sent'
+
+complete -c kubectl -n '__kubectl_using_command autoscale' -s f -l filename -r -d 'Filename, directory, or URL to files'
+complete -c kubectl -n '__kubectl_using_command autoscale; and __fish_seen_subcommand_from -f --filename' -s R -l recursive -f -a 'true false' -d 'Process the directory recursively'
+
+complete -c kubectl -n '__kubectl_using_command autoscale' -l generator -x -a 'horizontalpodautoscaler/v1' -d 'Name of the API generator to use'
+complete -c kubectl -n '__kubectl_using_command autoscale' -l include-extended-apis -f -a 'true false' -d 'Include definitions of new APIs'
+complete -c kubectl -n '__kubectl_using_command autoscale' -l max -x -d 'Upper limit for the number of pods'
+complete -c kubectl -n '__kubectl_using_command autoscale' -l min -x -d 'Lower limit for the number of pods'
+complete -c kubectl -n '__kubectl_using_command autoscale' -l name -x -d 'Name for the newly created object'
+complete -c kubectl -n '__kubectl_using_command autoscale' -l no-headers -f -a 'true false' -d "Don't print headers"
+
+complete -c kubectl -n '__kubectl_using_command autoscale' -s o -l output -x -a '(__kubectl_output_formats)' -d 'Output format'
+complete -c kubectl -n '__kubectl_using_command autoscale; and __kubectl_seen_output_with_go_template' -l template -r -d 'Template string or path to template file'
+complete -c kubectl -n '__kubectl_using_command autoscale' -l output-version -x -d 'Format object with the given group version'
+
+complete -c kubectl -n '__kubectl_using_command autoscale' -l record -f -a 'true false' -d 'Record current kubectl command in the resource annotation'
+complete -c kubectl -n '__kubectl_using_command autoscale' -l save-config -f -a 'true false' -d 'Configuration of current object will be saved in its annotation'
+complete -c kubectl -n '__kubectl_using_command autoscale' -s a -l show-all -f -a 'true false' -d 'When printing, show all resources'
+complete -c kubectl -n '__kubectl_using_command autoscale' -l show-labels -f -a 'true false' -d 'When printing, show all labels as the last column'
+complete -c kubectl -n '__kubectl_using_command autoscale' -l sort-by -x -d 'Sort list types using this field specification'
+
+#
 # Cluster Management Commands:
+#
 
-# TODO: Add commands
+# kubectl certificate SUBCOMMAND [options]
+complete -c kubectl -n '__kubectl_using_command certificate; and not __kubectl_seen_any_subcommand_from certificate' -f -a '(__kubectl_subcommands certificate)'
 
+complete -c kubectl -n '__kubectl_using_command certificate; and __kubectl_seen_any_subcommand_from certificate' -s f -l filename -r -d 'Filename, directory, or URL to files'
+complete -c kubectl -n '__kubectl_using_command certificate; and __kubectl_seen_any_subcommand_from certificate; and __fish_seen_subcommand_from -f --filename' -s R -l recursive -f -a 'true false' -d 'Process the directory recursively'
+
+complete -c kubectl -n '__kubectl_using_command certificate; and __kubectl_seen_any_subcommand_from certificate' -s o -l output -x -a 'name' -d 'Output format'
+
+# kubectl cluster-info [options]
+complete -c kubectl -n '__kubectl_using_command cluster-info; and not __kubectl_seen_any_subcommand_from cluster-info' -f -a '(__kubectl_subcommands cluster-info)'
+
+complete -c kubectl -n '__kubectl_using_command cluster-info' -l include-extended-apis -f -a 'true false' -d 'Include definitions of new APIs'
+
+# kubectl cluster-info dump [options]
+complete -c kubectl -n '__kubectl_using_command cluster-info dump' -l all-namespaces -f -a 'true false' -d 'Dump all namespaces'
+complete -c kubectl -n '__kubectl_using_command cluster-info dump' -l namespaces -x -d 'Comma separated list of namespaces to dump'
+complete -c kubectl -n '__kubectl_using_command cluster-info dump' -l output-directory -r -d 'Where to output the files'
+
+# kubectl top [options]
+complete -c kubectl -n '__kubectl_using_command top; and not __kubectl_seen_any_subcommand_from top' -f -a '(__kubectl_subcommands top)'
+
+# kubectl top node [NAME | -l label] [options]
+complete -c kubectl -n '__kubectl_using_command top node' -f -a '(__kubectl_resources node)' -d 'Node'
+complete -c kubectl -n '__kubectl_using_command top node' -s l -l selector -x -d 'Selector to filter on'
+
+# kubectl top pod [NAME | -l label] [options]
+complete -c kubectl -n '__kubectl_using_command top pod' -f -a '(__kubectl_pod_completions)'
+
+complete -c kubectl -n '__kubectl_using_command top pod' -l all-namespaces -f -a 'true false' -d 'List the requested object(s) across all namespaces'
+complete -c kubectl -n '__kubectl_using_command top pod' -l containers -f -a 'true false' -d 'Print usage of containers within a pod'
+complete -c kubectl -n '__kubectl_using_command top pod' -s l -l selector -x -d 'Selector to filter on'
+
+# kubectl cordon NODE [options]
+complete -c kubectl -n '__kubectl_using_command cordon' -f -a '(__kubectl_resources node)' -d 'Node'
+
+# kubectl uncordon NODE [options]
+complete -c kubectl -n '__kubectl_using_command uncordon' -f -a '(__kubectl_resources node)' -d 'Node'
+
+# kubectl drain NODE [options]
+complete -c kubectl -n '__kubectl_using_command drain' -f -a '(__kubectl_resources node)' -d 'Node'
+
+complete -c kubectl -n '__kubectl_using_command drain' -l delete-local-data -f -a 'true false' -d 'Continue even if there are pods using emptyDir'
+complete -c kubectl -n '__kubectl_using_command drain' -l force -f -a 'true false' -d 'Continue even if there are pods not managed'
+complete -c kubectl -n '__kubectl_using_command drain' -l grace-period -x -d 'Time given to each pod to terminate gracefully'
+complete -c kubectl -n '__kubectl_using_command drain' -l ignore-daemonsets -f -a 'true false' -d 'Ignore DaemonSet-managed pods'
+complete -c kubectl -n '__kubectl_using_command drain' -l timeout -x -d 'Length of time to wait before giving up'
+
+# kubectl taint NODE NAME KEY_1=VAL_1:TAINT_EFFECT_1 ... KEY_N=VAL_N:TAINT_EFFECT_N [options]
+complete -c kubectl -n '__kubectl_using_command taint; and not __kubectl_seen_resource_type' -f -a 'nodes' -d 'Resource Type'
+
+for resource in nodes
+    __kubectl_complete_resource_subcommand taint $resource
+end
+
+complete -c kubectl -n '__kubectl_using_command taint' -l all -f -a 'true false' -d 'Select all nodes in the cluster'
+complete -c kubectl -n '__kubectl_using_command taint' -l allow-missing-template-keys -f -a 'true false' -d 'Ignore errors in templates when a key is missing'
+complete -c kubectl -n '__kubectl_using_command taint' -l include-extended-apis -f -a 'true false' -d 'Include definitions of new APIs'
+complete -c kubectl -n '__kubectl_using_command taint' -l no-headers -f -a 'true false' -d "Don't print headers"
+
+complete -c kubectl -n '__kubectl_using_command taint' -s o -l output -x -a '(__kubectl_output_formats)' -d 'Output format'
+complete -c kubectl -n '__kubectl_using_command taint; and __kubectl_seen_output_with_go_template' -l template -r -d 'Template string or path to template file'
+complete -c kubectl -n '__kubectl_using_command taint' -l output-version -x -d 'Format object with the given group version'
+
+complete -c kubectl -n '__kubectl_using_command taint' -l overwrite -f -a 'true false' -d 'Allow taints to be overwritten'
+complete -c kubectl -n '__kubectl_using_command taint' -l schema-cache-dir -r -d 'Load/store cached API schemas in this directory'
+complete -c kubectl -n '__kubectl_using_command taint' -s l -l selector -x -d 'Selector to filter on'
+complete -c kubectl -n '__kubectl_using_command taint' -s a -l show-all -f -a 'true false' -d 'When printing, show all resources'
+complete -c kubectl -n '__kubectl_using_command taint' -l show-labels -f -a 'true false' -d 'When printing, show all labels as the last column'
+complete -c kubectl -n '__kubectl_using_command taint' -l sort-by -x -d 'Sort list types using this field specification'
+complete -c kubectl -n '__kubectl_using_command taint' -l validate -f -a 'true false' -d 'Use a schema to validate the input before sending it'
+
+#
 # Troubleshooting and Debugging Commands:
+#
+
+# kubectl describe (-f FILENAME | TYPE [NAME_PREFIX | -l label] | TYPE/NAME) [options]
+complete -c kubectl -n '__kubectl_using_command describe; and not __kubectl_seen_resource_type' -f -a '(__kubectl_prefixed_resource_completions)'
+complete -c kubectl -n '__kubectl_using_command describe; and not __kubectl_seen_resource_type' -f -a '(__kubectl_resource_types)' -d 'Resource Type'
+
+for resource in (__kubectl_resource_types)
+    __kubectl_complete_resource_subcommand describe $resource
+end
+
+complete -c kubectl -n '__kubectl_using_command describe' -l all-namespaces -f -a 'true false' -d 'List the requested object(s) across all namespaces'
+
+complete -c kubectl -n '__kubectl_using_command describe' -s f -l filename -r -d 'Filename, directory, or URL to files'
+complete -c kubectl -n '__kubectl_using_command describe; and __fish_seen_subcommand_from -f --filename' -s R -l recursive -f -a 'true false' -d 'Process the directory recursively'
+
+complete -c kubectl -n '__kubectl_using_command describe' -l include-extended-apis -f -a 'true false' -d 'Include definitions of new APIs'
+complete -c kubectl -n '__kubectl_using_command describe' -s l -l selector -x -d 'Selector to filter on'
+complete -c kubectl -n '__kubectl_using_command describe' -l show-events -f -a 'true false' -d 'Display events related to the described object'
+
+# kubectl logs [-f] [-p] POD [-c CONTAINER] [options]
+complete -c kubectl -n '__kubectl_using_command logs' -f -a '(__kubectl_pod_completions)'
+
+complete -c kubectl -n '__kubectl_using_command logs' -s c -l container -x -a '(__kubectl_containers)' -d 'Container'
+complete -c kubectl -n '__kubectl_using_command logs' -s f -l follow -f -a 'true false' -d 'Follow logs'
+complete -c kubectl -n '__kubectl_using_command logs' -l include-extended-apis -f -a 'true false' -d 'Include definitions of new APIs'
+complete -c kubectl -n '__kubectl_using_command logs' -l interactive -f -a 'true false' -d 'Prompt the user for input when required'
+complete -c kubectl -n '__kubectl_using_command logs' -l limit-bytes -x -d 'Maximum bytes of logs to return'
+complete -c kubectl -n '__kubectl_using_command logs' -s p -l previous -f -a 'true false' -d 'Target the previous instance of container'
+complete -c kubectl -n '__kubectl_using_command logs; and not __fish_seen_subcommand_from --since-time' -l since -x -d 'Only return logs newer than a relative duration'
+complete -c kubectl -n '__kubectl_using_command logs; and not __fish_seen_subcommand_from --since' -l since-time -x -d 'Only return logs after a specific date'
+complete -c kubectl -n '__kubectl_using_command logs' -l tail -x -d 'Lines of recent log file to display'
+complete -c kubectl -n '__kubectl_using_command logs' -l timestamps -f -a 'true false' -d 'Include timestamps on each line in the log output'
+
+# kubectl attach POD -c CONTAINER [options]
+complete -c kubectl -n '__kubectl_using_command attach' -f -a '(__kubectl_pod_completions)'
+
+complete -c kubectl -n '__kubectl_using_command attach' -s c -l container -x -a '(__kubectl_containers)' -d 'Container'
+complete -c kubectl -n '__kubectl_using_command attach' -s i -l stdin -f -a 'true false' -d 'Pass stdin to the container'
+complete -c kubectl -n '__kubectl_using_command attach' -s t -l tty -f -a 'true false' -d 'Stdin is a TTY'
 
 # TODO: Add commands
 
+#
 # Advanced Commands:
+#
 
 # TODO: Add commands
 
+#
 # Settings Commands:
+#
 
 # TODO: Add commands
 
+#
 # Other Commands:
+#
 
 # TODO: Add commands
