@@ -967,6 +967,12 @@ KEY must be given in `kbd' notation."
     (defvar helm-imenu-fuzzy-match t)
     (defvar helm-recentf-fuzzy-match t)
 
+    ;; Search interface
+    (use-package helm-ag
+      :bind ("C-c s g" . helm-ag-project-root)
+      :config
+      (setq helm-ag-base-command "rg --no-heading --line-number --smart-case --hidden -g !.git/*"))
+
     ;; Describe key bindings
     (use-package helm-descbinds
       :bind ("C-h b" . helm-descbinds)
@@ -1114,6 +1120,7 @@ KEY must be given in `kbd' notation."
 
 ;; Project interaction and navigation
 (use-package projectile
+  :functions (modi/advice-projectile-use-rg)
   :diminish (projectile-mode)
   :bind-keymap ("C-c p" . projectile-command-map)
   :defer 5
@@ -1131,9 +1138,29 @@ KEY must be given in `kbd' notation."
     (add-to-list 'projectile-globally-ignored-directories "tmp")
     (add-to-list 'projectile-globally-ignored-directories "vendor")
 
+    (when (executable-find "rg")
+      (progn
+        (defconst modi/rg-arguments
+          `("--hidden"
+            "--follow"
+            "--glob '!.git/*'"
+            "--smart-case"
+            "--line-number"
+            "--mmap")
+          "Default rg arguments used in the functions in `projectile' package.")
+
+        (defun modi/advice-projectile-use-rg ()
+          "Always use `rg' for getting a list of all files in the project."
+          (mapconcat 'identity
+                     (append '("rg")
+                             modi/rg-arguments
+                             '("--null" "--files"))
+                     " "))
+
+        (advice-add 'projectile-get-ext-command :override #'modi/advice-projectile-use-rg)))
+
     ;; Completion system
     (use-package helm-projectile
-      :bind ("C-c s g" . helm-projectile-grep)
       :init (helm-projectile-on)
       :config
       (progn
