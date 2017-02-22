@@ -8,6 +8,10 @@ XMONAD_FILES := \
 	xmonad/.xmonad/xmonad.hs \
 	$(shell find xmonad/.xmonad/lib -type f -name '*.hs')
 
+comma:= ,
+empty:=
+space:= $(empty) $(empty)
+
 $(TS)/.xmonad: $(XMONAD_FILES)
 	xmonad --recompile
 	xmonad --restart
@@ -16,11 +20,11 @@ $(TS)/.xmonad: $(XMONAD_FILES)
 
 .PHONY: install
 install: ## Install PACKAGES (all or use PACKAGES=package)
-	stow -t $(DESTDIR) $(PACKAGES)
+	stow -t $(DESTDIR) $(subst $(comma),$(space),$(PACKAGES))
 
 .PHONY: uninstall
 uninstall: ## Uninstall PACKAGES (all or use PACKAGES=package)
-	stow -Dt $(DESTDIR) $(PACKAGES)
+	stow -Dt $(DESTDIR) $(subst $(comma),$(space),$(PACKAGES))
 
 .PHONY: update
 update: ## Update and install
