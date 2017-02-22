@@ -142,7 +142,7 @@ myEventHook = handleTimerEvent
 
 -- Queries
 matchAny :: String -> Query Bool
-matchAny x = foldr ((<||>) . (=? x)) (return False) [className, title, wmName, wmRole]
+matchAny x = foldr ((<||>) . (~? x)) (return False) [className, title, wmName, wmRole]
 
 wmName, wmRole :: Query String
 wmName = stringProperty "WM_NAME"
