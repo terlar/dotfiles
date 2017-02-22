@@ -1,68 +1,73 @@
 #!/usr/bin/env bash
-set -e
+set -eu
 set -o pipefail
 
+print_error() {
+	local msg="$1"
+	local command="${0##*/}"
+	>&2 echo "${command}: ${msg}"
+}
+
 has_cmd() {
-	if command -v "$*" >/dev/null
-	then
-		return 0
-	else
-		return 1
-	fi
+	command -v "$*" >/dev/null
 }
 
 pandoc_opts() {
 	local opts=()
-
 	local css_file="${HOME}/.local/share/pandoc/css/default.css"
-	[[ -e "${css_file}" ]] && opts+=(-c "${css_file}")
 
+	[[ -e "${css_file}" ]] && opts+=(-c "${css_file}")
 	opts+=(-s)
+
 	echo "${opts[@]}"
 }
 
 main() {
 	local browser_cmd="${BROWSER}"
 
-	while true
+	while getopts :b:n:v opt
 	do
-		case "$1" in
-			-n)
-				browser_cmd="cat"
-				shift 1
+		case "${opt}" in
+			b)
+				browser_cmd="${OPTARG}"
 				;;
-			*)
-				break
+			n)
+				browser_cmd="cat"
+				;;
+			v)
+				set -x
+				;;
+			'?')
+				print_error "invalid option -- '${OPTARG}'"
+				return 1
+				;;
+			:)
+				print_error "option requires an argument -- '${OPTARG}'"
+				return 1
 				;;
 		esac
 	done
+	shift "$((OPTIND - 1))"
 
-	local cmd
+	local cmd=(awk 1 ORS="<br>")
 	local file="$*"
-	local opts=()
 
-	case "$file" in
+	case "${file}" in
 		*.rst)
-			has_cmd rst2html  && cmd="rst2html"
-			has_cmd rst2html2 && cmd="rst2html2"
-			has_cmd pandoc    && cmd="pandoc" opts=($(pandoc_opts))
+			has_cmd rst2html  && cmd=(rst2html)
+			has_cmd rst2html2 && cmd=(rst2html2)
+			has_cmd pandoc    && cmd=(pandoc $(pandoc_opts))
 			;;
 		*.md)
-			has_cmd marked && cmd="marked"
-			has_cmd pandoc && cmd="pandoc" opts=($(pandoc_opts))
+			has_cmd marked && cmd=(marked)
+			has_cmd pandoc && cmd=(pandoc $(pandoc_opts))
 			;;
 		*.html)
-			cmd="cat"
+			cmd=(cat)
 			;;
 	esac
 
-	if [[ -z "${cmd}" ]]
-	then
-		cmd="awk"
-		opts=(1 ORS="<br>")
-	fi
-
-	"${cmd}" "${opts[@]}" "${file}" | "${browser_cmd}"
+	"${cmd[@]}" "${file}" | "${browser_cmd}"
 }
 
 main "$@"

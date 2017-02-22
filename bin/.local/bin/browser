@@ -1,118 +1,177 @@
 #!/usr/bin/env bash
-has_slack() {
-	local cookie="$*"
+set -eu
+set -o pipefail
 
-	[[ -f "$cookie" ]]
+declare CURL_OPTS=('-Ls')
+declare MPV_OPTS=()
+
+print_error() {
+	local msg="$1"
+	local command="${0##*/}"
+	>&2 echo "${command}: ${msg}"
 }
 
-is_slack_url() {
-	local url="$*"
-
-	[[ "$url" == https://*.slack.com/files/* ]]
+has_cmd() {
+	command -v "$*" >/dev/null
 }
 
-is_youtube_url() {
-	local url="$*"
-
-	[[ "$url" == https://youtu.be/* || "$url" == https://www.youtube.com/watch* ]]
+is_tty() {
+	[[ -t 0 ]]
 }
 
-is_tumblr_url() {
-	local url="$*"
-
-	[[ "$url" == http://*.tumblr.com/* || "$url" == https://*.tumblr.com/* ]]
+is_graphical() {
+	[[ -n "${DISPLAY:-}" ]]
 }
 
-is_imgur_url() {
-	local url="$*"
-
-	[[ "$url" == http://imgur.com/* || "$url" == https://imgur.com/* ]]
+url_type() {
+	case "$*" in
+		https://*.slack.com/files/*)
+			echo slack
+			;;
+		https://youtu.be/*|https://www.youtube.com/watch*)
+			echo youtube
+			;;
+		http://*.tumblr.com/*|https://*.tumblr.com/*)
+			echo tumblr
+			;;
+		http://imgur.com/*|https://imgur.com/*)
+			echo imgur
+			;;
+	esac
 }
 
-is_not_empty() {
-	local var=$1
+transform_url() {
+	local type="$1"
+	local url="$2"
 
-	[[ -n $var ]]
+	case "${type}" in
+		slack)
+			new_url=$(curl "${CURL_OPTS[@]}" "${url}" \
+				| sed -e 's|boot_data.file = \({.*}\);|\1|;tx;d;:x' \
+				| jq -r '.url_private_download')
+
+			[[ -n "${new_url}" ]] && url="${new_url}"
+			;;
+		tumblr)
+			new_url=$(curl "${CURL_OPTS[@]}" "${url}" \
+				| sed -n '/<img/s/.*src="\([^"]*\)".*/\1/p' \
+				| grep -m1 '.gif$')
+
+			[[ -n "${new_url}" ]] && url="${new_url}"
+			;;
+		imgur)
+			url="${url/imgur.com/i.imgur.com}.png"
+			;;
+	esac
+
+	echo "${url}"
 }
 
 main() {
-	local url browser
-	if [[ -n "$DISPLAY" ]]; then
+	local url browser cookie_file
+	cookie_file="${HOME}/.slackcurl/cookies"
+
+	if is_graphical
+	then
 		browser=qutebrowser
 	else
 		browser=w3m
 	fi
 
-	declare -a curl_opts=('-Ls')
-	declare -a mpv_opts=()
-	local slack_cookie="$HOME/.slackcurl/cookies"
+	while getopts :b:c:v opt
+	do
+		case "${opt}" in
+			b)
+				browser="${OPTARG}"
+				;;
+			c)
+				cookie_file="${OPTARG}"
+				;;
+			v)
+				set -x
+				;;
+			'?')
+				print_error "invalid option -- '${OPTARG}'"
+				return 1
+				;;
+			:)
+				print_error "option requires an argument -- '${OPTARG}'"
+				return 1
+				;;
+		esac
+	done
+	shift "$((OPTIND - 1))"
 
-	if [[ $# -eq 0 ]]; then
-		if [[ -t 0 ]]; then
-			exec $browser &>/dev/null
+	if [[ $# -eq 0 ]]
+	then
+		if is_tty
+		then
+			exec "${browser}" &>/dev/null
 		else
-			url=$(mktemp /tmp/browser.XXXXXXXX.html)
-			cat /dev/stdin > "$url"
+			local file
+			file="$(mktemp /tmp/browser.XXXXXXXX.html)"
+			cat /dev/stdin > "$file"
+			url="file://${file}"
 		fi
 	else
 		url="$*"
-	fi
-
-	local new_url
-	if has_slack "$slack_cookie" && is_slack_url "$url"; then
-		curl_opts+=("--cookie" "$slack_cookie")
-		mpv_opts+=("--cookies=yes" "--cookies-file=$slack_cookie")
-		new_url=$(curl "${curl_opts[@]}" "$url" \
-			| sed -e 's|boot_data.file = \({.*}\);|\1|;tx;d;:x' \
-			| jq -r '.url_private_download')
-
-		if [[ -n $new_url ]]; then
-			url=$new_url
+		if [[ -f "${url}" ]]
+		then
+			url="file://$(realpath "${url}")"
 		fi
-	elif is_tumblr_url "$url"; then
-		new_url=$(curl "${curl_opts[@]}" "$url" \
-			| sed -n '/<img/s/.*src="\([^"]*\)".*/\1/p' \
-			| grep -m1 '.gif$')
-
-		if [[ -n $new_url ]]; then
-			url=$new_url
-		fi
-	elif is_imgur_url "$url"; then
-		url="${url/imgur.com/i.imgur.com}.png"
 	fi
 
-	local mime
+	local type new_url
+	type="$(url_type "${url}")"
 
-	if is_youtube_url "$url"; then
-		mime=video/youtube
-	else
-		mime=$(curl "${curl_opts[@]}" -r 0-499 -IX HEAD "$url" \
-			| awk '/^Content-Type:/ { print $2 }' \
-			| sed -e 's/[[:cntrl:]]//')
+	local mime=''
+	if [[ -f "${cookie_file}" ]]
+	then
+		CURL_OPTS+=('--cookie' "${cookie_file}")
+		MPV_OPTS+=('--cookies=yes' "--cookies-file=${cookie_file}")
 	fi
 
+	case "${type}" in
+		slack|tumblr|imgur)
+			url="$(transform_url "${type}" "${url}")"
+			;;
+		youtube)
+			mime=video/youtube
+	esac
 
-	is_not_empty "$mime" \
-		&& echo "Detected $mime, loading..."
+	if [[ -z "${mime}" ]]
+	then
+		mime="$(curl "${CURL_OPTS[@]}" -r 0-1 -IX HEAD "${url}" \
+			| tr -d '\r' \
+			| sed -En 's/^Content-Type: ([-[:alnum:]\/]+).*$/\1/p' \
+			| tail -n1)"
+	fi
 
-	case $mime in
+	if [[ -n "${mime}" ]]
+	then
+		echo "Detected ${mime}, loading..."
+	fi
+
+	case "${mime}" in
 		image/gif)
-			exec curl "${curl_opts[@]}" "$url" | gifview -a -
+			exec curl "${CURL_OPTS[@]}" "${url}" | gifview -a - &
 			;;
 		image/*)
-			exec curl "${curl_opts[@]}" "$url" | feh -. -
+			exec curl "${CURL_OPTS[@]}" "${url}" | feh -. - &
 			;;
 		video/*)
-			exec mpv "${mpv_opts[@]}" "$url"
+			exec mpv "${MPV_OPTS[@]}" "${url}" &>/dev/null &
 			;;
 		application/force-download)
-			cd "$XDG_DOWNLOAD_DIR" || exit
-			curl "${curl_opts[@]}" -O "$url"
-			cd - || exit
-			notify-send -i down 'File saved' "${XDG_DOWNLOAD_DIR}"
+			local file
+			file="${XDG_DOWNLOAD_DIR}/${url##*/}"
+			CURL_OPTS+=(-o "${file}")
+
+			curl "${CURL_OPTS[@]}" "${url}"
+			notify-send -i down 'File saved' "${file}"
 			;;
 		*)
-			exec "$browser" "$url" &>/dev/null
+			exec "${browser}" "${url}" &>/dev/null &
 			;;
 	esac
 }
