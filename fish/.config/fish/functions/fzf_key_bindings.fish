@@ -1,1 +1,0 @@
-/home/terje/.fzf/shell/key-bindings.fish
