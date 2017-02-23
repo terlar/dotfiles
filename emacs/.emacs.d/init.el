@@ -840,10 +840,9 @@ KEY must be given in `kbd' notation."
 (use-package evil
   :commands (evil-mode evil-normal-state evil-delay evil-define-key)
   :bind
-  (:map
-   evil-normal-state-map
-   ("<tab>"     . next-buffer)
-   ("<backtab>" . previous-buffer))
+  (:map (evil-normal-state-map
+         ("<tab>"     . next-buffer)
+         ("<backtab>" . previous-buffer)))
   :defer t
   :init (evil-mode)
   :config
@@ -923,11 +922,10 @@ KEY must be given in `kbd' notation."
   (use-package evil-god-state
     :commands (evil-execute-in-god-state)
     :bind
-    (:map
-     evil-normal-state-map
-     ("C-c SPC" . evil-execute-in-god-state))
+    (:map (evil-normal-state-map
+           ("C-c SPC" . evil-execute-in-god-state)))
     :config
-    (with-eval-after-load 'evil
+    (with-eval-after-load 'evil-map
       (evil-define-key 'god global-map [escape] 'evil-god-state-bail))))
 
 ;; Completion system
@@ -1447,7 +1445,7 @@ KEY must be given in `kbd' notation."
              "go build -v && go test -v && go vet")))
   :config
   (progn
-    (with-eval-after-load 'evil
+    (with-eval-after-load 'evil-map
       (evil-define-key 'normal go-mode-map (kbd "K") #'godoc-at-point))
 
     (add-hook 'go-mode-hook #'my-go-mode-hook)
@@ -1612,7 +1610,7 @@ The insertion will be repeated COUNT times."
         (setq shm-use-hdevtools t)
         (setq shm-use-presentation-mode t)
 
-        (with-eval-after-load 'evil
+        (with-eval-after-load 'evil-map
           (evil-define-key 'normal shm-map
             (kbd "O") #'evil-shm/open-above
             (kbd "o") #'evil-shm/open-below))
