@@ -10,7 +10,7 @@ agenda() {
 
 	khal list --notstarted now "${end_time}" \
 		| grep '^[0-9][0-9]:[0-9][0-9]-[0-9][0-9]:[0-9][0-9] ' \
-		|| true
+		| cat
 }
 
 remaining_time() {
