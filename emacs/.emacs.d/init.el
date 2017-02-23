@@ -1084,25 +1084,21 @@ KEY must be given in `kbd' notation."
    ("M-]"     . persp-next))
   :init
   (progn
+    (custom-set-variables
+     '(persp-keymap-prefix (kbd "C-x x")))
     (setq persp-save-dir (concat my-cache-directory "persp-confs/"))
-    (persp-mode))
+    (persp-mode 1))
   :config
   (progn
-    ;; Automatically add all free buffers to the current perspective.
-    (setq persp-add-buffer-on-after-change-major-mode 'free)
-    (setq persp-add-buffer-on-find-file 'if-not-autopersp)
+    ;; Kill buffers not belonging to any perspective.
     (setq persp-autokill-buffer-on-remove 'kill-weak)
-    ;; Prevent loading of existing perspectives when opening new frames.
-    (setq persp-emacsclient-init-frame-behaviour-override nil)
-
-    (add-hook 'persp-after-load-state-functions
-              (lambda (&rest args) (persp-auto-persps-pickup-buffers)) t)
 
     (set-face-background 'persp-face-lighter-buffer-not-in-persp
                          (face-attribute 'isearch-fail :background))
     (set-face-foreground 'persp-face-lighter-buffer-not-in-persp
                          (face-attribute 'isearch-fail :foreground))
 
+    ;; Projectile integration
     (defvar after-find-file-hook nil)
     (advice-add 'find-file :after
                 (lambda (&rest args) (run-hooks 'after-find-file-hook)))
@@ -1112,11 +1108,15 @@ KEY must be given in `kbd' notation."
       :hooks '(after-find-file-hook)
       :switch 'frame
       :predicate
-      '((lambda (_buffer)
+      #'(lambda (_buffer)
           (when (and (buffer-file-name) (projectile-project-p))
-            t)))
+            t))
       :get-name-expr
-      (lambda () (projectile-project-name)))))
+      #'(lambda () (abbreviate-file-name (projectile-project-name))))
+
+    (setq persp-add-buffer-on-find-file 'if-not-autopersp)
+    (add-hook 'persp-after-load-state-functions
+              #'(lambda (&rest args) (persp-auto-persps-pickup-buffers)) t)))
 
 ;; Project interaction and navigation
 (use-package projectile
