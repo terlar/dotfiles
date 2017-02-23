@@ -25,9 +25,9 @@ unit_file_state() {
 }
 
 gen_main_menu() {
-	echo daemon-reload
 	echo services
 	echo timers
+	echo daemon-reload
 }
 
 gen_services() {
