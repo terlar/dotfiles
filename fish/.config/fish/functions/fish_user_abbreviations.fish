@@ -1,6 +1,7 @@
 function fish_user_abbreviations
     set -U fish_user_abbreviations
 
+    # Aliases
     abbr @ 'head'
     abbr tf 'tail -f'
     abbr l 'ls -a'
@@ -8,7 +9,6 @@ function fish_user_abbreviations
     abbr m mux
     abbr e editor
     abbr week "date '+%V'"
-    abbr time "time -p"
 
     # Math
     abbr -- '+' 'add'
@@ -16,13 +16,16 @@ function fish_user_abbreviations
     abbr -- '*' 'mul'
     abbr -- '/' 'div'
 
+    # Command defaults
+    abbr time "time -p"
+    abbr base64 "base64 -w0"
+
     if type -fq tree
         abbr tree 'tree -a'
     end
 
     if type -fq rg
         abbr ag 'rg --hidden --glob "!.git/*"'
-        abbr gg 'rg --hidden --glob "!.git/*"'
         abbr rg 'rg --hidden --glob "!.git/*"'
     end
 
@@ -119,6 +122,10 @@ function fish_user_abbreviations
         abbr kbg 'kubectl get'
         abbr kbd 'kubectl describe'
         abbr kbl 'kubectl logs'
+    end
+
+    if type -fq ghq
+        abbr gg 'ghq look'
     end
 
     if type -q farm
