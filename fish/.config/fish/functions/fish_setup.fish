@@ -28,7 +28,7 @@ function fish_setup --description 'Setup fish variables'
     fish_update_completions
 
     # Settings
-    set -U fish_escape_delay_ms 10
+    set -U fish_escape_delay_ms 500
 
     set -U tank_reporter spec
     set -U fry_auto_switch 1
