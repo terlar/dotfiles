@@ -6,7 +6,7 @@ function __aurget_current_token_is_option
 end
 
 function __aurget_search_aur_packages -a term
-    test (string length $term) -gt 2
+    test (string length -- $term) -gt 2
     or return
 
     type -q curl
