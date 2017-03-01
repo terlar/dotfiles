@@ -1,27 +1,78 @@
-module XMonad.Util.PIPWindow (makePIPWindow, togglePIPWindow, pipManageHook) where
+module XMonad.Util.PIPWindow ( makePIPWindow
+                             , togglePIPWindow
+                             , resetPIPWindow
+                             , focusUpPIP
+                             , focusDownPIP
+                             , pipManageHook
+                             , pipWindow
+                             ) where
 
-import           Data.Maybe                   (fromMaybe)
-import           Data.Monoid                  (Endo (..))
+import           Control.Monad                    (filterM)
+import           Data.Maybe                       (fromMaybe)
+import           Data.Monoid                      (Endo (..))
 
 import           XMonad
-import           XMonad.Operations            (withFocused)
-import qualified XMonad.StackSet              as W
+import           XMonad.Operations                (withFocused)
+import qualified XMonad.StackSet                  as W
 
-import           XMonad.Util.WindowProperties (getProp32)
-
-import           XMonad.Actions.CopyWindow    (killAllOtherCopies)
+import           XMonad.Actions.CopyWindow        (copyToAll,
+                                                   killAllOtherCopies)
+import           XMonad.Actions.DynamicWorkspaces (addHiddenWorkspace)
 import           XMonad.Actions.TagWindows
 
-import           XMonad.Hooks.ManageHelpers   (doRectFloat)
+import           XMonad.Hooks.ManageHelpers       (doRectFloat)
 
-import qualified XMonad.Layout.BoringWindows  as BW
-import           XMonad.Layout.Minimize
+import qualified XMonad.Layout.BoringWindows      as BW
+
+tagValue :: Query String
+tagValue = stringProperty "_XMONAD_TAGS"
+
+pipQuery :: Query Bool
+pipQuery = tagValue =? "pip"
+
+pipManageHook :: Query (Endo WindowSet)
+pipManageHook = composeAll
+    [ pipQuery --> doRectFloat rect ]
+  where
+    rect = W.RationalRect (61/100) (2/100) (38/100) (38/100)
+
+pipWindow :: (Window -> X ()) -> X ()
+pipWindow = withTaggedGlobal "pip"
 
 makePIPWindow :: X ()
 makePIPWindow = withFocused $ \win -> do
     BW.markBoring
     setTags ["pip"] win
     resetPIPWindow win
+    focus win >> windows copyToAll
+
+togglePIPWindow :: X ()
+togglePIPWindow = withWindowSet $ \s -> do
+    filterCurrent <- filterM (runQuery pipQuery)
+                    ( (maybe [] W.integrate . W.stack . W.workspace . W.current) s)
+
+    case filterCurrent of
+        (x:_) -> do
+            -- create hidden workspace if it doesn't exist
+            if null (filter ((== scratchpadWorkspaceTag) . W.tag) (W.workspaces s))
+                then addHiddenWorkspace scratchpadWorkspaceTag
+                else return ()
+            -- kill copies of window
+            focus x >> killAllOtherCopies
+            -- push window there
+            windows $ W.shiftWin scratchpadWorkspaceTag x
+        [] -> do
+            -- try to find it on all workspaces
+            filterAll <- filterM (runQuery pipQuery) (W.allWindows s)
+            case filterAll of
+                (x:_) -> do
+                    windows $ W.shiftWin (W.currentTag s) x
+                    focus x >> BW.markBoring >> windows copyToAll
+                [] -> return ()
+
+-- Utilize same workspace tag as scratchpad
+scratchpadWorkspaceTag :: String
+scratchpadWorkspaceTag = "NSP"
 
 resetPIPWindow :: Window -> X ()
 resetPIPWindow win = do
@@ -29,41 +80,6 @@ resetPIPWindow win = do
     g  <- appEndo <$> userCodeDef (Endo id) (runQuery mh win)
     windows g
 
-tagValue :: Query String
-tagValue = stringProperty "_XMONAD_TAGS"
-
-togglePIPWindow :: X ()
-togglePIPWindow = pipWindow togglePIPWindow'
-
-togglePIPWindow' :: Window -> X ()
-togglePIPWindow' win = do
-    wm_state <- getAtom "_NET_WM_STATE"
-    mini     <- getAtom "_NET_WM_STATE_HIDDEN"
-    wstate   <- fromMaybe [] `fmap` getProp32 wm_state win
-
-    if fromIntegral mini `elem` wstate
-    then showPIPWindow win
-    else hidePIPWindow win
-
-hidePIPWindow :: Window -> X ()
-hidePIPWindow w = do
-    focus w >> killAllOtherCopies
-    minimizeWindow w
-
-showPIPWindow :: Window -> X ()
-showPIPWindow w = do
-    sendMessage (RestoreMinimizedWin w)
-    focus w >> windows W.shiftMaster
-
-pipWindow :: (Window -> X ()) -> X ()
-pipWindow = withTaggedGlobal "pip"
-
 focusUpPIP, focusDownPIP :: X ()
 focusUpPIP = focusUpTagged "pip"
 focusDownPIP = focusDownTagged "pip"
-
-pipManageHook :: Query (Endo WindowSet)
-pipManageHook = composeAll
-    [ tagValue =? "pip" --> doRectFloat rect ]
-  where
-    rect = W.RationalRect (61/100) (2/100) (38/100) (38/100)
