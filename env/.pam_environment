@@ -42,6 +42,9 @@ XDG_MUSIC_DIR     DEFAULT=${HOME}/music
 XDG_PICTURES_DIR  DEFAULT=${HOME}/pictures
 XDG_VIDEOS_DIR    DEFAULT=${HOME}/videos
 
+# QT
+QT_STYLE_OVERRIDE=gtk
+
 # Java
 _JAVA_OPTIONS DEFAULT="\
  -Dawt.useSystemAAFontSettings=on\
