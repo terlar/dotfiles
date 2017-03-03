@@ -23,19 +23,21 @@ bringSomeNamedScratchpad :: ((Window -> X ()) -> [Window] -> X ())
 bringSomeNamedScratchpad f confs n
     | Just conf <- findByName confs n = withWindowSet $ \s -> do
         filterCurrent <- filterM
-                         (runQuery (query conf))
-                         ((maybe [] W.integrate . W.stack . W.workspace . W.current) s)
-
-        filterAll     <- filterM
-                         (runQuery (query conf))
-                         (W.allWindows s)
+                        (runQuery (query conf))
+                        ((maybe [] W.integrate . W.stack . W.workspace . W.current) s)
 
         case filterCurrent of
-            [] -> do
-                case filterAll of
-                    [] -> return ()
-                    _  -> f (windows . W.shiftWin (W.currentTag s)) filterAll
-            _  -> do
-                f (windows . W.focusWindow) filterAll
+            (x:_) -> do
+                f (windows . W.focusWindow) filterCurrent
                 windows W.shiftMaster
+            [] -> do
+                filterAll <- filterM
+                            (runQuery (query conf))
+                            (W.allWindows s)
+
+                case filterAll of
+                    (x:_) -> do
+                        f (windows . W.shiftWin (W.currentTag s)) filterAll
+                        windows W.shiftMaster
+                    [] -> return ()
     | otherwise = return ()
