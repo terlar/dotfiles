@@ -10,12 +10,16 @@ gen_todos() {
 	fish -c 'todo list'
 }
 
+gen_main_menu() {
+	echo edit
+	echo +
+	gen_todos
+}
+
 main() {
 	if [[ -z "$@" ]]
 	then
-		echo edit
-		echo +
-		gen_todos
+		gen_main_menu
 	else
 		local cmd=($1)
 		case "${cmd[0]}" in
@@ -23,6 +27,7 @@ main() {
 				unset 'cmd[0]'
 				coproc fish -c "todo add ${cmd[*]}" & >/dev/null 2>&1
 				exec 1>&-
+				gen_main_menu
 				;;
 			edit)
 				coproc fish -c 'todo edit &' >/dev/null 2>&1
@@ -32,6 +37,7 @@ main() {
 				local result
 				result="$(fish -c "todo done ${cmd[*]}")"
 				notify_done "${result}"
+				gen_main_menu
 				;;
 		esac
 	fi
