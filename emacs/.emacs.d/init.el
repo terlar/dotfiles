@@ -1127,6 +1127,25 @@ KEY must be given in `kbd' notation."
     (projectile-mode))
   :config
   (progn
+    (use-package persp-projectile-bridge
+      :ensure nil
+      :after persp-mode
+      :load-path "vendor/persp-projectile-bridge/"
+      :commands (persp-projectile-bridge-mode)
+      :functions
+      (persp-projectile-bridge-find-perspectives-for-all-buffers
+       persp-projectile-bridge-kill-perspectives)
+      :defer t
+      :init
+      (progn
+        (require 'persp-projectile-bridge)
+        (add-hook 'persp-projectile-bridge-mode-hook
+                  #'(lambda ()
+                      (if persp-projectile-bridge-mode
+                          (persp-projectile-bridge-find-perspectives-for-all-buffers)
+                        (persp-projectile-bridge-kill-perspectives))))
+        (persp-projectile-bridge-mode 1)))
+
     (add-to-list 'projectile-globally-ignored-directories ".cache")
     (add-to-list 'projectile-globally-ignored-directories "node_modules")
     (add-to-list 'projectile-globally-ignored-directories "tmp")
