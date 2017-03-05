@@ -55,12 +55,17 @@ indent_size = 2
 indent_style = spaces
 indent_size = 4
 
+# Saltstack files
+[**/*.sls]
+indent_style = spaces
+indent_size = 2
+
 # Slim template
 [**/*.slim]
 indent_style = spaces
 indent_size = 2
 
 # YAML files
-[**/*.yml]
+[{**/*.yml,**/group_vars/*}]
 indent_style = spaces
 indent_size = 2
