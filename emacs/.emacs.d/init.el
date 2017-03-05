@@ -1159,7 +1159,8 @@ KEY must be given in `kbd' notation."
       :config
       (progn
         (setq helm-projectile-fuzzy-match t)
-        (setq projectile-completion-system 'helm)))))
+        (setq projectile-completion-system 'helm)
+        (setq projectile-switch-project-action 'helm-projectile)))))
 
 ;; Striped directory listing
 (use-package stripe-buffer
