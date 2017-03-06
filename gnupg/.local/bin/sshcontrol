@@ -2,9 +2,9 @@
 set -eu
 set -o pipefail
 
-declare -r GPGHOME SSHCONTROL_FILE
 GPGHOME="$(gpgconf --list-dirs homedir)"
 SSHCONTROL_FILE="${GPGHOME}/sshcontrol"
+declare -r GPGHOME SSHCONTROL_FILE
 
 usage() {
 	echo "Usage: $(basename "${0}") [COMMAND]"
@@ -20,7 +20,7 @@ usage() {
 }
 
 key_files() {
-	grep -laoe ':comment.*$' "${GPGHOME}/private-keys-v1.d"/*
+	grep -Rl ':comment.*$' "${GPGHOME}/private-keys-v1.d"
 }
 
 keygrip_from_file() {
