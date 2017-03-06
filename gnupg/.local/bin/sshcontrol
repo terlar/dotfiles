@@ -2,6 +2,7 @@
 set -eu
 set -o pipefail
 
+declare -r GPGHOME SSHCONTROL_FILE
 GPGHOME="$(gpgconf --list-dirs homedir)"
 SSHCONTROL_FILE="${GPGHOME}/sshcontrol"
 
