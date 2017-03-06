@@ -63,3 +63,8 @@ video/x-theora=mpv.desktop;
 video/x-matroska=mpv.desktop;
 video/3gpp=mpv.desktop;
 application/x-flash-video=mpv.desktop;
+
+[Added Associations]
+image/png=gpicview.desktop;
+image/gif=gpicview.desktop;
+application/pdf=zathura.desktop;
