@@ -70,7 +70,7 @@ function __kubectl_contexts
 end
 
 function __kubectl_namespaces
-    kubectl get namespace -o name | string trim -l -c 'namespace/'
+    kubectl get namespace -o name | string replace -r -- '^(\S+)/' ''
 end
 
 function __kubectl_resource_types
