@@ -1,9 +1,9 @@
-#!/usr/bin/env bash
+#!/bin/bash
 set -eu
 set -o pipefail
 
 has_cmd() {
-	if command -v "$*" &>/dev/null
+	if command -v -- "$*" &>/dev/null
 	then
 		return 0
 	else
@@ -16,7 +16,7 @@ is_graphical() {
 }
 
 is_interactive() {
-	fd=0 # stdin
+	local fd=0 # stdin
 	[[ -t "${fd}" || -p /dev/stdin ]]
 }
 
@@ -32,14 +32,15 @@ main() {
 		echo 'you need either rofi or fzf for the menu' 1>&2
 	fi
 
-	if ! has_cmd "$menu_cmd"
+	if ! has_cmd "${menu_cmd}"
 	then
 		echo "unknown command \`${menu_cmd}'" 1>&2
 	fi
 
 	if use_rofi
 	then
-		local modi="$(echo "$*" | sed -r 's/(\S+)/\1:\1/g; s/\s/,/g')"
+		local modi
+		modi="$(echo "$*" | sed -r 's/(\S+)/\1:\1/g; s/\s/,/g')"
 		rofi -modi "${modi}" -show "${menu_cmd}"
 	else
 		local sel=""
