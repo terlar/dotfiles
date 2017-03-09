@@ -1,0 +1,87 @@
+#!/bin/bash
+set -eu
+set -o pipefail
+
+INTERFACE="$(wpa_cli interface | tail -n1)"
+declare -r INTERFACE
+
+wpa() {
+	wpa_cli -i "${INTERFACE}" "$@"
+}
+
+has_network() {
+	wpa list_networks \
+		| tail -n +2 \
+		| cut -d "$(printf "\t")" -f2 \
+		| grep "\b$*\b" >/dev/null
+}
+
+get_network() {
+	wpa list_networks \
+		| tail -n +2 \
+		| grep "\b$*\b" \
+		| cut -d "$(printf "\t")" -f1
+}
+
+connect_network() {
+	local flags="$4"
+	local ssid="${*:5}"
+
+	local id
+	if has_network "${ssid}"
+	then
+		id=$(get_network "${ssid}")
+		wpa enable_network "${id}" >/dev/null
+	else
+		local key_mgmt
+		case "${flags}" in
+			*WPA-PSK*|*WPA2-PSK*)
+				key_mgmt=WPA-PSK
+				;;
+			*)
+				key_mgmt=NONE
+		esac
+
+
+		coproc add-wifi -k "${key_mgmt}" "${ssid}" &>/dev/null
+		exec 1>&-
+	fi
+}
+
+gen_networks() {
+	wpa scan_results | tail -n +2
+}
+
+gen_main_menu() {
+	echo refresh
+}
+
+main() {
+	if [[ -z "$@" ]]
+	then
+		echo scan
+		echo save
+		gen_networks
+	else
+		local cmd=($1)
+		case "${cmd[0]}" in
+			save)
+				wpa save_config >/dev/null
+				;;
+			refresh)
+				gen_main_menu
+				gen_networks
+				;;
+			scan)
+				wpa scan >/dev/null
+				gen_main_menu
+				gen_networks
+				;;
+			*)
+				connect_network "${cmd[@]}"
+				;;
+		esac
+	fi
+}
+
+main "$@"

@@ -120,6 +120,7 @@ myKeys =
     , ("M-p", programLauncher)
     , ("M-S-p s", spawn "menu systemd-menu systemd-user-menu")
     , ("M-S-p t", spawn "menu todo-menu")
+    , ("M-S-p w", spawn "menu wifi-menu")
     , ("M-S-8", passPrompt)
     , ("M-/", searchPrompt)
     , ("M-=", calcPrompt)

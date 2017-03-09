@@ -1,0 +1,90 @@
+#!/bin/bash
+set -eu
+set -o pipefail
+
+INTERFACE="$(wpa_cli interface | tail -n1)"
+declare -r INTERFACE
+
+wpa() {
+	wpa_cli -i "${INTERFACE}" "$@"
+}
+
+is_graphical() {
+	[[ -n "${DISPLAY:-}" ]]
+}
+
+is_interactive() {
+	local fd=0 # stdin
+	[[ -t "${fd}" || -p /dev/stdin ]]
+}
+
+ask_password() {
+	local password
+	if is_graphical
+	then
+		password="$(zenity --password)"
+	else
+		stty -echo
+		read password
+		stty echo
+	fi
+	echo "${password}"
+}
+
+print_error() {
+	local msg="$1"
+	local command="${0##*/}"
+	>&2 echo "${command}: ${msg}"
+}
+
+trap_error() {
+	local id="${1?id was not provided}"
+	wpa remove_network "${id}"
+}
+
+main() {
+	local key_mgmt="NONE"
+
+	while getopts :k:v opt
+	do
+		case "${opt}" in
+			k)
+				key_mgmt="${OPTARG}"
+				;;
+			v)
+				set -x
+				;;
+			'?')
+				print_error "invalid option -- '${OPTARG}'"
+				return 1
+				;;
+			:)
+				print_error "option requires an argument -- '${OPTARG}'"
+				return 1
+				;;
+		esac
+	done
+	shift "$((OPTIND - 1))"
+
+	local ssid="${1?ssid was not provided}"
+
+	local id psk
+	id="$(wpa add_network)"
+	# shellcheck disable=SC2064
+	trap "trap_error ${id}" ERR
+
+	wpa set_network "${id}" ssid "\"${ssid}\""
+	wpa set_network "${id}" scan_ssid 1
+	wpa set_network "${id}" key_mgmt "${key_mgmt}"
+
+	case "${key_mgmt}" in
+		WPA-PSK)
+			psk="$(ask_password)"
+			wpa set_network "${id}" psk "\"${psk}\""
+			;;
+	esac
+
+	wpa enable_network "${id}" >/dev/null
+}
+
+main "$@"
