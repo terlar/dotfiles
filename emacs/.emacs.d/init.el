@@ -660,11 +660,15 @@ KEY must be given in `kbd' notation."
   :config
   (progn
     ;; Disabled modes
-    (dolist (mode '(diff-auto-refine-mode dockerfile-mode))
+    (dolist (mode
+             '(diff-auto-refine-mode
+               haskell-mode))
       (add-to-list 'aggressive-indent-excluded-modes mode))
 
     ;; Disabled commands
-    (dolist (command '(evil-undo-pop ws-butler-clean-region))
+    (dolist (command
+             '(evil-undo-pop
+               ws-butler-clean-region))
       (add-to-list 'aggressive-indent-protected-commands command))
 
     (global-aggressive-indent-mode +1)))
