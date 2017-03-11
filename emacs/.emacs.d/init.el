@@ -610,6 +610,13 @@ KEY must be given in `kbd' notation."
 
 ;;; Local packages
 
+;; Automatically assign projectile projects to a perspective
+(use-package persp-mode-projectile-auto-persp
+  :ensure nil
+  :load-path "vendor/persp-mode-projectile-auto-persp/"
+  :commands (persp-mode-projectile-auto-persp-mode)
+  :init (persp-mode-projectile-auto-persp-mode))
+
 ;; Support for RAML
 (use-package raml-mode
   :ensure nil
@@ -1072,10 +1079,7 @@ KEY must be given in `kbd' notation."
 (use-package persp-mode
   :commands
   (persp-mode
-   persp-switch persp-prev persp-next
-   def-auto-persp
-   persp-auto-persps-pickup-buffers
-   projectile-project-name projectile-project-p)
+   persp-switch persp-prev persp-next)
   :bind
   (("C-c RET" . persp-switch)
    ("M-["     . persp-prev)
@@ -1094,27 +1098,7 @@ KEY must be given in `kbd' notation."
     (set-face-background 'persp-face-lighter-buffer-not-in-persp
                          (face-attribute 'isearch-fail :background))
     (set-face-foreground 'persp-face-lighter-buffer-not-in-persp
-                         (face-attribute 'isearch-fail :foreground))
-
-    ;; Projectile integration
-    (defvar after-find-file-hook nil)
-    (advice-add 'find-file :after
-                (lambda (&rest args) (run-hooks 'after-find-file-hook)))
-
-    (def-auto-persp "projectile"
-      :parameters '((dont-save-to-file . t))
-      :hooks '(after-find-file-hook)
-      :switch 'frame
-      :predicate
-      #'(lambda (_buffer)
-          (when (and (buffer-file-name) (projectile-project-p))
-            t))
-      :get-name-expr
-      #'(lambda () (abbreviate-file-name (projectile-project-name))))
-
-    (setq persp-add-buffer-on-find-file 'if-not-autopersp)
-    (add-hook 'persp-after-load-state-functions
-              #'(lambda (&rest args) (persp-auto-persps-pickup-buffers)) t)))
+                         (face-attribute 'isearch-fail :foreground))))
 
 ;; Project interaction and navigation
 (use-package projectile
@@ -1131,24 +1115,22 @@ KEY must be given in `kbd' notation."
     (projectile-mode))
   :config
   (progn
-    (use-package persp-projectile-bridge
+    (use-package persp-mode-projectile-bridge
       :ensure nil
-      :after persp-mode
-      :load-path "vendor/persp-projectile-bridge/"
-      :commands (persp-projectile-bridge-mode)
+      :load-path "vendor/persp-mode-projectile-bridge/"
+      :commands (persp-mode-projectile-bridge-mode)
       :functions
-      (persp-projectile-bridge-find-perspectives-for-all-buffers
-       persp-projectile-bridge-kill-perspectives)
+      (persp-mode-projectile-bridge-find-perspectives-for-all-buffers
+       persp-mode-projectile-bridge-kill-perspectives)
       :defer t
       :init
       (progn
-        (require 'persp-projectile-bridge)
-        (add-hook 'persp-projectile-bridge-mode-hook
+        (add-hook 'persp-mode-projectile-bridge-mode-hook
                   #'(lambda ()
-                      (if persp-projectile-bridge-mode
-                          (persp-projectile-bridge-find-perspectives-for-all-buffers)
-                        (persp-projectile-bridge-kill-perspectives))))
-        (persp-projectile-bridge-mode 1)))
+                      (if persp-mode-projectile-bridge-mode
+                          (persp-mode-projectile-bridge-find-perspectives-for-all-buffers)
+                        (persp-mode-projectile-bridge-kill-perspectives))))
+        (persp-mode-projectile-bridge-mode)))
 
     (add-to-list 'projectile-globally-ignored-directories ".cache")
     (add-to-list 'projectile-globally-ignored-directories "node_modules")
