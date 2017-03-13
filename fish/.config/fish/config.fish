@@ -6,8 +6,10 @@ if test "$TERM" = eterm-color
     end
 end
 
-plug terlar/fry
-plug terlar/fish-farm
+if type -q plug
+    plug terlar/fry
+    plug terlar/fish-farm
+end
 
 # Environment
 if status --is-login
