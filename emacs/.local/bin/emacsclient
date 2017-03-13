@@ -26,7 +26,7 @@ main() {
 		fi
 	fi
 
-	/usr/bin/emacsclient "$@"
+	/usr/bin/remacsclient "$@"
 }
 
 main "$@"
