@@ -610,13 +610,6 @@ KEY must be given in `kbd' notation."
 
 ;;; Local packages
 
-;; Automatically assign projectile projects to a perspective
-(use-package persp-mode-projectile-auto-persp
-  :ensure nil
-  :load-path "vendor/persp-mode-projectile-auto-persp/"
-  :commands (persp-mode-projectile-auto-persp-mode)
-  :init (persp-mode-projectile-auto-persp-mode))
-
 ;; Support for RAML
 (use-package raml-mode
   :ensure nil
@@ -1115,6 +1108,7 @@ KEY must be given in `kbd' notation."
     (projectile-mode))
   :config
   (progn
+    ;; Bridge between persp and projectile
     (use-package persp-mode-projectile-bridge
       :ensure nil
       :load-path "vendor/persp-mode-projectile-bridge/"
@@ -1122,7 +1116,6 @@ KEY must be given in `kbd' notation."
       :functions
       (persp-mode-projectile-bridge-find-perspectives-for-all-buffers
        persp-mode-projectile-bridge-kill-perspectives)
-      :defer t
       :init
       (progn
         (add-hook 'persp-mode-projectile-bridge-mode-hook
