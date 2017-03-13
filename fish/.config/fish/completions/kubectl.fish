@@ -70,7 +70,7 @@ function __kubectl_contexts
 end
 
 function __kubectl_namespaces
-    kubectl get namespace -o name | string replace -r -- '^(\S+)/' ''
+    kubectl (__kubectl_shared_options) get namespace -o name | string replace -r -- '^(\S+)/' ''
 end
 
 function __kubectl_resource_types
@@ -183,6 +183,7 @@ end
 #
 function __kubectl_shared_options
     set -l cmd (commandline -p)
+    string match -r -- '--context[= ]?\S+' $cmd | string split ' '
     string match -r -- '-n ?\S+|--namespace[= ]?\S+' $cmd | string split ' '
 end
 

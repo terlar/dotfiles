@@ -94,12 +94,17 @@ function __helm_subcommands -a cmd
     end
 end
 
+function __helm_kube_context
+    set -l cmd (commandline -p)
+    string match -r -- '--kube-context[= ]?\S+' $cmd | string replace -- '--kube-' '--' | string split ' '
+end
+
 function __helm_kube_contexts
     kubectl config get-contexts -o name ^/dev/null
 end
 
 function __helm_kube_namespaces
-    kubectl get namespaces -o name | string replace 'namespace/' ''
+    kubectl (__helm_kube_context) get namespaces -o name | string replace 'namespace/' ''
 end
 
 function __helm_releases
