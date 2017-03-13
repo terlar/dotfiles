@@ -1,7 +1,7 @@
 .DEFAULT_GOAL := help
 
 DESTDIR  ?= $$HOME
-PACKAGES ?= $(sort $(dir $(wildcard */)))
+PKGS ?= $(sort $(dir $(wildcard */)))
 
 TS := .ts
 XMONAD_FILES := \
@@ -19,12 +19,12 @@ $(TS)/.xmonad: $(XMONAD_FILES)
 	@touch $@
 
 .PHONY: install
-install: ## Install PACKAGES (all or use PACKAGES=package)
-	stow -t $(DESTDIR) $(subst $(comma),$(space),$(PACKAGES))
+install: ## Install PKGS (all or use PKGS=package)
+	stow -t $(DESTDIR) $(subst $(comma),$(space),$(PKGS))
 
 .PHONY: uninstall
-uninstall: ## Uninstall PACKAGES (all or use PACKAGES=package)
-	stow -Dt $(DESTDIR) $(subst $(comma),$(space),$(PACKAGES))
+uninstall: ## Uninstall PKGS (all or use PKGS=package)
+	stow -Dt $(DESTDIR) $(subst $(comma),$(space),$(PKGS))
 
 .PHONY: update
 update: ## Update and install
