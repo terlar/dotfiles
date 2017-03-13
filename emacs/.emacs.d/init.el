@@ -1112,10 +1112,16 @@ KEY must be given in `kbd' notation."
     (use-package persp-mode-projectile-bridge
       :ensure nil
       :load-path "vendor/persp-mode-projectile-bridge/"
-      :commands (persp-mode-projectile-bridge-mode)
+      :commands
+      (persp-mode-projectile-bridge-mode)
       :functions
       (persp-mode-projectile-bridge-find-perspectives-for-all-buffers
        persp-mode-projectile-bridge-kill-perspectives)
+      :preface
+      (autoload 'persp-mode-projectile-bridge-mode "persp-mode-projectile-bridge")
+      (defun enable-persp-mode-projectile-bridge-mode ()
+        "Enable persp-mode-projectile-bridge mode."
+        (persp-mode-projectile-bridge-mode t))
       :init
       (progn
         (add-hook 'persp-mode-projectile-bridge-mode-hook
@@ -1123,7 +1129,7 @@ KEY must be given in `kbd' notation."
                       (if persp-mode-projectile-bridge-mode
                           (persp-mode-projectile-bridge-find-perspectives-for-all-buffers)
                         (persp-mode-projectile-bridge-kill-perspectives))))
-        (persp-mode-projectile-bridge-mode)))
+        (add-hook 'after-change-major-mode-hook #'enable-persp-mode-projectile-bridge-mode)))
 
     (add-to-list 'projectile-globally-ignored-directories ".cache")
     (add-to-list 'projectile-globally-ignored-directories "node_modules")
