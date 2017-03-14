@@ -1118,10 +1118,11 @@ KEY must be given in `kbd' notation."
       (persp-mode-projectile-bridge-find-perspectives-for-all-buffers
        persp-mode-projectile-bridge-kill-perspectives)
       :preface
-      (autoload 'persp-mode-projectile-bridge-mode "persp-mode-projectile-bridge")
-      (defun enable-persp-mode-projectile-bridge-mode ()
-        "Enable persp-mode-projectile-bridge mode."
-        (persp-mode-projectile-bridge-mode t))
+      (progn
+        (autoload 'persp-mode-projectile-bridge-mode "persp-mode-projectile-bridge")
+        (defun enable-persp-mode-projectile-bridge-mode ()
+          "Enable persp-mode-projectile-bridge mode."
+          (persp-mode-projectile-bridge-mode t)))
       :init
       (progn
         (add-hook 'persp-mode-projectile-bridge-mode-hook
