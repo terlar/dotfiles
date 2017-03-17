@@ -2,6 +2,9 @@
 # of pre-configured Kubernetes resources.
 # See: https://github.com/kubernetes/helm
 
+#
+# Condition functions
+#
 function __helm_using_command
     set -l cmd (commandline -poc)
     set -l found
@@ -19,6 +22,13 @@ function __helm_using_command
     test "$argv" = "$found"
 end
 
+function __helm_seen_any_subcommand_from -a cmd
+    __fish_seen_subcommand_from (__helm_subcommands $cmd | string replace -r '\t.*$' '')
+end
+
+#
+# Helper functions
+#
 function __helm_grab_headers
     set -l lines
     while read -l line
@@ -43,10 +53,70 @@ function __helm_grab_headers
     end
 end
 
-function __helm_seen_any_subcommand_from -a cmd
-    __fish_seen_subcommand_from (__helm_subcommands $cmd | string replace -r '\t.*$' '')
+function __helm_kube_context
+    set -l cmd (commandline -p)
+    string match -r -- '--kube-context[= ]?\S+' $cmd | string replace -- '--kube-' '--' | string split ' '
 end
 
+function __helm_shared_options
+    set -l cmd (commandline -p)
+    string match -r -- '--kube-context[= ]?\S+' $cmd | string split ' '
+end
+
+function __helm_ls
+    # TODO: Add caching here for slow/remote clusters.
+    helm (__helm_shared_options) ls ^/dev/null | __helm_grab_headers $argv
+end
+
+#
+# List functions
+#
+function __helm_kube_contexts
+    kubectl config get-contexts -o name ^/dev/null
+end
+
+function __helm_kube_namespaces
+    kubectl (__helm_kube_context) get namespaces -o name | string replace 'namespace/' ''
+end
+
+function __helm_release_revisions
+    set -l cmd (commandline -poc)
+
+    for pair in (__helm_ls NAME REVISION)
+        echo $pair | read -l release revision
+
+        if contains $release $cmd
+            seq 1 $revision
+            return
+        end
+    end
+end
+
+function __helm_repositories
+    helm repo list ^/dev/null | __helm_grab_headers NAME
+end
+
+function __helm_charts
+    helm search ^/dev/null | string match -v 'local/*' | __helm_grab_headers NAME
+end
+
+function __helm_chart_versions
+    set -l cmd (commandline -poc)
+    set -l chart
+
+    for i in (__helm_charts)
+        if contains $i $cmd
+            set chart $i
+            break
+        end
+    end
+
+    helm search $chart -l ^/dev/null | __helm_grab_headers VERSION
+end
+
+#
+# Completion functions
+#
 function __helm_subcommands -a cmd
     switch $cmd
         case ''
@@ -94,59 +164,78 @@ function __helm_subcommands -a cmd
     end
 end
 
-function __helm_kube_context
-    set -l cmd (commandline -p)
-    string match -r -- '--kube-context[= ]?\S+' $cmd | string replace -- '--kube-' '--' | string split ' '
-end
-
-function __helm_kube_contexts
-    kubectl config get-contexts -o name ^/dev/null
-end
-
-function __helm_kube_namespaces
-    kubectl (__helm_kube_context) get namespaces -o name | string replace 'namespace/' ''
-end
-
-function __helm_releases
-    helm ls --short ^/dev/null
-end
-
 function __helm_release_completions
-    for release in (helm ls ^/dev/null | __helm_grab_headers NAME CHART)
+    set -l token (commandline -t)
+    string match -q -- '-*' $token
+    and return
+
+    if contains -- --multiple $argv
+        set multiple 1
+    end
+
+    set -l releases (__helm_ls NAME CHART)
+
+    if __fish_seen_subcommand_from (string match -r -- '\S+' $releases)
+        set -q multiple
+        or return
+    end
+
+    set -l cmd (commandline -poc)
+    for release in $releases
         echo $release | read -l name chart
-        echo $name\t"Release of $chart"
+
+        contains -- $name $cmd
+        or echo $name\t"Release of $chart"
     end
 end
 
-function __helm_release_revisions
-    set -l cmd (commandline -poc)
+function __helm_release_or_chart_completions
+    set -l token (commandline -t)
+    string match -q -- '-*' $token
+    and return
 
-    for pair in (helm ls ^/dev/null | __helm_grab_headers NAME REVISION)
-        echo $pair | read -l release revision
+    set -l releases (__helm_ls NAME CHART)
 
-        if contains $release $cmd
-            seq 1 $revision
-            return
+    if not __fish_seen_subcommand_from (string match -r -- '\S+' $releases)
+        for release in $releases
+            echo $release | read -l name chart
+            echo $name\t"Release of $chart"
         end
+    else
+        set -l charts (__helm_charts)
+        __fish_seen_subcommand_from $charts
+        and return
+
+        printf '%s\tChart\n' $charts
     end
 end
 
-function __helm_repositories
-    helm repo list ^/dev/null | __helm_grab_headers NAME
-end
+function __helm_release_or_revision_completions
+    set -l token (commandline -t)
+    string match -q -- '-*' $token
+    and return
 
-function __helm_charts
-    helm search ^/dev/null | string match -v 'local/*' | __helm_grab_headers NAME
-end
+    set -l releases (__helm_ls NAME CHART REVISION)
 
-function __helm_chart_versions
-    set -l cmd (commandline -poc)
+    if not __fish_seen_subcommand_from (string match -r -- '\S+' $releases)
+        for release in $releases
+            echo $release | read -l name chart revision
+            echo $name\t"Release of $chart"
+        end
+    else
+        set -l cmd (commandline -poc)
+        for release in $releases
+            echo $release | read -l name chart revision
 
-    for pair in (helm search -l ^/dev/null | __helm_grab_headers NAME VERSION)
-        echo $pair | read -l chart version
+            if contains $name $cmd
+                set -l revisions (seq 1 $revision)
 
-        if contains $chart $cmd
-            echo $version
+                __fish_seen_subcommand_from $revisions
+                and return
+
+                printf '%s\tRevision\n' $revisions
+                return
+            end
         end
     end
 end
@@ -172,7 +261,7 @@ complete -c helm -n 'not __helm_seen_any_subcommand_from ""' -x -a '(__helm_subc
 complete -c helm -n '__helm_using_command create' -s p -l starter -x -d 'The named Helm starter scaffold'
 
 # helm delete [flags] RELEASE [...]
-complete -c helm -n '__helm_using_command delete' -f -a '(__helm_release_completions)' -d 'Release'
+complete -c helm -n '__helm_using_command delete' -f -a '(__helm_release_completions --multiple)'
 
 complete -c helm -n '__helm_using_command delete' -l dry-run -f -d 'Simulate a delete'
 complete -c helm -n '__helm_using_command delete' -l no-hooks -f -d 'Prevent hooks from running during deletion'
@@ -205,7 +294,7 @@ complete -c helm -n '__helm_using_command fetch' -l version -x -a '(__helm_chart
 complete -c helm -n '__helm_using_command get; and not __helm_seen_any_subcommand_from get' -f -a '(__helm_subcommands get)'
 
 # helm get [flags] RELEASE
-complete -c helm -n '__helm_using_command get' -f -a '(__helm_release_completions)' -d 'Release'
+complete -c helm -n '__helm_using_command get' -f -a '(__helm_release_completions)'
 
 complete -c helm -n '__helm_using_command get' -l revision -x -a '(__helm_release_revisions)' -d 'Revision'
 
@@ -213,7 +302,7 @@ complete -c helm -n '__helm_using_command get' -l revision -x -a '(__helm_releas
 complete -c helm -n '__helm_using_command get values' -s a -l all -f -d 'Dump all (computed) values'
 
 # helm history [flags] RELEASE
-complete -c helm -n '__helm_using_command history' -f -a '(__helm_release_completions)' -d 'Release'
+complete -c helm -n '__helm_using_command history' -f -a '(__helm_release_completions)'
 
 complete -c helm -n '__helm_using_command history' -l max -x -d 'Maximum number of revision to include in history'
 
@@ -263,7 +352,7 @@ complete -c helm -n '__helm_using_command list' -l deployed -f -d 'Show deployed
 complete -c helm -n '__helm_using_command list' -l failed -f -d 'Show failed releases'
 complete -c helm -n '__helm_using_command list' -s m -l max -x -d 'Maximum number of releases to fetch'
 complete -c helm -n '__helm_using_command list' -l namespace -x -a '(__helm_kube_namespaces)' -d 'Show releases within a specific namespace'
-complete -c helm -n '__helm_using_command list' -s o -l offset -x -a '(__helm_release_completions)' -d 'Next release name in the list'
+complete -c helm -n '__helm_using_command list' -s o -l offset -x -a '(__helm_release_completions)'
 complete -c helm -n '__helm_using_command list' -s r -l reverse -f -d 'Reverse the sort order'
 complete -c helm -n '__helm_using_command list' -s q -l short -f -d 'Output short listing format'
 
@@ -295,8 +384,7 @@ complete -c helm -n '__helm_using_command reset' -s f -l force -f -d 'Uninstall 
 complete -c helm -n '__helm_using_command reset' -l remove-helm-home -f -d 'If set deletes $HELM_HOME'
 
 # helm rollback [RELEASE] [REVISION] [flags]
-complete -c helm -n '__helm_using_command rollback; and not __fish_seen_subcommand_from (__helm_releases)' -f -a '(__helm_release_completions)' -d 'Release'
-complete -c helm -n '__helm_using_command rollback' -f -a '(__helm_release_revisions)' -d 'Revision'
+complete -c helm -n '__helm_using_command rollback' -f -a '(__helm_release_or_revision_completions)'
 
 complete -c helm -n '__helm_using_command rollback' -l dry-run -f -d 'Simulate a rollback'
 complete -c helm -n '__helm_using_command rollback' -l no-hooks -f -d 'Prevent hooks from running during rollback'
@@ -313,19 +401,18 @@ complete -c helm -n '__helm_using_command serve' -l address -x -d 'Address to li
 complete -c helm -n '__helm_using_command serve' -l repo-path -r -d 'Path from which to serve charts'
 
 # helm status [flags] RELEASE
-complete -c helm -n '__helm_using_command status' -f -a '(__helm_release_completions)' -d 'Release'
+complete -c helm -n '__helm_using_command status' -f -a '(__helm_release_completions)'
 
 complete -c helm -n '__helm_using_command status' -l revision -x -a '(__helm_release_revisions)' -d 'Revision'
 
 # helm test RELEASE [flags]
-complete -c helm -n '__helm_using_command test' -f -a '(__helm_release_completions)' -d 'Release'
+complete -c helm -n '__helm_using_command test' -f -a '(__helm_release_completions)'
 
 complete -c helm -n '__helm_using_command test' -l cleanup -f -d 'Delete test pods upon completion'
 complete -c helm -n '__helm_using_command test' -s t -l timeout -f -d 'Timeout for kubernetes operations'
 
 # helm upgrade [RELEASE] [CHART] [flags]
-complete -c helm -n '__helm_using_command upgrade; and not __fish_seen_subcommand_from (__helm_releases)' -f -a '(__helm_release_completions)' -d 'Release'
-complete -c helm -n '__helm_using_command upgrade; and __fish_seen_subcommand_from (__helm_releases); and not __fish_seen_subcommand_from (__helm_charts)' -a '(__helm_charts)' -d 'Chart'
+complete -c helm -n '__helm_using_command upgrade' -f -a '(__helm_release_or_chart_completions)'
 
 complete -c helm -n '__helm_using_command upgrade' -l dry-run -f -d 'Simulate an upgrade'
 complete -c helm -n '__helm_using_command upgrade' -s i -l install -f -d "Run an install if the release don't exists"
