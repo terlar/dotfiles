@@ -11,7 +11,7 @@ import           Config
 import           Hooks                     (myEventHook, myLayoutHook,
                                             myLogHook, myManageHook,
                                             myUrgencyHook)
-import           Keys                      (myKeys, myMouse)
+import           Keys                      (myKeys)
 import           Topics                    (myTopics)
 
 myConfig = def
@@ -28,8 +28,7 @@ myConfig = def
     , handleEventHook = myEventHook
     , logHook = myLogHook
     }
-    `additionalKeysP` myKeys
-    `additionalMouseBindings` myMouse
+    `additionalKeysP`         myKeys
 
 main = xmonad
      $ withUrgencyHook myUrgencyHook

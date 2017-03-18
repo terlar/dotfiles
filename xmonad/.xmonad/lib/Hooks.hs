@@ -122,10 +122,9 @@ myLayoutHook =
     mkToggle (single REFLECTX) $
     mkToggle (single REFLECTY) $
 
-    onWorkspace "web" (tabs ||| Full ||| dualStack) $
-    onWorkspace "speak" (Full ||| tiled ||| dualStack ||| tabs) $
+    onWorkspace "speak" (Full ||| grid ||| dualStack ||| tabs) $
 
-    tiled ||| grid ||| tabs ||| dualStack ||| accordionFull ||| magnifiercz' 1.4 triple ||| Full
+    grid ||| tabs ||| dualStack ||| accordionFull ||| magnifiercz' 1.4 triple ||| Full
   where
     tiled         = named "Tiled" (ResizableTall 1 delta (2/3) [])
     triple        = named "Triple" (limitWindows 3 tiled)
@@ -134,7 +133,7 @@ myLayoutHook =
     accordionFull = named "Folded Full" (combineTwo (TwoPane delta (1/2)) Accordion Full)
     dual          = named "Dual" (TwoPane delta (2/3))
     dualStack     = named "Dual Stacked" (combineTwo (StackTile 1 delta (1/2)) Full Full)
-    grid          = named "Grid" (GV.SplitGrid GV.L 2 3 (2/3) (16/10) (5/100))
+    grid          = named "Grid" (GV.SplitGrid GV.L 1 1 (2/3) (16/10) (5/100))
     delta = 3/100
 
 myEventHook :: Event -> X All

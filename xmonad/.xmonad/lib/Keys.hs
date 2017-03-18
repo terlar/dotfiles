@@ -43,101 +43,113 @@ import           Hooks
 import           Topics
 import           Utils
 
-button6, button7, button8, button9, button10 :: Button
-button6 = 6
-button7 = 7
-button8 = 8
-button9 = 9
-button10 = 10
-
-myMouse :: [((ButtonMask, Button), Window -> X ())]
-myMouse =
-    [ ((0, button8), (\w -> focus w >> windows W.swapUp))
-    , ((0, button9), (\w -> focus w >> windows W.swapDown))
-    ]
-
 myKeys =
-    [ -- Layout
-      ("M-\\", sendMessage $ Toggle REFLECTX)
-    , ("M-S-\\", sendMessage $ Toggle REFLECTY)
-    , ("M-S--", sendMessage $ IncMasterCols 1)
-    , ("M-S-=", sendMessage $ IncMasterCols (-1))
-    , ("M-C--", sendMessage $ IncMasterRows 1)
-    , ("M-C-=", sendMessage $ IncMasterRows (-1))
-    , ("M-t", toggleFloat)
-      -- Dynamic workspaces
-    , ("M-; n", addWorkspacePrompt myXPConfig)
-    , ("M-; r", renameWorkspace myXPConfig)
-    , ("M-; k", killAll >> removeWorkspace >> createOrGoto "dashboard")
-      -- Screen navigation
-    , ("M-S-j", screenGo MD.D False >> bringMouse)
-    , ("M-S-k", screenGo MD.U False >> bringMouse)
-      -- Workspace navigation
-    , ("M-<Tab>", toggleWS' ["NSP"])
-    , ("M-]", moveTo Next nonEmptyWSNoNSP)
-    , ("M-[", moveTo Prev nonEmptyWSNoNSP)
-    , ("M-S-]", shiftTo Next nonEmptyWSNoNSP >> moveTo Next nonEmptyWSNoNSP)
-    , ("M-S-[", shiftTo Prev nonEmptyWSNoNSP >> moveTo Prev nonEmptyWSNoNSP)
-    , ("M-s", selectWS)
-    , ("M-S-s", takeToWS)
-      -- Window navigation
+-- XMonad
+    [ ("M-S-<Esc>", spawn "xmonad --recompile; xmonad --restart")
+
+-- Windows
+    -- Navigation
     , ("M-k", BW.focusUp)
     , ("M-j", BW.focusDown)
     , ("M-m", BW.focusMaster)
     , ("M-w", selectWindow)
     , ("M-S-w", bringWindow)
+    -- Toggles between tiling/floating
+    , ("M-t", toggleFloat)
+    -- Sticky global window
+    , ("M-z", toggleGlobal)
+    -- Urgent
     , ("M-u", focusUrgent)
     , ("M-S-u", clearUrgents)
-    , ("M-b", BW.markBoring)
-    , ("M-S-b", BW.clearBoring)
-      -- Window tagging
-    , ("M-q", tagWindow)
-    , ("M-S-q", bringTagged)
-      -- PIP window
+    -- PIP
     , ("M-x", togglePIPWindow)
     , ("M-S-x", makePIPWindow)
-      -- Sticky global window
-    , ("M-z", toggleGlobal)
-      -- Grid select
+    -- Tagging
+    , ("M-q", tagWindow)
+    , ("M-S-q", bringTagged)
+    -- Boring
+    , ("M-b", BW.markBoring)
+    , ("M-S-b", BW.clearBoring)
+
+-- Layouts
+    -- Rotate through the available layouts
+    , ("M-<Space> <Space>", sendMessage NextLayout)
+    -- Reset layout to default
+    , ("M-<Space> S-<Space>", asks (XMonad.layoutHook . config) >>= setLayout)
+    -- Reverse layout horizontally or vertically
+    , ("M-\\", sendMessage $ Toggle REFLECTX)
+    , ("M-S-\\", sendMessage $ Toggle REFLECTY)
+    -- Set rows and columns for grid layout
+    , ("M-<Space> c", sendMessage $ IncMasterCols 1)
+    , ("M-<Space> S-c", sendMessage $ IncMasterCols (-1))
+    , ("M-<Space> r", sendMessage $ IncMasterRows 1)
+    , ("M-<Space> S-r", sendMessage $ IncMasterRows (-1))
+
+-- Workspaces
+    -- Navigation
+    , ("M-<Tab>", toggleWS' ["NSP"])
+    , ("M-]", moveTo Next nonEmptyWSNoNSP)
+    , ("M-[", moveTo Prev nonEmptyWSNoNSP)
+    , ("M-s", selectWS)
+    -- Windows
+    , ("M-S-]", shiftTo Next nonEmptyWSNoNSP >> moveTo Next nonEmptyWSNoNSP)
+    , ("M-S-[", shiftTo Prev nonEmptyWSNoNSP >> moveTo Prev nonEmptyWSNoNSP)
+    , ("M-S-s", takeToWS)
+    -- Dynamic
+    , ("M-; n", addWorkspacePrompt myXPConfig)
+    , ("M-; r", renameWorkspace myXPConfig)
+    , ("M-; k", killAll >> removeWorkspace >> createOrGoto "dashboard")
+
+-- Screens
+    -- Navigation
+    , ("M-S-j", screenGo MD.D False >> bringMouse)
+    , ("M-S-k", screenGo MD.U False >> bringMouse)
+
+-- Apps
     , ("<XF86LaunchB>", spawnApp)
-    , ("<XF86LaunchA>", selectWindow)
-    , ("S-<XF86LaunchA>", bringWindow)
-      -- Scratchpads
-    , ("M-`"                     , toggleScratch "scratchpad")
+
+-- Prompts
+    , ("M-p", programLauncher)
+    , ("M-<Space> s", spawn "menu systemd-menu systemd-user-menu")
+    , ("M-<Space> t", spawn "menu todo-menu")
+    , ("M-<Space> w", spawn "menu wifi-menu")
+    , ("M-<Space> p", passPrompt)
+    , ("M-/", searchPrompt)
+    , ("M-=", calcPrompt)
+
+-- Scratchpads
     , ("M-S-`"                   , resetSPWindows)
+    -- Scratchpad
+    , ("M-`"                     , toggleScratch "scratchpad")
+    -- Editor
     , ("M-e"                     , toggleScratch "editor")
     , ("M-S-e"                   , bringScratch "editor")
+    -- Volume
     , ("M-<XF86AudioLowerVolume>", toggleScratch "volume")
     , ("M-<XF86AudioRaiseVolume>", toggleScratch "volume")
+    -- Chat
     , ("M-'"                     , toggleScratch "messages")
     , ("M-S-'"                   , toggleScratch "contacts")
+    -- Apps
     , ("M-a b"                   , toggleScratch "bluetooth")
     , ("M-a c"                   , toggleScratch "colorpicker")
     , ("M-a d"                   , toggleScratch "dictionary")
     , ("M-a m"                   , toggleScratch "music")
     , ("M-a w"                   , toggleScratch "wifi")
-      -- Prompt
-    , ("M-p", programLauncher)
-    , ("M-S-p s", spawn "menu systemd-menu systemd-user-menu")
-    , ("M-S-p t", spawn "menu todo-menu")
-    , ("M-S-p w", spawn "menu wifi-menu")
-    , ("M-S-8", passPrompt)
-    , ("M-/", searchPrompt)
-    , ("M-=", calcPrompt)
-      -- Lock screen
-    , ("M-<Esc>", spawn "lock" )
-      -- Reload XMonad
-    , ("M-S-<Esc>", spawn "xmonad --recompile; xmonad --restart")
-      -- Display management
+
+-- System
+    -- Lock screen
+    , ("M-<Esc>", spawn "lock")
+    -- Display management
     , ("M-<F1>", spawn "autorandr --load mobile")
     , ("M-<F2>", spawn "autorandr --change --default mobile")
     , ("M-<F3>", spawn "xinvert")
-      -- Screenshot
+    -- Screenshot
     , ("M-<F11>", spawn "scrot -e 'mv $f ~/pictures/screenshots/'")
     , ("M-S-<F11>", spawn "scrot --multidisp -e 'mv $f ~/pictures/screenshots/'")
     , ("M-<F12>", spawn "scrot --focused -e 'mv $f ~/pictures/screenshots/'")
     , ("M-S-<F12>", spawn "sleep 0.3; scrot --select -e 'mv $f ~/pictures/screenshots/'")
-      -- Notifications
+    -- Notifications
     , ("M-8", spawn "notify-send -i network -t 4000 Network \"$(ip -4 -o addr show | cut -d' ' -f2,7)\"")
     , ("M-9", spawn "notify-send -i battery -t 2000 Battery \"$(acpi)\"")
     , ("M-0", spawn "notify-send -i dialog-information -t 2000 Date \"$(date '+%F%nW%V %A%n%T')\"")
