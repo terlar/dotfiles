@@ -1,0 +1,36 @@
+#!/bin/bash
+set -eu
+set -o pipefail
+
+main() {
+	local khal_calendar_path="${HOME}/.local/share/khal/calendars"
+
+	for cal in "${HOME}/.calendars"/**/*
+	do
+		local linked="0"
+		for item in "${khal_calendar_path}"/*
+		do
+			if [[ "$(readlink "${item}")" = "${cal}" ]]
+			then
+				linked="1"
+				break
+			fi
+		done
+
+		[[ "${linked}" = 0 ]] || continue
+
+		echo "Link ${cal}:"
+		read -r name
+		if [[ -n "${name}" ]]
+		then
+			if  [[ -d "${khal_calendar_path}/${name}" ]]
+			then
+				rmdir "${khal_calendar_path}/${name}"
+			fi
+
+			ln -s "${cal}" "${khal_calendar_path}/${name}"
+		fi
+	done
+}
+
+main "$@"
