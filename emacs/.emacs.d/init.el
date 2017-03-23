@@ -1074,9 +1074,9 @@ KEY must be given in `kbd' notation."
   (persp-mode
    persp-switch persp-prev persp-next)
   :bind
-  (("C-c RET" . persp-switch)
-   ("M-["     . persp-prev)
-   ("M-]"     . persp-next))
+  (("C-c P" . persp-switch)
+   ("M-["   . persp-prev)
+   ("M-]"   . persp-next))
   :init
   (progn
     (custom-set-variables
