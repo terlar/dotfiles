@@ -1,5 +1,5 @@
 # vim: ft=muttrc
-set from = "terje@saltside.se"
+set from = "tl@speedledger.se"
 set sendmail = "/usr/bin/msmtp -a work"
 set sendmail_wait = 0
 set mbox = "+work/archive"

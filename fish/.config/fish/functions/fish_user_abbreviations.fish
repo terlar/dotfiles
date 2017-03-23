@@ -132,8 +132,4 @@ function fish_user_abbreviations
         abbr f 'farm'
         abbr fcd 'farm cd'
     end
-
-    if type -q saltside-workstation
-        abbr sw saltside-workstation
-    end
 end
