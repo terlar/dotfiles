@@ -3,7 +3,7 @@ Description=Default Auto RandR settings
 
 [Service]
 Type=oneshot
-Environment=DEFAULT_PROFILE=mobile
+Environment=DEFAULT_PROFILE=default
 ExecStart=/usr/bin/autorandr --change --default ${DEFAULT_PROFILE}
 
 [Install]

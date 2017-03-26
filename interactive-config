@@ -52,6 +52,21 @@ configure_khal() {
 	khal-link-calendar
 }
 
+configure_autorandr() {
+	local profile_path=~/.config/autorandr
+	local target="${profile_path}/default"
+	[ -L "${target}" ] && return 0
+
+	echo 'Available profiles:'
+	for file in "${profile_path}"/*
+	do
+		echo "${file##*/}"
+	done
+
+	read -r -p 'Default profile: ' profile
+	ln -s "${profile_path}/${profile}" "${target}"
+}
+
 main() {
 	echo '==> Create private git config:'
 	configure_git
@@ -61,6 +76,8 @@ main() {
 	configure_vdirsyncer
 	echo '==> Configure khal'
 	configure_khal
+	echo '==> Configure autorandr'
+	configure_autorandr
 }
 
 main "$@"
