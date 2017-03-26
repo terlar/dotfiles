@@ -10,6 +10,7 @@ XMONAD_FILES := \
 
 REAL_DIRS := $(addprefix $(DESTDIR)/,\
 	.gnupg .ssh\
+	.mutt .offlineimap\
 	.xmonad/lib\
 	.config/fish/conf.d .config/fish/completions .config/fish/functions)
 

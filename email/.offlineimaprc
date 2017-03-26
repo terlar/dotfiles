@@ -38,10 +38,10 @@ nametrans = nt_local
 [Repository personal-remote]
 maxconnections = 3
 type = Gmail
+auth_mechanism = XOUATH2
 remoteusereval = get_username("personal")
 oauth2_client_id_eval = get_client_id()
 oauth2_client_secret_eval = get_client_secret()
-oauth2_access_token_eval = get_access_token("personal")
 oauth2_refresh_token_eval = get_refresh_token("personal")
 ssl = yes
 sslcacertfile = /etc/ssl/certs/ca-certificates.crt
@@ -52,10 +52,10 @@ folderfilter = exclude([])
 [Repository work-remote]
 maxconnections = 3
 type = Gmail
+auth_mechanism = XOUATH2
 remoteusereval = get_username("work")
 oauth2_client_id_eval = get_client_id()
 oauth2_client_secret_eval = get_client_secret()
-oauth2_access_token_eval = get_access_token("work")
 oauth2_refresh_token_eval = get_refresh_token("work")
 ssl = yes
 sslcacertfile = /etc/ssl/certs/ca-certificates.crt

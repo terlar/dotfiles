@@ -67,6 +67,23 @@ configure_autorandr() {
 	ln -s "${profile_path}/${profile}" "${target}"
 }
 
+configure_offlineimap_client() {
+	local target=~/.local/share/offlineimap/env
+	[ -f "${target}" ] && return 0
+
+	mkdir -p "${target%/*}"
+
+	read -r -p "Client ID: " client_id
+	read -r -p "Client Secret: " client_secret
+	echo
+
+	echo "Writing file '${target}' with content:"
+	tee "${target}" <<EOM
+CLIENT_ID=${client_id}
+CLIENT_SECRET=${client_secret}
+EOM
+}
+
 main() {
 	echo '==> Create private git config:'
 	configure_git
@@ -78,6 +95,8 @@ main() {
 	configure_khal
 	echo '==> Configure autorandr'
 	configure_autorandr
+	echo '==> Configure offlineimap client'
+	configure_offlineimap_client
 }
 
 main "$@"
