@@ -44,6 +44,11 @@ pull: ## Pull latest changes
 	$(info ===> Fetch changes)
 	git pull
 
+.PHONY: config
+config: ## Interactive configuration
+	$(info ==> Start interactive configuration)
+	@./interactive-config
+
 .PHONY: dirs
 dirs: ## Make directories to prevent symlinking them
 dirs: $(REAL_DIRS)

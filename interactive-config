@@ -1,0 +1,30 @@
+#!/bin/bash
+create_git_config() {
+	local target=~/.gitconfig.private
+	local gpg_default_key
+	gpg_default_key=$(gpgconf --list-options gpg | awk -F: '/^default-key:/{ sub(/^"/, "", $10); print $10 }')
+
+	read -r -p "Name: " name
+	read -r -p "E-mail: " email
+	read -r -p "GPG-key [${gpg_default_key}]: " signingkey
+	signingkey=${signingkey:-"${gpg_default_key}"}
+	read -r -p "GitHub user: " gh_user
+	echo
+
+	echo "Writing file '${target}' with content:"
+	tee "${target}" <<EOM
+[user]
+	name = ${name}
+	email = ${email}
+	signingkey = ${signingkey}
+[github]
+	user = ${gh_user}
+EOM
+}
+
+main() {
+	echo '==> Create private git config:'
+	create_git_config
+}
+
+main "$@"
