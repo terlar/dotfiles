@@ -108,7 +108,7 @@
                     :weight 'normal
                     :height 120)
 (set-face-attribute 'variable-pitch nil
-                    :family "Merriweather Sans"
+                    :family "Noto Sans"
                     :height 120)
 (copy-face 'default 'fixed-pitch)
 
