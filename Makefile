@@ -66,6 +66,10 @@ update-submodules: ## Update all submodules
 xmonad: ## Compile and restart xmonad
 xmonad: $(TS)/.xmonad
 
+.PHONY: systemd-reload
+systemd-reload: ## Reload systemd
+	systemctl --user daemon-reload
+
 .PHONY: gems
 gems: ## Install system ruby gems
 	$(info ===> Install gems)

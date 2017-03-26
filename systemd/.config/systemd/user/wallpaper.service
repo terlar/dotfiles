@@ -3,7 +3,7 @@ Description=Randomize Wallpaper
 Documentation=man:feh(1)
 
 [Service]
-ExecStart=/usr/bin/feh --randomize --bg-tile %h/pictures/wallpaper
+ExecStart=/usr/bin/feh --randomize --bg-tile %h/pictures/backgrounds
 
 [Install]
 WantedBy=graphical.target
