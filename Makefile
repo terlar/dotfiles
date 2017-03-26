@@ -12,6 +12,7 @@ REAL_DIRS := $(addprefix $(DESTDIR)/,\
 	.env.d\
 	.gnupg .ssh\
 	.mutt .offlineimap\
+	.config/qutebrowser\
 	.xmonad/lib\
 	.config/fish/conf.d .config/fish/completions .config/fish/functions)
 
