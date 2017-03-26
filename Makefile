@@ -9,7 +9,9 @@ XMONAD_FILES := \
 	$(shell find xmonad/.xmonad/lib -type f -name '*.hs')
 
 REAL_DIRS := $(addprefix $(DESTDIR)/,\
-	.gnupg .ssh .xmonad/lib)
+	.gnupg .ssh\
+	.xmonad/lib\
+	.config/fish/conf.d .config/fish/completions .config/fish/functions)
 
 comma:= ,
 empty:=
