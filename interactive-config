@@ -1,6 +1,8 @@
 #!/bin/bash
-create_git_config() {
+configure_git() {
 	local target=~/.gitconfig.private
+	[ -f "${target}" ] && return 0
+
 	local gpg_default_key
 	gpg_default_key=$(gpgconf --list-options gpg | awk -F: '/^default-key:/{ sub(/^"/, "", $10); print $10 }')
 
@@ -22,9 +24,43 @@ create_git_config() {
 EOM
 }
 
+configure_vdirsyncer_client() {
+	local target=~/.local/share/vdirsyncer/env
+	[ -f "${target}" ] && return 0
+
+	mkdir -p "${target%/*}"
+
+	read -r -p "Client ID: " client_id
+	read -r -p "Client Secret: " client_secret
+	echo
+
+	echo "Writing file '${target}' with content:"
+	tee "${target}" <<EOM
+CLIENT_ID=${client_id}
+CLIENT_SECRET=${client_secret}
+EOM
+}
+
+configure_vdirsyncer() {
+	[ -d ~/.calendars ] && return 0
+
+	local env_file=~/.local/share/vdirsyncer/env
+	env $(cat "${env_file}" | xargs) vdirsyncer discover
+}
+
+configure_khal() {
+	khal-link-calendar
+}
+
 main() {
 	echo '==> Create private git config:'
-	create_git_config
+	configure_git
+	echo '==> Configure vdirsyncer client'
+	configure_vdirsyncer_client
+	echo '==> Configure vdirsyncer'
+	configure_vdirsyncer
+	echo '==> Configure khal'
+	configure_khal
 }
 
 main "$@"
