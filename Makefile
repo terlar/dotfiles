@@ -54,6 +54,10 @@ config: ## Interactive configuration
 	$(info ==> Start interactive configuration)
 	@./interactive-config
 
+.PHONY: dconf
+dconf:
+	./apply-dconf $(DESTDIR)/.local/share/dconf
+
 .PHONY: dirs
 dirs: ## Make directories to prevent symlinking them
 dirs: $(REAL_DIRS)

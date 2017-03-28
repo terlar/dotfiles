@@ -1,0 +1,16 @@
+[general]
+engines-order=['xkb:us::eng', 'm17n:zh:pinyin', 'xkb:se::swe']
+preload-engines=['xkb:us::eng', 'xkb:se::swe', 'm17n:zh:pinyin']
+version='1.5.14'
+
+[general/hotkey]
+triggers=['<Alt>space']
+
+[engine/m17n/zh/pinyin]
+lookup-table-orientation=2
+preedit-background='none'
+preedit-underline=0
+preedit-foreground='none'
+
+[panel]
+show-icon-on-systray=false

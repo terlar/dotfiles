@@ -1,0 +1,21 @@
+#!/bin/bash
+[[ "${TRACE}" ]] && set -x
+set -eu
+set -o pipefail
+
+main() {
+	local dconf_path="${1?dconf path was not provided}"
+
+	local dir conf_key
+
+	shopt -s globstar nullglob
+	for file in "${dconf_path}"/**/*.dconf
+	do
+		dir="${file%/*}/"
+		conf_key="${dir/${dconf_path}/}"
+		echo "Loading configuration to ${conf_key}..."
+		dconf load "${conf_key}" < "${file}"
+	done
+}
+
+main "$@"
