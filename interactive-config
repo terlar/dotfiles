@@ -11,6 +11,8 @@ configure_git() {
 	read -r -p "GPG-key [${gpg_default_key}]: " signingkey
 	signingkey=${signingkey:-"${gpg_default_key}"}
 	read -r -p "GitHub user: " gh_user
+	read -r -p "GitHub token: " gh_token
+	read -r -p "GHI token: " ghi_token
 	echo
 
 	echo "Writing file '${target}' with content:"
@@ -21,6 +23,9 @@ configure_git() {
 	signingkey = ${signingkey}
 [github]
 	user = ${gh_user}
+	token = ${gh_token}
+[ghi]
+	ghi = ${ghi_token}
 EOM
 }
 
