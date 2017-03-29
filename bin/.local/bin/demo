@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+[[ "${TRACE}" ]] && set -x
+set -eu
+set -o pipefail
+
 main() {
 	local port="${1-80}"
 	local subdomain="${2-$USER-${PWD##*/}}"

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+[[ "${TRACE}" ]] && set -x
 set -eu
 set -o pipefail
 
@@ -17,7 +18,7 @@ gen_main_menu() {
 }
 
 main() {
-	if [[ -z "$@" ]]
+	if [[ -z "$*" ]]
 	then
 		gen_main_menu
 	else
@@ -25,7 +26,7 @@ main() {
 		case "${cmd[0]}" in
 			'+')
 				unset 'cmd[0]'
-				coproc fish -c "todo add ${cmd[*]}" & >/dev/null 2>&1
+				coproc fish -c "todo add ${cmd[*]}" >/dev/null 2>&1 &
 				exec 1>&-
 				gen_main_menu
 				;;

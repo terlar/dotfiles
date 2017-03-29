@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
+[[ "${TRACE}" ]] && set -x
+set -eu
+set -o pipefail
+
 main() {
-	dig +short txt "${*// /_}.wp.dg.cx"
+	exec dig +short txt "${*// /_}.wp.dg.cx"
 }
 
 main "$@"

@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+[[ "${TRACE}" ]] && set -x
+set -eu
+set -o pipefail
+
 main() {
 	local content=/dev/stdin
 
@@ -16,7 +20,7 @@ main() {
 
 	local link="$link?$ext"
 
-	[[ -n "$DISPLAY" ]] && printf "$link" | xclip
+	[[ -n "$DISPLAY" ]] && echo -n "$link" | xclip
 	printf "%s\n" "$link"
 }
 

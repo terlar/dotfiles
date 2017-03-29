@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+[[ "${TRACE}" ]] && set -x
+set -eu
+set -o pipefail
+
 main() {
 	if [[ $# -eq 0 ]]; then
 		printf "usage: iso <file>, ...\n" >&2

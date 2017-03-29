@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-set -eou pipefail
+[[ "${TRACE}" ]] && set -x
+set -eu
+set -o pipefail
 
 main() {
 	if [[ "$(systemctl --user is-active redshift.service)" = "active" ]]

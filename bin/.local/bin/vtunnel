@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-set -e
+[[ "${TRACE}" ]] && set -x
+set -eu
 set -o pipefail
 
 # Setup one vagrant SSH cache-file per folder, in case we have different

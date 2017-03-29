@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
+[[ "${TRACE}" ]] && set -x
+set -eu
+set -o pipefail
+
 main() {
-	cat /dev/stdin | tr -d "\n" | sed 's|[　！？。，；：、（）【】·‘“]||g' | wc -m
+	# shellcheck disable=SC1112
+	tr -d '\n' < /dev/stdin | sed 's|[　！？。，；：、（）【】·‘“]||g' | wc -m
 }
 
 main

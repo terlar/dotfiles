@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+[[ "${TRACE}" ]] && set -x
+set -eu
+set -o pipefail
+
 extract_cookies() {
 	echo '# Netscape HTTP Cookie File
 # http://curl.haxx.se/rfc/cookie_spec.html
@@ -6,7 +10,7 @@ extract_cookies() {
 # ALL SPACES MUST BE TABS! - IT WILL THROW AN ERROR!'
 
 	for cookiejar in $HOME/.mozilla/firefox/*.default/cookies.sqlite; do
-		sqlite3 $cookiejar <<EOF
+		sqlite3 "$cookiejar" <<EOF
 .mode tabs
 SELECT host,
   CASE
@@ -29,7 +33,7 @@ EOF
 }
 
 main() {
-	extract_cookies > $HOME/.slackcurl/cookies
+	extract_cookies > "$HOME/.slackcurl/cookies"
 }
 
 main

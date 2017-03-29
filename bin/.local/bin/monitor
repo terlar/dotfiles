@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+[[ "${TRACE}" ]] && set -x
 set -eu
 set -o pipefail
 
@@ -16,7 +17,7 @@ main() {
 		tmux new-window -t "${session_name}" -n systemd 'journalctl -f'
 	fi
 
-	mux "${session_name}"
+	exec mux "${session_name}"
 }
 
 main "$@"

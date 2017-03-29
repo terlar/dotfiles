@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+[[ "${TRACE}" ]] && set -x
+set -eu
+set -o pipefail
 
 # This script makes it easier to work with vagrant and docker based 
 # projects. Running multiple VMS with docker inside gives you no
@@ -27,7 +30,7 @@ if [ -z "$VAGRANT_DOCKER_CACHE" ]; then
 fi
 
 function image2filename {
-	echo $1 | sed 's/[./:]/_/g'
+	echo "$1" | sed 's/[./:]/_/g'
 }
 
 function finish {
@@ -47,9 +50,9 @@ vm_cache="/vagrant/${project_cache}"
 mkdir -p "$project_cache"
 
 while (( "$#" )); do
-	global_archive="${VAGRANT_DOCKER_CACHE}/$(image2filename $1).tar.gz"
-	project_archive="${project_cache}/$(image2filename $1).tar.gz"
-	vm_archive="${vm_cache}/$(image2filename $1).tar.gz"
+	global_archive="${VAGRANT_DOCKER_CACHE}/$(image2filename "$1").tar.gz"
+	project_archive="${project_cache}/$(image2filename "$1").tar.gz"
+	vm_archive="${vm_cache}/$(image2filename "$1").tar.gz"
 
 	if [ ! -f "$global_archive" ]; then
 		echo "Pulling $1 into ${VAGRANT_DOCKER_CACHE}"

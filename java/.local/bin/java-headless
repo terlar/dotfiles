@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
-set -eo pipefail
+[[ "${TRACE}" ]] && set -x
+set -eu
+set -o pipefail
 
 main() {
-	java -Djava.awt.headless=true "$@" 2>/dev/null
+	exec java -Djava.awt.headless=true "$@" 2>/dev/null
 }
 
 main "$@"

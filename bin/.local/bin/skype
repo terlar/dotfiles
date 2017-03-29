@@ -1,20 +1,23 @@
 #!/usr/bin/env bash
-set -e
+[[ "${TRACE}" ]] && set -x
+set -eu
+set -o pipefail
 
 main() {
 	if docker inspect -f "{{ .Name }}" skype | grep -q '/skype'; then
 		docker restart skype
 	else
-		local user_uid=$(id -u)
-		local user_gid=$(id -g)
+		local user_uid user_gid
+		user_uid=$(id -u)
+		user_gid=$(id -g)
 
 		docker run --rm \
 			--privileged \
-			--env=USER_UID=$user_uid \
-			--env=USER_GID=$user_gid \
-			--env=DISPLAY=unix$DISPLAY \
+			--env=USER_UID="${user_uid}" \
+			--env=USER_GID="${user_gid}" \
+			--env=DISPLAY="unix${DISPLAY}" \
 			--volume=/tmp/.X11-unix:/tmp/.X11-unix:ro \
-			--volume=/run/user/$user_uid/pulse:/run/pulse:ro \
+			--volume="/run/user/${user_uid}/pulse:/run/pulse:ro" \
 			--volume=/dev/video0:/dev/video0:rw \
 			--name skype \
 			skype

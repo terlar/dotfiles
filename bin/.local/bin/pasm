@@ -1,18 +1,23 @@
 #!/usr/bin/env bash
+[[ "${TRACE}" ]] && set -x
+set -eu
+set -o pipefail
+
 main() {
 	if [[ -z "$1" ]]; then
-		echo "Usage: $(basename $0) <sinkId/sinkName>" >&2
+		echo "Usage: $(basename "$0") <sinkId/sinkName>" >&2
 		echo "Valid sinks:" >&2
 		pactl list short sinks >&2
 		exit
 	fi
 
-	local newSink="$1"
+	local new_sink="$1"
 
-	while read stream; do
-		local streamId=$(echo $stream | cut '-d ' -f1)
-		echo "moving stream $streamId"
-		pactl move-sink-input "$streamId" "$newSink"
+	while read -r stream; do
+		local stream_id
+		stream_id=$(echo "$stream" | cut '-d ' -f1)
+		echo "moving stream $stream_id"
+		pactl move-sink-input "$stream_id" "$new_sink"
 	done < <(pactl list short sink-inputs)
 }
 

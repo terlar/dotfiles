@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
+[[ "${TRACE}" ]] && set -x
+set -eu
+set -o pipefail
+
 main() {
-	for file in "$*"; do
+	for file in "$@"; do
 		case $file in
 			*.tar)
 				tar -xf "$file"

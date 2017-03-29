@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
-set -eo pipefail
+[[ "${TRACE}" ]] && set -x
+set -eu
+set -o pipefail
 
 main() {
-	emacsclient --eval "(ediff-files \"${1}\" \"${2}\")"
+	exec emacsclient --eval "(ediff-files \"${1}\" \"${2}\")"
 }
 
 main "$@"

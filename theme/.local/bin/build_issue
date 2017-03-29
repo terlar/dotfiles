@@ -1,11 +1,17 @@
 #!/usr/bin/env bash
+[[ "${TRACE}" ]] && set -x
+set -eu
+set -o pipefail
+
 main() {
 	local variant=${1:-light}
 	local script_path="$HOME/.vconsole_$variant"
 
-	[[ -f $script_path ]] \
-		&& source $script_path
-	echo "Arch Linux \\r (\\l)"
+
+	# shellcheck source=$HOME/.vconsole_{light,dark}
+	# shellcheck disable=SC1091
+	[[ -f $script_path ]] && source "${script_path}"
+	printf "Arch Linux \\r (\\l)"
 	echo
 }
 

@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-set -e
+[[ "${TRACE}" ]] && set -x
+set -eu
 set -o pipefail
 
 # Setup one vagrant SSH cache-file per folder, in case we have different
@@ -32,7 +33,7 @@ run() {
 	# -t -t Force TTY allocation (to run interactive screen-like commands)
 	# -q Suppress warning and diagnostic messages
 	# -F Read vagrant SSH config from cache file
-	ssh -t -t -q -F "${SSH_CONFIG_CACHE}" default -- "${cmd}"
+	exec ssh -t -t -q -F "${SSH_CONFIG_CACHE}" default -- "${cmd}"
 }
 
 print_error() {

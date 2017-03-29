@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
+[[ "${TRACE}" ]] && set -x
+set -eu
+set -o pipefail
+
 main() {
 	if [[ -f "$PWD/Makefile" ]]; then
-		make test FILE=$1
+		make test FILE="$1"
 	else
 		dir=$( cd "$( dirname "$0" )" && pwd )
 
@@ -11,7 +15,7 @@ main() {
 			fi
 
 			if [[ -x "$p/testrb" ]]; then
-				$p/testrb
+				"$p/testrb"
 				break
 			fi
 		done

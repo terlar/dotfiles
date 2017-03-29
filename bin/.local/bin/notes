@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+[[ "${TRACE}" ]] && set -x
+set -eu
+set -o pipefail
+
 main() {
 	local flags=()
 
@@ -20,11 +24,11 @@ main() {
 
 	local oldifs=$IFS
 	IFS=$'\n'
-	local fileArray=($(grep -lr "$@" $dir))
+	local fileArray=($(grep -lr "$@" "$dir"))
 	IFS=$oldifs
 	local fileArrayLen=${#fileArray[@]}
 
-	for (( i=0; i < ${fileArrayLen}; i++ )); do
+	for (( i=0; i < "${fileArrayLen}"; i++ )); do
 		echo "${fileArray[$i]}"
 		preview ${flags[@]} "${fileArray[$i]}"
 	done

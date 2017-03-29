@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+[[ "${TRACE}" ]] && set -x
+set -eu
+set -o pipefail
+
 main() {
 	if [[ ! $# -eq 2 ]]; then
 		echo "Error: You must provide two directories to compare"
@@ -15,9 +19,8 @@ main() {
 		exit 1
 	fi
 
-	vimdiff \
-		<(ls -R "$1" | sed 's/.*\/\(.*\)/\1/') \
-		<(ls -R "$2" | sed 's/.*\/\(.*\)/\1/')
+	diff <(find "$1" -printf '%P\n' | grep -v '^[[:blank:]]*$') \
+	     <(find "$2" -printf '%P\n' | grep -v '^[[:blank:]]*$')
 }
 
 main "$@"

@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
+[[ "${TRACE}" ]] && set -x
+set -eu
+set -o pipefail
+
 main() {
-	systemctl --user start console.target
+	exec systemctl --user start console.target
 }
 
 main

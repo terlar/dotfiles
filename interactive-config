@@ -1,4 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env bash
+[[ "${TRACE}" ]] && set -x
+set -eu
+set -o pipefail
+
 configure_git() {
 	local target=~/.gitconfig.private
 	[ -f "${target}" ] && return 0
@@ -50,7 +54,8 @@ configure_vdirsyncer() {
 	[ -d ~/.calendars ] && return 0
 
 	local env_file=~/.local/share/vdirsyncer/env
-	env $(cat "${env_file}" | xargs) vdirsyncer discover
+	# shellcheck disable=SC2046
+	env $(xargs < "${env_file}") vdirsyncer discover
 }
 
 configure_khal() {

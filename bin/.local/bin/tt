@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
+[[ "${TRACE}" ]] && set -x
+set -eu
+set -o pipefail
+
 main() {
-	local current_time=$(timetrap t 2>/dev/null \
+	local current_time hours
+	current_time=$(timetrap t 2>/dev/null \
 		| grep Total \
 		| rev \
 		| cut -d' ' -f1 \
@@ -10,7 +15,7 @@ main() {
 		echo -e '??:??'
 		exit 1
 	fi
-	local hours=$(echo $current_time | cut -d':' -f1)
+	hours=$(echo "$current_time" | cut -d':' -f1)
 
 	if [[ "$hours" -eq 7 ]]; then
 		echo -ne '\e[33;7;1m'
@@ -20,7 +25,7 @@ main() {
 		echo -ne '\e[31;7;1m'
 	fi
 
-	echo $current_time | cut -d':' -f1-2
+	echo "$current_time" | cut -d':' -f1-2
 	echo -ne '\e[0m'
 }
 

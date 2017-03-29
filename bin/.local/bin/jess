@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
+[[ "${TRACE}" ]] && set -x
+set -eu
+set -o pipefail
+
 main() {
-	cat /dev/stdin | jq -C . | less -R
+	jq -C . < /dev/stdin | less -R
 }
 
 main

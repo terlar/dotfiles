@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+[[ "${TRACE}" ]] && set -x
+set -eu
+set -o pipefail
+
 main() {
 	if [[ ! $# -eq 2 ]]; then
 		echo "Error: You must provide a source and a target"

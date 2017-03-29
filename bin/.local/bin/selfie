@@ -1,7 +1,12 @@
 #!/usr/bin/env bash
+[[ "${TRACE}" ]] && set -x
+set -eu
+set -o pipefail
+
 main() {
-	local file=$(date '+%F-%H%M%S').jpg
-	ffmpeg -f v4l2 -i /dev/video0 -vframes 1 $file
+	local file
+	file=$(date '+%F-%H%M%S').jpg
+	ffmpeg -f v4l2 -i /dev/video0 -vframes 1 "${file}"
 }
 
 main

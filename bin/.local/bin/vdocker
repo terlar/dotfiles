@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
+[[ "${TRACE}" ]] && set -x
+set -eu
+set -o pipefail
+
 main() {
-	vrun docker $@
+	exec vrun docker $@
 }
 
 main "$@"

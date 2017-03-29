@@ -1,8 +1,14 @@
 #!/usr/bin/env bash
+[[ "${TRACE}" ]] && set -x
+set -eu
+set -o pipefail
+
 main() {
-	local device_name="bcm5974"
-	local device=$(xinput --list | grep "$device_name" | sed -r 's/.*id=([0-9]*).*/\1/g')
-	local device_enabled=$(xinput --list-props "$device" | grep 'Device Enabled' | cut -f3)
+	local device device_name device_enabled
+
+	device_name="bcm5974"
+	device=$(xinput --list | grep "$device_name" | sed -r 's/.*id=([0-9]*).*/\1/g')
+	device_enabled=$(xinput --list-props "$device" | grep 'Device Enabled' | cut -f3)
 
 	if [[ "$device_enabled" -eq 1 ]]; then
 		xinput --set-prop "$device" 'Device Enabled' 0

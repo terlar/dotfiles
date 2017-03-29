@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-set -euo pipefail
+[[ "${TRACE}" ]] && set -x
+set -eu
+set -o pipefail
 
 main() {
 	local playlist line url
@@ -27,7 +29,7 @@ main() {
 		      | sed "${line}q;d")
 
 	mpv "${url}"
-	echo "$((line + 1))" > $next_file
+	echo "$((line + 1))" > "${next_file}"
 }
 
 main "$@"

@@ -1,4 +1,5 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
+[[ "${TRACE}" ]] && set -x
 set -eu
 set -o pipefail
 
@@ -26,7 +27,7 @@ main() {
 		fi
 	fi
 
-	/usr/bin/remacsclient "$@"
+	exec /usr/bin/remacsclient "$@"
 }
 
 main "$@"

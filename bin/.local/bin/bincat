@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+[[ "${TRACE}" ]] && set -x
 set -eu
 set -o pipefail
 
@@ -13,6 +14,7 @@ has_cmd() {
 
 main() {
 	local cmd cmd_path
+	local shebang lexer
 	cmd="${1?command was not provided}"
 
 	if ! has_cmd "${cmd}"
@@ -21,7 +23,10 @@ main() {
 	fi
 
 	cmd_path="$(which "${cmd}")"
-	cat "${cmd_path}"
+	shebang="$(grep -ro '^#!/.*' "${cmd_path}")"
+	shebang="${shebang##*/}"
+	lexer="${shebang##* }"
+	pygmentize -l "${lexer}" "${cmd_path}"
 }
 
 main "$@"
