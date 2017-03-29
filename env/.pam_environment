@@ -8,7 +8,7 @@ GOPATH        DEFAULT=${HOME}/go
 RUST_SRC_PATH DEFAULT=/usr/src/rust/src
 RUBY_PATH     DEFAULT=${HOME}/.rubies/ruby-2.3.3
 
-PATH          DEFAULT=${HOME}/.local/bin\
+PATH DEFAULT=${HOME}/.local/bin\
 :/usr/local/sbin\
 :/usr/local/bin\
 :/usr/bin:/bin\
@@ -41,14 +41,3 @@ XDG_DOWNLOAD_DIR  DEFAULT=${HOME}/downloads
 XDG_MUSIC_DIR     DEFAULT=${HOME}/music
 XDG_PICTURES_DIR  DEFAULT=${HOME}/pictures
 XDG_VIDEOS_DIR    DEFAULT=${HOME}/videos
-
-# QT
-QT_STYLE_OVERRIDE=gtk
-
-# Java
-_JAVA_OPTIONS DEFAULT="\
- -Dawt.useSystemAAFontSettings=on\
- -Dswing.aatext=true\
- -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel\
- -Dswing.crossplatformlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel"
-_JAVA_AWT_WM_NONREPARENTING DEFAULT=1
