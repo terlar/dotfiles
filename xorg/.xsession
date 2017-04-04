@@ -3,7 +3,9 @@
 set -eu
 set -o pipefail
 
-export $("$HOME/.env")
+export PATH="${HOME}/.local/bin:${PATH}:${GOPATH}/bin:${HOME}/.cargo/bin:${RUBY_PATH}/bin"
+# shellcheck disable=SC2046
+export $(ev.sh auto)
 
 # Input Manager
 export GTK_IM_MODULE=ibus

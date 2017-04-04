@@ -9,21 +9,10 @@ end
 if type -q plug
     plug terlar/fry
     plug terlar/fish-farm
+    plug joehillen/ev-fish
 end
 
 # Environment
-if status --is-login
-    and test -f ~/.env
-
-    for line in (~/.env)
-        set value (string split = $line)
-        set key $value[1]
-        set -e value[1]
-
-        test $key = 'PATH'
-        or set -gx $key $value
-    end
+if type -q ev
+    ev auto >/dev/null
 end
-
-test -f ~/.env.fish
-and source ~/.env.fish
