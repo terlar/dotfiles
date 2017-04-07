@@ -51,7 +51,7 @@ myTopicActions = M.fromList
       -- File manager
     , ( "file", spawnFile)
       -- IRC and E-mail
-    , ( "speak", spawn "slack" >> runInTerm "-t mail" "mutt")
+    , ( "speak", spawn "franz-bin" >> runInTerm "-t mail" "mutt")
       -- Documents
     , ( "doc", spawn "libreoffice")
     ]
