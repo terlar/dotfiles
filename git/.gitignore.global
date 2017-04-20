@@ -17,11 +17,17 @@ Gemfile.local*
 *.o
 *.hi
 
+# IntelliJ
+.idea/
+
 # JavaScript
 .tern-port
 
 # Ruby
 .rake_tasks
+
+# Scala
+.ensime
 
 # Vagrant
 .vagrant/
