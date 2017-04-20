@@ -8,64 +8,69 @@ trim_trailing_whitespace = true
 insert_final_newline = true
 
 # Bash
-[{*.bash*}]
+[*.bash*]
 indent_style = tab
 
 # Elm
-[**/*.elm]
-indent_style = spaces
+[*.elm]
+indent_style = space
 indent_size = 4
 
 # Emacs Lisp
-[**/*.el]
-indent_style = spaces
+[*.el]
+indent_style = space
 
 # Erlang
-[**/*.erl]
-indent_style = spaces
+[*.erl]
+indent_style = space
 indent_size = 4
 
 # Fish
-[**/*.fish]
-indent_style = spaces
+[*.fish]
+indent_style = space
 indent_size = 4
 
 # Haskell
-[**/*.{hs,cabal}]
-indent_style = spaces
+[*.{hs,cabal}]
+indent_style = space
 indent_size = 4
 
 # Java
-[**/*.java]
-indent_style = spaces
+[*.java]
+indent_style = space
 indent_size = 4
 
 # JavaScript
-[**/*.{js,json}]
-indent_style = spaces
+[*.{js,json}]
+indent_style = space
+indent_size = 2
+
+# Nginx
+[nginx.conf]
+indent_style = space
 indent_size = 2
 
 # PKGBUILD
-[**/PKGBUILD]
-indent_style = spaces
+[PKGBUILD]
+indent_style = space
 indent_size = 2
 
 # Python
-[**/*.py]
-indent_style = spaces
+[*.py]
+indent_style = space
 indent_size = 4
 
 # Saltstack files
-[**/*.sls]
-indent_style = spaces
+[*.sls]
+indent_style = space
 indent_size = 2
 
 # Slim template
-[**/*.slim]
-indent_style = spaces
+[*.slim]
+indent_style = space
 indent_size = 2
 
 # YAML files
-[{**/*.yml,**/group_vars/*}]
-indent_style = spaces
+[{*.yml,group_vars/*}]
+indent_style = space
 indent_size = 2
