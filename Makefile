@@ -13,7 +13,8 @@ REAL_DIRS := $(addprefix $(DESTDIR)/,\
 	.mutt .mutt/temp .offlineimap\
 	.config/qutebrowser\
 	.xmonad/lib\
-	.config/fish/conf.d .config/fish/completions .config/fish/functions)
+	.config/fish/conf.d .config/fish/completions .config/fish/functions\
+	.sbt/0.13/plugins)
 
 comma:= ,
 empty:=
