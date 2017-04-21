@@ -9,6 +9,7 @@ XMONAD_FILES := \
 	$(shell find xmonad/.xmonad/lib -type f -name '*.hs')
 
 REAL_DIRS := $(addprefix $(DESTDIR)/,\
+	.config/env\
 	.gnupg .ssh\
 	.mutt .mutt/temp .offlineimap\
 	.config/qutebrowser\
