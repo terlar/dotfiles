@@ -1685,6 +1685,9 @@ The insertion will be repeated COUNT times."
     (set-face-attribute 'markdown-header-face-5 nil :height 1.0)
     (set-face-attribute 'markdown-header-face-6 nil :height 1.0)))
 
+;; Support Nginx
+(use-package nginx-mode)
+
 ;; Support for PDF
 (use-package pdf-tools
   :mode ("\\.pdf\\'" . pdf-view-mode)
