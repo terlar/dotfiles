@@ -1902,6 +1902,25 @@ The insertion will be repeated COUNT times."
       :defer t
       :config (add-hook 'rust-mode-hook #'cargo-minor-mode))))
 
+;; Support for scala
+(use-package scala-mode
+  :mode "\\.s\\(cala\\|bt\\)$"
+  :preface
+  (progn
+    (autoload 'company-mode "company")
+    (defun my-scala-company-hook ()
+      (setq-local company-backends '(ensime-company))
+      (company-mode)))
+  :init (add-hook 'scala-mode-hook 'eldoc-mode)
+  :config (add-hook 'scala-mode-hook #'my-scala-company-hook))
+
+(use-package sbt-mode
+  :after scala-mode)
+
+(use-package ensime
+  :after scala-mode
+  :commands (ensime ensime-mode ensime-scala-mode-hook)
+  :init (add-hook 'scala-mode-hook #'ensime-scala-mode-hook))
 
 ;; Support for POSIX-based shell scripts
 (use-package sh-script
