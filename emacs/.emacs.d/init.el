@@ -1079,15 +1079,14 @@ KEY must be given in `kbd' notation."
    ("M-]"   . persp-next))
   :init
   (progn
-    (custom-set-variables
-     '(persp-keymap-prefix (kbd "C-x x")))
+    (custom-set-variables '(persp-keymap-prefix (kbd "C-x x")))
     (setq persp-save-dir (concat my-cache-directory "persp-confs/"))
-    (persp-mode 1))
-  :config
-  (progn
     ;; Kill buffers not belonging to any perspective.
     (setq persp-autokill-buffer-on-remove 'kill-weak)
-
+    )
+  :config
+  (progn
+    (persp-mode 1)
     (set-face-background 'persp-face-lighter-buffer-not-in-persp
                          (face-attribute 'isearch-fail :background))
     (set-face-foreground 'persp-face-lighter-buffer-not-in-persp
@@ -1104,33 +1103,10 @@ KEY must be given in `kbd' notation."
     (setq projectile-cache-file
           (concat my-cache-directory "projectile.cache"))
     (setq projectile-known-projects-file
-          (concat my-cache-directory "projectile-bookmarks.eld"))
-    (projectile-mode))
+          (concat my-cache-directory "projectile-bookmarks.eld")))
   :config
   (progn
-    ;; Bridge between persp and projectile
-    (use-package persp-mode-projectile-bridge
-      :ensure nil
-      :load-path "vendor/persp-mode-projectile-bridge/"
-      :commands
-      (persp-mode-projectile-bridge-mode)
-      :functions
-      (persp-mode-projectile-bridge-find-perspectives-for-all-buffers
-       persp-mode-projectile-bridge-kill-perspectives)
-      :preface
-      (progn
-        (autoload 'persp-mode-projectile-bridge-mode "persp-mode-projectile-bridge")
-        (defun enable-persp-mode-projectile-bridge-mode ()
-          "Enable persp-mode-projectile-bridge mode."
-          (persp-mode-projectile-bridge-mode t)))
-      :init
-      (progn
-        (add-hook 'persp-mode-projectile-bridge-mode-hook
-                  #'(lambda ()
-                      (if persp-mode-projectile-bridge-mode
-                          (persp-mode-projectile-bridge-find-perspectives-for-all-buffers)
-                        (persp-mode-projectile-bridge-kill-perspectives))))
-        (add-hook 'after-change-major-mode-hook #'enable-persp-mode-projectile-bridge-mode)))
+    (projectile-mode)
 
     (add-to-list 'projectile-globally-ignored-directories ".cache")
     (add-to-list 'projectile-globally-ignored-directories "node_modules")

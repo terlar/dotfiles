@@ -2,6 +2,3 @@
 	path = vim/.config/nvim
 	url = https://github.com/terlar/vimfiles.git
 	branch = master
-[submodule "emacs/.emacs.d/vendor/persp-mode-projectile-bridge"]
-	path = emacs/.emacs.d/vendor/persp-mode-projectile-bridge
-	url = https://github.com/Bad-ptr/persp-mode-projectile-bridge.el.git
