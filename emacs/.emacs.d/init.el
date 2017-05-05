@@ -1081,9 +1081,22 @@ KEY must be given in `kbd' notation."
   (progn
     (custom-set-variables '(persp-keymap-prefix (kbd "C-x x")))
     (setq persp-save-dir (concat my-cache-directory "persp-confs/"))
+
     ;; Kill buffers not belonging to any perspective.
     (setq persp-autokill-buffer-on-remove 'kill-weak)
-    )
+
+    (setq persp-lighter
+          '(:eval
+            (format
+             (propertize
+              " #%s"
+              'face (let ((persp (get-current-persp)))
+                      (if persp
+                          (if (persp-contain-buffer-p (current-buffer) persp)
+                              'persp-face-lighter-default
+                            'persp-face-lighter-buffer-not-in-persp)
+                        'persp-face-lighter-nil-persp)))
+             (safe-persp-name (get-current-persp))))))
   :config
   (progn
     (persp-mode 1)
