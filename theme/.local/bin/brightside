@@ -9,10 +9,10 @@ has_display() {
 
 main() {
 	if has_display; then
-		ln -sf "$HOME/.config/termite/config_light" "$HOME/.config/termite/config"
+		cat "$HOME/.config/termite/config_bright" > "$HOME/.config/termite/config"
 		killall -USR1 termite
 	else
-		"$HOME/.vconsole_light"
+		"$HOME/.vconsole_bright"
 		clear
 	fi
 }

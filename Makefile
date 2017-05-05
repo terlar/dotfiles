@@ -15,6 +15,7 @@ REAL_DIRS := $(addprefix $(DESTDIR)/,\
 	.config/qutebrowser\
 	.ncmpcpp .config/mopidy\
 	.xmonad/lib\
+	.config/termite\
 	.config/fish/conf.d .config/fish/completions .config/fish/functions\
 	.sbt/0.13/plugins)
 
