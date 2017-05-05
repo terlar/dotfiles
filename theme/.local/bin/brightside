@@ -11,6 +11,8 @@ main() {
 	if has_display; then
 		cat "$HOME/.config/termite/config_bright" > "$HOME/.config/termite/config"
 		killall -USR1 termite
+
+		cat "$HOME/.config/alacritty/alacritty-bright.yml" > "$HOME/.config/alacritty/alacritty.yml"
 	else
 		"$HOME/.vconsole_bright"
 		clear
