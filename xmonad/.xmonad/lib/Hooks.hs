@@ -77,6 +77,7 @@ myManageHook = composeAll $
         , "sxiv"
         , "xmessage"
         , "zenity"
+        , "Page Unresponsive"
         ]
 
 myScratchpads :: [NamedScratchpad]
