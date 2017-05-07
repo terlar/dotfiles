@@ -29,6 +29,7 @@ Gemfile.local*
 # Scala
 .ensime
 .ensime_cache
+ensime.sbt
 
 # Vagrant
 .vagrant/
