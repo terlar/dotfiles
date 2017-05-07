@@ -1609,6 +1609,15 @@ The insertion will be repeated COUNT times."
         (set-face-background 'shm-current-face (face-attribute 'hl-line :background))
         (set-face-background 'shm-quarantine-face "#fff0f0")))))
 
+;; Suppor for Java
+(use-package jdee
+  :config
+  (progn
+    (setq jdee-global-classpath '("/usr/share/java/bsh.jar"))
+    (setq jdee-server-dir "/usr/share/java/jdee")))
+
+(use-package groovy-mode)
+(use-package gradle-mode)
 
 ;; Suppor for JavaScript
 (use-package js2-mode
