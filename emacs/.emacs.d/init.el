@@ -85,6 +85,7 @@
 (setq jit-lock-stealth-time 1)
 
 ;; File
+(setq abbrev-file-name (concat my-cache-directory "abbrev_defs"))
 (setq auto-save-default nil)
 (setq auto-save-list-file-prefix (concat my-cache-directory ".auto-saves-"))
 (setq backup-inhibited t)
@@ -568,6 +569,13 @@ KEY must be given in `kbd' notation."
     (setq save-place-file (concat my-cache-directory "places"))
     (setq save-place-forget-unreadable-files nil)))
 
+(use-package semantic
+  :defer t
+  :defines (semanticdb-default-save-directory)
+  :init (add-hook 'prog-mode-hook #'semantic-mode)
+  :config
+  (setq semanticdb-default-save-directory (concat my-cache-directory "semanticdb")))
+
 ;; Recognize camel and snake case
 ;;
 ;; This changes the behavior of word-detection, as each part is now
@@ -887,7 +895,6 @@ KEY must be given in `kbd' notation."
   :init (global-flycheck-mode)
   :config
   (progn
-    (setq-default flycheck-emacs-lisp-load-path 'inherit)
     (setq flycheck-display-errors-function #'flycheck-display-error-messages-unless-error-list)
     (setq flycheck-standard-error-navigation nil)
 
@@ -1319,9 +1326,11 @@ KEY must be given in `kbd' notation."
   (progn
     (use-package alchemist
       :diminish (alchemist-mode)
+      :commands (alchemist-mode)
       :init (add-hook 'elixir-mode-hook #'alchemist-mode))
 
     (use-package flycheck-credo
+      :commands (flycheck-credo-setup)
       :config
       (with-eval-after-load 'flycheck
         (flycheck-credo-setup)))))
@@ -1369,6 +1378,7 @@ KEY must be given in `kbd' notation."
     :ensure nil
     :load-path "/usr/share/distel/elisp/"
     :commands (erlang-extended-mode)
+    :defines (erl-nodename-cache)
     :defer t
     :init
     (add-hook 'erlang-mode-hook #'erlang-extended-mode)
@@ -1444,6 +1454,7 @@ KEY must be given in `kbd' notation."
     ;; Completion support
     (use-package company-go
       :after go-mode
+      :defines (company-go-show-annotation)
       :preface
       (progn
         (autoload 'company-mode "company")
@@ -1458,10 +1469,12 @@ KEY must be given in `kbd' notation."
     ;; Documentation support
     (use-package go-eldoc
       :after go-mode
+      :commands (go-eldoc-setup)
       :init (add-hook 'go-mode-hook #'go-eldoc-setup))
 
     ;; Ask questions about Go source code
     (use-package go-guru
+      :commands (go-guru-hl-identifier-mode)
       :bind
       (:map
        go-mode-map
@@ -1736,6 +1749,7 @@ The insertion will be repeated COUNT times."
     (use-package anaconda-mode
       :defer t
       :commands (anaconda-mode anaconda-eldoc-mode)
+      :defines (anaconda-mode-installation-directory)
       :init
       (progn
         (add-hook 'python-mode-hook 'anaconda-mode)
@@ -1832,7 +1846,8 @@ The insertion will be repeated COUNT times."
 
     ;; REPL buffer
     (use-package inf-ruby
-      :commands (inf-ruby inf-ruby-auto-enter)
+      :commands (inf-ruby inf-ruby-auto-enter inf-ruby-minor-mode)
+      :defines (inf-ruby-default-implementation)
       :defer t
       :config
       (progn
@@ -1843,6 +1858,7 @@ The insertion will be repeated COUNT times."
     ;; Auto-insert end keyword
     (use-package ruby-end
       :commands (ruby-end-mode)
+      :defines (ruby-end-insert-newline)
       :config
       (progn
         (setq ruby-end-insert-newline nil)
@@ -1850,6 +1866,7 @@ The insertion will be repeated COUNT times."
 
     ;; Toggle strings and symbols
     (use-package ruby-tools
+      :commands (ruby-tools-mode)
       :config
       (add-hook 'enh-ruby-mode-hook #'ruby-tools-mode))
 
@@ -1898,6 +1915,7 @@ The insertion will be repeated COUNT times."
     ;; Perform cargo tasks within Rust projects
     (use-package cargo
       :defer t
+      :commands (cargo-minor-mode)
       :config (add-hook 'rust-mode-hook #'cargo-minor-mode))))
 
 ;; Support for scala
