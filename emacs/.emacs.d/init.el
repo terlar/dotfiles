@@ -280,7 +280,9 @@ KEY must be given in `kbd' notation."
            ("l" . linum-mode)
            ("r" . ruler-mode)
            ;; Toggle fixed-width/variable-width
-           ("v" . variable-pitch-mode))
+           ("v" . variable-pitch-mode)
+           ;; Toggle automatic line-wrapping
+           ("w" . auto-fill-mode))
 
 ;; C-c w (Window)
 (defun switch-to-minibuffer ()
