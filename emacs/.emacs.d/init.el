@@ -909,6 +909,20 @@ KEY must be given in `kbd' notation."
     ;; Helm navigation
     (use-package helm-flycheck)))
 
+;; GNU global source code tagging system
+(use-package ggtags
+  :defer t
+  :functions (ggtags-eldoc-function)
+  :init
+  (ggtags-mode 1)
+  (eldoc-mode 1)
+  :config
+  (progn
+    ;; use helm
+    (setq ggtags-completing-read-function nil)
+    ;; use eldoc
+    (setq-local eldoc-documentation-function #'ggtags-eldoc-function)))
+
 ;; Git commit popup
 (use-package git-messenger
   :bind ("C-c g m" . git-messenger:popup-message))
@@ -984,6 +998,16 @@ KEY must be given in `kbd' notation."
     (use-package helm-descbinds
       :bind ("C-h b" . helm-descbinds)
       :init (fset 'describe-bindings 'helm-descbinds))
+
+    ;; Support for tags
+    (use-package helm-gtags
+      :defer t
+      :init
+      (progn
+        (setq helm-gtags-ignore-case t)
+        (setq helm-gtags-auto-update t)
+        (setq helm-gtags-use-input-at-cursor t)
+        (setq helm-gtags-pulse-at-cursor t)))
 
     ;; Run make tasks
     (use-package helm-make

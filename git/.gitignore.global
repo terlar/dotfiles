@@ -12,6 +12,11 @@ Gemfile.local*
 .buildpath/
 .project/
 
+# GNU Global
+GPATH
+GRTAGS
+GTAGS
+
 # Haskell
 .stack-work/
 *.o
