@@ -103,7 +103,7 @@ myScratchpads =
     emacsAppNS n c = NS n (spawnEmacsApp n c) (findName n)
 
     -- Commands
-    spawnEmacs    n   = "emacsclient -c -F '((name . \"" ++ n ++ "\"))'"
+    spawnEmacs    n   = "/usr/bin/emacsclient -c -F '((name . \"" ++ n ++ "\"))'"
     spawnEmacsApp n c = spawnEmacs n ++ " -e '(" ++ c ++ ")'"
     spawnTerm     r d = myTerm ++ " -r " ++ r ++ " -d " ++ d
     spawnTermApp  r c = myTerm ++ " -r " ++ r ++ " -e '" ++ c ++ "'"

@@ -3,6 +3,10 @@
 set -eu
 set -o pipefail
 
+is_editor_running() {
+	xprop -name editor &>/dev/null
+}
+
 is_graphical() {
 	[ -n "${DISPLAY:-}" ]
 }
@@ -13,12 +17,19 @@ is_interactive() {
 }
 
 has_xdotool() {
-	command -v xdotool >/dev/null 2>&1
+	command -v xdotool &>/dev/null
 }
 
 main() {
+	# Open editor window if not available
+	if ! is_editor_running
+	then
+		exec /usr/bin/emacsclient -c -F '((name . "editor"))' "$@"
+	fi
+
 	if is_interactive && is_graphical
 	then
+		# Switch to editor window
 		has_xdotool && xdotool key 'Super+E'
 
 		if [ "$#" -eq 0 ]
