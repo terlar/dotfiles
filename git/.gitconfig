@@ -100,11 +100,6 @@
 		\\\"$BASE\\\" nil \\\"$MERGED\\\")\"
 [mergetool "meld"]
 	trustExitCode = false
-[url "git@github.com:"]
-	insteadOf = "gh:"
-	insteadOf = "github:"
-	insteadOf = "git://github.com/"
-	insteadOf = "https://github.com/"
 [ghq]
 	root = ~/src
 	root = ~/go/src
