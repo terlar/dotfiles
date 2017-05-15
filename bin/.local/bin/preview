@@ -54,17 +54,20 @@ main() {
 	local file="$*"
 
 	case "${file}" in
-		*.rst)
-			has_cmd rst2html  && cmd=(rst2html)
-			has_cmd rst2html2 && cmd=(rst2html2)
-			has_cmd pandoc    && cmd=(pandoc $(pandoc_opts))
+		*.html)
+			cmd=(cat)
 			;;
 		*.md)
 			has_cmd marked && cmd=(marked)
 			has_cmd pandoc && cmd=(pandoc $(pandoc_opts))
 			;;
-		*.html)
-			cmd=(cat)
+		*.rst)
+			has_cmd rst2html  && cmd=(rst2html)
+			has_cmd rst2html2 && cmd=(rst2html2)
+			has_cmd pandoc    && cmd=(pandoc $(pandoc_opts))
+			;;
+		*.rtf)
+			has_cmd unrtf && cmd=(unrtf)
 			;;
 	esac
 
