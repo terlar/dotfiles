@@ -60,8 +60,13 @@ indent_size = 2
 indent_style = space
 indent_size = 4
 
-# Saltstack files
+# Saltstack
 [*.sls]
+indent_style = space
+indent_size = 2
+
+# Scala
+[*.{scala,sbt}]
 indent_style = space
 indent_size = 2
 
@@ -70,7 +75,7 @@ indent_size = 2
 indent_style = space
 indent_size = 2
 
-# YAML files
+# YAML
 [{*.yml,group_vars/*}]
 indent_style = space
 indent_size = 2
