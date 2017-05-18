@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+[[ "${TRACE}" ]] && set -x
+set -eu
+set -o pipefail
+
+main() {
+	local host="${1?host was not provided}"
+	# shellcheck disable=2016
+	local cmd='cat > "$TERM.info" && tic -x "$TERM.info"'
+	# shellcheck disable=2029
+	infocmp -x | ssh -t "${host}" "${cmd}"
+}
+
+main "$@"
