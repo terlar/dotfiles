@@ -107,10 +107,10 @@
 (set-face-attribute 'default nil
                     :family "Input Mono Narrow"
                     :weight 'normal
-                    :height 120)
+                    :height 160)
 (set-face-attribute 'variable-pitch nil
                     :family "Noto Sans"
-                    :height 120)
+                    :height 160)
 (copy-face 'default 'fixed-pitch)
 
 (defun on-frame-open (&optional frame)
@@ -130,6 +130,14 @@
 (put 'downcase-region 'disabled nil) ; Let downcasing work
 
 ;;; Usability
+
+;; Text
+(defadvice text-scale-increase (around all-buffers (arg) activate)
+  "Text-scale increase in all buffers."
+  (dolist (buffer (buffer-list))
+    (with-current-buffer buffer
+      ad-do-it)))
+
 ;; Buffers
 (setq uniquify-buffer-name-style 'forward)
 
@@ -254,8 +262,8 @@ KEY must be given in `kbd' notation."
                "tabs"
              "spaces")))
 
-(bind-key "C-=" 'toggle-tab-width-setting)
-(bind-key "C-+" 'toggle-indent-mode-setting)
+(bind-key "C-c t" 'toggle-tab-width-setting)
+(bind-key "C-c T" 'toggle-indent-mode-setting)
 
 ;; C-c
 (bind-key "C-c TAB" 'ff-find-other-file) ; Open alternate file
@@ -635,10 +643,20 @@ KEY must be given in `kbd' notation."
   (("C-c <" . rotate-text-backward)
    ("C-c >" . rotate-text))
   :defer t
+  :preface
+  (progn
+    (defun rotate-text-toggle-javascript-import (original arg)
+      (if (string-match "^import '\\([^']+\\)' from '\\([^']+\\)';" original)
+          (concat "const " (match-string 1) " = require(" (match-string 2) ");")
+        (concat "lol" "ur"))))
   :config
-  (dolist (item '(("assert" "refute")
-                  ("true" "false")))
-    (add-to-list 'rotate-text-words item)))
+  (progn
+    (dolist (item '(("^\\(\\(import '[-_A-Za-z0-9]+' from '[-_A-Za-z0-9]+'\\)\\|\\(\\(const\\|var\\) '[-_A-Za-z0-9]+' = require('[-_A-Za-z0-9]+')\\)\\);$" rotate-text-toggle-javascript-import)))
+      (add-to-list 'rotate-text-patterns item))
+
+    (dolist (item '(("assert" "refute")
+                    ("true" "false")))
+      (add-to-list 'rotate-text-words item))))
 
 ;; Show tab width configuration in mode-line
 (use-package show-tab-width-mode
@@ -785,14 +803,20 @@ KEY must be given in `kbd' notation."
 ;; Text scale for all buffers
 (use-package default-text-scale
   :bind
-  (("C-M-=" . default-text-scale-increase)
-   ("C-M--" . default-text-scale-decrease)
+  (("C-+" . default-text-scale-increase)
+   ("C--" . default-text-scale-decrease)
    ("<C-mouse-4>"                . text-scale-increase)
    ("<C-mouse-5>"                . text-scale-decrease)
    ("<left-margin> <C-mouse-4>"  . text-scale-increase)
    ("<left-margin> <C-mouse-5>"  . text-scale-decrease)
    ("<right-margin> <C-mouse-4>" . text-scale-increase)
-   ("<right-margin> <C-mouse-5>" . text-scale-decrease)))
+   ("<right-margin> <C-mouse-5>" . text-scale-decrease)
+   ("<left-fringe> <C-mouse-4>"  . text-scale-increase)
+   ("<left-fringe> <C-mouse-5>"  . text-scale-decrease)
+   ("<right-fringe> <C-mouse-4>" . text-scale-increase)
+   ("<right-fringe> <C-mouse-5>" . text-scale-decrease)
+   ("<mode-line> <C-mouse-4>"    . text-scale-increase)
+   ("<mode-line> <C-mouse-5>"    . text-scale-decrease)))
 
 ;; Notes managing
 (use-package deft
@@ -906,6 +930,11 @@ KEY must be given in `kbd' notation."
       :commands (flycheck-pos-tip-mode)
       :config (flycheck-pos-tip-mode))
 
+    ;; Color mode-line based on result
+    (use-package flycheck-color-mode-line
+      :init
+      (add-hook 'flycheck-mode-hook 'flycheck-color-mode-line-mode))
+
     ;; Helm navigation
     (use-package helm-flycheck)))
 
@@ -914,14 +943,17 @@ KEY must be given in `kbd' notation."
   :defer t
   :functions (ggtags-eldoc-function)
   :init
-  (ggtags-mode 1)
-  (eldoc-mode 1)
+  (add-hook 'c-mode-common-hook
+            (lambda ()
+              (when (derived-mode-p 'c-mode 'c++-mode 'java-mode 'asm-mode)
+                ;; use eldoc
+                (eldoc-mode)
+                (setq-local eldoc-documentation-function #'ggtags-eldoc-function)
+                (ggtags-mode))))
   :config
   (progn
     ;; use helm
-    (setq ggtags-completing-read-function nil)
-    ;; use eldoc
-    (setq-local eldoc-documentation-function #'ggtags-eldoc-function)))
+    (setq ggtags-completing-read-function nil)))
 
 ;; Git commit popup
 (use-package git-messenger
@@ -1003,6 +1035,11 @@ KEY must be given in `kbd' notation."
     (use-package helm-gtags
       :defer t
       :init
+      (add-hook 'c-mode-common-hook
+                (lambda ()
+                  (when (derived-mode-p 'c-mode 'c++-mode 'java-mode 'asm-mode)
+                    (helm-gtags-mode))))
+      :config
       (progn
         (setq helm-gtags-ignore-case t)
         (setq helm-gtags-auto-update t)
@@ -1648,15 +1685,15 @@ The insertion will be repeated COUNT times."
         (set-face-background 'shm-current-face (face-attribute 'hl-line :background))
         (set-face-background 'shm-quarantine-face "#fff0f0")))))
 
-;; Suppor for Java
-(use-package jdee
+;; Support for Java
+(use-package meghanada
+  :init (add-hook 'java-mode-hook 'meghanada-mode)
   :config
-  (progn
-    (setq jdee-global-classpath '("/usr/share/java/bsh.jar"))
-    (setq jdee-server-dir "/usr/share/java/jdee")))
+  (setq meghanada-server-install-dir (concat my-data-directory "meghanada-server/")))
 
 (use-package groovy-mode)
 (use-package gradle-mode)
+(use-package log4j-mode)
 
 ;; Suppor for JavaScript
 (use-package js2-mode
@@ -1947,22 +1984,37 @@ The insertion will be repeated COUNT times."
 ;; Support for scala
 (use-package scala-mode
   :mode "\\.s\\(cala\\|bt\\)$"
+  :interpreter ("scala" . scala-mode)
   :preface
   (progn
     (autoload 'company-mode "company")
     (defun my-scala-company-hook ()
+      (setq-local prettify-symbols-alist scala-prettify-symbols-alist)
+      (prettify-symbols-mode)
       (setq-local company-backends '(ensime-company))
       (company-mode)))
   :init (add-hook 'scala-mode-hook 'eldoc-mode)
-  :config (add-hook 'scala-mode-hook #'my-scala-company-hook))
+  :config
+  (progn
+    (add-hook 'scala-mode-hook #'my-scala-company-hook)
+    (setq scala-indent:align-parameters t)))
 
 (use-package sbt-mode
-  :after scala-mode)
+  :commands (sbt-start sbt-command)
+  :config
+  (progn
+    ;; WORKAROUND: https://github.com/ensime/emacs-sbt-mode/issues/31
+    ;; allows using SPACE when in the minibuffer
+    (substitute-key-definition
+     'minibuffer-complete-word
+     'self-insert-command
+     minibuffer-local-completion-map)))
 
 (use-package ensime
-  :after scala-mode
-  :commands (ensime ensime-mode ensime-scala-mode-hook)
-  :init (add-hook 'scala-mode-hook #'ensime-scala-mode-hook))
+  :config
+  (progn
+    (setq ensime-startup-notification nil)
+    (setq ensime-startup-snapshot-notification nil)))
 
 ;; Support for POSIX-based shell scripts
 (use-package sh-script
@@ -2007,7 +2059,27 @@ The insertion will be repeated COUNT times."
   :mode ("\\.thrift\\'" . thrift-mode)
   :config
   (add-hook 'thrift-mode-hook
-    (lambda () (run-hooks 'prog-mode-hook))))
+            (lambda () (run-hooks 'prog-mode-hook))))
+
+;; Support for TypeScript
+(use-package typescript-mode
+  :defer t
+  :mode (("\\.tsx?\\'" . typescript-mode))
+  :preface
+  (defun setup-tide-mode ()
+    (interactive)
+    (tide-setup)
+    (flycheck-mode t)
+    (setq flycheck-check-syntax-automatically '(save mode-enabled))
+    (eldoc-mode t)
+    ;; company is an optional dependency. You have to
+    ;; install it separately via package-install
+    (company-mode t)
+    (setq company-tooltip-align-annotations t))
+  :config
+  (progn
+    (use-package tide)
+    (add-hook 'typescript-mode-hook 'setup-tide-mode)))
 
 ;; Support for web-related files
 (use-package web-mode
