@@ -365,17 +365,6 @@ KEY must be given in `kbd' notation."
     ;; Skip warnings and info messages
     (setq compilation-skip-threshold 2)
 
-    ;; Switch to compilation buffer after compile
-    (add-hook 'compilation-finish-functions
-              (lambda (buf str)
-                (switch-to-buffer-other-window "*compilation*")
-                (read-only-mode)
-                (goto-char (point-max))
-                ;; Allow closing buffer with q
-                (local-set-key (kbd "q")
-                               (lambda () (interactive)
-                                 (quit-restore-window)))))
-
     ;; Filter ANSI escape codes in compilation-mode output
     (require 'ansi-color)
     (add-hook 'compilation-filter-hook
@@ -892,8 +881,14 @@ KEY must be given in `kbd' notation."
     (define-key evil-insert-state-map (kbd "<escape>") #'evil-normal-state)
 
     ;; Map SPC to C-c in non-insert modes
-    (define-key evil-normal-state-map (kbd "SPC") (simulate-key-press "C-c"))
-    (define-key evil-visual-state-map (kbd "SPC") (simulate-key-press "C-c"))
+    (eval-after-load "evil-maps"
+      (dolist (map '(evil-normal-state-map
+                     evil-visual-state-map))
+        (define-key (eval map) (kbd "SPC") (simulate-key-press "C-c"))))
+
+    ;; Disabled default normal state bindings
+    (eval-after-load "evil-maps"
+      (define-key evil-normal-state-map "\M-." nil))
 
     (use-package evil-matchit
       :init (global-evil-matchit-mode))
@@ -943,17 +938,17 @@ KEY must be given in `kbd' notation."
   :defer t
   :functions (ggtags-eldoc-function)
   :init
-  (add-hook 'c-mode-common-hook
-            (lambda ()
-              (when (derived-mode-p 'c-mode 'c++-mode 'java-mode 'asm-mode)
-                ;; use eldoc
-                (eldoc-mode)
-                (setq-local eldoc-documentation-function #'ggtags-eldoc-function)
-                (ggtags-mode))))
-  :config
   (progn
-    ;; use helm
-    (setq ggtags-completing-read-function nil)))
+    ;; Use helm for completion
+    (setq ggtags-completing-read-function nil)
+
+    (add-hook 'c-mode-common-hook
+              (lambda ()
+                (when (derived-mode-p 'c-mode 'c++-mode 'java-mode 'asm-mode)
+                  ;; use eldoc
+                  (eldoc-mode +1)
+                  (setq-local eldoc-documentation-function #'ggtags-eldoc-function)
+                  (ggtags-mode +1))))))
 
 ;; Git commit popup
 (use-package git-messenger
@@ -1030,21 +1025,6 @@ KEY must be given in `kbd' notation."
     (use-package helm-descbinds
       :bind ("C-h b" . helm-descbinds)
       :init (fset 'describe-bindings 'helm-descbinds))
-
-    ;; Support for tags
-    (use-package helm-gtags
-      :defer t
-      :init
-      (add-hook 'c-mode-common-hook
-                (lambda ()
-                  (when (derived-mode-p 'c-mode 'c++-mode 'java-mode 'asm-mode)
-                    (helm-gtags-mode))))
-      :config
-      (progn
-        (setq helm-gtags-ignore-case t)
-        (setq helm-gtags-auto-update t)
-        (setq helm-gtags-use-input-at-cursor t)
-        (setq helm-gtags-pulse-at-cursor t)))
 
     ;; Run make tasks
     (use-package helm-make
@@ -1141,12 +1121,9 @@ KEY must be given in `kbd' notation."
 ;; Workspaces with buffer isolation
 (use-package persp-mode
   :commands
-  (persp-mode
-   persp-switch persp-prev persp-next)
+  (persp-mode persp-switch)
   :bind
-  (("C-c P" . persp-switch)
-   ("M-["   . persp-prev)
-   ("M-]"   . persp-next))
+  ("C-c P" . persp-switch)
   :init
   (progn
     (custom-set-variables '(persp-keymap-prefix (kbd "C-x x")))
