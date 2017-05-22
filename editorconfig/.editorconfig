@@ -76,6 +76,6 @@ indent_style = space
 indent_size = 2
 
 # YAML
-[{*.yml,group_vars/*}]
+[*.yml]
 indent_style = space
 indent_size = 2
