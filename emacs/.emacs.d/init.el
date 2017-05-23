@@ -163,7 +163,7 @@
 ;; Keep buffers opened when leaving an emacs client,
 ;; but kill temp buffers when done with them.
 (setq-default server-kill-new-buffers nil)
-(setq-default server-temp-file-regexp "^/tmp/Re\\|/draft\\|COMMIT_EDITMSG\\|PULLREQ_EDITMSG$")
+(setq-default server-temp-file-regexp "^/tmp/Re\\|/draft\\|COMMIT_EDITMSG\\|PULLREQ_EDITMSG\\|qutebrowser-editor-.+$")
 
 ;; Input
 (diminish 'abbrev-mode)
