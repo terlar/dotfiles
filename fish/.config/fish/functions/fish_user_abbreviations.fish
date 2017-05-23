@@ -73,7 +73,7 @@ function fish_user_abbreviations
         abbr gdw 'git diff --color-words'
         abbr gds 'git diff --stat'
 
-        abbr ga 'git-add'
+        abbr ga 'git add -Ap'
 
         abbr gc 'git commit'
         abbr gca 'git commit -a'
