@@ -25,6 +25,10 @@ GTAGS
 # IntelliJ
 .idea/
 
+# Java
+.meghanada/
+.meghanada.conf
+
 # JavaScript
 .tern-port
 
