@@ -45,6 +45,10 @@ indent_size = 4
 indent_style = space
 indent_size = 2
 
+# Makefile
+[{Makefile,*.mk}]
+indent_style = tab
+
 # Nginx
 [nginx.conf]
 indent_style = space
@@ -76,6 +80,6 @@ indent_style = space
 indent_size = 2
 
 # YAML
-[*.yml]
+[*.{yaml,yml}]
 indent_style = space
 indent_size = 2
