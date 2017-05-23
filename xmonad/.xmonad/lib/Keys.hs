@@ -113,7 +113,7 @@ myKeys =
     , ("M-<Space> s", spawn "menu systemd-menu systemd-user-menu")
     , ("M-<Space> t", spawn "menu todo-menu")
     , ("M-<Space> w", spawn "menu wifi-menu")
-    , ("M-<Space> p", passPrompt)
+    , ("M-<Space> p", spawn "menu lpass-menu")
     , ("M-/", searchPrompt)
     , ("M-=", calcPrompt)
 

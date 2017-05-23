@@ -40,9 +40,6 @@ restartXMonad = spawn "xmonad --recompile && xmonad --restart"
 programLauncher :: MonadIO m => m ()
 programLauncher = spawn "rofi -show run"
 
-passPrompt :: MonadIO m => m ()
-passPrompt = spawn "autopass"
-
 searchPrompt :: MonadIO m => m ()
 searchPrompt = spawn "rofi-surfraw"
 

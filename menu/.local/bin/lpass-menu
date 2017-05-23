@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+[[ "${TRACE}" ]] && set -x
+set -eu
+set -o pipefail
+
+notify-unlock() {
+	notify-send -i unlock "$*" 'Copied password to clipboard...'
+}
+
+gen_password_list() {
+	lpass ls
+}
+
+main() {
+	if [[ -z "$*" ]]
+	then
+		gen_password_list
+	else
+		local key
+		key="$(echo "$1" | grep -Po '(?<=\[id:\s)[0-9]+')"
+
+		coproc lpass show "${key}" --password -c &>/dev/null
+		exec 1>&-
+		notify-unlock "$(echo "$1" | cut -d' ' -f1)"
+		gen_password_list
+	fi
+}
+
+main "$@"
