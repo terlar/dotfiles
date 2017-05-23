@@ -3,10 +3,6 @@
 set -eu
 set -o pipefail
 
-is_editor_running() {
-	xprop -name editor &>/dev/null
-}
-
 is_graphical() {
 	[ -n "${DISPLAY:-}" ]
 }
@@ -20,21 +16,37 @@ has_xdotool() {
 	command -v xdotool &>/dev/null
 }
 
+current_desktop() {
+	xdotool get_desktop
+}
+
+bring_and_raise_window() {
+	has_xdotool || return
+
+	local wmname desktop
+	wmname="${1?window name not provided}"
+	desktop="$(current_desktop)"
+
+	xdotool search --name "${wmname}" set_desktop_for_window "${desktop}" windowactivate
+}
+
+has_window() {
+	local wmname="${1?window name not provided}"
+
+	xprop -name "${wmname}" &>/dev/null
+}
+
 main() {
-	# Open editor window if not available
-	if ! is_editor_running
+	if is_graphical
 	then
-		exec /usr/bin/emacsclient -c -F '((name . "editor"))' "$@"
-	fi
+		local wmname="editor"
 
-	if is_interactive && is_graphical
-	then
-		# Switch to editor window
-		has_xdotool && xdotool key 'Super+E'
-
-		if [ "$#" -eq 0 ]
+		# Open editor window if not available
+		if has_window "${wmname}"
 		then
-			return
+			bring_and_raise_window "${wmname}"
+		else
+			exec /usr/bin/emacsclient -c -F "((name . \"${wmname}\"))" "$@"
 		fi
 	fi
 
