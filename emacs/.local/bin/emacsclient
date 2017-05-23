@@ -37,10 +37,38 @@ has_window() {
 }
 
 main() {
-	if is_graphical
-	then
-		local wmname="editor"
+	local raise=0
+	local wmname="editor"
 
+	while getopts ":N:-:" opt
+	do
+                case "${opt}" in
+                        N ) wmname="${OPTARG}" ;;
+                        - ) LONG_OPTARG="${OPTARG#*=}"
+			    case $OPTARG in
+				    name=?* ) wmname="${LONG_OPTARG}" ;;
+				    raise   ) raise=1 ;;
+				    # Stop parsing at first non-matching
+				    # option and shift back the index so
+				    # we don't drop any options.
+				    *       ) OPTIND="$((OPTIND - 1))"
+					      break ;;
+			    esac ;;
+			'?')
+				>&2 echo "invalid option -- '${OPTARG}'"
+				return 1 ;;
+			:)
+				>&2 echo "option requires an argument -- '${OPTARG}'"
+				return 1 ;;
+		esac
+
+	done
+	shift "$((OPTIND - 1))"
+
+	is_interactive && raise=1
+
+	if [[ "${raise}" = 1 ]] && is_graphical
+	then
 		# Open editor window if not available
 		if has_window "${wmname}"
 		then
