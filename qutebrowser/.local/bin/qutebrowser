@@ -1,2 +1,2 @@
 #!/bin/bash
-exec qutebrowser --backend webengine "$@"
+exec /usr/bin/qutebrowser --backend webengine "$@"
