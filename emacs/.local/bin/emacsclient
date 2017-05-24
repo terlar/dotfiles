@@ -56,9 +56,6 @@ main() {
 				    *       ) OPTIND="$((OPTIND - 1))"
 					      break ;;
 			    esac ;;
-			'?')
-				>&2 echo "invalid option -- '${OPTARG}'"
-				return 1 ;;
 			:)
 				>&2 echo "option requires an argument -- '${OPTARG}'"
 				return 1 ;;
@@ -75,14 +72,14 @@ main() {
 		if has_window "${wmname}"
 		then
 			bring_and_raise_window "${wmname}"
-			[[ $# -eq 0 ]] && return 0
 		else
-			exec /usr/bin/emacsclient \
+			/usr/bin/emacsclient \
 				--create-frame \
-				--no-wait \
 				--frame-parameters="((name . \"${wmname}\"))" \
 				"$@"
 		fi
+
+		[[ $# -eq 0 ]] && return 0
 	fi
 
 	exec /usr/bin/emacsclient "$@"

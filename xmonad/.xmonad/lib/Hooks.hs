@@ -68,7 +68,9 @@ myManageHook = composeAll $
   where
     -- Floating apps
     floatApps =
-        [ "feh"
+        [ "Page Unresponsive"
+        , "popup-edit"
+        , "feh"
         , "font-manager"
         , "gcolor2"
         , "gifview"
@@ -77,7 +79,6 @@ myManageHook = composeAll $
         , "sxiv"
         , "xmessage"
         , "zenity"
-        , "Page Unresponsive"
         ]
 
 myScratchpads :: [NamedScratchpad]
