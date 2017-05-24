@@ -46,6 +46,8 @@ main() {
                         N ) wmname="${OPTARG}" ;;
                         - ) LONG_OPTARG="${OPTARG#*=}"
 			    case $OPTARG in
+				    name    ) wmname="${*:$OPTIND:1}"
+					      OPTIND="$((OPTIND + 1))";;
 				    name=?* ) wmname="${LONG_OPTARG}" ;;
 				    raise   ) raise=1 ;;
 				    # Stop parsing at first non-matching
@@ -73,8 +75,13 @@ main() {
 		if has_window "${wmname}"
 		then
 			bring_and_raise_window "${wmname}"
+			[[ $# -eq 0 ]] && return 0
 		else
-			exec /usr/bin/emacsclient -c -F "((name . \"${wmname}\"))" "$@"
+			exec /usr/bin/emacsclient \
+				--create-frame \
+				--no-wait \
+				--frame-parameters="((name . \"${wmname}\"))" \
+				"$@"
 		fi
 	fi
 
