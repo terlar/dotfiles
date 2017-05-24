@@ -1,25 +1,23 @@
-output DP1
+output DP-1
 off
-output DP1-1
+output HDMI-1
 off
-output DP1-3
+output DP-2
 off
-output DP2
+output HDMI-2
 off
-output HDMI1
+output DP-1-1
 off
-output HDMI2
+output DP-1-3
 off
-output VIRTUAL1
-off
-output DP1-2
+output DP-1-2
 gamma 1.0:0.909:0.833
 mode 3440x1440
 pos 0x0
-primary
 rate 59.97
-output eDP1
+output eDP-1
 gamma 1.0:0.909:0.833
 mode 3200x1800
-pos 0x1440
+pos 3440x0
+primary
 rate 59.98
