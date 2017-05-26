@@ -8,6 +8,7 @@ notify-unlock() {
 }
 
 gen_password_list() {
+	echo synchronize
 	lpass ls
 }
 
@@ -16,13 +17,18 @@ main() {
 	then
 		gen_password_list
 	else
-		local key
-		key="$(echo "$1" | grep -Po '(?<=\[id:\s)[0-9]+')"
+		case "$1" in
+			synchronize)
+				coproc lpass sync &>/dev/null;;
+			*)
+				local key
+				key="$(echo "$1" | grep -Po '(?<=\[id:\s)[0-9]+')"
 
-		coproc lpass show "${key}" --password -c &>/dev/null
-		exec 1>&-
-		notify-unlock "$(echo "$1" | cut -d' ' -f1)"
-		gen_password_list
+				coproc lpass show "${key}" --password -c &>/dev/null
+				exec 1>&-
+				notify-unlock "$(echo "$1" | cut -d' ' -f1)"
+				gen_password_list;;
+		esac
 	fi
 }
 
