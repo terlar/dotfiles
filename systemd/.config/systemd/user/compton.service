@@ -1,0 +1,9 @@
+[Unit]
+Description=Compositor for X11
+Documentation=man:compton(1)
+
+[Service]
+ExecStart=/usr/bin/compton -CG
+
+[Install]
+WantedBy=graphical.target
