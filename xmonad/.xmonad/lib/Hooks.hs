@@ -5,7 +5,6 @@ import           XMonad                          hiding ((|||))
 import           XMonad.Actions.ShowText
 
 import           XMonad.Hooks.DynamicLog
-import           XMonad.Hooks.FadeInactive
 import           XMonad.Hooks.InsertPosition
 import           XMonad.Hooks.ManageHelpers
 import           XMonad.Hooks.ManageHelpers
@@ -46,10 +45,7 @@ import           Utils
 
 myLogHook :: X ()
 myLogHook =
-    dynamicLog <+>
-    fadeInactiveLogHook fadeAmount
-  where
-    fadeAmount = 0.9
+    dynamicLog
 
 myManageHook :: ManageHook
 myManageHook = composeAll $
