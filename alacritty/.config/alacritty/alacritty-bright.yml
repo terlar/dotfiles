@@ -16,8 +16,8 @@ dimensions:
 # The FreeType rasterizer needs to know the device DPI for best results
 # (changes require restart)
 dpi:
-  x: 192.0
-  y: 192.0
+  x: 96.0
+  y: 96.0
 
 # Display tabs using this many cells (changes require restart)
 tabspaces: 8
@@ -29,18 +29,18 @@ draw_bold_text_with_bright_colors: true
 font:
   # The normal (roman) font face to use.
   normal:
-    family: Input Mono Narrow
+    family: monospace
 
   # The bold font face
   bold:
-    family: Input Mono Narrow
+    family: monospace
 
   # The italic font face
   italic:
-    family: Input Mono Narrow
+    family: monospace
 
   # Point size of the font
-  size: 10.0
+  size: 14.0
 
   # Offset is the extra space around each character. offset.y can be thought of
   # as modifying the linespacing, and offset.x as modifying the letter spacing.
