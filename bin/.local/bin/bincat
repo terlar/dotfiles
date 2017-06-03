@@ -1,32 +1,61 @@
 #!/usr/bin/env bash
-[[ "${TRACE}" ]] && set -x
-set -eu
-set -o pipefail
 
-has_cmd() {
-	if command -v "$*" &>/dev/null
-	then
-		return 0
-	else
-		return 1
-	fi
+[[ "${TRACE}" ]] && set -x
+set -euo pipefail
+
+usage() {
+	cat <<EOF
+Usage: ${0##*/} COMMAND
+EOF
 }
 
 main() {
-	local cmd cmd_path
-	local shebang lexer
-	cmd="${1?command was not provided}"
+	local cmd
+	cmd="${1?COMMAND was not provided}"
 
 	if ! has_cmd "${cmd}"
 	then
-		echo "unknown command \`${cmd}'" 1>&2
+		>&2 echo "unknown command \`${cmd}'"
 	fi
 
-	cmd_path="$(which "${cmd}")"
-	shebang="$(grep -ro '^#!/.*' "${cmd_path}")"
-	shebang="${shebang##*/}"
-	lexer="${shebang##* }"
-	pygmentize -l "${lexer}" "${cmd_path}"
+	if is_interactive
+	then
+		print_file "${cmd}" | less -R
+	else
+		print_file "${cmd}"
+	fi
+}
+
+has_cmd() {
+	command -v "$*" &>/dev/null
+}
+
+print_file() {
+	local cmd_path info lexer=""
+
+	cmd_path="$(readlink -f "$(type -P "$1")")"
+	info="$(file -b "${cmd_path}")"
+
+	case "${info}" in
+		"Bourne-Again shell script"*) lexer="bash";;
+		"Python script"*) lexer="python";;
+		ELF*|*binary*)
+			>&2 echo "cannot cat binary commands"
+			>&2 echo "${info}"
+			return 1;;
+	esac
+
+	if [[ -n "${lexer}" ]]
+	then
+		pygmentize -l "${lexer}" "${cmd_path}"
+	else
+		cat "${cmd_path}"
+	fi
+}
+
+is_interactive() {
+	fd=0 # stdin
+	[ -t "${fd}" ] || [ -p /dev/stdin ]
 }
 
 main "$@"
