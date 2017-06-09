@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+[[ "${TRACE}" ]] && set -x
+set -euo pipefail
+
+main() {
+	command ghuserrepos "$@" | jq --raw-output .[].ssh_url
+}
+
+main "$@"

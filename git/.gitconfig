@@ -105,7 +105,8 @@
 	root = ~/go/src
 [ghq "import"]
 	starred = github-list-starred
-	user = getgithubrepos
+	user = github-user-repos
+	org = github-org-repos
 [http "https://gopkg.in"]
 	followRedirects = true
 [filter "lfs"]
