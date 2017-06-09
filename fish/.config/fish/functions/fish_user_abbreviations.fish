@@ -115,6 +115,7 @@ function fish_user_abbreviations
 
     if type -fq docker-compose
         abbr dc docker-compose
+        abbr dcl docker-compose logs
     end
 
     if type -fq kubectl
