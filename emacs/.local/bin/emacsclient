@@ -27,7 +27,14 @@ bring_and_raise_window() {
 	wmname="${1?window name not provided}"
 	desktop="$(current_desktop)"
 
-	xdotool search --name "${wmname}" set_desktop_for_window "${desktop}" windowactivate
+	if [[ "${wmname}" = "editor" ]]
+	then
+		# I have still not found a way to actually raise the window to top if it
+		# is already on the same desktop.
+		xdotool	key 'Super+E'
+	else
+		xdotool search --name "${wmname}" set_desktop_for_window "${desktop}" windowactivate
+	fi
 }
 
 has_window() {
@@ -40,31 +47,26 @@ main() {
 	local raise=0
 	local wmname="editor"
 
-	while getopts ":N:-:" opt
+	while true
 	do
-                case "${opt}" in
-                        N ) wmname="${OPTARG}" ;;
-                        - ) LONG_OPTARG="${OPTARG#*=}"
-			    case $OPTARG in
-				    name    ) wmname="${*:$OPTIND:1}"
-					      OPTIND="$((OPTIND + 1))";;
-				    name=?* ) wmname="${LONG_OPTARG}" ;;
-				    raise   ) raise=1 ;;
-				    # Stop parsing at first non-matching
-				    # option and shift back the index so
-				    # we don't drop any options.
-				    *       ) OPTIND="$((OPTIND - 1))"
-					      break ;;
-			    esac ;;
-			:)
-				>&2 echo "option requires an argument -- '${OPTARG}'"
-				return 1 ;;
+		case "${1:-}" in
+			-N | --name )
+				wmname="$2"
+				shift 2;;
+			--name=?* )
+				wmname="${1#*=}"
+				shift 1;;
+			--raise )
+				raise=1
+				shift 1;;
+			-- )
+				shift
+				break;;
+			* ) break;;
 		esac
-
 	done
-	shift "$((OPTIND - 1))"
 
-	is_interactive && raise=1
+	[[ $# -eq 0 ]] && is_interactive && raise=1
 
 	if [[ "${raise}" = 1 ]] && is_graphical
 	then
@@ -74,6 +76,7 @@ main() {
 			bring_and_raise_window "${wmname}"
 		else
 			/usr/bin/emacsclient \
+				--no-wait \
 				--create-frame \
 				--frame-parameters="((name . \"${wmname}\"))" \
 				"$@"
