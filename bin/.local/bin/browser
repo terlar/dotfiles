@@ -144,7 +144,7 @@ main() {
 	then
 		mime="$(curl "${CURL_OPTS[@]}" -r 0-1 -IX HEAD "${url}" \
 			| tr -d '\r' \
-			| sed -En 's/^Content-Type: ([-[:alnum:]\/]+).*$/\1/p' \
+			| sed -En 's/^content-type: ([-[:alnum:]\/]+).*$/\1/pI' \
 			| tail -n1)"
 	fi
 
