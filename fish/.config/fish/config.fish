@@ -7,9 +7,10 @@ if test "$TERM" = eterm-color
 end
 
 if type -q plug
-    plug terlar/fry
-    plug terlar/fish-farm
+    plug fisherman/fzf
     plug joehillen/ev-fish
+    plug terlar/fish-farm
+    plug terlar/fry
 end
 
 # Environment
