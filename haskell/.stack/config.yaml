@@ -5,4 +5,3 @@ templates:
     category: Library
     github-username: terlar
     author-name: Terje Larsen
-system-ghc: true
