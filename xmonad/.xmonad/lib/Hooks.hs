@@ -70,6 +70,7 @@ myManageHook = composeAll $
         , "font-manager"
         , "gcolor2"
         , "gifview"
+        , "ibus-ui-gtk3"
         , "mpv"
         , "pinentry"
         , "sxiv"
