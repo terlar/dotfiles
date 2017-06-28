@@ -5,8 +5,8 @@ Documentation=man:emacs(1)
 [Service]
 Type=forking
 Environment=LANG=zh_CN.UTF-8
-ExecStart=/usr/bin/emacs --daemon
-ExecStop=/usr/bin/emacsclient --eval "(kill-emacs)"
+ExecStart=/usr/bin/remacs --daemon
+ExecStop=/usr/bin/remacsclient --eval "(kill-emacs)"
 Restart=always
 SuccessExitStatus=15
 TimeoutStartSec=0

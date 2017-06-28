@@ -75,7 +75,7 @@ main() {
 		then
 			bring_and_raise_window "${wmname}"
 		else
-			/usr/bin/emacsclient \
+			/usr/bin/remacsclient \
 				--no-wait \
 				--create-frame \
 				--frame-parameters="((name . \"${wmname}\"))" \
@@ -85,7 +85,7 @@ main() {
 		[[ $# -eq 0 ]] && return 0
 	fi
 
-	exec /usr/bin/emacsclient "$@"
+	exec /usr/bin/remacsclient "$@"
 }
 
 main "$@"
