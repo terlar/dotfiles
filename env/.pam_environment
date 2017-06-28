@@ -5,8 +5,9 @@ LC_ALL DEFAULT=${LANG}
 # Paths
 HOME          DEFAULT=/home/@{PAM_USER} OVERRIDE=${HOME}
 GOPATH        DEFAULT=${HOME}/go
-RUST_SRC_PATH DEFAULT=/usr/src/rust/src
+JAVA_HOME     DEFAULT=/usr/lib/jvm/default
 RUBY_PATH     DEFAULT=${HOME}/.rubies/ruby-2.3.3
+RUST_SRC_PATH DEFAULT=/usr/src/rust/src
 
 PATH DEFAULT=${HOME}/.local/bin\
 :/usr/local/sbin\
