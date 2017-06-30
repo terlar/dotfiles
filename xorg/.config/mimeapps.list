@@ -1,6 +1,6 @@
 [Default Applications]
 x-scheme-handler/mailto=mutt.desktop
-application/pdf=zathura.desktop
+application/pdf=emacs.desktop
 application/msword=libreoffice-writer.desktop
 application/rtf=libreoffice-writer.desktop
 application/vnd.oasis.opendocument.spreadsheet=libreoffice-calc.desktop
@@ -63,8 +63,8 @@ video/x-theora=mpv.desktop;
 video/x-matroska=mpv.desktop;
 video/3gpp=mpv.desktop;
 application/x-flash-video=mpv.desktop;
+text/plain=emacs.desktop
 
 [Added Associations]
 image/png=gpicview.desktop;
 image/gif=gpicview.desktop;
-application/pdf=zathura.desktop;
