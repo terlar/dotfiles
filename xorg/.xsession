@@ -15,6 +15,9 @@ export QT_IM_MODULE=ibus
 # QT
 export QT_STYLE_OVERRIDE=GTK+
 
+# GTK
+export GTK2_RC_FILES=/usr/share/themes/Arc-solid/gtk-2.0/gtkrc
+export GTK_THEME=Arc-solid
 
 # Java GUI
 export _JAVA_OPTIONS="\
