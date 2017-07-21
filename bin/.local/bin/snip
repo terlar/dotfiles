@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+[[ "${TRACE}" ]] && set -x
+set -eu
+set -o pipefail
+shopt -s nullglob
+
+main() {
+	local dir=${SNIP_DIR:-~/.snippets}
+
+	if ! [[ -d "${dir}" ]]
+	then
+		mkdir -p "${dir}"
+	fi
+
+	pushd "${dir}" >/dev/null
+	if [[ $# -eq 0 ]]
+	then
+		printf -- "%s\n" *
+	else
+		cat "$1" | xsel --clipboard
+	fi
+	popd >/dev/null
+}
+
+main "$@"

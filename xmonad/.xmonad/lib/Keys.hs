@@ -110,10 +110,11 @@ myKeys =
 
 -- Prompts
     , ("M-p", programLauncher)
+    , ("M-<Space> S-s", spawn "menu snip-menu")
+    , ("M-<Space> p", spawn "menu lpass-menu")
     , ("M-<Space> s", spawn "menu systemd-menu systemd-user-menu")
     , ("M-<Space> t", spawn "menu todo-menu")
     , ("M-<Space> w", spawn "menu wifi-menu")
-    , ("M-<Space> p", spawn "menu lpass-menu")
     , ("M-/", searchPrompt)
     , ("M-=", calcPrompt)
 

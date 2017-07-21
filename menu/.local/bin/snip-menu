@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+[[ "${TRACE}" ]] && set -x
+set -eu
+set -o pipefail
+shopt -s nullglob
+
+notify-copy() {
+	notify-send -i accessories-clipboard "$*" 'Copied snippet to clipboard...'
+}
+
+gen_snippet_list() {
+	snip
+}
+
+main() {
+	if [[ -z "$*" ]]
+	then
+		gen_snippet_list
+	else
+		case "$1" in
+			*)
+				snip "$1" >/dev/null
+				notify-copy "$1";;
+		esac
+	fi
+}
+
+main "$@"
