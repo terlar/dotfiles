@@ -7,9 +7,13 @@ notify-unlock() {
 	notify-send -i unlock "$*" 'Copied password to clipboard...'
 }
 
+logged_in() {
+	[[ "$(lpass status)" =~ ^"Logged in as" ]]
+}
+
 gen_password_list() {
 	echo synchronize
-	lpass ls
+	logged_in && lpass ls
 }
 
 main() {

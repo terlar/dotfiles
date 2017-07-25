@@ -58,7 +58,7 @@ gen_main_menu() {
 }
 
 main() {
-	if [[ -z "$@" ]]
+	if [[ -z "$*" ]]
 	then
 		echo scan
 		echo save
