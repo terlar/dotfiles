@@ -1,3 +1,7 @@
 #IBusCandidate * {
     font: sans-serif 32;
 }
+
+VteTerminal, vte-terminal, .termite {
+    padding: 1em;
+}
