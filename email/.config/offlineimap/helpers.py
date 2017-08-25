@@ -51,7 +51,7 @@ def get_client_secret():
 
 def get_username(account):
     file = os.path.expanduser(
-        "~/.offlineimap/google-token-{}.json".format(account))
+        "~/.cache/offlineimap/google-token-{}.json".format(account))
     with open(file) as data_file:
         data = json.load(data_file)
     return data["username"]
@@ -59,7 +59,7 @@ def get_username(account):
 
 def get_access_token(account):
     file = os.path.expanduser(
-        "~/.offlineimap/google-token-{}.json".format(account))
+        "~/.cache/offlineimap/google-token-{}.json".format(account))
     with open(file) as data_file:
         data = json.load(data_file)
     return data["access_token"]
@@ -67,7 +67,7 @@ def get_access_token(account):
 
 def get_refresh_token(account):
     file = os.path.expanduser(
-        "~/.offlineimap/google-token-{}.json".format(account))
+        "~/.cache/offlineimap/google-token-{}.json".format(account))
     with open(file) as data_file:
         data = json.load(data_file)
     return data["refresh_token"]

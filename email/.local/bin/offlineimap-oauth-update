@@ -12,9 +12,10 @@ generate_token() {
 }
 
 main() {
+	local cache_dir="${XDG_CACHE_HOME:-${HOME}/.cache}"
 	local account="${1?account was not provided}"
 	local username="${2?username was not provided}"
-	local token_file="${HOME}/.offlineimap/google-token-${account}.json"
+	local token_file="${cache_dir}/offlineimap/google-token-${account}.json"
 	local data refresh_token access_token
 
 	if ! printenv CLIENT_ID CLIENT_SECRET >/dev/null
