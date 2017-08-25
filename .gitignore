@@ -4,3 +4,8 @@
 # Auto-generated
 termite/.config/termite/config
 autorandr/.config/autorandr/default
+
+# Code
+*.hi
+*.o
+*.pyc
