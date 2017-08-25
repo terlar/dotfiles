@@ -1,4 +1,12 @@
 ! ------------------------------------------------------------------------------
 ! Emacs
 ! ------------------------------------------------------------------------------
-Emacs*useXIM: true
+Emacs*useXIM:             true
+Emacs.bitmapIcon:         off
+Emacs.menuBar:            off
+Emacs.verticalScrollBars: off
+Emacs.toolBar:            off
+Emacs.cursorBlink:        off
+Emacs.cursorColor:        black
+Emacs.fontBackend:        xft
+Emacs.font:               Monospace-14
