@@ -20,13 +20,14 @@ PATH DEFAULT=${HOME}/.local/bin\
 
 XBMC_HOME DEFAULT=/usr/share/plexhometheater
 YCMD_PATH DEFAULT=/usr/share/vim/vimfiles/third_party/ycmd/ycmd
+MAD_CONFIG DEFAULT=${HOME}/.config/mad/mad.conf
 
 # Tools
 VISUAL    DEFAULT=emacsclient
 EDITOR    DEFAULT=emacsclient
 TERMINAL  DEFAULT=termite
 BROWSER   DEFAULT=browser
-PAGER     DEFAULT=most
+PAGER     DEFAULT=less
 MANPAGER  DEFAULT=most
 
 # FZF
