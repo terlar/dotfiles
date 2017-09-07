@@ -103,8 +103,8 @@ myScratchpads =
     -- Commands
     spawnEmacs    n   = "emacsclient --raise --name '" ++ n ++ "'"
     spawnEmacsApp n c = spawnEmacs n ++ " -e '(" ++ c ++ ")'"
-    spawnTerm     r d = myTerm ++ " -r " ++ r ++ " -d " ++ d
-    spawnTermApp  r c = myTerm ++ " -r " ++ r ++ " -e '" ++ c ++ "'"
+    spawnTerm     r d = "termite -r " ++ r ++ " -d " ++ d
+    spawnTermApp  r c = "termite -r " ++ r ++ " -e '" ++ c ++ "'"
 
     -- Finders
     findClass c = className ~? c
