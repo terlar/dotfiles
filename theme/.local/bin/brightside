@@ -10,7 +10,7 @@ has_display() {
 main() {
 	if has_display; then
 		cat "$HOME/.config/termite/config_bright" > "$HOME/.config/termite/config"
-		killall -USR1 termite
+		killall -USR1 termite >/dev/null
 
 		cat "$HOME/.config/alacritty/alacritty-bright.yml" > "$HOME/.config/alacritty/alacritty.yml"
 	else
