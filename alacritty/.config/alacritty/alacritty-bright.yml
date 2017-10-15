@@ -6,10 +6,10 @@ dimensions:
   lines: 24
 
 padding:
-  x: 20
-  y: 20
+  x: 15
+  y: 15
 
-tabspaces: 8
+tabspaces: 4
 
 draw_bold_text_with_bright_colors: true
 
@@ -20,7 +20,7 @@ font:
     family: monospace
   italic:
     family: monospace
-  size: 14.0
+  size: 10.0
   offset:
     x: 0.0
     y: 0.0
