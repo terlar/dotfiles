@@ -15,7 +15,7 @@ myModMask = mod4Mask
 
 myTerm, myEditor, myBrowser, myPDFViewer, myImageViewer, myVideoPlayer :: String
 
-myTerm = "alacritty"
+myTerm = "kitty"
 myEditor = "emacsclient -c"
 myBrowser = "qutebrowser"
 myPDFViewer = "zathura"

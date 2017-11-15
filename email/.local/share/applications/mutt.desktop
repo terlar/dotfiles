@@ -3,5 +3,5 @@ Type=Application
 Name=Mutt
 GenericName=Mail Client
 NoDisplay=true
-Exec=alacritty -e "mutt %u"
+Exec=kitty "mutt %u"
 MimeType=x-scheme-handler/mailto

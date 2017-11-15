@@ -25,7 +25,7 @@ MAD_CONFIG DEFAULT=${HOME}/.config/mad/mad.conf
 # Tools
 VISUAL    DEFAULT=emacsclient
 EDITOR    DEFAULT=emacsclient
-TERMINAL  DEFAULT=alacritty
+TERMINAL  DEFAULT=kitty
 BROWSER   DEFAULT=browser
 PAGER     DEFAULT=less
 MANPAGER  DEFAULT=most

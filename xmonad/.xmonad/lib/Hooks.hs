@@ -94,17 +94,17 @@ myScratchpads =
   where
     -- NS
     appNS      n c = NS n c (findClass c)
-    termNS     n d = NS n (spawnTerm n d) (findRole n)
-    termAppNS  n c = NS n (spawnTermApp n c) (findRole n)
+    termNS     n d = NS n (spawnTerm n d) (findClass n)
+    termAppNS  n c = NS n (spawnTermApp n c) (findClass n)
     pidginNS   n r = NS n "pidgin" (findClassRole "pidgin" r)
     emacsNS    n   = NS n (spawnEmacs n) (findName n)
     emacsAppNS n c = NS n (spawnEmacsApp n c) (findName n)
 
     -- Commands
-    spawnEmacs    n   = "emacsclient --raise --name '" ++ n ++ "'"
-    spawnEmacsApp n c = spawnEmacs n ++ " -e '(" ++ c ++ ")'"
-    spawnTerm     r d = "termite -r " ++ r ++ " -d " ++ d
-    spawnTermApp  r c = "termite -r " ++ r ++ " -e '" ++ c ++ "'"
+    spawnEmacs    n       = "emacsclient --raise --name '" ++ n ++ "'"
+    spawnEmacsApp n cmd   = spawnEmacs n ++ " -e '(" ++ cmd ++ ")'"
+    spawnTerm     cls d   = "kitty --class " ++ cls ++ " -d " ++ d
+    spawnTermApp  cls cmd = "kitty --class " ++ cls ++ " -e '" ++ cmd ++ "'"
 
     -- Finders
     findClass c = className ~? c
