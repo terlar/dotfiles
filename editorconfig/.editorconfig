@@ -84,6 +84,16 @@ indent_size = 2
 indent_style = space
 indent_size = 2
 
+# SQL
+[*.sql]
+indent_style = space
+indent_size = 2
+
+# TOML
+[*.toml]
+indent_style = space
+indent_size = 2
+
 # YAML
 [*.{yaml,yml}]
 indent_style = space
