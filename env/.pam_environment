@@ -15,6 +15,7 @@ PATH DEFAULT=${HOME}/.local/bin\
 :/usr/bin:/bin\
 :${GOPATH}/bin\
 :${HOME}/.cargo/bin\
+:${HOME}/.yarn/bin\
 :${RUBY_PATH}/bin\
 :/usr/bin/core_perl
 

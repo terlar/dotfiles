@@ -3,7 +3,7 @@
 set -eu
 set -o pipefail
 
-export PATH="${HOME}/.local/bin:${PATH}:${GOPATH}/bin:${HOME}/.cargo/bin:${RUBY_PATH}/bin"
+export PATH="${HOME}/.local/bin:${PATH}:${GOPATH}/bin:${HOME}/.cargo/bin:${HOME}/.yarn/bin:${RUBY_PATH}/bin"
 # shellcheck disable=SC2046
 export $(ev.sh auto)
 
