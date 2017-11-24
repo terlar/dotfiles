@@ -17,10 +17,13 @@ indent_style = space
 indent_size = 4
 
 # Emacs Lisp
-[*.el]
+[*.{el,rcp}]
 indent_style = space
 
 # Erlang
+[rebar.config]
+indent_style = space
+indent_size = 2
 [*.erl]
 indent_style = space
 indent_size = 4
