@@ -1,3 +1,4 @@
+ghc-build: ncurses6
 templates:
   params:
     author-email: terlar@gmail.com
