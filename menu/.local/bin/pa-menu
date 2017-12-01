@@ -4,81 +4,95 @@ set -eu
 set -o pipefail
 
 notify() {
-	notify-send -i sound pulseaudio "$*"
+    notify-send -i sound pulseaudio "$*"
 }
 
 gen_output_devices() {
-	local prefix="${1:-out:}"
-	pactl list short sinks \
-		| awk -v prefix="${prefix}" '{ print prefix $1 " " $2 }'
+    ponymix list-short --output \
+        | awk '{ $3=""; print $0 }'
 }
 
 gen_input_devices() {
-	pactl list short sources \
-		| awk -v prefix='in:' '{ print prefix $1 " " $2 }'
+    ponymix list-short --input \
+        | awk '{ $3=""; print $0 }'
 }
 
-get_sink_inputs() {
-	pacmd list-sink-inputs | awk '
-		$1 == "index:" { idx = $2 }
-		$1 == "application.name" { print idx "@ " $3 }
-	' | tr -d '"'
+gen_card_profiles() {
+    ponymix list-profiles \
+        | awk '!(NR % 2) { print "profile " profile "|" $0 } { profile=$0 }' \
+        | grep -v '\[active\]' \
+        | column -t -s '|'
+}
+
+gen_move_output_devices() {
+    local input_id="$1"
+    shift
+    local input_title="$*"
+
+    ponymix list-short --output \
+        | awk \
+        -v "input_id=${input_id}" \
+        -v "input_title=${input_title}" \
+        '{ device=$2; $1=$2=$3=""; printf("move-input %s %s %s to %s\n", input_id, device, input_title, substr($0, 4)) }'
+}
+
+gen_sink_inputs() {
+    ponymix list-short --sink-input \
+        | awk '{ print $0 }'
 }
 
 gen_main_menu() {
-	echo playback
-	echo output
-	echo input
+    echo 'playback (sink-input)'
+    echo 'output   (sink)'
+    echo 'input    (source)'
+    echo 'profiles'
 }
 
 main() {
-	if [[ -z "$@" ]]
-	then
-		gen_main_menu
-	else
-		local cmd=($1)
-		case "${cmd[0]}" in
-			playback)
-				get_sink_inputs
-				;;
-			output)
-				gen_output_devices
-				;;
-			input)
-				gen_input_devices
-				;;
-			*@*)
-				local input sink_id
-				input="$(echo "${cmd[0]}" | cut -d'@' -f1)"
-				sink_id="$(echo "${cmd[0]}" | cut -d'@' -f2)"
-
-				if [[ -z "${sink_id}" ]]
-				then
-					gen_output_devices "${cmd[0]}"
-				else
-					local sink_name="${cmd[1]}"
-					notify "Moved sink input ${input} to:\n${sink_name}"
-					pactl move-sink-input "${input}" "${sink_id}" >/dev/null
-				fi
-				;;
-			move:*)
-				;;
-			out:*)
-				local id name
-				id="$(echo "${cmd[0]}" | cut -d':' -f2)"
-				name="${cmd[1]}"
-				notify "Default output:\n${name}"
-				pactl set-default-sink "${id}" >/dev/null
-				;;
-			in:*)
-				local id name
-				id="$(echo "${cmd[0]}" | cut -d':' -f2)"
-				name="${cmd[1]}"
-				notify "Default input:\n${name}"
-				pactl set-default-source "${id}" >/dev/null
-				;;
-		esac
-	fi
+    if [[ -z "$*" ]]
+    then
+        gen_main_menu
+    else
+        local cmd=($1)
+        case "${cmd[0]}" in
+            playback)
+                gen_sink_inputs
+                ;;
+            output)
+                gen_output_devices
+                ;;
+            input)
+                gen_input_devices
+                ;;
+            profiles)
+                gen_card_profiles
+                ;;
+            sink-input)
+                local id="${cmd[1]}" title="${cmd[*]:2}"
+                gen_move_output_devices "${id}" "${title}"
+                ;;
+            move-input)
+                local input="${cmd[1]}" output="${cmd[2]}" title="${cmd[*]:3}"
+                notify "Moved sink:\n${title}"
+                ponymix move --sink -d "${input}" "${output}" >/dev/null
+                ;;
+            sink)
+                local id="${cmd[1]}" title="${cmd[*]:2}"
+                notify "Default output:\n${title}"
+                ponymix set-default --sink -d "${id}" >/dev/null
+                ;;
+            source)
+                local id="${cmd[1]}" title="${cmd[*]:2}"
+                notify "Default input:\n${title}"
+                ponymix set-default --source -d "${id}" >/dev/null
+                ;;
+            profile)
+                local profile="${cmd[1]}" title="${cmd[*]:2}"
+                notify "Select profile:\n${title}"
+                ponymix set-profile "${profile}" >/dev/null
+                ;;
+        esac
+    fi
 }
 
 main "$@"
