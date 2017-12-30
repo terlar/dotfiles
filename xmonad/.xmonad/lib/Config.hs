@@ -17,7 +17,7 @@ myTerm, myEditor, myBrowser, myPDFViewer, myImageViewer, myVideoPlayer :: String
 
 myTerm = "kitty"
 myEditor = "emacsclient -c"
-myBrowser = "qutebrowser"
+myBrowser = "firefox"
 myPDFViewer = "zathura"
 myImageViewer = "feh"
 myVideoPlayer = "mpv"

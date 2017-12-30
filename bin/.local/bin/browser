@@ -74,7 +74,7 @@ main() {
 
 	if is_graphical
 	then
-		browser=qutebrowser
+		browser=firefox
 	else
 		browser=w3m
 	fi
