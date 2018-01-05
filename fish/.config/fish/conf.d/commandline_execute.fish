@@ -2,8 +2,9 @@
 function __commandline_execute_kb -e fish_user_key_bindings
     # Skip execution for empty lines
     bind \r __commandline_execute_non_empty
+    bind \n __commandline_execute_non_empty
     # Execute and restore the line after execution
-    bind \n __commandline_execute_and_keep_line
+    bind \ej __commandline_execute_and_keep_line
     # Line-complete and execute
     bind \ee end-of-line execute
 end
