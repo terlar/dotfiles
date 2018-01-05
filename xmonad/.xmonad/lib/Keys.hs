@@ -111,6 +111,7 @@ myKeys =
 -- Prompts
     , ("M-p", programLauncher)
     , ("M-<Space> S-s", spawn "menu snip-menu")
+    , ("M-<Space> a", spawn "menu pa-menu")
     , ("M-<Space> p", spawn "menu lpass-menu")
     , ("M-<Space> s", spawn "menu systemd-menu systemd-user-menu")
     , ("M-<Space> t", spawn "menu todo-menu")
