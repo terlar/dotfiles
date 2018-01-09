@@ -14,12 +14,12 @@ main() {
 	fi
 
 	if [[ $# -eq 0 ]]; then
-		xclip
+		xclip -selection clipboard
 	else
 		if [[ -f "$*" ]]; then
-			xclip "$*"
+			xclip -selection clipboard -- "$*"
 		else
-			echo -n "$*" | xclip
+			echo -n "$*" | xclip -selection clipboard
 		fi
 	fi
 }
