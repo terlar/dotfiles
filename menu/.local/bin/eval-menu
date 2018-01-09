@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+[[ "${TRACE}" ]] && set -x
+set -eu
+set -o pipefail
+shopt -s nullglob
+
+main() {
+	if [[ -n "$*" ]]
+	then
+		local cmd
+		cmd="$(echo "$*" | cut -f1 -d' ')"
+
+		if command -v "${cmd}" >/dev/null
+		then
+			eval "$*"
+		else
+			coproc copy "$*" &>/dev/null
+			exec 1>&-
+		fi
+	fi
+}
+
+main "$@"
