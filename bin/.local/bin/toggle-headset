@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+[[ "${TRACE}" ]] && set -x
+set -eou pipefail
+shopt -s nullglob
+
+is-headset() {
+	pa-menu profiles | grep -qv 'headset\|off'
+}
+
+main() {
+	if is-headset
+	then
+		pa-menu 'profile a2dp_sink Hi-Fi'
+	else
+		pa-menu 'profile headset_head_unit Headset'
+	fi
+}
+
+main "$@"

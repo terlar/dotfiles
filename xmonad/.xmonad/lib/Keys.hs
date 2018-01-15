@@ -141,6 +141,8 @@ myKeys =
     , ("M-a w"                   , toggleScratch "wifi")
 
 -- System
+    -- Toggle headset
+    , ("M-<F7>", spawn "toggle-headset")
     -- Lock screen
     , ("M-<Esc>", spawn "lock")
     -- Display management
