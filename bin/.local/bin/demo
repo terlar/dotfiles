@@ -5,15 +5,15 @@ set -o pipefail
 
 main() {
 	local port="${1-80}"
-	local subdomain="${2-$USER-${PWD##*/}}"
-	local username="$3"
-	local password="$4"
+	local username="${2:-}"
+	local password="${3:-}"
+	local httpauth=""
 
 	if [ -n "$username"  ] && [ -n "$password" ]; then
-		local httpauth="-httpauth=${username}:${password}"
+		httpauth="-httpauth=${username}:${password}"
 	fi
 
-	ngrok http -subdomain="$subdomain""$httpauth" "$port"
+	ngrok http"$httpauth" "$port"
 }
 
 main "$@"
