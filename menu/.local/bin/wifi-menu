@@ -10,18 +10,22 @@ wpa() {
 	wpa_cli -i "${INTERFACE}" "$@"
 }
 
+save_networks() {
+	wpa_save -i "${INTERFACE}"
+}
+
 has_network() {
 	wpa list_networks \
 		| tail -n +2 \
-		| cut -d "$(printf "\t")" -f2 \
-		| grep "\b$*\b" >/dev/null
+		| cut -d "$(printf "\\t")" -f2 \
+		| grep "\\b${*}\\b" >/dev/null
 }
 
 get_network() {
 	wpa list_networks \
 		| tail -n +2 \
-		| grep "\b$*\b" \
-		| cut -d "$(printf "\t")" -f1
+		| grep "\\b${*}\\b" \
+		| cut -d "$(printf "\\t")" -f1
 }
 
 connect_network() {
@@ -64,10 +68,11 @@ main() {
 		echo save
 		gen_networks
 	else
-		local cmd=($1)
+		read -r -a cmd <<< "$1"
+
 		case "${cmd[0]}" in
 			save)
-				wpa save_config >/dev/null
+				save_networks >/dev/null
 				;;
 			refresh)
 				gen_main_menu
