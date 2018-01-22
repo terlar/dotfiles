@@ -7,7 +7,7 @@ HOME              DEFAULT=/home/@{PAM_USER} OVERRIDE=${HOME}
 GOPATH            DEFAULT=${HOME}/go
 JAVA_HOME         DEFAULT=/usr/lib/jvm/default
 NPM_CONFIG_PREFIX DEFAULT=${HOME}/.npm-global
-RUBY_PATH         DEFAULT=${HOME}/.rubies/ruby-2.3.3
+GEM_HOME          DEFAULT=${HOME}/.gem/ruby/2.5.0
 RUST_SRC_PATH     DEFAULT=/usr/src/rust/src
 
 PATH DEFAULT=${HOME}/.local/bin\
@@ -18,7 +18,7 @@ PATH DEFAULT=${HOME}/.local/bin\
 :${HOME}/.cargo/bin\
 :${HOME}/.yarn/bin\
 :${NPM_CONFIG_PREFIX}/bin\
-:${RUBY_PATH}/bin\
+:${GEM_HOME}/bin\
 :/usr/bin/core_perl
 
 XBMC_HOME DEFAULT=/usr/share/plexhometheater
