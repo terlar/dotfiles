@@ -3,11 +3,12 @@ LANG   DEFAULT=en_US.UTF-8
 LC_ALL DEFAULT=${LANG}
 
 # Paths
-HOME          DEFAULT=/home/@{PAM_USER} OVERRIDE=${HOME}
-GOPATH        DEFAULT=${HOME}/go
-JAVA_HOME     DEFAULT=/usr/lib/jvm/default
-RUBY_PATH     DEFAULT=${HOME}/.rubies/ruby-2.3.3
-RUST_SRC_PATH DEFAULT=/usr/src/rust/src
+HOME              DEFAULT=/home/@{PAM_USER} OVERRIDE=${HOME}
+GOPATH            DEFAULT=${HOME}/go
+JAVA_HOME         DEFAULT=/usr/lib/jvm/default
+NPM_CONFIG_PREFIX DEFAULT=${HOME}/.npm-global
+RUBY_PATH         DEFAULT=${HOME}/.rubies/ruby-2.3.3
+RUST_SRC_PATH     DEFAULT=/usr/src/rust/src
 
 PATH DEFAULT=${HOME}/.local/bin\
 :/usr/local/sbin\
@@ -16,6 +17,7 @@ PATH DEFAULT=${HOME}/.local/bin\
 :${GOPATH}/bin\
 :${HOME}/.cargo/bin\
 :${HOME}/.yarn/bin\
+:${NPM_CONFIG_PREFIX}/bin\
 :${RUBY_PATH}/bin\
 :/usr/bin/core_perl
 
