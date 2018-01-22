@@ -19,12 +19,6 @@ export GTK2_RC_FILES=/usr/share/themes/Pop-light-compact/gtk-2.0/gtkrc
 export GTK_THEME=Pop-light-compact
 
 # Java GUI
-export _JAVA_OPTIONS="\
-	-Dawt.useSystemAAFontSettings=on\
-	-Dswing.aatext=true\
-	-Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel\
-	-Dswing.crossplatformlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel"
-
 export _JAVA_AWT_WM_NONREPARENTING=1
 
 if [ -f "$HOME/.Xresources" ]; then
