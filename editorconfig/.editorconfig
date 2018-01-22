@@ -11,6 +11,10 @@ insert_final_newline = true
 [*.bash*]
 indent_style = tab
 
+# Common Lisp
+[*.lisp]
+indent_style = space
+
 # Elm
 [*.elm]
 indent_style = space
@@ -71,6 +75,11 @@ indent_size = 4
 [*.rb]
 indent_style = space
 indent_size = 2
+
+# Rust
+[*.rs]
+indent_style = space
+indent_size = 4
 
 # Saltstack
 [*.sls]
