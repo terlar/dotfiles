@@ -36,7 +36,7 @@ MANPAGER  DEFAULT=most
 # FZF
 FZF_TMUX              DEFAULT=1
 FZF_DEFAULT_COMMAND   DEFAULT="rg --files --no-ignore --hidden --follow --glob '!.git/*'"
-FZF_DEFAULT_OPTS      DEFAULT="--reverse --border"
+FZF_DEFAULT_OPTS      DEFAULT="--reverse --border --color=bw"
 FZF_FIND_FILE_COMMAND DEFAULT=${FZF_DEFAULT_COMMAND}
 
 # GNU Global
