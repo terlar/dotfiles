@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+[[ "${TRACE}" ]] && set -x
+set -eou pipefail
+shopt -s nullglob
+
+main() {
+	local name format outdir
+	name="$(date +%Y-%m-%d_%H:%M:%S_screen)"
+	format=png
+	outdir="${XDG_PICTURES_DIR}/screenshots"
+
+	mkdir -p "${outdir}"
+	maim -sl --color=0,0,0,0.2 --format="${format}" "${outdir}/${name}.${format}"
+}
+
+main "$@"
