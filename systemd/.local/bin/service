@@ -1,0 +1,153 @@
+#!/usr/bin/env bash
+#? service 0.1.0
+
+##? Usage:
+##?   service SERVICE ACTION  [OPTION...]
+##?
+##? Actions:
+##?   start         Start the service
+##?   stop          Stop the service
+##?   status
+##?   restart       Restart the service
+##?   logs          Display the service logs
+##?
+##? Options:
+##?   -h --help     Show usage help
+##?   -d --daemon   Run in background
+##?   -f --follow   Follow logs
+
+[[ "${TRACE}" ]] && set -x
+set -euo pipefail
+
+version() {
+	grep "^#?"  "$0" | cut -c 4-
+}
+
+usage() {
+	grep "^##?" "$0" | cut -c 5-
+}
+
+cmd_name() {
+	echo "${0##*/}"
+}
+
+print_error() {
+	>&2 echo "$(cmd_name): error: $*"
+}
+
+service-start() {
+	systemctl --no-block --user start "${1}"
+	service-logs "${1}"
+}
+
+service-stop() {
+	systemctl --user stop "${1}"
+}
+
+service-restart() {
+	systemctl --no-block --user restart "${1}"
+}
+
+service-status() {
+	systemctl --user status "${1}"
+}
+
+service-logs() {
+	journalctl -f --user-unit "${1}"
+}
+
+exit-hook() {
+	local code="$?"
+
+	if [[ $code -gt 0 ]]
+	then
+		>&2 echo
+		>&2 usage
+	fi
+}
+
+main() {
+	trap exit-hook EXIT
+	trap - SIGINT
+
+	case "${1:-}" in
+		-h|--help)
+			usage
+			return 0
+			;;
+	esac
+
+	local service="${1?SERVICE was not provided}"
+	local action="${2?ACTION was not provided}"
+	shift 2
+
+	local daemon=0 follow=0 timeout=10
+
+	local optspec=':t:dfh-:'
+	while getopts "${optspec}" opt
+	do
+		case "${opt}" in
+			-)
+				case "${OPTARG}" in
+					daemon)
+						daemon=1
+						;;
+					follow)
+						follow=1
+						;;
+					timeout)
+						timeout="${!OPTIND}"
+						OPTIND="$((OPTIND + 1))"
+						;;
+					timeout=*)
+						timeout="${OPTARG#*=}"
+						;;
+					help)
+						usage
+						return 0
+						;;
+					*)
+						if [[ "$OPTERR" = 1 ]] && [[ "${optspec:0:1}" != ":" ]]
+						then
+							echo "invalid option -- '${OPTARG}'" >&2
+						fi
+						return 1
+						;;
+				esac
+				;;
+            d)
+				daemon=1
+				;;
+            f)
+				follow=1
+				;;
+			h)
+				usage
+				return 0
+				;;
+            t)
+				timeout="${OPTARG}"
+				;;
+			'?')
+				print_error "invalid option -- '${OPTARG}'"
+				return 1
+				;;
+			:)
+				print_error "option requires an argument -- '${OPTARG}'"
+				return 1
+				;;
+        esac
+    done
+    shift "$((OPTIND - 1))"
+
+	local action_function="service-${action}"
+	if ! type "${action_function}" &>/dev/null
+	then
+		print_error "unknown ACTION '${action}'"
+		return 1
+	fi
+
+	"${action_function}" "${service}" "$@"
+}
+
+main "$@"
