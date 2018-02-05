@@ -19,13 +19,13 @@ cursor_shape = block
 
 ### BEGIN COLORS
 [colors]
-foreground      = #263238
-foreground_bold = #263238
+foreground      = #111111
+foreground_bold = #111111
 cursor          = #607D8B
 background      = #EEEEEE
 
 # Black
-color0  = #263238
+color0  = #111111
 color8  = #607D8B
 # Red
 color1  = #F44336
@@ -37,14 +37,14 @@ color10 = #00C853
 color3  = #FF9800
 color11 = #BCAAA4
 # Blue
-color4  = #2196F3
-color12 = #42A5F5
+color4  = #111111
+color12 = #111111
 # Magenta
-color5  = #AB47BC
-color13 = #BA68C8
+color5  = #111111
+color13 = #111111
 # Cyan
-color6  = #26A69A
-color14 = #4DB6AC
+color6  = #111111
+color14 = #111111
 # White
 color7  = #B0BEC5
 color15 = #EEEEEE

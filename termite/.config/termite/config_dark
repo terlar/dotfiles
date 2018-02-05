@@ -21,7 +21,7 @@ cursor_shape = block
 [colors]
 foreground      = #EEEEEE
 foreground_bold = #EEEEEE
-cursor          = #B0BEC5
+cursor          = #607D8B
 background      = #263238
 
 # Black
@@ -37,14 +37,14 @@ color10 = #00C853
 color3  = #FF9800
 color11 = #BCAAA4
 # Blue
-color4  = #2196F3
-color12 = #42A5F5
+color4  = #B0BEC5
+color12 = #EEEEEE
 # Magenta
-color5  = #AB47BC
-color13 = #BA68C8
+color5  = #B0BEC5
+color13 = #EEEEEE
 # Cyan
-color6  = #26A69A
-color14 = #4DB6AC
+color6  = #B0BEC5
+color14 = #EEEEEE
 # White
 color7  = #B0BEC5
 color15 = #EEEEEE
