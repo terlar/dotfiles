@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+[[ "${TRACE}" ]] && set -x
+set -eou pipefail
+shopt -s nullglob
+
+main() {
+	maim -st 0 | convert - -resize 1x1\! -format '%[pixel:p{0,0}]' info:- | copy
+}
+
+main "$@"
