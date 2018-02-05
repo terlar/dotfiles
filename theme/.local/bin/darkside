@@ -7,10 +7,17 @@ has_display() {
 	[[ -n "$DISPLAY" ]]
 }
 
+has_command() {
+	declare cmd="$*"
+	type "$cmd" >/dev/null 2>&1
+}
+
 main() {
 	if has_display; then
 		cat "$HOME/.config/termite/config_dark" > "$HOME/.config/termite/config"
-		killall -USR1 termite >/dev/null
+		if has_command termite; then
+			pkill -USR1 termite >/dev/null
+		fi
 
 		cat "$HOME/.config/alacritty/alacritty-dark.yml" > "$HOME/.config/alacritty/alacritty.yml"
 	else
