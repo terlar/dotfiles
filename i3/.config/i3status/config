@@ -1,0 +1,73 @@
+general {
+	colors = true
+	color_good =     '#88b090'
+	color_degraded = '#ccdc90'
+	color_bad =      '#e89393'
+}
+
+order += "volume master"
+order += "disk /"
+order += "wireless wlp2s0"
+order += "battery 0"
+order += "cpu_temperature 0"
+order += "cpu_usage 0"
+order += "load"
+order += "tztime local"
+
+wireless wlp2s0 {
+	format_up = "%quality  %essid %ip"
+	format_down = ""
+}
+
+battery 0 {
+	format = "%status %percentage %remaining"
+	format_down = ""
+	last_full_capacity = true
+	integer_battery_capacity = true
+	low_threshold = 11
+	threshold_type = percentage
+	hide_seconds = true
+	status_chr = " "
+	status_bat = " "
+	status_unk = " "
+	status_full = " "
+}
+
+run_watch DHCP {
+	pidfile = "/var/run/dhclient*.pid"
+}
+
+run_watch VPN {
+	pidfile = "/var/run/vpnc/pid"
+}
+
+tztime local {
+	format = "%V  %A %Y-%m-%d  %H:%M:%S"
+}
+
+load {
+	format = " %1min"
+}
+
+cpu_usage {
+	format = " %usage"
+}
+
+cpu_temperature 0 {
+	format = "🌡️ %degrees°C"
+}
+
+disk "/" {
+	format = " %avail"
+	prefix_type	= custom
+	low_threshold = 20
+	threshold_type = percentage_avail
+}
+
+volume master {
+	format = " %volume"
+	format_muted = " "
+	device = "default"
+	mixer = "Master"
+	mixer_idx = 0
+}
