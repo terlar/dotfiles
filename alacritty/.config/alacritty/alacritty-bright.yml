@@ -1,13 +1,16 @@
 env:
   TERM: xterm-256color
 
-dimensions:
-  columns: 80
-  lines: 24
+window:
+  dimensions:
+    columns: 80
+    lines: 24
 
-padding:
-  x: 15
-  y: 15
+  padding:
+    x: 15
+    y: 15
+
+  decorations: false
 
 tabspaces: 4
 
@@ -34,27 +37,27 @@ custom_cursor_colors: false
 colors:
   primary:
     background: '0xeeeeee'
-    foreground: '0x263238'
+    foreground: '0x111111'
   cursor:
-    text: '0x263238'
+    text: '0x111111'
     cursor: '0x607d8b'
   normal:
-    black:   '0x263238'
+    black:   '0x111111'
     red:     '0xf44336'
     green:   '0x4caf50'
     yellow:  '0xff9800'
-    blue:    '0x2196f3'
-    magenta: '0xab47bc'
-    cyan:    '0x26a69a'
+    blue:    '0x111111'
+    magenta: '0x111111'
+    cyan:    '0x111111'
     white:   '0xb0bec5'
   bright:
     black:   '0x607d8b'
     red:     '0xef5350'
     green:   '0x00c853'
-    yellow:  '0xbcaaa4'
-    blue:    '0x42a5f5'
-    magenta: '0xba68c8'
-    cyan:    '0x4db6ac'
+    yellow:  '0x111111'
+    blue:    '0x111111'
+    magenta: '0x111111'
+    cyan:    '0x111111'
     white:   '0xeeeeee'
 
 visual_bell:

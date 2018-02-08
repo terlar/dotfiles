@@ -1,13 +1,16 @@
 env:
   TERM: xterm-256color
 
-dimensions:
-  columns: 80
-  lines: 24
+window:
+  dimensions:
+    columns: 80
+    lines: 24
 
-padding:
-  x: 15
-  y: 15
+  padding:
+    x: 15
+    y: 15
+
+  decorations: false
 
 tabspaces: 4
 
@@ -44,18 +47,18 @@ colors:
     red:     '0xf44336'
     green:   '0x4caf50'
     yellow:  '0xff9800'
-    blue:    '0x2196f3'
-    magenta: '0xab47bc'
-    cyan:    '0x26a69a'
+    blue:    '0xeeeeee'
+    magenta: '0xeeeeee'
+    cyan:    '0xeeeeee'
     white:   '0xb0bec5'
   bright:
     black:   '0x607d8b'
     red:     '0xef5350'
     green:   '0x00c853'
     yellow:  '0xbcaaa4'
-    blue:    '0x42a5f5'
-    magenta: '0xba68c8'
-    cyan:    '0x4db6ac'
+    blue:    '0xeeeeee'
+    magenta: '0xeeeeee'
+    cyan:    '0xeeeeee'
     white:   '0xeeeeee'
 
 visual_bell:

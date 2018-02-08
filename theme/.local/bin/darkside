@@ -4,7 +4,7 @@ set -eu
 set -o pipefail
 
 has_display() {
-	[[ -n "$DISPLAY" ]]
+	[[ -n "${DISPLAY:-}" ]]
 }
 
 has_command() {
