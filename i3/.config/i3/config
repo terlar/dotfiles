@@ -104,6 +104,8 @@ bindsym $mod+d focus child
 # switch to workspace
 bindsym $mod+bracketleft workspace prev
 bindsym $mod+bracketright workspace next
+bindsym $mod+Tab workspace next
+bindsym $mod+Shift+Tab workspace next
 bindsym $mod+1 workspace 1
 bindsym $mod+2 workspace 2
 bindsym $mod+3 workspace 3
