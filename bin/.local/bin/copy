@@ -3,23 +3,47 @@
 set -eu
 set -o pipefail
 
+cmd_name() {
+	echo "${0##*/}"
+}
+
+print_error() {
+	>&2 echo "$(cmd_name): error: $*"
+}
+
 has_display() {
 	[[ -n "$DISPLAY" ]]
 }
 
-main() {
-	if ! has_display; then
-		echo "Error: Display must be available"
+has_command() {
+	declare cmd="$*"
+	type "$cmd" >/dev/null 2>&1
+}
+
+copy_cmd() {
+	if has_command xclip; then
+		if ! has_display; then
+			print_error "Display must be available"
+			exit 1
+		fi
+
+		xclip -selection clipboard "$@"
+	elif has_command pbcopy; then
+		pbcopy "$@"
+	else
+		print_error "No known copy command found"
 		exit 1
 	fi
+}
 
+main() {
 	if [[ $# -eq 0 ]]; then
-		xclip -selection clipboard
+		copy_cmd
 	else
 		if [[ -f "$*" ]]; then
-			xclip -selection clipboard -- "$*"
+			copy_cmd -- "$*"
 		else
-			echo -n "$*" | xclip -selection clipboard
+			echo -n "$*" | copy_cmd
 		fi
 	fi
 }
