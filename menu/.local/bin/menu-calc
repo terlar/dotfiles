@@ -2,7 +2,7 @@
 
 # https://github.com/onespaceman/menu-calc
 # Calculator for use with rofi/dmenu(2)
-# Copying to the clipboard requires xclip
+# Copying to the clipboard requires xclip or pbcopy
 
 usage() {
     echo "    $(tput bold)menu calc$(tput sgr0)
@@ -42,7 +42,7 @@ $menu -p "= $answer")
 
 case $action in
     "Clear") $0 ;;
-    "Copy to clipboard") echo -n "$answer" | xclip ;;
+    "Copy to clipboard") echo -n "$answer" | copy ;;
     "Close") ;;
     "") ;;
     *) $0 "$answer $action" ;;

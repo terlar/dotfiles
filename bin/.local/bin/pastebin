@@ -20,7 +20,7 @@ main() {
 
 	local link="$link?$ext"
 
-	[[ -n "$DISPLAY" ]] && echo -n "$link" | xclip
+	[[ -n "$DISPLAY" ]] && echo -n "$link" | copy
 	printf "%s\n" "$link"
 }
 
