@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+[[ "${TRACE}" ]] && set -x
+set -eu
+set -o pipefail
+
+has_command() {
+	declare cmd="$*"
+	type "$cmd" >/dev/null 2>&1
+}
+
+main() {
+	if has_command pinentry-mac; then
+		PINENTRY_USER_DATA=mac
+	fi
+
+	case $PINENTRY_USER_DATA in
+		mac)
+			exec pinentry-mac "$@"
+			;;
+		curses)
+			exec pinentry-curses "$@"
+			;;
+		*)
+			exec pinentry "$@"
+			;;
+	esac
+}
+
+main "$@"

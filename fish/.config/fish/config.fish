@@ -18,7 +18,4 @@ if type -q ev
     ev auto >/dev/null
 end
 
-if not pgrep gpg-agent >/dev/null
-    and test -x /usr/local/bin/pinentry-mac
-    gpg-agent --daemon --pinentry-program /usr/local/bin/pinentry-mac
-end
+gpg-connect-agent updatestartuptty /bye
