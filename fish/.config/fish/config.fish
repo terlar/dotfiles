@@ -18,4 +18,4 @@ if type -q ev
     ev auto >/dev/null
 end
 
-gpg-connect-agent updatestartuptty /bye
+gpg-connect-agent updatestartuptty /bye >/dev/null
