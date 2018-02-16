@@ -94,7 +94,7 @@
 	prompt = false
 	keepBackup = false
 [mergetool "ediff"]
-	cmd = emacsclient --raise --eval \"\
+	cmd = emacsclient --eval \"\
 	(ediff-merge-files-with-ancestor\
 	\\\"$LOCAL\\\" \\\"$REMOTE\\\"\
 	\\\"$BASE\\\" nil \\\"$MERGED\\\")\"

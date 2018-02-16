@@ -4,7 +4,7 @@ set -eu
 set -o pipefail
 
 main() {
-	exec emacsclient --raise --eval "(ediff-files \"${1}\" \"${2}\")"
+	exec emacsclient --eval "(ediff-files \"${1}\" \"${2}\")"
 }
 
 main "$@"
