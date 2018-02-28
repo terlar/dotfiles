@@ -84,6 +84,7 @@ function fish_user_abbreviations
 
         abbr gm 'git merge'
         abbr gpr 'git-pull-request'
+        abbr gpf 'git push --force-with-lease'
 
         abbr gst 'git stash'
         abbr gsts 'git stash show -p'
