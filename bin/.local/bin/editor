@@ -3,8 +3,14 @@
 set -eu
 set -o pipefail
 
+is_visual() {
+	[[ "$(uname -s)" = "Darwin" ]] && return 0
+	[[ -n "${DISPLAY:-}" ]]
+}
+
 main() {
-	if [ -n "${DISPLAY:-}" ]; then
+	if is_visual
+	then
 		exec "${VISUAL}" "$@"
 	else
 		exec "${EDITOR}" "$@"
