@@ -65,6 +65,7 @@ function fish_user_abbreviations
         abbr gh 'git head'
         abbr gl 'git l'
         abbr gll 'git ll'
+        abbr glll 'git lll'
         abbr gwc 'git wc'
 
         abbr gd 'git diff'
@@ -89,6 +90,9 @@ function fish_user_abbreviations
         abbr gst 'git stash'
         abbr gsts 'git stash show -p'
         abbr gsta 'git stash apply'
+
+        abbr guns 'git reset HEAD'
+        abbr gunc 'git reset --soft HEAD^'
     end
 
     if type -fq pacman

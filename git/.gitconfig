@@ -21,7 +21,7 @@
 	subpull  = submodule foreach git pull
 	unstage  = reset HEAD
 	uncommit = reset --soft HEAD^
-	undopush = push -f origin HEAD^:master
+	unpush   = push --force-with-lease origin HEAD^:master
 	recommit = commit --amend
 	ignore   = update-index --assume-unchanged
 	unignore = update-index --no-assume-unchanged
