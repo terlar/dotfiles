@@ -32,8 +32,11 @@ has_cmd() {
 
 print_file() {
 	local cmd_path info lexer=""
+	local READLINK=readlink
 
-	cmd_path="$(readlink -f "$(type -P "$1")")"
+	has_cmd greadlink && READLINK=greadlink
+
+	cmd_path="$("${READLINK}" -f "$(type -P "$1")")"
 	info="$(file -b "${cmd_path}")"
 
 	case "${info}" in
@@ -45,7 +48,7 @@ print_file() {
 			return 1;;
 	esac
 
-	if [[ -n "${lexer}" ]]
+	if has_cmd pygmentize && [[ -n "${lexer}" ]]
 	then
 		pygmentize -l "${lexer}" "${cmd_path}"
 	else
