@@ -80,6 +80,7 @@ function fish_user_abbreviations
         abbr gc 'git commit'
         abbr gca 'git commit -a'
         abbr gcm 'git commit -m'
+        abbr gcw 'git commit -m WIP'
         abbr gcp 'git cherry-pick'
         abbr gr 'git rebase'
 
