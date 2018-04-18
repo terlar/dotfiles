@@ -42,7 +42,7 @@ indent_style = space
 indent_size = 4
 
 # Java
-[*.java]
+[*.{java,groovy}]
 indent_style = space
 indent_size = 4
 
