@@ -1,0 +1,5 @@
+use_ruby() {
+  local ruby_root=$HOME/.rubies/ruby-$1
+  load_prefix "$ruby_root"
+  layout_ruby
+}

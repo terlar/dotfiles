@@ -3,6 +3,10 @@ tmp/
 tags
 TODO
 
+# Direnv
+.envrc
+.direnv/
+
 # Bundler
 .bundle/
 vendor/bundle/
