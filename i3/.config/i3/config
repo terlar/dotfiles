@@ -1,4 +1,9 @@
 #
+# Autostart
+#
+exec dex -ae i3
+
+#
 # UI
 #
 
