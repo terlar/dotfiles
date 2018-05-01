@@ -1,10 +1,10 @@
 ! General
 ! ------------------------------------------------------------------------------
-rofi.modi: window,run,pa:pa-menu,sshkey:sshcontrol-menu
+rofi.modi: window,run,pa:pa-menu,pass:lpass-menu,sshkey:sshcontrol-menu
 
 ! Typography
 ! ------------------------------------------------------------------------------
-rofi.font: mono 18
+rofi.font: mono 40
 
 ! Color theme
 ! ------------------------------------------------------------------------------
