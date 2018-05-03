@@ -134,12 +134,8 @@ function fish_user_abbreviations
     end
 
     if type -fq ghq
+        abbr f 'ghq look'
         abbr gg 'ghq look'
-    end
-
-    if type -q farm
-        abbr f 'farm'
-        abbr fcd 'farm cd'
     end
 
     if type -q nix-shell
