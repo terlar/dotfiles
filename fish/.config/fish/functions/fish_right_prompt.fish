@@ -1,9 +1,9 @@
 function fish_right_prompt --description 'Write out the prompt'
     set last_status $status
 
-    if set -q CMD_DURATION
+    if set -q cmd_duration
         set_color grey
-        print_duration $CMD_DURATION
+        print_duration $cmd_duration
         set_color normal
     end
 
