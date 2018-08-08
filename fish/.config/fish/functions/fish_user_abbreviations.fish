@@ -8,7 +8,9 @@ function fish_user_abbreviations
     abbr l. 'ls -d .*'
     abbr m mux
     abbr e editor
+    abbr day "date '+%d (%A)'"
     abbr week "date '+%V'"
+    abbr month "date '+%m (%B)'"
 
     # Math
     abbr -- '+' 'add'
