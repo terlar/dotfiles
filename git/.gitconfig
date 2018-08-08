@@ -84,6 +84,10 @@
 	prompt = false
 [difftool "ediff"]
 	cmd = ediff \"$LOCAL\" \"$REMOTE\"
+[difftool "kitty"]
+	cmd = kitty +kitten diff $LOCAL $REMOTE
+[difftool "kitty.gui"]
+	cmd = kitty kitty +kitten diff $LOCAL $REMOTE
 [merge]
 	ff = only
 	log = true
