@@ -112,7 +112,7 @@
 [http "https://gopkg.in"]
 	followRedirects = true
 [filter "lfs"]
-	process = git-lfs filter-process
+	process = git-lfs filter-process --skip
 	required = true
 	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
+	smudge = git-lfs smudge --skip -- %f
