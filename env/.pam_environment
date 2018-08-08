@@ -9,6 +9,7 @@ JAVA_HOME         DEFAULT=/usr/lib/jvm/default
 NPM_CONFIG_PREFIX DEFAULT=${HOME}/.npm-global
 GEM_HOME          DEFAULT=${HOME}/.gem/ruby/2.5.0
 RUST_SRC_PATH     DEFAULT=/usr/src/rust/src
+NODE_VERSIONS     DEFAULT=${HOME}/.nodes
 
 PATH DEFAULT=${HOME}/.local/bin\
 :/usr/local/sbin\
