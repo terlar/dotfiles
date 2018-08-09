@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+main() {
+    for var in $(ev.sh auto)
+    do
+        local key="${var%%=*}"
+        local value="${var#*=}"
+        launchctl setenv "${key}" "${value}"
+    done
+}
+
+main "$@"
