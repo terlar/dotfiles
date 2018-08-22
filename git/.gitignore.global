@@ -26,6 +26,9 @@ GTAGS
 *.o
 *.hi
 
+# Indium
+.indium.json
+
 # IntelliJ
 .idea/
 
