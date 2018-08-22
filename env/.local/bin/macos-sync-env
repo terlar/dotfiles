@@ -7,6 +7,9 @@ main() {
         local value="${var#*=}"
         launchctl setenv "${key}" "${value}"
     done
+
+    local path_env="$(ev.sh PATH)"
+    launchctl setenv PATH "${path_env#*=}"
 }
 
 main "$@"
