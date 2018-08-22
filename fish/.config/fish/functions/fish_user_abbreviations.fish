@@ -136,8 +136,7 @@ function fish_user_abbreviations
     end
 
     if type -fq ghq
-        abbr f 'ghq look'
-        abbr gg 'ghq look'
+        abbr f 'find-src'
     end
 
     if type -q nix-shell

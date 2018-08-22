@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+[[ "${TRACE}" ]] && set -x
+set -eou pipefail
+shopt -s nullglob
+
+main() {
+	local root dir
+	root="$(ghq root)"
+	dir="$(ghq list "$@" | fzf -1)"
+
+	if [ -d "${dir}" ]
+	then
+		cd "${dir}"
+	else
+		echo No matching source for "$@"
+	fi
+}
+
+main "$@"
