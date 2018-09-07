@@ -17,6 +17,7 @@ REAL_DIRS := $(addprefix $(DESTDIR)/,\
 	.stack .xmonad\
 	.config/termite\
 	.config/fish/conf.d .config/fish/completions .config/fish/functions\
+        .git-templates\
 	.sbt/0.13/plugins)
 
 comma:= ,
