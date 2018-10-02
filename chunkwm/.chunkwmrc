@@ -68,4 +68,4 @@ chunkc core::load ffm.so
 chunkc tiling::rule --owner Finder --name Copy --state float &
 chunkc tiling::rule --owner \"App Store\" --state float &
 chunkc tiling::rule --owner LastPass --state float &
-chunkc tiling::rule --owner Emacs --except "^$" --state tile &
+chunkc tiling::rule --owner "Emacs.*" --except "^$" --state tile &
