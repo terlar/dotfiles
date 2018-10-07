@@ -1,2 +1,21 @@
 #TabsToolbar { visibility: collapse; }
 #navigator-toolbox { visibility: collapse; }
+
+#tabbrowser-tabs, #tabbrowser-tabs > .tabbrowser-arrowscrollbox {
+	min-height: 0 !important;
+}
+
+/* Thanks to @Speravir for making it work again in the latest versions. */
+#tabbrowser-tabs tab[first-visible-tab="true"][last-visible-tab="true"] {
+	visibility: collapse;
+}
+
+/* I don't use tabs so I just hide the new tab button. You should be able to use a similar trick as the rule above with
+css siblings selectors if you want to keep it when the tab bar is visible. */
+#tabbrowser-tabs .tabs-newtab-button {
+	visibility: collapse !important;
+}
+
+#tabbrowser-tabs tab {
+	min-height: var(--tab-min-height)
+}
