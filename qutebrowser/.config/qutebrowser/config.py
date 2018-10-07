@@ -75,6 +75,7 @@ c.bindings.commands = {
         '<Alt-b>'          : 'fake-key <Alt-Left>',
         '<Ctrl-d>'         : 'fake-key <Delete>',
         '<Alt-d>'          : 'fake-key <Alt-Delete>',
+        '<Ctrl-k>'         : 'fake-key <Shift-End> ;; fake-key <Delete>',
         "<Ctrl-c><Ctrl-'>" : 'open-editor',
     }
 }
