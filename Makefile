@@ -10,15 +10,16 @@ XMONAD_FILES := \
 
 REAL_DIRS := $(addprefix $(DESTDIR)/,\
 	.config/env\
+	.config/fish/conf.d .config/fish/completions .config/fish/functions\
+	.config/qutebrowser\
+	.config/termite\
+	.git-templates\
 	.gnupg .ssh\
 	.mutt .mutt/temp .offlineimap\
-	.config/qutebrowser\
 	.ncmpcpp .config/mopidy\
+	.sbt/0.13/plugins\
 	.stack .xmonad\
-	.config/termite\
-	.config/fish/conf.d .config/fish/completions .config/fish/functions\
-        .git-templates\
-	.sbt/0.13/plugins)
+	.terminfo)
 
 comma:= ,
 empty:=
