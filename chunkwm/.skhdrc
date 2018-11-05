@@ -1,8 +1,8 @@
 :: app @
-cmd - a ; app
+cmd + shift - a ; app
 app < ctrl - g ; default
 app < a : open /Applications/Utilities/Activity\ Monitor.app; skhd -k "ctrl - g"
-app < b : open /Applications/qutebrowser.app; skhd -k "ctrl - g"
+app < b : open /Applications/Firefox.app; skhd -k "ctrl - g"
 app < shift - b : open /Applications/Firefox.app; skhd -k "ctrl - g"
 app < e : open /Applications/Emacs.app; skhd -k "ctrl - g"
 app < f : open -n /Applications/Finder.app; skhd -k "ctrl - g"
@@ -13,18 +13,18 @@ app < s : open /Applications/Slack.app; skhd -k "ctrl - g"
 app < t : open /Applications/kitty.app; skhd -k "ctrl - g"
 
 :: resize @
-cmd - r ; resize
+cmd + shift - r ; resize
 resize < ctrl - g ; default
 # increase/decrease region size
-resize < h : chunkc tiling::window --use-temporary-ratio 0.05 --adjust-window-edge west; chunkc tiling::window --use-temporary-ratio -0.05 --adjust-window-edge east
-resize < j : chunkc tiling::window --use-temporary-ratio 0.05 --adjust-window-edge south; chunkc tiling::window --use-temporary-ratio -0.05 --adjust-window-edge north
-resize < k : chunkc tiling::window --use-temporary-ratio 0.05 --adjust-window-edge north; chunkc tiling::window --use-temporary-ratio -0.05 --adjust-window-edge south
-resize < l : chunkc tiling::window --use-temporary-ratio 0.05 --adjust-window-edge east; chunkc tiling::window --use-temporary-ratio -0.05 --adjust-window-edge west
+resize < left : chunkc tiling::window --use-temporary-ratio 0.05 --adjust-window-edge west; chunkc tiling::window --use-temporary-ratio -0.05 --adjust-window-edge east
+resize < down : chunkc tiling::window --use-temporary-ratio 0.05 --adjust-window-edge south; chunkc tiling::window --use-temporary-ratio -0.05 --adjust-window-edge north
+resize < up : chunkc tiling::window --use-temporary-ratio 0.05 --adjust-window-edge north; chunkc tiling::window --use-temporary-ratio -0.05 --adjust-window-edge south
+resize < right : chunkc tiling::window --use-temporary-ratio 0.05 --adjust-window-edge east; chunkc tiling::window --use-temporary-ratio -0.05 --adjust-window-edge west
 # equalize size
 resize < space : chunkc tiling::desktop --equalize
 
 # open terminal
-cmd - return : /Applications/Kitty.app/Contents/MacOS/kitty --single-instance -d ~
+cmd - return : /Applications/kitty.app/Contents/MacOS/kitty --single-instance -d ~
 
 # open qutebrowser
 cmd + shift - return : /Applications/qutebrowser.app/Contents/MacOS/qutebrowser
@@ -33,18 +33,18 @@ cmd + shift - return : /Applications/qutebrowser.app/Contents/MacOS/qutebrowser
 cmd - m : open -na /Applications/mpv.app $(pbpaste)
 
 # close focused window
-cmd - w : chunkc tiling::window --close
+cmd + shift - q : chunkc tiling::window --close
 
 # focus window
-cmd - 0x21 : chunkc tiling::window --focus prev
-cmd - 0x1E : chunkc tiling::window --focus next
+cmd - left : chunkc tiling::window --focus prev
+cmd - right : chunkc tiling::window --focus next
 
 # move window
-shift + cmd - 0x21 : chunkc tiling::window --warp prev
-shift + cmd - 0x1E : chunkc tiling::window --warp next
+cmd + shift - left : chunkc tiling::window --warp prev
+cmd + shift - right : chunkc tiling::window --warp next
 
 # make floating window fill screen
-alt + cmd - up     : chunkc tiling::window --grid-layout 1:1:0:0:1:1
+alt + cmd - f : chunkc tiling::window --grid-layout 1:1:0:0:1:1
 
 # make floating window fill left-half of screen
 alt + cmd - left   : chunkc tiling::window --grid-layout 1:2:0:0:1:1
@@ -52,27 +52,15 @@ alt + cmd - left   : chunkc tiling::window --grid-layout 1:2:0:0:1:1
 # make floating window fill right-half of screen
 alt + cmd - right  : chunkc tiling::window --grid-layout 1:2:1:0:1:1
 
-# create desktop, move window and follow focus
-cmd - n : chunkc tiling::desktop --create;\
-          id=$(chunkc tiling::query --desktops-for-monitor $(chunkc tiling::query --monitor-for-desktop $(chunkc tiling::query --desktop id)));\
-          chunkc tiling::window --send-to-desktop $(echo ${id##* });\
-          chunkc tiling::desktop --focus $(echo ${id##* })
-
-# create desktop and follow focus
-shift + cmd - n : chunkc tiling::desktop --create;\
-                  id=$(chunkc tiling::query --desktops-for-monitor $(chunkc tiling::query --monitor-for-desktop $(chunkc tiling::query --desktop id)));\
-                  chunkc tiling::desktop --focus $(echo ${id##* })
-
 # destroy desktop
-shift + cmd - q : chunkc tiling::desktop --annihilate
+cmd + shift - delete : chunkc tiling::desktop --annihilate
 
 # fast focus desktop
-cmd + alt - 0x30 : chunkc tiling::desktop --focus $(chunkc get _last_active_desktop)
-shift + cmd - 0x30 : chunkc tiling::desktop --focus prev
-cmd - 0x30 : chunkc tiling::desktop --focus next
-cmd - 1 : chunkc tiling::desktop --focus 1
-cmd - 2 : chunkc tiling::desktop --focus 2
-cmd - 3 : chunkc tiling::desktop --focus 3
+# cmd - 0x21 : chunkc tiling::desktop --focus prev
+# cmd - 0x1E : chunkc tiling::desktop --focus next
+# cmd - 1 : chunkc tiling::desktop --focus 1
+# cmd - 2 : chunkc tiling::desktop --focus 2
+# cmd - 3 : chunkc tiling::desktop --focus 3
 cmd - 4 : chunkc tiling::desktop --focus 4
 cmd - 5 : chunkc tiling::desktop --focus 5
 cmd - 6 : chunkc tiling::desktop --focus 6
@@ -104,16 +92,16 @@ shift + alt + cmd - 2  : chunkc tiling::window --send-to-monitor 2; chunkc tilin
 shift + alt + cmd - 3  : chunkc tiling::window --send-to-monitor 3; chunkc tiling::monitor -f 3
 
 # mirror tree y-axis
-shift + cmd - 0x1B : chunkc tiling::desktop --mirror vertical
+cmd - up : chunkc tiling::desktop --mirror vertical
 
 # mirror tree x-axis
-cmd - 0x1B : chunkc tiling::desktop --mirror horizontal
+cmd - down : chunkc tiling::desktop --mirror horizontal
 
 # toggle window fullscreen
-shift + cmd - f : chunkc tiling::window --toggle fullscreen
+cmd - f : chunkc tiling::window --toggle fullscreen
 
 # toggle window native fullscreen
-shift + alt + cmd - f : chunkc tiling::window --toggle native-fullscreen
+shift + cmd - f : chunkc tiling::window --toggle native-fullscreen
 
 # toggle window parent zoom
 cmd - space : chunkc tiling::window --toggle parent
@@ -134,8 +122,3 @@ cmd - s : chunkc tiling::window --toggle sticky
 # toggle sticky, float and resize to picture-in-picture size
 shift + cmd - s : chunkc tiling::window --toggle sticky;\
                   chunkc tiling::window --grid-layout 5:5:3:0:2:2
-
-# change layout of desktop
-# cmd - a : chunkc tiling::desktop --layout bsp
-# cmd - s : chunkc tiling::desktop --layout float
-# cmd - f : chunkc tiling::desktop --layout monocle
