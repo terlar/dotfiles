@@ -18,12 +18,15 @@ draw_bold_text_with_bright_colors: true
 
 font:
   normal:
-    family: monospace
+    family: Iosevka T Slab
+    style: Light
   bold:
-    family: monospace
+    family: Iosevka T Slab
+    style: Regular
   italic:
-    family: monospace
-  size: 10.0
+    family: Iosevka T Slab
+    style: Italic
+  size: 14.0
   offset:
     x: 0.0
     y: 0.0
@@ -36,29 +39,29 @@ custom_cursor_colors: false
 
 colors:
   primary:
-    background: '0xeeeeee'
-    foreground: '0x111111'
+    background: '0xfffff8'
+    foreground: '0x4e4b3d'
   cursor:
-    text: '0x111111'
-    cursor: '0x607d8b'
+    text: '0xffffff'
+    cursor: '0x1b1809'
   normal:
-    black:   '0x111111'
-    red:     '0xf44336'
-    green:   '0x4caf50'
-    yellow:  '0xff9800'
-    blue:    '0x111111'
-    magenta: '0x111111'
-    cyan:    '0x111111'
-    white:   '0xb0bec5'
-  bright:
-    black:   '0x607d8b'
+    black:   '0x1b1809'
     red:     '0xef5350'
-    green:   '0x00c853'
-    yellow:  '0x111111'
-    blue:    '0x111111'
-    magenta: '0x111111'
-    cyan:    '0x111111'
-    white:   '0xeeeeee'
+    green:   '0x171405'
+    yellow:  '0xb0ada2'
+    blue:    '0x4e4b3d'
+    magenta: '0x4e4b3d'
+    cyan:    '0x737063'
+    white:   '0xd5d2c8'
+  bright:
+    black:   '0xb0ada2'
+    red:     '0xee6d52'
+    green:   '0x4e4b3d'
+    yellow:  '0xb0ada2'
+    blue:    '0xb0ada2'
+    magenta: '0xb0ada2'
+    cyan:    '0xb0ada2'
+    white:   '0xfffff8'
 
 visual_bell:
   animation: EaseOutExpo
