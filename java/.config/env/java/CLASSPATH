@@ -1,0 +1,7 @@
+#!/bin/sh
+printf "."
+if [ -d "${HOME}/.java/lib/eclipse.jdt.ls" ]
+then
+    printf ":"
+    find "${HOME}/.java/lib/eclipse.jdt.ls" -regex  "${HOME}/.java/lib/eclipse.jdt.ls/plugins/org.eclipse.equinox.launcher_.*.jar"
+fi
