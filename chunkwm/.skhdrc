@@ -56,11 +56,11 @@ alt + cmd - right  : chunkc tiling::window --grid-layout 1:2:1:0:1:1
 cmd + shift - delete : chunkc tiling::desktop --annihilate
 
 # fast focus desktop
-# cmd - 0x21 : chunkc tiling::desktop --focus prev
-# cmd - 0x1E : chunkc tiling::desktop --focus next
-# cmd - 1 : chunkc tiling::desktop --focus 1
-# cmd - 2 : chunkc tiling::desktop --focus 2
-# cmd - 3 : chunkc tiling::desktop --focus 3
+cmd - 0x21 : chunkc tiling::desktop --focus prev
+cmd - 0x1E : chunkc tiling::desktop --focus next
+cmd - 1 : chunkc tiling::desktop --focus 1
+cmd - 2 : chunkc tiling::desktop --focus 2
+cmd - 3 : chunkc tiling::desktop --focus 3
 cmd - 4 : chunkc tiling::desktop --focus 4
 cmd - 5 : chunkc tiling::desktop --focus 5
 cmd - 6 : chunkc tiling::desktop --focus 6
