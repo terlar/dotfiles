@@ -28,9 +28,11 @@ use_rofi() {
 main() {
 	local menu_cmd="${1?menu command was not provided}"
 
-	if ! has_cmd 'rofi' && ! has_cmd 'fzf'
+	if ! has_cmd 'rofi' \
+		&& ! has_cmd 'fzy' \
+		&& ! has_cmd 'fzf'
 	then
-		echo 'you need either rofi or fzf for the menu' 1>&2
+		echo 'you need either rofi, fzy or fzf for the menu' 1>&2
 	fi
 
 	if ! has_cmd "${menu_cmd}"
@@ -44,11 +46,15 @@ main() {
 		modi="$(echo "$*" | sed -r 's/(\S+)/\1:\1/g; s/\s/,/g')"
 		rofi -modi "${modi}" -show "${menu_cmd}"
 	else
+		local cmd=()
+		has_cmd 'fzf' && cmd=(fzf -0)
+		has_cmd 'fzy' && cmd=(fzy)
+
 		local sel=""
 
 		while :
 		do
-			sel="$("${menu_cmd}" "${sel}" | fzf -0; true)"
+			sel="$("${menu_cmd}" "${sel}" | grep -v '^$' | "${cmd[@]}"; true)"
 			[[ -n "${sel}" ]] || break
 		done
 	fi
