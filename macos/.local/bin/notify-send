@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+main() {
+    local opts=()
+    while getopts ':-i:' opt
+    do
+        if [[ "${opt}" == '?' ]]
+        then
+            opts+=("-${OPTARG}")
+        else
+            opts+=("-${opt}" "${OPTARG}")
+        fi
+    done
+    shift "$((OPTIND - 1))"
+
+    /usr/bin/osascript -e "display notification \"$*\""
+}
+
+main "$@"
