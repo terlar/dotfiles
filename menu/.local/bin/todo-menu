@@ -22,12 +22,12 @@ main() {
 	then
 		gen_main_menu
 	else
+		# shellcheck disable=SC2206
 		local cmd=($1)
 		case "${cmd[0]}" in
 			'+')
 				unset 'cmd[0]'
-				coproc fish -c "todo add ${cmd[*]}" >/dev/null 2>&1 &
-				exec 1>&-
+				fish -c "todo add ${cmd[*]}" >/dev/null 2>&1
 				gen_main_menu
 				;;
 			edit)
