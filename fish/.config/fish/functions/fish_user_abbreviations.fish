@@ -139,8 +139,9 @@ function fish_user_abbreviations
         abbr f 'find-src'
     end
 
-    if type -q nix-shell
+    if type -q nix
         abbr n 'nix'
-        abbr ns 'nix-shell --command fish'
+        abbr nf 'nix search'
+        abbr ns 'nix-shell'
     end
 end
