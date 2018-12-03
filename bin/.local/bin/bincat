@@ -3,10 +3,42 @@
 [[ "${TRACE}" ]] && set -x
 set -euo pipefail
 
+export BAT_THEME=GitHub
+
 usage() {
 	cat <<EOF
 Usage: ${0##*/} COMMAND
 EOF
+}
+
+has_cmd() {
+	command -v "$*" &>/dev/null
+}
+
+print_file() {
+	local cmd_path info lexer=""
+	local READLINK=readlink
+	local CAT=cat
+
+	has_cmd bat && CAT=bat
+	has_cmd greadlink && READLINK=greadlink
+
+	cmd_path="$("${READLINK}" -f "$(type -P "$1")")"
+	info="$(file -b "${cmd_path}")"
+
+	case "${info}" in
+		ELF*|*binary*)
+			>&2 echo "cannot cat binary commands"
+			>&2 echo "${info}"
+			return 1;;
+	esac
+
+	"${CAT}" "${cmd_path}"
+}
+
+is_interactive() {
+	fd=0 # stdin
+	[ -t "${fd}" ] || [ -p /dev/stdin ]
 }
 
 main() {
@@ -18,47 +50,7 @@ main() {
 		>&2 echo "unknown command \`${cmd}'"
 	fi
 
-	if is_interactive
-	then
-		print_file "${cmd}" | less -R
-	else
-		print_file "${cmd}"
-	fi
-}
-
-has_cmd() {
-	command -v "$*" &>/dev/null
-}
-
-print_file() {
-	local cmd_path info lexer=""
-	local READLINK=readlink
-
-	has_cmd greadlink && READLINK=greadlink
-
-	cmd_path="$("${READLINK}" -f "$(type -P "$1")")"
-	info="$(file -b "${cmd_path}")"
-
-	case "${info}" in
-		"Bourne-Again shell script"*) lexer="bash";;
-		"Python script"*) lexer="python";;
-		ELF*|*binary*)
-			>&2 echo "cannot cat binary commands"
-			>&2 echo "${info}"
-			return 1;;
-	esac
-
-	if has_cmd pygmentize && [[ -n "${lexer}" ]]
-	then
-		pygmentize -l "${lexer}" "${cmd_path}"
-	else
-		cat "${cmd_path}"
-	fi
-}
-
-is_interactive() {
-	fd=0 # stdin
-	[ -t "${fd}" ] || [ -p /dev/stdin ]
+	print_file "${cmd}"
 }
 
 main "$@"
