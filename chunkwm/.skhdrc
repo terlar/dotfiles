@@ -1,27 +1,68 @@
-:: app @
-cmd + shift - a ; app
-app < ctrl - g ; default
-app < a : open /Applications/Utilities/Activity\ Monitor.app; skhd -k "ctrl - g"
-app < b : open /Applications/Firefox.app; skhd -k "ctrl - g"
-app < shift - b : open /Applications/Firefox.app; skhd -k "ctrl - g"
-app < e : open /Applications/Emacs.app; skhd -k "ctrl - g"
-app < f : open -n /Applications/Finder.app; skhd -k "ctrl - g"
-app < l : open /Applications/LastPass.app; skhd -k "ctrl - g"
-app < m : open /Applications/Spotify.app; skhd -k "ctrl - g"
-app < p : open /Applications/Preview.app; skhd -k "ctrl - g"
-app < s : open /Applications/Slack.app; skhd -k "ctrl - g"
-app < t : open /Applications/kitty.app; skhd -k "ctrl - g"
+:: appMode @
+cmd + shift - a ; appMode
+appMode < ctrl - g ; default
+appMode < a : open /Applications/Utilities/Activity\ Monitor.app; skhd -k "ctrl - g"
+appMode < b : open /Applications/Firefox.app; skhd -k "ctrl - g"
+appMode < shift - b : open /Applications/Firefox.app; skhd -k "ctrl - g"
+appMode < e : open ~/Applications/Emacs.app; skhd -k "ctrl - g"
+appMode < f : open -n /Applications/Finder.app; skhd -k "ctrl - g"
+appMode < l : open /Applications/LastPass.app; skhd -k "ctrl - g"
+appMode < m : open /Applications/Spotify.app; skhd -k "ctrl - g"
+appMode < p : open /Applications/Preview.app; skhd -k "ctrl - g"
+appMode < s : open /Applications/Slack.app; skhd -k "ctrl - g"
+appMode < t : open /Applications/kitty.app; skhd -k "ctrl - g"
 
-:: resize @
-cmd + shift - r ; resize
-resize < ctrl - g ; default
+:: resizeMode @
+cmd + shift - r ; resizeMode
+resizeMode < ctrl - g ; default
 # increase/decrease region size
-resize < left : chunkc tiling::window --use-temporary-ratio 0.05 --adjust-window-edge west; chunkc tiling::window --use-temporary-ratio -0.05 --adjust-window-edge east
-resize < down : chunkc tiling::window --use-temporary-ratio 0.05 --adjust-window-edge south; chunkc tiling::window --use-temporary-ratio -0.05 --adjust-window-edge north
-resize < up : chunkc tiling::window --use-temporary-ratio 0.05 --adjust-window-edge north; chunkc tiling::window --use-temporary-ratio -0.05 --adjust-window-edge south
-resize < right : chunkc tiling::window --use-temporary-ratio 0.05 --adjust-window-edge east; chunkc tiling::window --use-temporary-ratio -0.05 --adjust-window-edge west
+resizeMode < h : chunkc tiling::window --use-temporary-ratio 0.05 --adjust-window-edge west; chunkc tiling::window --use-temporary-ratio -0.05 --adjust-window-edge east
+resizeMode < j : chunkc tiling::window --use-temporary-ratio 0.05 --adjust-window-edge south; chunkc tiling::window --use-temporary-ratio -0.05 --adjust-window-edge north
+resizeMode < k : chunkc tiling::window --use-temporary-ratio 0.05 --adjust-window-edge north; chunkc tiling::window --use-temporary-ratio -0.05 --adjust-window-edge south
+resizeMode < l : chunkc tiling::window --use-temporary-ratio 0.05 --adjust-window-edge east; chunkc tiling::window --use-temporary-ratio -0.05 --adjust-window-edge west
 # equalize size
-resize < space : chunkc tiling::desktop --equalize
+resizeMode < space : chunkc tiling::desktop --equalize
+# mirror tree y-axis
+resizeMode < y : chunkc tiling::desktop --mirror vertical
+# mirror tree x-axis
+resizeMode < x : chunkc tiling::desktop --mirror horizontal
+
+:: prevMode @
+:: nextMode @
+:: prevMoveMode @
+:: nextMoveMode @
+
+cmd - 0x21 ; prevMode
+prevMode < ctrl - g ; default
+prevMode < 0x1E ; nextMode
+prevMode < space ; prevMoveMode
+prevMode < m : chunkc tiling::monitor -f prev
+prevMode < d : chunkc tiling::desktop --focus prev
+prevMode < w : chunkc tiling::window --focus prev
+
+cmd - 0x1E ; nextMode
+nextMode < ctrl - g ; default
+nextMode < 0x21 ; prevMode
+nextMode < space ; nextMoveMode
+nextMode < m : chunkc tiling::monitor -f next
+nextMode < d : chunkc tiling::desktop --focus next
+nextMode < w : chunkc tiling::window --focus next
+
+cmd + shift - 0x21 ; prevMoveMode
+prevMoveMode < ctrl - g ; default
+prevMoveMode < 0x1E ; nextMoveMode
+prevMoveMode < space ; prevMode
+prevMoveMode < m : chunkc tiling::window --send-to-monitor prev; chunkc tiling::monitor -f prev
+prevMoveMode < d : chunkc tiling::window --send-to-desktop prev; chunkc tiling::desktop --focus prev
+prevMoveMode < w : chunkc tiling::window --warp prev
+
+cmd + shift - 0x1E ; nextMoveMode
+nextMoveMode < ctrl - g ; default
+nextMoveMode < 0x21 ; prevMoveMode
+nextMoveMode < space ; nextMode
+nextMoveMode < m : chunkc tiling::window --send-to-monitor next; chunkc tiling::monitor -f next
+nextMoveMode < d : chunkc tiling::window --send-to-desktop next; chunkc tiling::desktop --focus next
+nextMoveMode < w : chunkc tiling::window --warp next
 
 # open terminal
 cmd - return : /Applications/kitty.app/Contents/MacOS/kitty --single-instance -d ~
@@ -36,12 +77,16 @@ cmd - m : open -na /Applications/mpv.app $(pbpaste)
 cmd + shift - q : chunkc tiling::window --close
 
 # focus window
-cmd - left : chunkc tiling::window --focus prev
-cmd - right : chunkc tiling::window --focus next
+cmd - k : chunkc tiling::window --focus north
+cmd - l : chunkc tiling::window --focus east
+cmd - j : chunkc tiling::window --focus south
+cmd - h : chunkc tiling::window --focus west
 
 # move window
-cmd + shift - left : chunkc tiling::window --warp prev
-cmd + shift - right : chunkc tiling::window --warp next
+cmd + shift - k : chunkc tiling::window --warp north
+cmd + shift - l : chunkc tiling::window --warp east
+cmd + shift - j : chunkc tiling::window --warp south
+cmd + shift - h : chunkc tiling::window --warp west
 
 # make floating window fill screen
 alt + cmd - f : chunkc tiling::window --grid-layout 1:1:0:0:1:1
@@ -56,8 +101,6 @@ alt + cmd - right  : chunkc tiling::window --grid-layout 1:2:1:0:1:1
 cmd + shift - delete : chunkc tiling::desktop --annihilate
 
 # fast focus desktop
-cmd - 0x21 : chunkc tiling::desktop --focus prev
-cmd - 0x1E : chunkc tiling::desktop --focus next
 cmd - 1 : chunkc tiling::desktop --focus 1
 cmd - 2 : chunkc tiling::desktop --focus 2
 cmd - 3 : chunkc tiling::desktop --focus 3
@@ -81,22 +124,6 @@ shift + cmd - 8 : chunkc tiling::window --send-to-desktop 7; chunkc tiling::desk
 shift + cmd - 9 : chunkc tiling::window --send-to-desktop 7; chunkc tiling::desktop --focus 9
 shift + cmd - 0 : chunkc tiling::window --send-to-desktop 7; chunkc tiling::desktop --focus 10
 
-# focus monitor
-alt + cmd - 1  : chunkc tiling::monitor -f 1
-alt + cmd - 2  : chunkc tiling::monitor -f 2
-alt + cmd - 3  : chunkc tiling::monitor -f 3
-
-# send window to monitor and follow focus
-shift + alt + cmd - 1  : chunkc tiling::window --send-to-monitor 1; chunkc tiling::monitor -f 1
-shift + alt + cmd - 2  : chunkc tiling::window --send-to-monitor 2; chunkc tiling::monitor -f 2
-shift + alt + cmd - 3  : chunkc tiling::window --send-to-monitor 3; chunkc tiling::monitor -f 3
-
-# mirror tree y-axis
-cmd - up : chunkc tiling::desktop --mirror vertical
-
-# mirror tree x-axis
-cmd - down : chunkc tiling::desktop --mirror horizontal
-
 # toggle window fullscreen
 cmd - f : chunkc tiling::window --toggle fullscreen
 
@@ -107,7 +134,7 @@ shift + cmd - f : chunkc tiling::window --toggle native-fullscreen
 cmd - space : chunkc tiling::window --toggle parent
 
 # toggle window split type
-cmd - l : chunkc tiling::window --toggle split
+cmd - e : chunkc tiling::window --toggle split
 
 # toggle window fade
 shift + cmd - d : chunkc tiling::window --toggle fade
