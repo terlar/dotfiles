@@ -6,18 +6,11 @@ general {
 }
 
 order += "volume master"
-order += "disk /"
-order += "wireless wlp2s0"
 order += "battery 0"
 order += "cpu_temperature 0"
 order += "cpu_usage 0"
 order += "load"
 order += "tztime local"
-
-wireless wlp2s0 {
-	format_up = "%quality  %essid %ip"
-	format_down = ""
-}
 
 battery 0 {
 	format = "%status %percentage %remaining"
@@ -33,16 +26,8 @@ battery 0 {
 	status_full = " "
 }
 
-run_watch DHCP {
-	pidfile = "/var/run/dhclient*.pid"
-}
-
-run_watch VPN {
-	pidfile = "/var/run/vpnc/pid"
-}
-
 tztime local {
-	format = "%V  %A %Y-%m-%d  %H:%M:%S"
+	format = " %a W%V  %H:%M"
 }
 
 load {
@@ -55,13 +40,6 @@ cpu_usage {
 
 cpu_temperature 0 {
 	format = "🌡️ %degrees°C"
-}
-
-disk "/" {
-	format = " %avail"
-	prefix_type	= custom
-	low_threshold = 20
-	threshold_type = percentage_avail
 }
 
 volume master {
