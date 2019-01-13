@@ -5,7 +5,7 @@ function find-src
     if test -d "$root/$argv"
         set path "$root/$argv"
     else
-        set -l dir (ghq list "$argv" | fzf -0 -1)
+        set -l dir (ghq list "$argv" | fzy)
         if test -n "$dir" -a -d "$root/$dir"
             set path "$root/$dir"
         end
