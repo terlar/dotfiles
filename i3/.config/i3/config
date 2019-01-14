@@ -31,9 +31,11 @@ bar {
 
 # Desktops
 assign [class="^Firefox$"] 2
+assign [class="^Slack$"] 9
 
 # Floats
-for_window [class="^Pinentry$"] floating enable, border normal
+for_window [class="^(Nm-connection-editor|Pavucontrol|Pinentry)$"] floating enable, border normal
+for_window [class="^.*blueman-manager.*$"] floating enable, border normal
 
 #
 # Keybindings
@@ -123,11 +125,17 @@ bindsym $mod+a focus parent
 # focus the child container
 bindsym $mod+d focus child
 
+# switch to monitor
+bindsym $mod+m focus output right
+
+# move workspace to monitor
+bindsym $mod+Shift+m move workspace to output right
+
 # switch to workspace
 bindsym $mod+bracketleft workspace prev
 bindsym $mod+bracketright workspace next
 bindsym $mod+Tab workspace next
-bindsym $mod+Shift+Tab workspace next
+bindsym $mod+Shift+Tab workspace prev
 bindsym $mod+1 workspace 1
 bindsym $mod+2 workspace 2
 bindsym $mod+3 workspace 3
@@ -158,7 +166,7 @@ bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+bindsym $mod+Shift+BackSpace exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
 # resize window
 mode "resize" {
