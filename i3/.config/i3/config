@@ -126,10 +126,10 @@ bindsym $mod+a focus parent
 bindsym $mod+d focus child
 
 # switch to monitor
-bindsym $mod+m focus output right
+bindsym $mod+m focus output up
 
 # move workspace to monitor
-bindsym $mod+Shift+m move workspace to output right
+bindsym $mod+Shift+m move workspace to output up
 
 # switch to workspace
 bindsym $mod+bracketleft workspace prev
