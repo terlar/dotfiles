@@ -18,13 +18,13 @@ draw_bold_text_with_bright_colors: true
 
 font:
   normal:
-    family: Iosevka T Slab
+    family: Iosevka Slab
     style: Light
   bold:
-    family: Iosevka T Slab
-    style: Regular
+    family: Iosevka Slab
+    style: Medium
   italic:
-    family: Iosevka T Slab
+    family: Iosevka Slab
     style: Italic
   size: 14.0
   offset:
