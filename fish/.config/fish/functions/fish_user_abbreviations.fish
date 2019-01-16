@@ -65,10 +65,10 @@ function fish_user_abbreviations
         abbr gsmp 'git subpull'
 
         abbr gh 'git head'
-        abbr gl 'git l'
-        abbr gll 'git ll'
-        abbr glll 'git lll'
-        abbr gwc 'git wc'
+        abbr gl 'git log --oneline'
+        abbr gll 'git log'
+        abbr glll 'git log --stat'
+        abbr gwc 'git log --patch --abbrev-commit --pretty=medium'
 
         abbr gd 'git diff'
         abbr gdt 'git difftool'
