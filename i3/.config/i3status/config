@@ -13,7 +13,7 @@ order += "load"
 order += "tztime local"
 
 battery 0 {
-	format = "%status %percentage %remaining"
+        format = "%status %percentage"
 	format_down = ""
 	last_full_capacity = true
 	integer_battery_capacity = true
