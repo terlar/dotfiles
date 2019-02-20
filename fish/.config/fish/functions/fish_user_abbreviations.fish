@@ -19,8 +19,9 @@ function fish_user_abbreviations
     abbr -- '/' 'div'
 
     # Command defaults
-    abbr time "time -p"
     abbr base64 "base64 -w0"
+    abbr mkdir "mkdir -p"
+    abbr time "time -p"
 
     if type -fq tree
         abbr tree 'tree -a'
