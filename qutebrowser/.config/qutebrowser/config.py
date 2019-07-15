@@ -11,6 +11,7 @@ c.aliases = {
 }
 
 c.auto_save.session = True
+c.session.lazy_restore = True
 
 c.content.default_encoding = 'utf-8'
 c.content.javascript.log = {'unknown': 'none', 'info': 'debug', 'warning': 'debug', 'error': 'debug'}
