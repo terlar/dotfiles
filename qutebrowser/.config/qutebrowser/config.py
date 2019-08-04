@@ -29,7 +29,6 @@ c.tabs.background = True
 c.tabs.padding = {'top': 5, 'bottom': 5, 'left': 5, 'right': 5}
 c.tabs.position = 'left'
 c.tabs.show = 'multiple'
-c.tabs.title.format = ' {title}'
 c.tabs.width = '10%'
 
 c.url.searchengines = {
