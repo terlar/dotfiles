@@ -63,20 +63,20 @@ c.bindings.key_mappings = {
 # Emacs bindings
 c.bindings.commands = {
     'insert': {
-        '<Ctrl-f>'         : 'fake-key <Right>',
-        '<Ctrl-b>'         : 'fake-key <Left>',
-        '<Ctrl-a>'         : 'fake-key <Home>',
-        '<Ctrl-e>'         : 'fake-key <End>',
-        '<Ctrl-n>'         : 'fake-key <Down>',
-        '<Ctrl-p>'         : 'fake-key <Up>',
-        '<Alt-v>'          : 'fake-key <PgUp>',
-        '<Ctrl-v>'         : 'fake-key <PgDown>',
-        '<Alt-f>'          : 'fake-key <Alt-Right>',
-        '<Alt-b>'          : 'fake-key <Alt-Left>',
-        '<Ctrl-d>'         : 'fake-key <Delete>',
-        '<Alt-d>'          : 'fake-key <Alt-Delete>',
-        '<Ctrl-k>'         : 'fake-key <Shift-End> ;; fake-key <Delete>',
-        "<Ctrl-c><Ctrl-'>" : 'open-editor',
+        '<Ctrl-f>'  : 'fake-key <Right>',
+        '<Ctrl-b>'  : 'fake-key <Left>',
+        '<Ctrl-a>'  : 'fake-key <Home>',
+        '<Ctrl-e>'  : 'fake-key <End>',
+        '<Ctrl-n>'  : 'fake-key <Down>',
+        '<Ctrl-p>'  : 'fake-key <Up>',
+        '<Alt-v>'   : 'fake-key <PgUp>',
+        '<Ctrl-v>'  : 'fake-key <PgDown>',
+        '<Alt-f>'   : 'fake-key <Alt-Right>',
+        '<Alt-b>'   : 'fake-key <Alt-Left>',
+        '<Ctrl-d>'  : 'fake-key <Delete>',
+        '<Alt-d>'   : 'fake-key <Alt-Delete>',
+        '<Ctrl-k>'  : 'fake-key <Shift-End> ;; fake-key <Delete>',
+        "<Ctrl-c>'" : 'open-editor',
     }
 }
 
