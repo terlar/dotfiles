@@ -1,5 +1,5 @@
 function fish_load_colors --description 'Restore colors'
-    set fish_color_autosuggestion white
+    set fish_color_autosuggestion --italics yellow
     set fish_color_command --bold
     set fish_color_comment red
     set fish_color_cwd normal
@@ -11,12 +11,12 @@ function fish_load_colors --description 'Restore colors'
     set fish_color_host normal
     set fish_color_match normal
     set fish_color_normal normal
-    set fish_color_operator white
+    set fish_color_operator normal
     set fish_color_param normal
     set fish_color_quote normal
-    set fish_color_redirection white
-    set fish_color_search_match --background="white"
-    set fish_color_selection --background="white"
+    set fish_color_redirection normal
+    set fish_color_search_match --background="yellow"
+    set fish_color_selection --background="yellow"
     set fish_color_status red
     set fish_color_user normal
     set fish_color_valid_path --underline
