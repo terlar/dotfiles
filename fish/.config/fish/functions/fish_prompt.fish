@@ -6,6 +6,11 @@ function fish_prompt --description 'Write out the prompt'
         set_color grey
     end
 
-    echo -n '$ '
+    if set -q IN_NIX_SHELL
+        echo -n 'λ '
+    else
+        echo -n '$ '
+    end
+
     set_color normal
 end
