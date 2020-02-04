@@ -119,9 +119,10 @@ function fish_user_abbreviations
         abbr dpa 'docker ps -a'
         abbr dpq 'docker ps -q'
 
-        abbr drmc 'docker rm -v (docker ps -qa --filter status=exited)'
+        abbr drmc 'docker rm -v (docker ps -qaf status=exited)'
         abbr drmca 'docker rm -fv (docker ps -qa)'
-        abbr drmi 'docker rmi (docker images -q --filter dangling=true)'
+        abbr drmi 'docker rmi (docker images -qf dangling=true)'
+        abbr drmig 'docker rmi (docker images -qf reference=)'
     end
 
     if type -fq docker-compose
