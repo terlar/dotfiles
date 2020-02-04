@@ -144,6 +144,7 @@ function fish_user_abbreviations
     if type -q nix
         abbr n 'nix'
         abbr nf 'nix search'
+        abbr nr 'nix run'
         abbr ns 'nix-shell'
     end
 end
