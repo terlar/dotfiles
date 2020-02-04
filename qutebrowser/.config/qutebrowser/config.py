@@ -24,12 +24,13 @@ c.editor.command = ['emacsclient', '-c', '{}']
 c.spellcheck.languages = ['en-US', 'sv-SE']
 
 c.statusbar.padding = { 'top': 5, 'bottom': 5, 'left': 5, 'right': 5 }
+c.statusbar.hide = True
 
 c.tabs.background = True
-c.tabs.padding = {'top': 5, 'bottom': 5, 'left': 5, 'right': 5}
+c.tabs.padding = { 'top': 5, 'bottom': 5, 'left': 0, 'right': 5 }
 c.tabs.position = 'left'
-c.tabs.show = 'multiple'
-c.tabs.width = '10%'
+c.tabs.show = 'switching'
+c.tabs.width = '15%'
 
 c.url.searchengines = {
     'DEFAULT': 'https://duckduckgo.com/?q={}',
