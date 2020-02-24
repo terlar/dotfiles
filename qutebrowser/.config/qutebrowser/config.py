@@ -78,6 +78,7 @@ c.bindings.commands = {
         '<Ctrl-v>'  : 'fake-key <PgDown>',
         '<Ctrl-k>'  : 'fake-key <Shift-End> ;; fake-key <Delete>',
         "<Ctrl-c>'" : 'open-editor',
+        '<Ctrl-i>'  : 'inspector',
     }
 }
 
