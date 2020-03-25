@@ -48,7 +48,6 @@ c.url.start_pages = 'https://start.duckduckgo.com'
 
 c.zoom.default = '100%'
 
-
 c.bindings.key_mappings = {
     '<Ctrl-g>'       : '<Escape>',
     '<Ctrl-[>'       : '<Escape>',
