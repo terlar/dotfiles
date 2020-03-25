@@ -28,8 +28,7 @@ function fish_user_abbreviations
     end
 
     if type -fq rg
-        abbr ag 'rg -S --hidden --glob "!.git/*"'
-        abbr rg 'rg -S --hidden --glob "!.git/*"'
+        abbr ag 'rg'
     end
 
     if type -fq systemctl
