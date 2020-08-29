@@ -15,8 +15,8 @@ function fish_load_colors --description 'Restore colors'
     set fish_color_param normal
     set fish_color_quote normal
     set fish_color_redirection normal
-    set fish_color_search_match --background="yellow"
-    set fish_color_selection --background="yellow"
+    set fish_color_search_match --reverse
+    set fish_color_selection --reverse
     set fish_color_status red
     set fish_color_user normal
     set fish_color_valid_path --underline
