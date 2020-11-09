@@ -142,8 +142,13 @@ function fish_user_abbreviations
 
     if type -q nix
         abbr n 'nix'
-        abbr nf 'nix search'
+        abbr nb 'nix build'
+        abbr nd 'nix show-derivation'
+        abbr nf 'nix search nixpkgs'
+        abbr nl 'nix log'
+        abbr nqd 'nix-store --query --deriver'
+        abbr nqr 'nix-store --query --roots'
         abbr nr 'nix run'
-        abbr ns 'nix-shell'
+        abbr ns 'nix shell'
     end
 end
