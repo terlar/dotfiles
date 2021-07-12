@@ -52,9 +52,9 @@ function __ghq_github_repo_completion -a term
 
     if string match -q -- '*/*' $term
         set -l usr (string match -r -- '^[^\s/]+' $term)
-        curl -sS "https://api.github.com/search/repositories?q=user:$usr" | jq -r '.items[] | .full_name + "\t" + .description' ^/dev/null
+        curl -sS "https://api.github.com/search/repositories?q=user:$usr" | jq -r '.items[] | .full_name + "\t" + .description' 2>/dev/null
     else
-        curl -sS "https://api.github.com/search/users?q=$term+in:login" | jq -r '.items[].login + "/"' ^/dev/null
+        curl -sS "https://api.github.com/search/users?q=$term+in:login" | jq -r '.items[].login + "/"' 2>/dev/null
     end
 end
 
@@ -72,7 +72,7 @@ complete -c ghq -s v -l version -f -d 'Print the version'
 complete -c ghq -n 'not __ghq_seen_any_subcommand_from ""' -x -a '(__ghq_subcommands "")'
 
 # ghq get [-u] <repository URL> | [-u] [-p] <user>/<project>
-complete -c ghq -n '__ghq_using_command get; and not __ghq_seen_project' -a '(__ghq_github_repo_completion (commandline -pt))' -f -d 'Repo'
+complete -c ghq -n '__ghq_using_command get; and not __ghq_seen_project' -a '(__ghq_github_repo_completion (commandline -pt))' -f -d Repo
 
 complete -c ghq -n '__ghq_using_command get' -s u -l update -f -d 'Update local repository if cloned already'
 complete -c ghq -n '__ghq_using_command get' -s p -f -d 'Clone with SSH'
@@ -84,7 +84,7 @@ complete -c ghq -n '__ghq_using_command list' -s p -l full-path -f -d 'Print ful
 complete -c ghq -n '__ghq_using_command list' -l unique -f -d 'Print unique subpaths'
 
 # ghq look <project> | <user>/<project> | <host>/<user>/<project>
-complete -c ghq -n '__ghq_using_command look; and not __ghq_seen_project' -x -a '(ghq list)' -d 'Project'
+complete -c ghq -n '__ghq_using_command look; and not __ghq_seen_project' -x -a '(ghq list)' -d Project
 
 # ghq import < file
 complete -c ghq -n '__ghq_using_command import' -s u -l update -f -d 'Update local repository if cloned already'

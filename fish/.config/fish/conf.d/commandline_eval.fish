@@ -6,7 +6,7 @@ end
 function __commandline_eval_token
     # Use fish -c to be able to suppress syntax errors in eval.
     set -l token (commandline -ct)
-    set -l tokens (fish -c "eval string escape -- $token" ^/dev/null)
+    set -l tokens (fish -c "eval string escape -- $token" 2>/dev/null)
     set -q tokens[1]
     or return
 

@@ -29,7 +29,7 @@ function __commandline_execute_and_keep_line
 
     while true
         set funcname __fish_restore_line_(random)
-        if not functions $funcname >/dev/null ^/dev/null
+        if not functions $funcname 2>&1 >/dev/null
             break
         end
     end

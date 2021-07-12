@@ -11,7 +11,7 @@ end
 
 function __prompt_context_build
     set prompt ' '
-    set git_dir (command git rev-parse --show-toplevel ^/dev/null)
+    set git_dir (command git rev-parse --show-toplevel 2>/dev/null)
 
     if test -n "$git_dir"
         set project (string split '/' $git_dir)[-1]
@@ -19,7 +19,7 @@ function __prompt_context_build
 
         set branch (command git symbolic-ref --short --quiet HEAD)
         set dirty (command git diff --no-ext-diff --ignore-submodules --quiet; echo $status)
-        set unmerged (command git cherry -v @\{upstream\} ^/dev/null)
+        set unmerged (command git cherry -v @\{upstream\} 2>/dev/null)
 
         if test $dirty -ne 0
             set branch {$branch}

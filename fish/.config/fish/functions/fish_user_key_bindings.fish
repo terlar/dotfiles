@@ -9,5 +9,5 @@ function fish_user_key_bindings
     bind \e'>' 'nextd; echo; commandline -f repaint'
 
     # Resume background job
-    bind \ez 'fg >/dev/null ^/dev/null'
+    bind \ez 'fg 2>&1 >/dev/null'
 end
