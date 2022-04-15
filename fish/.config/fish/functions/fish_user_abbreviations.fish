@@ -47,6 +47,7 @@ function fish_user_abbreviations
         abbr scus 'systemctl --user status'
         abbr scul 'systemctl --user list-units'
 
+        abbr logout 'loginctl kill-user $USER'
         abbr reboot 'systemctl reboot'
         abbr poweroff 'systemctl poweroff'
         abbr suspend 'systemctl suspend'
