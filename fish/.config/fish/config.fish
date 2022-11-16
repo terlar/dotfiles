@@ -6,16 +6,7 @@ if test "$TERM" = eterm-color
     end
 end
 
-if type -q plug
-    plug fisherman/fzf
-    plug terlar/ev-fish
-    plug terlar/fish-farm
-    plug terlar/fry
-end
-
 # Environment
 if type -q ev
     ev auto >/dev/null
 end
-
-gpg-connect-agent updatestartuptty /bye >/dev/null
