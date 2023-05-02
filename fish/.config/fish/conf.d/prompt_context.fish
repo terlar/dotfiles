@@ -1,15 +1,9 @@
-function __prompt_context_update --on-event fish_prompt
-    set -l prompt_context_new (__prompt_context_build)
-    if not test "$prompt_context_new" = "$__prompt_context_current"
-        set -g __prompt_context_current $prompt_context_new
-    end
+# Show prompt context on directory switch
+function __prompt_context_kb --on-event fish_user_key_bindings
+    bind --preset \cl 'echo -n (clear | string replace \e\[3J ""); commandline -f repaint; __prompt_context'
 end
 
-function __prompt_context_reload -v __prompt_context_current
-    echo $__prompt_context_current
-end
-
-function __prompt_context_build
+function __prompt_context --on-variable PWD
     set prompt ' '
     set git_dir (command git rev-parse --show-toplevel 2>/dev/null)
 
