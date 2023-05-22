@@ -21,9 +21,6 @@ function fish_setup --description 'Setup fish variables'
     # Colors
     fish_load_colors
 
-    # Abbreviations
-    fish_user_abbreviations
-
     # Completions
     fish_update_completions
 
@@ -31,7 +28,6 @@ function fish_setup --description 'Setup fish variables'
     set -U fish_escape_delay_ms 500
 
     set -U tank_reporter spec
-    set -U fry_auto_switch 1
 
     set -U fish_setup_done 1
     echo 'Initial fish setup done!'
