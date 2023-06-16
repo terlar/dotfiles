@@ -62,7 +62,6 @@ if type -fq git
     abbr gsmr git-submodule-reset
     abbr gsmp 'git subpull'
 
-    abbr gh 'git head'
     abbr gl 'git log --oneline'
     abbr gll 'git log'
     abbr glll 'git log --stat'
